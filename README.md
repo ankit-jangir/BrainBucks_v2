@@ -1,3 +1,30 @@
+# This is the way to run the project on Docker on your machine
+
+First Install the docker desktop from the [**official website**](https://www.docker.com/get-started/)
+Then, install the usbipd-win latest version from [**this website**](https://github.com/dorssel/usbipd-win/releases). The msi file will be the installation file for this. Download that and run, the usbipd-win will be installed in a few seconds
+
+Now Open the powershell as administrator and run the following commands in it:
+(or you can follow the [**documentation**](https://learn.microsoft.com/en-us/windows/wsl/connect-usb))
+
+```bash
+
+usbipd list
+usbipd bind --busid <busid>
+usbipd attach --wsl --busid <busid>
+
+```
+
+Now go to the Project directory (Or Open the project in vscode and goto its terminal) and run the following command:
+
+```bash
+
+//todo: yet to write the commands
+
+```
+
+
+# The Following is the documentation given by native officials:
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
