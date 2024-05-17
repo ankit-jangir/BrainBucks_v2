@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818078533194",
+    "project_id": "brainbucksandroid",
+    "storage_bucket": "brainbucksandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818078533194:android:e6330afc90d449f32788b3",
+        "android_client_info": {
+          "package_name": "com.brainbucksmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK5zmjaSzDsN1aKOGsRyVV7V9sHQt2_GE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

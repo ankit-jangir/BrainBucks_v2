@@ -14,6 +14,7 @@ import TransactionHistory from './src/screens/Wallet/TransactionHistory';
 import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import Otp from './src/screens/Login/Otp';
+import VideoPlayer from './src/screens/Courses/VideoPlayer';
 
 
 
@@ -34,7 +35,7 @@ function MyStack() {
      <Stack.Screen name="saved" component={Saved} />
      <Stack.Screen name="transactionHistory" component={TransactionHistory} />
      <Stack.Screen name="SearchBar" component={SearchBar} />
-
+     <Stack.Screen name="videoplayer" component={VideoPlayer}/>
 
 
     </Stack.Navigator>
