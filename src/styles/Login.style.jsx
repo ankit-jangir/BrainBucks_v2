@@ -2,7 +2,6 @@
 import { StyleSheet } from 'react-native';
 import { ColorsConstant } from '../../src/constants/Colors.constant';
 import { StyleConstants } from '../../src/constants/Style.constant';
-import { Config } from "../Services/Config";
 
     const styles = StyleSheet.create({
         safe: {
@@ -76,159 +75,188 @@ import { Config } from "../Services/Config";
           fontFamily: "WorkSans-Medium",
           paddingLeft: 10
         },
-            bbView: {
-              width: "100%",
-              height: 150,
-              justifyContent: "center",
-              alignItems: "center",
-            },
-            container: {
-              flex: 1,
-              backgroundColor: ColorsConstant.Theme,
-              borderTopLeftRadius: 100,
-              paddingHorizontal: 25
-            },
-            LetsView: {
-              width: "100%",
-              height: 100,
-              marginTop: 20
-            },
-            LetsView2: {
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center"
-            },
-            textLets: {
-              fontFamily: "WorkSans-Bold",
-              fontSize: 24,
-              textAlign: "left",
-              color: ColorsConstant.White,
-            },
-            togetherview: {
-              flexDirection: "row",
-              alignItems: "center"
-            },
-            texttogether: {
-              fontFamily: "WorkSans-Bold",
-              fontSize: 24,
-              textAlign: "left",
-              color: ColorsConstant.White
-            },
-            handPic: {
-              width: 20,
-              height: 20,
-              position: "relative",
-              marginHorizontal: 10
-            },
-            rightarraow: {
-              width: 40,
-              height: 15
-            },
-            textEnter: {
-              fontSize: 14,
-              color: ColorsConstant.White,
-              fontFamily: "WorkSans-Regular",
-            },
-            inputView: {
-              flexDirection: "row",
-              borderWidth: 1,
-              borderRadius: 6,
-              justifyContent: "center",
-              alignItems: "center",
-              borderColor: ColorsConstant.uncheckedcolor,
-              marginTop: 5,
-              height: 50,
-            },
-            inputview91: {
-              flex: 0.25,
-              borderRadius: 6,
-              backgroundColor: ColorsConstant.InputbgColor,
-              borderColor: ColorsConstant.uncheckedcolor,
-              width: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              height: 48,
-              orderRadius: 6,
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-            },
-            text91: {
-              color: ColorsConstant.White,
-              fontSize: 16
-            },
-            inputView1: {
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "flex-start",
-              padding: 0,
-              backgroundColor: ColorsConstant.Theme2nd,
-              borderRadius: 6,
-            },
-            textinputt: {
-              fontSize: 15,
-              width: "100%",
-              height: 50,
-              textAlign: "justify",
-              paddingLeft: 20,
-              color: ColorsConstant.White,
-            },
-            checboxview: {
-              width: "100%",
-              height: 50,
-              marginTop: 20
-            },
-            checboxview2: {
-              flexDirection: "row",
-              justifyContent: "center",
-              flex: 1,
-              alignItems: "center",
-            },
-            textHereby: {
-              fontSize: 10,
-              color: ColorsConstant.White,
-              marginHorizontal: 3
-            },
-            textTerm: {
-              fontSize: 10,
-              fontFamily: "WorkSans-Regular",
-              color: ColorsConstant.TermColor,
-              paddingLeft: 3
-            },
-            textBrain: {
-              fontSize: 10,
-              marginTop: -6,
-              color: ColorsConstant.White
-            },
-            BtnOtp: {
-              width: "100%",
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: ColorsConstant.White,
-              borderRadius: 13,
-              marginTop: 20,
-            },
-            textOtp: {
-              fontFamily: "WorkSans-Medium",
-              fontSize: 20,
-              color:'#000'
-            },
-            imgView: {
-              width: "100%",
-              height: 300,
-              justifyContent: "flex-end"
-            },
-            imgView2: {
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "flex-end",
-            },
-            girlimg: {
-              width: "100%",
-              height: 150
-            }
         
 
+
+// //////////////////////////////////////////////////otp csss/////////////////////////////////////////////////////////////////
+ safeArView: {
+    flex: 1,
+    backgroundColor: ColorsConstant.White
+  },
+  Lastview1: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  EnterOtp: {
+    fontFamily: "WorkSans-Bold",
+    fontSize: 20,
+    color: ColorsConstant.White,
+  },
+  RightArrow: {
+    width: "100%",
+    height: 20
+  },
+  OtpView: {
+    width: "100%",
+    flexDirection: "row",
+    alignSelf: "center",
+    height: 50,
+    justifyContent: "space-between",
+  },
+  textOtp: {
+    fontFamily: "WorkSans-Regular",
+    fontSize: 14,
+    color: ColorsConstant.White,
+  },
+  DidView: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  OtpBoxView: {
+    backgroundColor: ColorsConstant.OtpbgColor,
+    width: 55,
+    height: 55,
+    borderRadius: 13,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  input: {
+    textAlign: "center",
+    color: ColorsConstant.White,
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  otpContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+},
+otpInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor:"rgba(255, 255, 255, 0.1)",
+    padding: 10,
+    marginRight: 10,
+    borderRadius: 5,
+},
+textOt:{
+  fontFamily: "WorkSans-Regular",
+  fontSize: 20,
+  color: ColorsConstant.Dark,
+},
+BtnOtp:{
+  width: "100%",
+      height: 50,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: ColorsConstant.White,
+      borderRadius: 13,
+      marginTop: 20,
+},
+
+// /********************************singupname***************************************************************** */
+
+
+
+mainView: {
+  width: '100%',
+  height: 280,
+  backgroundColor: ColorsConstant.Theme,
+},
+mainView1: {
+  flex: 1,
+  paddingTop: 40,
+  paddingHorizontal: 30
+},
+mainView2: {
+  width: '100%',
+  height: 150,
+  justifyContent: "center",
+},
+mainView3: {
+  flexDirection: "row",
+  alignItems: "flex-end",
+  flex: 1,
+  marginTop:-40
+},
+mainView22: {
+  flexDirection: "row",
+  alignItems: "flex-end",
+},
+WelcomeText: {
+  fontFamily: 'WorkSans-Bold',
+  fontSize: 30,
+  textAlign: 'left',
+  color: ColorsConstant.White,
+  
+},
+ArrowPic: {
+  width: 40,
+  height: 15,
+  marginHorizontal: 24
+},
+HandPic: {
+  width: 20,
+  height: 20,
+  position: 'relative',
+},
+LookView: {
+  flex: 1,
+  height: 100,
+  flexDirection: "row",
+  marginTop: 0
+},
+LooksText: {
+  fontSize: 16,
+  fontFamily: 'WorkSans-Medium',
+  color: ColorsConstant.White
+},
+lottiView: {
+  width: 300,
+  height: 150,
+  backgroundColor: 'transparent',
+},
+letView: {
+  width: '90%',
+  height: 120,
+  justifyContent: "center"
+},
+TextEach: {
+  fontFamily: 'WorkSans-Bold',
+  fontSize: 30,
+  color: ColorsConstant.AshGray
+},
+TextMy: {
+  fontFamily: 'WorkSans-Regular',
+  fontSize: 20,
+  color: ColorsConstant.AshGray,
+  paddingBottom: 10
+},
+inputView: {
+  // flex: 1,
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  padding: 0,
+  backgroundColor: ColorsConstant.LightGray,
+  borderRadius: 10,
+},
+inputView1: {
+  fontSize: 16,
+  width: "100%",
+  textAlign: "justify",
+  paddingLeft: 20,
+  color: ColorsConstant.AshGray
+},
+TouchView: {
+  width: '100%',
+  height: 120,
+  justifyContent: 'center'
+}
 
 
 

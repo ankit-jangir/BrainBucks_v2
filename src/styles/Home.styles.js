@@ -44,6 +44,41 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 4,
   },
+
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    padding: 10,
+  },
+  carouselContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carouselItem: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  carouselText: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    color: '#fff',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 5,
+    borderRadius: 5,
+  },
+
+// sider
+
+  
 });
 
 export default styles;

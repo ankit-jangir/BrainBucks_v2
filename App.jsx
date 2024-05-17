@@ -13,7 +13,13 @@ import Saved from './src/screens/saved/Saved';
 import TransactionHistory from './src/screens/Wallet/TransactionHistory';
 import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
+import SingUp from './src/screens/Login/SingUp';
 import Otp from './src/screens/Login/Otp';
+import SignupName from './src/screens/Login/SignupName';
+import SignupGender from './src/screens/Login/SignupGender';
+import SignUpExam from './src/screens/Login/SignupExam';
+import ViewProfile from './src/screens/Home/Profile/ViewProfile';
+import EditProfile from './src/screens/Home/Profile/EditProfile';
 
 
 
@@ -27,6 +33,7 @@ function MyStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal', }}>
      <Stack.Screen name="Splash" component={Splash} />
+     <Stack.Screen name="SingUp" component={SingUp} />
      <Stack.Screen name="Otp" component={Otp} />
      <Stack.Screen name="Home" component={MyDrawer} />
      <Stack.Screen name="wallet" component={Wallet} />
@@ -34,6 +41,19 @@ function MyStack() {
      <Stack.Screen name="saved" component={Saved} />
      <Stack.Screen name="transactionHistory" component={TransactionHistory} />
      <Stack.Screen name="SearchBar" component={SearchBar} />
+     <Stack.Screen name="SignupName" component={SignupName} />
+     <Stack.Screen name="SignupGender" component={SignupGender} />
+     <Stack.Screen name="SignUpExam" component={SignUpExam} />
+     <Stack.Screen name="ViewProfile" component={ViewProfile} />
+     <Stack.Screen name="EditProfile" component={EditProfile} />
+
+
+
+
+
+
+
+
 
 
 
