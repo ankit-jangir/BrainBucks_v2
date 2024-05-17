@@ -1,10 +1,141 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text,Image,View} from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Home from './src/screens/Home/Home';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Sidebar from './src/screens/Home/Sidebar';
+import Wallet from './src/screens/Wallet/Wallet';
+import Study from './src/screens/Study/Study';
+import Saved from './src/screens/saved/Saved';
+import TransactionHistory from './src/screens/Wallet/TransactionHistory';
+import SearchBar from './src/screens/Home/SearchBar';
+import Splash from './src/screens/Login/Splash';
+import Otp from './src/screens/Login/Otp';
+
+
+
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+
+
+function MyStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal', }}>
+     <Stack.Screen name="Splash" component={Splash} />
+     <Stack.Screen name="Otp" component={Otp} />
+     <Stack.Screen name="Home" component={MyDrawer} />
+     <Stack.Screen name="wallet" component={Wallet} />
+     <Stack.Screen name="study" component={Study} />
+     <Stack.Screen name="saved" component={Saved} />
+     <Stack.Screen name="transactionHistory" component={TransactionHistory} />
+     <Stack.Screen name="SearchBar" component={SearchBar} />
+
+
+
+    </Stack.Navigator>
+  );
+}
+
+
+function MyTabs() {
+  return (
+    <SafeAreaProvider>
+      <Tab.Navigator screenOptions={{ tabBarLabelStyle: { fontSize: 13, paddingBottom: 5, }, tabBarStyle: { height: 60, backgroundColor: 'white', }, tabBarShowLabel: true, headerShown: false, tabBarActiveTintColor: "#000", tabBarInactiveTintColor: "gray" }} >
+        <>
+          <Tab.Screen name="Home" component={Home} options={{
+            'tabBarLabel': "Home", 'tabBarIcon': (({ focused, color }) => (
+              <View>
+                {
+                  focused ? (<Image source={require('./src/assets/img/homedark.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />) :
+                    (<Image source={require('./src/assets/img/homenormal.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />)
+                }
+              </View>
+            ))
+          }} />
+          <Tab.Screen name="saved" component={Saved} options={{
+            'tabBarLabel': "Study", 'tabBarIcon': (({ focused, color }) => (
+              <View>
+                {
+                  focused ? (<Image source={require('./src/assets/img/bookmarkblack.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />) :
+                    (<Image source={require('./src/assets/img/bookmark.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />)
+                }
+              </View>
+            ))
+          }} />
+          {/* <Tab.Screen style={{position:'relative ',}} name="Room" component={Rooms} options={{ tabBarLabelStyle:{ fontSize:12, paddingBottom:5 }, 'tabBarLabel':"Rooms", 'tabBarIcon':( ({focused, color}) => (
+            <View style={{position:"absolute", justifyContent:"center", bottom:8, alignItems:"center", flex:1, justifyContent:'center', alignItems:'center',backgroundColor:  focused ? '#475B9F' : "#F6F8FF" ,borderRadius:100,borderColor:'#ECECEC',borderWidth:1}}> 
+                   <View style={{ borderRadius:100, height:60, width:60, justifyContent:'center', alignItems:'center',}}>
+                      {
+                        focused ? (<Image source={require('./assets/roomimgwhite.png')} resizeMode='contain' style={{width:30,height:30}} />) : 
+                        (<Image source={require('./assets/roomimg.png')} resizeMode='contain' style={{width:35,height:35}} />)
+                      }
+                   </View>
+                   <View style={{position:'absolute',top:50,width:"100%",height:20,backgroundColor:'red',justifyContent:"center",alignItems:'center',borderRadius:3}}>
+                     <Text style={{fontFamily:"WorkSans-Regular",fontSize:12,color:'#fff'}}>New</Text>
+                   </View>
+              </View>   
+          ))}}/> */}
+
+          <Tab.Screen style={{ position: 'relative ', }} name="wallet" component={Wallet} options={{
+            tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 }, 'tabBarLabel': "Courses", 'tabBarIcon': (({ focused, color }) => (
+              <View style={{ position: "absolute", justifyContent: "center", bottom: 8, alignItems: "center", flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#475B9F' : "#F6F8FF", borderRadius: 100, borderColor: '#ECECEC', borderWidth: 1 }}>
+                <View style={{ borderRadius: 100, height: 60, width: 60, justifyContent: 'center', alignItems: 'center', }}>
+                  {
+                    focused ? (<Image source={require('./src/assets/img/roomimgwhite.png')} resizeMode='contain' style={{ width: 30, height: 30 }} />) :
+                      (<Image source={require('./src/assets/img/roomimg.png')} resizeMode='contain' style={{ width: 35, height: 35 }} />)
+                  }
+                </View>
+                <View style={{ position: 'absolute', top: 50, width: "100%", height: 20, backgroundColor: 'red', justifyContent: "center", alignItems: 'center', borderRadius: 3 }}>
+                  <Text style={{ fontFamily: "WorkSans-Regular", fontSize: 12, color: '#fff' }}>New</Text>
+                </View>
+              </View>
+            ))
+          }} />
+          <Tab.Screen name="study" component={Study} options={{
+            'tabBarLabel': "Saved", 'tabBarIcon': (({ focused, color }) => (
+              <View>
+                {
+                  focused ? (<Image source={require('./src/assets/img/heart.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />) :
+                    (<Image source={require('./src/assets/img/heartnormal.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />)
+                }
+              </View>
+            ))
+          }} />
+          <Tab.Screen name="transactionHistory" component={TransactionHistory} options={{
+            'tabBarLabel': "Wallet", 'tabBarIcon': (({ focused, color }) => (
+              <View>
+                {
+                  focused ? (<Image source={require('./src/assets/img/walletblack.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />) :
+                    (<Image source={require('./src/assets/img/walletnormal.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />)
+                }
+              </View>
+            ))
+          }} />
+        </>
+      </Tab.Navigator>
+    </SafeAreaProvider>
+  );
+}
+
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={props => (<Sidebar {...props} />)}>
+      <Drawer.Screen name="Home" component={MyTabs} />
+    </Drawer.Navigator>
+  )
+}
+
 
 export default function App() {
   return (
-    <Text>
-      YO! Team. Let's Do This
-    </Text>
+    <NavigationContainer>
+    <MyStack />
+  </NavigationContainer>
   )
 }
