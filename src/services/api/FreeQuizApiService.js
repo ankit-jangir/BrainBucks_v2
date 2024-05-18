@@ -6,7 +6,7 @@ class FreeQuizApiService {
     this.quizmicro = QUIZMICRO;
   }
 
-  async getQuizDetails(id) {
+  async getTriviaQuizDetails(id) {
     let token = `Bearer `;
     let url = `${this.quizmicro}/participants/view/detail/of/trivia/quiz?id=${id}`;
     let headers = { "content-type": "application/json", authorization: token };
