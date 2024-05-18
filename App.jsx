@@ -14,6 +14,14 @@ import TransactionHistory from './src/screens/Wallet/TransactionHistory';
 import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import Otp from './src/screens/Login/Otp';
+import NoDataFound from './src/components/NoDataFound';
+import Congrations from './src/components/Congrations';
+import TriviaQuzze from './src/components/TriviaQuzze';
+import FreeCard from './src/components/FreeCard';
+import MyExamCard from './src/components/MyExamCard';
+import MyChallenge from './src/components/MyChallenge';
+import GuaranteedRewardCard from './src/components/GuaranteedRewardCard';
+import Header from './src/components/Header';
 
 
 
