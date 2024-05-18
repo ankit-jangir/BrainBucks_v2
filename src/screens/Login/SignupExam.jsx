@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text , TouchableOpacity, Image, TextInput, ScrollView, RefreshControl, ActivityIndicator, ToastAndroid, StyleSheet, Button } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ScrollView, RefreshControl, ActivityIndicator, ToastAndroid, StyleSheet, Button } from 'react-native';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
+import { Text } from '../../utils/Translate';
 import styles from '../../styles/SingUp.styles';
 
 export default function SignUpExam({ navigation, route }) {

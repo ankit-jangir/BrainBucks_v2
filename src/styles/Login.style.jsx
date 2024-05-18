@@ -133,13 +133,10 @@ import { StyleConstants } from '../../src/constants/Style.constant';
   otpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:"center",
     marginBottom: 20,
 },
 otpInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor:"rgba(255, 255, 255, 0.1)",
     padding: 10,
     marginRight: 10,
     borderRadius: 5,

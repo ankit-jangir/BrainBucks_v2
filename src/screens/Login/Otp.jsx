@@ -1,29 +1,20 @@
 import React, { useState, useRef } from "react";
-import { View, Text as BBText, TouchableOpacity, Image, SafeAreaView, TextInput, StyleSheet, Button, Text, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, Image, SafeAreaView, TextInput, StyleSheet, Button, ActivityIndicator } from "react-native";
 import styles from "../../styles/Login.style";
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
+import { Text } from "../../utils/Translate";
+import OtpInput from 'react-native-animated-otp-input';
 
 export default function Otp({ navigation, route }) {
-    const [otpValue, setOtpValue] = useState(['', '', '', '']);
-    const otpInputs = Array.from({ length: 4 });
 
-    const handleChange = (text, index) => {
-        const newOtpValue = [...otpValue];
-        newOtpValue[index] = text;
-        setOtpValue(newOtpValue);
-        if (text && index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus();
-        }
-    };
+    const [otp, setOtp] = useState();
 
-    const handleKeyPress = (e, index) => {
-        if (e.nativeEvent.key === 'Backspace' && index > 0 && !otpValue[index]) {
-            otpInputs[index - 1].focus();
-        }
-    };
+    function otpChanged(value){
+        setOtp(value+"")
+    }
 
-    return (  
+    return (
         <>
             <SafeAreaView style={styles.safeArView}>
                 <View style={StyleConstants.bbView} >
@@ -50,18 +41,9 @@ export default function Otp({ navigation, route }) {
                             </View>
                         </View>
                         <View style={styles.otpContainer}>
-                            {otpInputs.map((_, index) => (
-                                <TextInput
-                                    key={index}
-                                    ref={ref => (otpInputs[index] = ref)}
-                                    style={styles.otpInput}
-                                    value={otpValue[index]}
-                                    onChangeText={text => handleChange(text, index)}
-                                    maxLength={1}
-                                    keyboardType="numeric"
-                                    onKeyPress={e => handleKeyPress(e, index)}
-                                />
-                            ))}
+                            <OtpInput otpCount={4} autoFocus={true}
+                                onCodeChanged={otpChanged}
+                            />
                         </View>
                         <View style={{ marginTop: 20 }}>
                             <Text style={styles.textOtp}  >
@@ -72,20 +54,20 @@ export default function Otp({ navigation, route }) {
                             onPress={() => {
                             }}
                         >
-                            <BBText style={[styles.textOtp, { color: ColorsConstant.TermColor }]} > Change Number </BBText>
+                            <Text style={[styles.textOtp, { color: ColorsConstant.TermColor }]} > Change Number </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                         onPress={()=>{navigation.navigate('SignupName')}}
-                         style={styles.BtnOtp}
+                            onPress={() => { navigation.navigate('SignupName') }}
+                            style={styles.BtnOtp}
                         >
                             <Text style={styles.textOt}>confirm</Text>
                         </TouchableOpacity>
                         <View style={styles.DidView}>
-                            <BBText style={styles.textOtp} >
+                            <Text style={styles.textOtp} >
                                 Did not receive OTP ?{" "}
-                            </BBText>
+                            </Text>
                             <TouchableOpacity>
-                                <BBText style={[styles.textOtp, { color: ColorsConstant.TermColor }]}> Resend OTP</BBText>
+                                <Text style={[styles.textOtp, { color: ColorsConstant.TermColor }]}> Resend OTP</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

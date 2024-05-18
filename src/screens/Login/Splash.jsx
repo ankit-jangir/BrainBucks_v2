@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, Easing, useNativeDriver, StatusBar, SafeAreaView, ToastAndroid, BackHandler, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, Animated, Easing, useNativeDriver, StatusBar, SafeAreaView, ToastAndroid, BackHandler, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import { Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
+import { Text } from '../../utils/Translate';
 
 export default function Splash({ navigation }) {
     const [checked, setChecked] = useState(false);
@@ -54,7 +55,7 @@ export default function Splash({ navigation }) {
         <View style={{ marginTop: 40 }}>
           <View style={styles.aniView2}>
             <Animated.View style={{ transform: [{ translateX: translation }] }} >
-              <Text style={styles.langu}>Select your Language</Text>
+              <Text style={styles.langu}>Select Your Language</Text>
             </Animated.View>
             {
               sellangauage.map((item, index) => (

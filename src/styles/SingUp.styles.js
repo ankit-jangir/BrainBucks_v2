@@ -96,6 +96,11 @@ const styles = StyleSheet.create({
       color: ColorsConstant.White,
       fontSize: 16
     },
+    errormsg:{
+      fontSize:12,
+      color:"red",
+      marginTop:7
+    },
     inputView1: {
       flex: 1,
       justifyContent: "center",
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     textHereby: {
       fontSize: 10,
       color: ColorsConstant.White,
-      marginHorizontal: 3
+      marginHorizontal: 2
     },
     textTerm: {
       fontSize: 10,

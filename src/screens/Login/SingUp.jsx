@@ -1,12 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
-  Text,
-  TextInput,
   TouchableOpacity,
   Image,
   SafeAreaView,
-  TextInput as BBTextInput,
   ToastAndroid,
   Dimensions,
   StatusBar,
@@ -17,12 +14,12 @@ import {
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
 import {Checkbox} from 'react-native-paper';
+import { Text, TextInput } from '../../utils/Translate';
 
 export default function SingUp({navigation, route}) {
   const [phone, setPhone] = useState('');
-  const [sendOtp, setSendOtp] = useState('');
-  const [isload, setLoad] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("*Accept The Terms conditions first")
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
@@ -58,7 +55,7 @@ export default function SingUp({navigation, route}) {
         </View>
         <View style={{width: '100%'}}>
           <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
-          <View style={styles.inputView}>
+          <View style={[styles.inputView, errorMessage&&{"borderColor": "red"}]}>
             <View style={styles.inputview91}>
               <Text style={styles.text91}>+ 91</Text>
             </View>
@@ -75,6 +72,8 @@ export default function SingUp({navigation, route}) {
             </View>
           </View>
         </View>
+
+        {errorMessage&&<Text style={styles.errormsg}>{errorMessage}</Text>}
 
         <View style={styles.checboxview}>
           <View style={styles.checboxview2}>
@@ -122,7 +121,6 @@ export default function SingUp({navigation, route}) {
             </View>
           </View>
         </View>
-
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Otp');

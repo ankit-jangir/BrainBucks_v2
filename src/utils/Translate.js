@@ -11,6 +11,9 @@ function TText(props) {
     useEffect(() => {
         (async() => {
             let language = await AsyncStorage.getItem('language');
+            if(!language){
+                return setText(text)
+            }
             if(!props.ignore && text != null){
                 translate(text, language ? language : 'hi').then(result => setText(result));
             }

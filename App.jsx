@@ -48,17 +48,6 @@ function MyStack() {
      <Stack.Screen name="SignUpExam" component={SignUpExam} />
      <Stack.Screen name="ViewProfile" component={ViewProfile} />
      <Stack.Screen name="EditProfile" component={EditProfile} />
-
-
-
-
-
-
-
-
-
-
-
     </Stack.Navigator>
   );
 }
