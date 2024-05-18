@@ -68,7 +68,7 @@ export default function Splash({ navigation }) {
         //   await AsyncStorage.setItem('language', state.checked)
         //   navigation.navigate('Otp', { lan: state.checked })
         // }}
-        onPress={()=>{navigation.navigate('Otp')}}
+        onPress={()=>{navigation.navigate('SingUp')}}
          style={styles.touchPro}>
           <Text style={styles.textProceed} >Proceed</Text>
         </TouchableOpacity>
@@ -76,7 +76,6 @@ export default function Splash({ navigation }) {
           <LottieView
             autoPlay
             style={styles.lottiV2}
-            // source={require('../assets/earth.json')}
             source={require('../../assets/img/earth.json')}
           />
         </View>
