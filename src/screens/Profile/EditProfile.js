@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Image, ImageBackground, SafeAreaView, TextInput, Modal, ActivityIndicator, ToastAndroid, PermissionsAndroid, ScrollView, StyleSheet } from 'react-native';
-import { ColorsConstant } from '../../../constants/Colors.constant';
-import { StyleConstants } from '../../../constants/Style.constant';
-import styles from '../../../styles/ViewProfile.styles';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import { StyleConstants } from '../../constants/Style.constant';
+import styles from '../../styles/ViewProfile.styles';
 export default function EditProfile({ navigation }) {
   const ref_input0 = useRef();
   const ref_input1 = useRef();
@@ -12,15 +12,15 @@ export default function EditProfile({ navigation }) {
   const choosegender = [
     {
       gen: 'male',
-      image: require('../../../assets/img/boy.png'),
+      image: require('../../assets/img/boy.png'),
     },
     {
       gen: 'female',
-      image: require('../../../assets/img/gengirl.png'),
+      image: require('../../assets/img/gengirl.png'),
     },
     {
       gen: 'No Say',
-      image: require('../../../assets/img/nosay.png'),
+      image: require('../../assets/img/nosay.png'),
     },
   ]
 
@@ -43,7 +43,7 @@ export default function EditProfile({ navigation }) {
               <View style={styles.Saveview} >
                 <View style={styles.Saveview1} >
                 <TouchableOpacity onPress={() => navigation.goBack()} style={StyleConstants.H2Nd} >
-                  <Image source={require('../../../assets/img/arrows.png')} style={{height:20,width:20}}/>
+                  <Image source={require('../../assets/img/arrows.png')} style={{height:20,width:20}}/>
                 </TouchableOpacity>
                   <TouchableOpacity  style={styles.touchArrow} >
                   <Text style={styles.textSave}>Save</Text>

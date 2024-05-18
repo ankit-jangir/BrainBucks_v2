@@ -18,8 +18,12 @@ import Otp from './src/screens/Login/Otp';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
-import ViewProfile from './src/screens/Home/Profile/ViewProfile';
-import EditProfile from './src/screens/Home/Profile/EditProfile';
+import ViewProfile from './src/screens/Profile/ViewProfile';
+import EditProfile from './src/screens/Profile/EditProfile';
+import StudyExam from './src/screens/Study/StudyExam';
+import FreePdf from './src/screens/Study/FreePdf';
+import OnlineClasses from './src/screens/Study/OnlineClasses';
+import StudyMaterials from './src/screens/Study/StudyMaterials';
 
 
 
@@ -46,12 +50,10 @@ function MyStack() {
      <Stack.Screen name="SignUpExam" component={SignUpExam} />
      <Stack.Screen name="ViewProfile" component={ViewProfile} />
      <Stack.Screen name="EditProfile" component={EditProfile} />
-
-
-
-
-
-
+     <Stack.Screen name="StudyExam" component={StudyExam} />
+     <Stack.Screen name="FreePdf" component={FreePdf} />
+     <Stack.Screen name="OnlineClasses" component={OnlineClasses} />
+     <Stack.Screen name="StudyMaterials" component={StudyMaterials} />
 
 
 
@@ -65,7 +67,7 @@ function MyStack() {
 function MyTabs() {
   return (
     <SafeAreaProvider>
-      <Tab.Navigator screenOptions={{ tabBarLabelStyle: { fontSize: 13, paddingBottom: 5, }, tabBarStyle: { height: 60, backgroundColor: 'white', }, tabBarShowLabel: true, headerShown: false, tabBarActiveTintColor: "#000", tabBarInactiveTintColor: "gray" }} >
+      <Tab.Navigator screenOptions={{ tabBarLabelStyle: { fontSize: 13, paddingBottom: 5, }, tabBarStyle: { height: 60, backgroundColor: 'white', }, tabBarShowLabel: true, headerShown: false, tabBarActiveTintColor: "#000",  }} >
         <>
           <Tab.Screen name="Home" component={Home} options={{
             'tabBarLabel': "Home", 'tabBarIcon': (({ focused, color }) => (
@@ -77,7 +79,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="saved" component={Saved} options={{
+          <Tab.Screen name="study" component={Study} options={{
             'tabBarLabel': "Study", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {
@@ -116,7 +118,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="study" component={Study} options={{
+          <Tab.Screen name="saved" component={Saved} options={{
             'tabBarLabel': "Saved", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {

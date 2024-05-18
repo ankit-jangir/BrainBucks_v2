@@ -23,7 +23,6 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <SearchBar />
       </View>
