@@ -19,8 +19,13 @@ import VideoPlayer from './src/screens/Courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
-import ViewProfile from './src/screens/Home/Profile/ViewProfile';
-import EditProfile from './src/screens/Home/Profile/EditProfile';
+import ViewProfile from './src/screens/Profile/ViewProfile';
+import EditProfile from './src/screens/Profile/EditProfile';
+import StudyExam from './src/screens/Study/StudyExam';
+import FreePdf from './src/screens/Study/FreePdf';
+import OnlineClasses from './src/screens/Study/OnlineClasses';
+import StudyMaterials from './src/screens/Study/StudyMaterials';
+import Course from './src/screens/courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
 
 
@@ -53,6 +58,17 @@ useEffect(()=>{onAppBootstrap()},[])
      <Stack.Screen name="SignUpExam" component={SignUpExam} />
      <Stack.Screen name="ViewProfile" component={ViewProfile} />
      <Stack.Screen name="EditProfile" component={EditProfile} />
+     <Stack.Screen name="StudyExam" component={StudyExam} />
+     <Stack.Screen name="FreePdf" component={FreePdf} />
+     <Stack.Screen name="OnlineClasses" component={OnlineClasses} />
+     <Stack.Screen name="StudyMaterials" component={StudyMaterials} />
+     <Stack.Screen name="Course" component={Course} />
+
+
+
+
+
+
     </Stack.Navigator>
   );
 }
@@ -61,7 +77,7 @@ useEffect(()=>{onAppBootstrap()},[])
 function MyTabs() {
   return (
     <SafeAreaProvider>
-      <Tab.Navigator screenOptions={{ tabBarLabelStyle: { fontSize: 13, paddingBottom: 5, }, tabBarStyle: { height: 60, backgroundColor: 'white', }, tabBarShowLabel: true, headerShown: false, tabBarActiveTintColor: "#000", tabBarInactiveTintColor: "gray" }} >
+      <Tab.Navigator screenOptions={{ tabBarLabelStyle: { fontSize: 13, paddingBottom: 5, }, tabBarStyle: { height: 60, backgroundColor: 'white', }, tabBarShowLabel: true, headerShown: false, tabBarActiveTintColor: "#000",  }} >
         <>
           <Tab.Screen name="Home" component={Home} options={{
             'tabBarLabel': "Home", 'tabBarIcon': (({ focused, color }) => (
@@ -73,7 +89,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="saved" component={Saved} options={{
+          <Tab.Screen name="study" component={Study} options={{
             'tabBarLabel': "Study", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {
@@ -97,7 +113,7 @@ function MyTabs() {
               </View>   
           ))}}/> */}
 
-          <Tab.Screen style={{ position: 'relative ', }} name="wallet" component={Wallet} options={{
+          <Tab.Screen style={{ position: 'relative ', }} name="Course" component={Course} options={{
             tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 }, 'tabBarLabel': "Courses", 'tabBarIcon': (({ focused, color }) => (
               <View style={{ position: "absolute", justifyContent: "center", bottom: 8, alignItems: "center", flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#475B9F' : "#F6F8FF", borderRadius: 100, borderColor: '#ECECEC', borderWidth: 1 }}>
                 <View style={{ borderRadius: 100, height: 60, width: 60, justifyContent: 'center', alignItems: 'center', }}>
@@ -112,7 +128,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="study" component={Study} options={{
+          <Tab.Screen name="saved" component={Saved} options={{
             'tabBarLabel': "Saved", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {
@@ -122,7 +138,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="transactionHistory" component={TransactionHistory} options={{
+          <Tab.Screen name="Wallet" component={Wallet} options={{
             'tabBarLabel': "Wallet", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {

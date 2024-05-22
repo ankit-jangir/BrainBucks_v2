@@ -12,15 +12,15 @@ export default function EditProfile({ navigation, route }) {
   const choosegender = [
     {
       gen: 'male',
-      image: require('../../../assets/img/boy.png'),
+      image: require('../../assets/img/boy.png'),
     },
     {
       gen: 'female',
-      image: require('../../../assets/img/gengirl.png'),
+      image: require('../../assets/img/gengirl.png'),
     },
     {
       gen: 'No Say',
-      image: require('../../../assets/img/nosay.png'),
+      image: require('../../assets/img/nosay.png'),
     },
   ]
 
@@ -43,7 +43,7 @@ export default function EditProfile({ navigation, route }) {
               <View style={styles.Saveview} >
                 <View style={styles.Saveview1} >
                 <TouchableOpacity onPress={() => navigation.goBack()} style={StyleConstants.H2Nd} >
-                  <Image source={require('../../../assets/img/arrows.png')} style={{height:20,width:20}}/>
+                  <Image source={require('../../assets/img/arrows.png')} style={{height:20,width:20}}/>
                 </TouchableOpacity>
                   <TouchableOpacity  style={styles.touchArrow} >
                   <Text style={styles.textSave}>Save</Text>
