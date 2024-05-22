@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
       fontFamily: "WorkSans-Regular",
       fontSize: 16,
       textAlign: "center",
-      color: "#7E7E7E"
+      color: "#000"
     },
     totalView: {
       width: '100%',

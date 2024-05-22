@@ -4,25 +4,28 @@ import styles from '../../styles/Sidebar.styles';
 import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Sidebar = ({ navigation }) => {
   const auth = new AuthenticationApiService();
-  const [name, setName] = useState("User Name")
-  const [phone, setPhone] = useState("Contact Number")
+  const [userData, setUserData] = useState({
+    name:"User Name"
+  })
   const [loggingOut, setLoggingOut] = useState(false)
+  const [totalPlayed, setTotalPlayed] = useState(0)
 
   useEffect(() => {
     try {
       auth.getUserProfile().then((res) => {
         if (res.status === 1) {
-          setName(res.user_details.name)
-          setPhone(res.user_details.phone)
+          setUserData(res.user_details)
+          setTotalPlayed(res.totalquizplayed)
         } else {
           Toast.show({ type: "error", text1: res.Backend_Error })
         }
       })
     } catch (err) {
-      console.log("Error in Fetching User Profile",err.message);
+      console.log("Error in Fetching User Profile", err.message);
       Toast.show({
         type: "error",
         text1: "Something Went Wrong"
@@ -36,7 +39,9 @@ const Sidebar = ({ navigation }) => {
       let response = await auth.logout()
       if (response.status === 1) {
         BasicServices.setJwt("").then(() => {
-          navigation.reset({ index: 0, routes: [{ name: "signup" }] });
+          AsyncStorage.removeItem("language").then(() => {
+            navigation.reset({ index: 0, routes: [{ name: "Splash" }] });
+          })
         })
       } else {
         Toast.show({
@@ -45,7 +50,7 @@ const Sidebar = ({ navigation }) => {
         })
       }
     } catch (err) {
-      console.log("Error in Logging out",err.message);
+      console.log("Error in Logging out", err.message);
       Toast.show({
         type: "error",
         text1: "Something Went Wrong"
@@ -69,8 +74,11 @@ const Sidebar = ({ navigation }) => {
         <View style={styles.profileSection}>
           <Image source={require('../../assets/img/boy.png')} resizeMode="contain" style={styles.profileImage} />
           <View style={styles.profileInfo}>
-            <TouchableOpacity onPress={() => navigation.navigate('ViewProfile')}>
-              <Text style={styles.profileName}>{name}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ViewProfile',{
+              userData:userData,
+              totalPlayed:totalPlayed
+            })}>
+              <Text style={styles.profileName}>{userData.name}</Text>
               <Text style={styles.profileLink}>View Profile</Text>
             </TouchableOpacity>
           </View>
@@ -119,17 +127,18 @@ const Sidebar = ({ navigation }) => {
 };
 
 const MenuItem = ({ image, text, imageStyle, placeholder, action, beingPerformmed }) => {
-  if(!action){
-    action = ()=>{}
+  if (!action) {
+    action = () => { }
   }
-  return(
-  <TouchableOpacity onPress={() => { if (!beingPerformmed) { action() } }} style={styles.menuItem}>
-    <View style={styles.menuItemIcon}>
-      {placeholder ? <Text>**</Text> : <Image source={image} resizeMode="contain" style={[styles.menuItemImage, imageStyle]} />}
-    </View>
-    {beingPerformmed ? <ActivityIndicator style={styles.menuItemText} /> : <Text style={styles.menuItemText}>{text}</Text>}
-  </TouchableOpacity>
-);}
+  return (
+    <TouchableOpacity onPress={() => { if (!beingPerformmed) { action() } }} style={styles.menuItem}>
+      <View style={styles.menuItemIcon}>
+        {placeholder ? <Text>**</Text> : <Image source={image} resizeMode="contain" style={[styles.menuItemImage, imageStyle]} />}
+      </View>
+      {beingPerformmed ? <ActivityIndicator style={styles.menuItemText} /> : <Text style={styles.menuItemText}>{text}</Text>}
+    </TouchableOpacity>
+  );
+}
 
 
 export default Sidebar;

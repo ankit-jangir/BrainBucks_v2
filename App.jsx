@@ -33,9 +33,7 @@ const Tab = createBottomTabNavigator();
 
 function MyStack() {
 
-useEffect(()=>{
-  onAppBootstrap()
-},[])
+useEffect(()=>{onAppBootstrap()},[])
 
 
   return (

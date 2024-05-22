@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, Animated, Easing, useNativeDriver, StatusBar, SafeAreaView, ToastAndroid, BackHandler, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
@@ -7,9 +7,30 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
 import { getSavedLanguage, setSavedLanguage } from '../../utils/Translate';
+import basic from '../../services/BasicServices';
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
+  const [checklang, setCheckLang] = useState()
+
+  useEffect(()=>{
+    async function getLang(){
+      let langinasync = await AsyncStorage.getItem("language")
+      if(langinasync){
+        let localobj = await basic.getLocalObject()
+        if(localobj.jwt){
+          navigation.reset({ index: 0, routes: [{ name: "signup" }] });
+        }
+      }
+    }
+    getLang()
+  },[])
+
+  AsyncStorage.getItem("language").then((res)=>{
+    basic.getLocalObject().then(result=>{
+      setCheckLang(result.jwt)
+    })
+  })
 
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");
@@ -54,34 +75,38 @@ export default function Splash({ navigation }) {
         <Animated.View style={styles.aniView}>
           <Image source={require('../../assets/img/bblogo.png')} resizeMode='center' style={styles.logo} />
         </Animated.View>
-        <View style={{ marginTop: 40 }}>
-          <View style={styles.aniView2}>
-            <Animated.View style={{ transform: [{ translateX: translation }] }} >
-              <Text style={styles.langu}>Select Your Language</Text>
-            </Animated.View>
-            {
-              langauge.map((item, index) => (
-                <SelectLangauage item={item} key={index} state={state} setstate={setstate} translation={translation} />
-              ))
-            }
-          </View>
-        </View>
-        <TouchableOpacity
-          // onPress={async () => {
-          //   await AsyncStorage.setItem('language', state.checked)
-          //   navigation.navigate('Otp', { lan: state.checked })
-          // }}
-          onPress={setLanguageAndProceed}
-          style={styles.touchPro}>
-          <Text style={styles.textProceed} >Proceed</Text>
-        </TouchableOpacity>
-        <View style={styles.lottiV} >
-          <LottieView
-            autoPlay
-            style={styles.lottiV2}
-            source={require('../../assets/img/earth.json')}
-          />
-        </View>
+        {!checklang &&
+          <>
+            <View style={{ marginTop: 40 }}>
+              <View style={styles.aniView2}>
+                <Animated.View style={{ transform: [{ translateX: translation }] }} >
+                  <Text style={styles.langu}>Select Your Language</Text>
+                </Animated.View>
+                {
+                  langauge.map((item, index) => (
+                    <SelectLangauage item={item} key={index} state={state} setstate={setstate} translation={translation} />
+                  ))
+                }
+              </View>
+            </View>
+            <TouchableOpacity
+              // onPress={async () => {
+              //   await AsyncStorage.setItem('language', state.checked)
+              //   navigation.navigate('Otp', { lan: state.checked })
+              // }}
+              onPress={setLanguageAndProceed}
+              style={styles.touchPro}>
+              <Text style={styles.textProceed} >Proceed</Text>
+            </TouchableOpacity>
+            <View style={styles.lottiV} >
+              <LottieView
+                autoPlay
+                style={styles.lottiV2}
+                source={require('../../assets/img/earth.json')}
+              />
+            </View>
+          </>
+        }
       </SafeAreaView>
     </>
   );

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, ImageBackground, SafeAreaView, Tex
 import { ColorsConstant } from '../../../constants/Colors.constant';
 import { StyleConstants } from '../../../constants/Style.constant';
 import styles from '../../../styles/ViewProfile.styles';
-export default function EditProfile({ navigation }) {
+export default function EditProfile({ navigation, route }) {
   const ref_input0 = useRef();
   const ref_input1 = useRef();
   const ref_input2 = useRef();

@@ -8,6 +8,7 @@ import basic from '../services/BasicServices';
  */
 function onMessageReceived(message) {
     notifee.displayNotification(JSON.parse(message.data.notifee));
+    console.log("NOTIFICATION RECIEVED", message);
 }
 
 messaging().onMessage(onMessageReceived);
@@ -27,6 +28,7 @@ export default async function onAppBootstrap() {
         const token = await messaging().getToken();
         // Save the token
         basic.setFcm(token)
+        console.log("Fcm Token",token);
     }
     catch (err) {
         console.log("Error in Fetching Fcm from firebase: ", err.message)

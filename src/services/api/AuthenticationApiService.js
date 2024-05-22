@@ -20,7 +20,6 @@ class AuthenticationApiService {
     phone = "+91" + phone;
     let local = await basic.getLocalObject();
     let fcm = local.fcm;
-    console.log("fcm", fcm);
     const response = await axios({
       method: "post",
       url: `${AUTHMICRO}/auth/participant/verify/otp`,

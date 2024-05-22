@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ImageBackground, SafeAreaView, Share, StyleSheet,ScrollView } from 'react-native';
 import { StyleConstants } from '../../../constants/Style.constant';
 import styles from '../../../styles/ViewProfile.styles';
+import AuthenticationApiService from '../../../services/api/AuthenticationApiService';
 
 
 
-export default function ViewProfile({ navigation }) {
+export default function ViewProfile({ navigation, route }) {
   const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
+  let user = route.params.userData;
+  console.log(user);
 
   return (
     <SafeAreaView style={StyleConstants.safeArView}>
@@ -29,21 +32,21 @@ export default function ViewProfile({ navigation }) {
                     </View> */}
                   </View>
                   <View style={{ flex: 1, }} >
-                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.EditT}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile',{...route.params})} style={styles.EditT}>
                      <Text style={styles.EditText}>Edit Profile</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
                 <Image source={{ uri: image1 }} resizeMode='contain' style={styles.ProfileImg} />
                 <View style={styles.mobView} >
-                  <Text style={styles.TextName}>sonu</Text>
-                  <Text style={styles.Textmobile}>98765432234</Text>
+                  <Text style={styles.TextName}>{user.name}</Text>
+                  <Text style={styles.Textmobile}>{user.phone}</Text>
                 </View>
                 <View style={styles.totalView} >
                   <ImageBackground source={require('../../../assets/img/background1.png')} resizeMode="contain" style={styles.bgImg} >
                     <View style={styles.RfrView} >
                       <Text style={styles.quizText}>Total Quiz Participated</Text>
-                      <Text style={[styles.quizText, { fontSize: 36 }]}>98765</Text>
+                      <Text style={[styles.quizText, { fontSize: 36 }]}>{route.params.totalPlayed}</Text>
                     </View>
                   </ImageBackground>
                 </View>

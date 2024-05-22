@@ -8,6 +8,7 @@ import AuthenticationApiService from '../../services/api/AuthenticationApiServic
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
+import BasicServices from '../../services/BasicServices';
 
 export default function SignUpExam({ navigation, route }) {
   const [refresh, setRefresh] = useState(false)
@@ -22,11 +23,21 @@ export default function SignUpExam({ navigation, route }) {
   }
 
   async function finalRegister() {
+    if(selectedExams.size===0){
+      Toast.show({
+        type:'error',
+        text1:"Atleast select one exam to continue"
+      })
+      return;
+    }
     setDisabled(true)
     try {
       let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams))
       if (res.status === 1) {
-        navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+        console.log("JWT TOKEN",res.token);
+        BasicServices.setJwt(res.token).then(() => {
+          navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+        })
       } else {
         Toast.show({
           type: "error",
@@ -86,84 +97,86 @@ export default function SignUpExam({ navigation, route }) {
     }, 3000);
   }
   return (
-    <View style={styles.containerView}>
-      <Toast />
-      <View style={styles.FinalView} >
-        <View style={styles.FinalView1}>
-          <View style={styles.StepView}>
-            <Text style={styles.TextFinal}>Final Step</Text>
-            <Image source={require('../../assets/img/rightarrow.png')} resizeMode='contain' style={styles.ArrowPic} />
+      <View style={styles.containerView}>
+        <Toast />
+        <View style={styles.FinalView} >
+          <View style={styles.FinalView1}>
+            <View style={styles.StepView}>
+              <Text style={styles.TextFinal}>Final Step</Text>
+              <Image source={require('../../assets/img/rightarrow.png')} resizeMode='contain' style={styles.ArrowPic} />
+            </View>
+          </View>
+          <View style={styles.flowerView}>
+            <Image source={require('../../assets/img/flower.png')} resizeMode='contain' style={styles.flowerPic} />
           </View>
         </View>
-        <View style={styles.flowerView}>
-          <Image source={require('../../assets/img/flower.png')} resizeMode='contain' style={styles.flowerPic} />
-        </View>
-      </View>
 
 
 
 
 
 
-      <View style={styles.CardView}>
-        <View style={styles.CardView2}>
-          <Text style={styles.TextPrepare}>I am preparing for</Text>
-          <View style={styles.SearchView}>
-            <TouchableOpacity style={{ flex: 0.10, }}>
-              <Image source={require('../../assets/img/search.png')} resizeMode='contain' tintColor={ColorsConstant.GrayyColor} style={{ width: 20, height: 20 }} />
-            </TouchableOpacity>
+        <View style={styles.CardView}>
+          <View style={styles.CardView2}>
+            <Text style={styles.TextPrepare}>I am preparing for</Text>
+            <View style={styles.SearchView}>
+              <TouchableOpacity style={{ flex: 0.10, }}>
+                <Image source={require('../../assets/img/search.png')} resizeMode='contain' tintColor={ColorsConstant.GrayyColor} style={{ width: 20, height: 20 }} />
+              </TouchableOpacity>
 
-            <TextInput style={styles.innput}
-              value={search}
-              onChangeText={searchExams}
-              placeholder="Search for Exams"
-              placeholderTextColor={ColorsConstant.GrayyColor}
+              <TextInput style={styles.innput}
+                value={search}
+                onChangeText={searchExams}
+                placeholder="Search for Exams"
+                placeholderTextColor={ColorsConstant.GrayyColor}
+              />
+            </View>
+          </View>
+
+          <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />} style={{ flex: 1, paddingHorizontal: 20 }}>
+            {
+              refresh ? <ActivityIndicator size={30} />
+                :
+                exams.length === 0 ?
+                  <NoDataFound message={"Data Not Found"} action={reloadExams} actionText={"Load Again"} /> :
+                  exams.map((item) => {
+                    return (
+                      <View key={item._id} style={styles.ExamView}>
+                        <View style={styles.ExamView2}>
+                          <View style={styles.CateView}>
+                            <Image source={{ uri: BLOBURL + item.image }} style={{ width: 50, height: 50, borderRadius: 25 }}></Image>
+                          </View>
+                          <View style={styles.CateViewName}>
+                            <Text style={styles.CateName}>{item.category_name}</Text>
+                          </View>
+                          <View style={styles.TouchhView}>
+                            <TouchableOpacity onPress={() => { selectExam(item._id) }} style={[styles.plus, selectedExams.has(item._id) && { "backgroundColor": ColorsConstant.Checkedcolor }]} >
+                              <Text key="selected" style={{ color: selectedExams.has(item._id) ? "#fff" : "#000" }} >+</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    )
+                  })
+            }
+          </ScrollView>
+          <View style={styles.btnView}>
+            <Button
+              onPress={finalRegister}
+              title="Start Preparing"
+              loading={disabled}
+              titleStyle={[StyleConstants.BtnText, { color: ColorsConstant.White }]}
+              buttonStyle={[StyleConstants.Btn, { backgroundColor: ColorsConstant.Theme }]}
+              loadingProps={{
+                size: 'large',
+                color: 'white',
+              }}
             />
           </View>
         </View>
 
-        <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />} style={{ flex: 1, paddingHorizontal: 20 }}>
-          {
-            refresh ? <ActivityIndicator size={30} />
-              :
-              exams.length === 0 ?
-                <NoDataFound message={"Data Not Found"} action={reloadExams} actionText={"Load Again"} /> :
-                exams.map((item) => {
-                  return (
-                    <View key={item._id} style={styles.ExamView}>
-                      <View style={styles.ExamView2}>
-                        <View style={styles.CateView}>
-                          <Image source={{ uri: BLOBURL + item.image }} style={{ width: 50, height: 50, borderRadius: 25 }}></Image>
-                        </View>
-                        <View style={styles.CateViewName}>
-                          <Text style={styles.CateName}>{item.category_name}</Text>
-                        </View>
-                        <View style={styles.TouchhView}>
-                          <TouchableOpacity onPress={() => { selectExam(item._id) }} style={[styles.plus, selectedExams.has(item._id) && { "backgroundColor": ColorsConstant.Checkedcolor }]} >
-                            <Text key="selected" style={{ color: selectedExams.has(item._id) ? "#fff" : "#000" }} >+</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
-                  )
-                })
-          }
-        </ScrollView>
-        <View style={styles.btnView}>
-          <Button
-            onPress={finalRegister}
-            title="Start Preparing"
-            loading={disabled}
-            titleStyle={[StyleConstants.BtnText, {color: ColorsConstant.White}]}
-            buttonStyle={[StyleConstants.Btn, { backgroundColor: ColorsConstant.Theme }]}
-            loadingProps={{
-              size: 'large',
-              color: 'white',
-            }}
-          />
-        </View>
+        
       </View>
-    </View>
   );
 }
 
