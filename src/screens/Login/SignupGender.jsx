@@ -15,7 +15,7 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
 
 export default function SignupGender({navigation, route}) {
-  const [gender, setGender] = useState('Boy');
+  const [gender, setGender] = useState('No Say');
 
   const choosegender = [
     {
@@ -76,14 +76,14 @@ export default function SignupGender({navigation, route}) {
       </View>
       <View style={{paddingHorizontal: 30}}>
         <View style={styles.letView}>
-          <Text style={styles.TextEach}>Let’s know each other</Text>
+          <Text style={styles.TextEach}>Tell us about your gender</Text>
         </View>
         <View style={styles.viewIam}>
           <Text style={styles.TextIam}>I am a</Text>
           <View style={styles.GenderView}>
             {choosegender.map((item, index) => (
               <SelectGender
-                key={index}
+                key={index} 
                 item={item}
                 selected={gender === item.gen}
                 onPress={() => setGender(item.gen)}
@@ -92,7 +92,7 @@ export default function SignupGender({navigation, route}) {
           </View>
         </View>
         <View style={styles.TouchView}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUpExam')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUpExam', {...route.params, gender:gender.toLocaleLowerCase()})}>
             <Text style={styles.btntex}>Next</Text>
           </TouchableOpacity>
         </View>

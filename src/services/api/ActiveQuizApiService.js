@@ -1,15 +1,14 @@
 import {QUIZMICRO } from "../../config/urls";
 import axios from "axios";
-import BasicServices from "../BasicServices";
+import basic from "../BasicServices";
 
 class ActiveQuizApiService {
   constructor() {
     this.quizmicro = QUIZMICRO;
-    this.basic = new BasicServices()
   }
   
   async getBearerToken(){
-    let token = await this.basic.getLocalObject().jwt;
+    let token = await basic.getLocalObject().jwt;
     return "Bearer "+token
   }
 

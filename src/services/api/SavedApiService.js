@@ -1,9 +1,6 @@
-import BasicServices from "../BasicServices";
+import bsaic from "../BasicServices";
 
 class SavedApiService{
-    constructor(){
-        this.basic = new BasicServices()
-    }
 
     async getSavedExams(){}
     async enrollInExam(){}

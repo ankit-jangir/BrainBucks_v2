@@ -1,13 +1,19 @@
 // styles.js
 import { StyleSheet } from 'react-native';
-import { ColorsConstant } from '../../src/constants/Colors.constant';
-import { StyleConstants } from '../../src/constants/Style.constant';
+import { ColorsConstant } from '../constants/Colors.constant';
+import { StyleConstants } from '../constants/Style.constant';
 
     const styles = StyleSheet.create({
         safe: {
           flex: 1,
           backgroundColor:ColorsConstant.Theme,
           paddingHorizontal: 30,
+        },
+        errormsg:{
+          fontSize:12,
+          color:"#FF3333",
+          marginTop:7,
+          fontWeight:'500'
         },
         aniView: {
           width: '100%',

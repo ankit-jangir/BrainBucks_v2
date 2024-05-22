@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text,Image,View} from 'react-native'
+import React, { useEffect } from 'react'
+import { Text,Image,View, PermissionsAndroid} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import Saved from './src/screens/saved/Saved';
 import TransactionHistory from './src/screens/Wallet/TransactionHistory';
 import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
-import SingUp from './src/screens/Login/SingUp';
+import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
 import VideoPlayer from './src/screens/Courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
@@ -21,6 +21,7 @@ import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
 import ViewProfile from './src/screens/Home/Profile/ViewProfile';
 import EditProfile from './src/screens/Home/Profile/EditProfile';
+import onAppBootstrap from './src/config/FirebaseConfig';
 
 
 
@@ -31,10 +32,16 @@ const Tab = createBottomTabNavigator();
 
 
 function MyStack() {
+
+useEffect(()=>{
+  onAppBootstrap()
+},[])
+
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: true, gestureDirection: 'horizontal', }}>
      <Stack.Screen name="Splash" component={Splash} />
-     <Stack.Screen name="SingUp" component={SingUp} />
+     <Stack.Screen name="signup" component={SingUp} />
      <Stack.Screen name="Otp" component={Otp} />
      <Stack.Screen name="Home" component={MyDrawer} />
      <Stack.Screen name="wallet" component={Wallet} />

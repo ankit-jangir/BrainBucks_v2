@@ -1,34 +1,29 @@
 import axios from "axios";
 import { AUTHMICRO, QUIZMICRO } from "../../config/urls";
-import { BasicServices } from "../BasicServices";
+import basic from '../BasicServices'
 
 class AuthenticationApiService {
-  constructor() {
-    this.basic = new BasicServices();
-    this.authUrl = AUTHMICRO;
-  }
-
   async sendOtp(number) {
-    number = "+91" + number;
-    console.log("sending otp to " + number);
-    const response = await axios({
-      method: "post",
-      url: `${this.authUrl}/auth/participant/send/otp`,
-      data: {
-        phone: number,
-      },
-    });
-    console.log("OTP RESPONSE", response);
-    return response.data;
+      number = "+91" + number;
+      console.log("sending otp to " + number);
+      const response = await axios({
+        method: "post",
+        url: `${AUTHMICRO}/auth/participant/send/otp`,
+        data: {
+          phone: number,
+        },
+      });
+      return response.data;
   }
 
   async verifyOtpAndRegister(phone, otp) {
     phone = "+91" + phone;
-    let fcm = this.basic.getLocalObject().fcm;
+    let local = await basic.getLocalObject();
+    let fcm = local.fcm;
     console.log("fcm", fcm);
     const response = await axios({
       method: "post",
-      url: `${this.authUrl}/auth/participant/verify/otp`,
+      url: `${AUTHMICRO}/auth/participant/verify/otp`,
       data: {
         phone: phone,
         fcm_key: fcm,
@@ -36,26 +31,26 @@ class AuthenticationApiService {
       },
     });
 
-    this.basic.setJwt(response.data.token);
+    await basic.setJwt(response.data.token);
 
     return response.data;
   }
 
-  async getExams() {
+  async getExams(search) {
     const response = await axios({
       method: "get",
-      url: `${QUIZMICRO}/formfill/get/category?search=`,
+      url: `${QUIZMICRO}/formfill/get/category?search=${search}`,
     });
     return response.data;
   }
 
   async registerUser(phone, name, gender, category) {
-    console.log(category, "sdkla");
     phone = "+91" + phone;
-    let fcm = this.basic.getLocalObject().fcm;
+    let local = await basic.getLocalObject();
+    let fcm = local.fcm
     const response = await axios({
       method: "post",
-      url: `${this.authUrl}/auth/participant/registor`,
+      url: `${AUTHMICRO}/auth/participant/registor`,
       data: {
         phone: phone,
         name: name,
@@ -65,20 +60,19 @@ class AuthenticationApiService {
       },
     });
     if (response.data.status === 1) {
-      this.basic.setGender(gender);
-      this.basic.setJwt(response.data.token);
-      this.basic.setName(name);
-      this.basic.setNumber(phone);
+      await basic.setGender(gender);
+      await basic.setJwt(response.data.token);
+      await basic.setName(name);
+      await basic.setNumber(phone);
     }
     return response.data;
   }
 
 
   async getUserProfile() {
-    let token = "Bearer " + this.basic.getLocalObject().jwt;
-
-    let url = `${this.authUrl}/auth/participant/view/profile`;
-    let headers = { "content-type": "application/json", "authorization": token };
+    let bearer = await basic.getBearerToken();
+    let url = `${AUTHMICRO}/auth/participant/view/profile`;
+    let headers = { "content-type": "application/json", "authorization": bearer };
     let options = {
       method: "get",
       headers: headers,
@@ -89,10 +83,10 @@ class AuthenticationApiService {
   }
 
   async editProfile(gender, name, phone) {
-    let token = "Bearer " + this.basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/auth/participant/edit/profile`;
+    let bearer = await basic.getBearerToken();
+    let url = `${AUTHMICRO}/auth/participant/edit/profile`;
     let data = JSON.stringify({ gender: gender, name: name, phone: phone });
-    let headers = { "content-type": "application/json", "authorization": token };
+    let headers = { "content-type": "application/json", "authorization": bearer };
     let options = {
       method: "post",
       headers: headers,
@@ -104,16 +98,16 @@ class AuthenticationApiService {
   }
 
   async uploadProfile(picture) {
-    console.log("PIasd",picture);
+    console.log("picture", picture);
+    let bearer = await basic.getBearerToken();
     const formdata = new FormData();
     formdata.append("profile", picture);
-    let token = "Bearer " + this.basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/auth/participant/upload/photo`;
-    let headers = { "content-type": "multipart/form-data", "authorization": token };
+    let url = `${AUTHMICRO}/auth/participant/upload/photo`;
+    let headers = { "content-type": "multipart/form-data", "authorization": bearer };
     let options = {
       method: "post",
       headers: headers,
-      data:formdata,
+      data: formdata,
       url,
     };
     const response = await axios(options);
@@ -121,9 +115,9 @@ class AuthenticationApiService {
   }
 
   async logout() {
-    let token = "Bearer " + this.basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/auth/participant/logout`;
-    let headers = { "content-type": "application/json", "authorization": token };
+    let bearer = await basic.getBearerToken();
+    let url = `${AUTHMICRO}/auth/participant/logout`;
+    let headers = { "content-type": "application/json", "authorization": bearer };
     let options = {
       method: "post",
       headers: headers,

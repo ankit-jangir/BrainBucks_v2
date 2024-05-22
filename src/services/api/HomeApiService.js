@@ -1,9 +1,6 @@
-import BasicServices from "../BasicServices";
+import basic from '../BasicServices'
 
 class HomeApiService{
-    constructor(){
-        this.basic = new BasicServices();
-    }
 
     async getHomeData(){}
     async getTriviaQuizes(){}

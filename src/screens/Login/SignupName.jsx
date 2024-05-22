@@ -4,12 +4,29 @@ import LottieView from 'lottie-react-native';
 import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
+import { ScrollView } from 'react-native-gesture-handler';
 export default function SignupName({ navigation ,route}) {
   const [name, setName] = useState();
+  const [errorMessage, setErrorMessage] = useState()
+
+  async function next(){
+    if(!name || name.length<1){
+      setErrorMessage("Please Enter Your Name")
+      return;
+    }
+
+    setErrorMessage(null)
+    navigation.navigate("SignupGender", {
+      ...route.params,
+      name:name
+    })
+
+  }
   
   return (
     <SafeAreaView style={StyleConstants.safeArView}>
       <StatusBar barStyle='white-content' translucent={false} backgroundColor={ColorsConstant.Theme} />
+      <ScrollView style={{flex:1}}>
       <View style={styles.mainView}>
         <View style={styles.mainView1}>
           <View style={styles.mainView2}>
@@ -42,19 +59,21 @@ export default function SignupName({ navigation ,route}) {
         </View>
         <View style={{ width: '100%', height: 100, }}>
           <Text style={styles.TextMy}>My name is</Text>
-          <View style={styles.inputView}>
+          <View style={[styles.inputView, errorMessage&&{borderColor:"red", borderWidth:1}]}>
             <TextInput onChangeText={(value) => setName(value)} value={name} style={styles.inputView1}
               placeholder='Enter Your Name'
               placeholderTextColor={'#8A8C94'}
             />
           </View>
         </View>
+        {errorMessage && <Text key={errorMessage} style={styles.errormsg}>*{errorMessage}</Text>}
         <View style={styles.TouchView}>
-          <TouchableOpacity onPress={() => navigation.navigate('SignupGender')} style={[StyleConstants.Btn, { backgroundColor: ColorsConstant.Theme }]}>
+          <TouchableOpacity onPress={next} style={[StyleConstants.Btn, { backgroundColor: ColorsConstant.Theme }]}>
             <Text style={[StyleConstants.BtnText, { color: ColorsConstant.White }]}>Next</Text>
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
