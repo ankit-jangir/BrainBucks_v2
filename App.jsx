@@ -22,6 +22,9 @@ import SignUpExam from './src/screens/Login/SignupExam';
 import ViewProfile from './src/screens/Home/Profile/ViewProfile';
 import EditProfile from './src/screens/Home/Profile/EditProfile';
 import onAppBootstrap from './src/config/FirebaseConfig';
+import MyEarning from './src/screens/Wallet/MyEarning';
+import Deposit from './src/screens/Wallet/Deposit';
+import History from './src/screens/Wallet/History';
 
 
 
@@ -55,6 +58,10 @@ useEffect(()=>{
      <Stack.Screen name="SignUpExam" component={SignUpExam} />
      <Stack.Screen name="ViewProfile" component={ViewProfile} />
      <Stack.Screen name="EditProfile" component={EditProfile} />
+     <Stack.Screen name="myEarning" component={MyEarning} />
+     <Stack.Screen name="deposit" component={Deposit} />
+     <Stack.Screen name="history" component={History} />
+
     </Stack.Navigator>
   );
 }
@@ -124,7 +131,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="transactionHistory" component={TransactionHistory} options={{
+          <Tab.Screen name="Wallet" component={Wallet} options={{
             'tabBarLabel': "Wallet", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {
