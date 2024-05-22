@@ -62,7 +62,7 @@ export default function Otp({ navigation, route }) {
                 setErrorMessage(null)
                 await basic.setJwt(response.token)
                 console.log("JWT Token: ",response.token);
-                navigation.reset({ index: 0, routes: [{ name: "MainTabs" }] });
+                navigation.reset({ index: 0, routes: [{ name: "Home" }] });
             }else if(response.status===2){
                 setErrorMessage(null)
                 navigation.replace("SignupName",{

@@ -26,7 +26,7 @@ export default function SignUpExam({ navigation, route }) {
     try {
       let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams))
       if (res.status === 1) {
-        navigation.reset({ index: 0, routes: [{ name: "MainTabs" }] });
+        navigation.reset({ index: 0, routes: [{ name: "Home" }] });
       } else {
         Toast.show({
           type: "error",
