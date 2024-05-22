@@ -4,7 +4,7 @@ import React from 'react'
 const Wallet = () => {
   return (
     <View>
-      <Text>Wallet</Text>
+      <Text style={{color:'red'}}>Wallet</Text>
     </View>
   )
 }

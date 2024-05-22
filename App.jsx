@@ -24,6 +24,7 @@ import StudyExam from './src/screens/Study/StudyExam';
 import FreePdf from './src/screens/Study/FreePdf';
 import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
+import Course from './src/screens/courses/Courses';
 
 
 
@@ -54,6 +55,8 @@ function MyStack() {
      <Stack.Screen name="FreePdf" component={FreePdf} />
      <Stack.Screen name="OnlineClasses" component={OnlineClasses} />
      <Stack.Screen name="StudyMaterials" component={StudyMaterials} />
+     <Stack.Screen name="Course" component={Course} />
+
 
 
 
@@ -103,7 +106,7 @@ function MyTabs() {
               </View>   
           ))}}/> */}
 
-          <Tab.Screen style={{ position: 'relative ', }} name="wallet" component={Wallet} options={{
+          <Tab.Screen style={{ position: 'relative ', }} name="Course" component={Course} options={{
             tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 }, 'tabBarLabel': "Courses", 'tabBarIcon': (({ focused, color }) => (
               <View style={{ position: "absolute", justifyContent: "center", bottom: 8, alignItems: "center", flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: focused ? '#475B9F' : "#F6F8FF", borderRadius: 100, borderColor: '#ECECEC', borderWidth: 1 }}>
                 <View style={{ borderRadius: 100, height: 60, width: 60, justifyContent: 'center', alignItems: 'center', }}>
@@ -128,7 +131,7 @@ function MyTabs() {
               </View>
             ))
           }} />
-          <Tab.Screen name="transactionHistory" component={TransactionHistory} options={{
+          <Tab.Screen name="Wallet" component={Wallet} options={{
             'tabBarLabel': "Wallet", 'tabBarIcon': (({ focused, color }) => (
               <View>
                 {
