@@ -6,16 +6,22 @@ import { Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
+import { getSavedLanguage, setSavedLanguage } from '../../utils/Translate';
 
 export default function Splash({ navigation }) {
-    const [checked, setChecked] = useState(false);
-    const [state, setstate] = useState({ checked: "en" });
+  const [state, setstate] = useState({ checked: "en" });
 
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");
-    console.log("refer", ReferCode);
+    // console.log("refer", ReferCode);
   }
 
+  function setLanguageAndProceed() {
+    console.log("Setting language to ", state.checked);
+    setSavedLanguage(state.checked).then(() => {
+      navigation.navigate('signup')
+    })
+  }
 
   const langauge = [
     {
@@ -27,9 +33,6 @@ export default function Splash({ navigation }) {
       value: 'en'
     },
   ]
-
-
-  const [sellangauage, setSellangauage] = useState(langauge);
 
   const translation = useRef(
     new Animated.Value(0)
@@ -54,22 +57,22 @@ export default function Splash({ navigation }) {
         <View style={{ marginTop: 40 }}>
           <View style={styles.aniView2}>
             <Animated.View style={{ transform: [{ translateX: translation }] }} >
-              <Text style={styles.langu}>Select your Language</Text>
+              <Text style={styles.langu}>Select Your Language</Text>
             </Animated.View>
             {
-              sellangauage.map((item, index) => (
+              langauge.map((item, index) => (
                 <SelectLangauage item={item} key={index} state={state} setstate={setstate} translation={translation} />
               ))
             }
           </View>
         </View>
-        <TouchableOpacity 
-        // onPress={async () => {
-        //   await AsyncStorage.setItem('language', state.checked)
-        //   navigation.navigate('Otp', { lan: state.checked })
-        // }}
-        onPress={()=>{navigation.navigate('SingUp')}}
-         style={styles.touchPro}>
+        <TouchableOpacity
+          // onPress={async () => {
+          //   await AsyncStorage.setItem('language', state.checked)
+          //   navigation.navigate('Otp', { lan: state.checked })
+          // }}
+          onPress={setLanguageAndProceed}
+          style={styles.touchPro}>
           <Text style={styles.textProceed} >Proceed</Text>
         </TouchableOpacity>
         <View style={styles.lottiV} >
@@ -87,7 +90,7 @@ export default function Splash({ navigation }) {
 const SelectLangauage = (props) => {
   return (
     <Animated.View style={{ marginTop: 20, transform: [{ translateY: props.translation }] }} >
-      <TouchableOpacity onPress={() => { props.setstate({ checked: props.item.value }); console.log(props.state) }} style={styles.touchRadio}>
+      <TouchableOpacity onPress={() => { props.setstate({ checked: props.item.value }); }} style={styles.touchRadio}>
         <View style={{}}>
           <RadioButton
             uncheckedColor={ColorsConstant.LightWhite}

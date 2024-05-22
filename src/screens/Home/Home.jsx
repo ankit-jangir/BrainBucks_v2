@@ -34,7 +34,7 @@ const Home = () => {
           autoPlay={true}
           data={banner}
           scrollAnimationDuration={1000}
-          onSnapToItem={index => console.log('current index:', index)}
+          // onSnapToItem={index => console.log('current index:', index)}
           renderItem={({index, item}) => (
             <View style={styles.carouselItem}>
               <Image source={item.image} style={styles.carouselImage} />

@@ -1,13 +1,19 @@
 // styles.js
 import { StyleSheet } from 'react-native';
-import { ColorsConstant } from '../../src/constants/Colors.constant';
-import { StyleConstants } from '../../src/constants/Style.constant';
+import { ColorsConstant } from '../constants/Colors.constant';
+import { StyleConstants } from '../constants/Style.constant';
 
     const styles = StyleSheet.create({
         safe: {
           flex: 1,
           backgroundColor:ColorsConstant.Theme,
           paddingHorizontal: 30,
+        },
+        errormsg:{
+          fontSize:12,
+          color:"#FF3333",
+          marginTop:7,
+          fontWeight:'500'
         },
         aniView: {
           width: '100%',
@@ -133,13 +139,10 @@ import { StyleConstants } from '../../src/constants/Style.constant';
   otpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:"center",
     marginBottom: 20,
 },
 otpInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor:"rgba(255, 255, 255, 0.1)",
     padding: 10,
     marginRight: 10,
     borderRadius: 5,
