@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Image, ImageBackground, SafeAreaView, TextInput, Modal, ActivityIndicator, ToastAndroid, PermissionsAndroid, ScrollView, StyleSheet } from 'react-native';
-import { ColorsConstant } from '../../../constants/Colors.constant';
-import { StyleConstants } from '../../../constants/Style.constant';
-import styles from '../../../styles/ViewProfile.styles';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import { StyleConstants } from '../../constants/Style.constant';
+import styles from '../../styles/ViewProfile.styles';
+
 export default function EditProfile({ navigation, route }) {
   const ref_input0 = useRef();
   const ref_input1 = useRef();

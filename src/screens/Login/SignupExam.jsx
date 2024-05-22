@@ -151,7 +151,12 @@ export default function SignUpExam({ navigation, route }) {
                           </View>
                           <View style={styles.TouchhView}>
                             <TouchableOpacity onPress={() => { selectExam(item._id) }} style={[styles.plus, selectedExams.has(item._id) && { "backgroundColor": ColorsConstant.Checkedcolor }]} >
-                              <Text key="selected" style={{ color: selectedExams.has(item._id) ? "#fff" : "#000" }} >+</Text>
+                              {
+                                selectedExams.has(item._id)?
+                                <Text key="selected" style={{ color:'#fff'}} >✓</Text>:
+                                <Text key="nonselected" style={{ color: "#000" }} >+</Text>
+                              }
+
                             </TouchableOpacity>
                           </View>
                         </View>

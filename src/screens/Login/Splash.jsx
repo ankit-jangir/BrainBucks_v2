@@ -26,11 +26,13 @@ export default function Splash({ navigation }) {
     getLang()
   },[])
 
-  AsyncStorage.getItem("language").then((res)=>{
+  try{AsyncStorage.getItem("language").then((res)=>{
     basic.getLocalObject().then(result=>{
       setCheckLang(result.jwt)
     })
-  })
+  })}catch(err){
+    console.log("ERROR IN RETREIEVING SPLASH LOGIC", err.message)
+  }
 
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");

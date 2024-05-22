@@ -4,7 +4,7 @@ import SearchBar from '../Home/SearchBar';
 import { ListItem } from '@rneui/themed';
 
 
-const BuyCourses = ({ navigation }) => { 
+const Courses = ({ navigation }) => { 
   const [activeTab, setActiveTab] = useState('Paid Courses');
   
   const DATA = [
@@ -140,7 +140,7 @@ const TabContent3 = ({navigation, data}) => {
   );
 }
 
-export default BuyCourses;
+export default Courses;
 
 const styles = StyleSheet.create({
   container: {

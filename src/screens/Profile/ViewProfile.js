@@ -8,8 +8,6 @@ import styles from '../../styles/ViewProfile.styles';
 export default function ViewProfile({ navigation, route }) {
   const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
   let user = route.params.userData;
-  console.log(user);
-
   return (
     <SafeAreaView style={StyleConstants.safeArView}>
             <View style={styles.HeaderView} >
@@ -30,16 +28,16 @@ export default function ViewProfile({ navigation, route }) {
                       <Image source={{ uri: image }} style={styles.img} />
                     </View> */}
                   </View>
-                  <View style={{ flex: 1, }} >
-                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile',{...route.params})} style={styles.EditT}>
-                     <Text style={styles.EditText}>Edit Profile</Text>
-                    </TouchableOpacity>
-                  </View>
                 </View>
                 <Image source={{ uri: image1 }} resizeMode='contain' style={styles.ProfileImg} />
                 <View style={styles.mobView} >
                   <Text style={styles.TextName}>{user.name}</Text>
                   <Text style={styles.Textmobile}>{user.phone}</Text>
+                  <View style={{ flex:1, alignItems:"center", justifyContent:"center", marginVertical:20 }} >
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile',{...route.params})} style={styles.EditT}>
+                     <Text style={styles.EditText}>Edit Profile</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View style={styles.totalView} >
                   <ImageBackground source={require('../../assets/img/background1.png')} resizeMode="contain" style={styles.bgImg} >

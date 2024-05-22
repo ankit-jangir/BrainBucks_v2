@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import LottieView from 'lottie-react-native';
+import { Text } from '../utils/Translate';
 
 const NoDataFound = ({message, action, actionText}) => {
   return (
@@ -16,7 +17,7 @@ const NoDataFound = ({message, action, actionText}) => {
       </View>
       <View style={styles.actionContainer}>
         <TouchableOpacity style={styles.buttonS} onPress={action}>
-          <Text style={{fontSize:21}}>{actionText}</Text>
+          <Text style={styles.buttonText}>{actionText}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -32,16 +33,17 @@ const styles = StyleSheet.create({
   },
   animationContainer: {
     width: '100%',
-    height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   animation: {
     width: 300,
-    height: 300,
+    height: 170,
   },
   Text1: {
     color: 'black',
+    marginVertical:10,
+    fontSize:22
   },
   actionContainer: {
     flexDirection: 'row',
@@ -49,11 +51,14 @@ const styles = StyleSheet.create({
     alignItems:"center"
   },
   buttonS:{
-    backgroundColor:"#a8f0bf",
-   paddingStart:10,
-   paddingEnd:10,
-   padding:5,
-    borderRadius:5,
-    
+   backgroundColor:"#a8f0bf",
+   width:150,
+   padding:7,
+  borderRadius:10,
+  },
+  buttonText:{
+    color:"black",
+    fontSize:17,
+    textAlign:"center",
   }
 });

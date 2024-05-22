@@ -8,9 +8,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function StudyMaterials({ navigation,}) {
-
- 
+export default function StudyMaterials({ navigation }) {
 
   return (
     <>

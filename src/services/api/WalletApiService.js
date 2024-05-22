@@ -4,14 +4,11 @@ import basic from "../BasicServices";
 import { toast } from "react-toastify";
 
 class WalletApiService {
-  constructor() {
-    this.authUrl = AUTHMICRO
-  }
-
+  
   async createOrder(amount) {
     amount = parseInt(amount + "")
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/make/payment`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/make/payment`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({ amount: amount })
     let options = {
@@ -27,8 +24,8 @@ class WalletApiService {
 
 
   async getTransactions() {
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/get/payment/transaction`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/get/payment/transaction`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -41,8 +38,8 @@ class WalletApiService {
 
 
   async verifyPayment() {
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/verify/payment`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/verify/payment`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({})
     let options = {
@@ -57,8 +54,8 @@ class WalletApiService {
 
 
   async createContact() {
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/create/contact`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/create/contact`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({})
     let options = {
@@ -72,8 +69,8 @@ class WalletApiService {
   }
 
   async withdrawMoney(amount, otp, account_id){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/withdraw/money`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/withdraw/money`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({"amount":amount,"otp":otp,"account_id":account_id})
     let options = {
@@ -87,8 +84,8 @@ class WalletApiService {
   }
 
   async sendOtp(){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/send/otp`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/send/otp`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -100,8 +97,8 @@ class WalletApiService {
   }
 
   async viewBankDetails(id){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/select/bank/during/withdraw`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/select/bank/during/withdraw`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({"id":id})
     let options = {
@@ -115,8 +112,8 @@ class WalletApiService {
   }
 
   async viewPaymentDetails(t_id){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/view/payment/details`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/view/payment/details`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({"transaction_id":t_id})
     let options = {
@@ -130,8 +127,8 @@ class WalletApiService {
   }
 
   async getVerfiedBanks(){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/select/bank/during/withdraw`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/select/bank/during/withdraw`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -143,8 +140,8 @@ class WalletApiService {
   }
 
   async getAllBanks(){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/get/banks`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/get/banks`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -156,8 +153,8 @@ class WalletApiService {
   }
 
   async getSpentMoney() {
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/see/spent_money`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/see/spent_money`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -169,8 +166,8 @@ class WalletApiService {
   }
 
   async getEarnedMoney() {
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/see/earned_money`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/see/earned_money`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -182,8 +179,8 @@ class WalletApiService {
   }
 
   async deleteBank(acc_id){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/delete/bank/by/id`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/delete/bank/by/id`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({"account_id":acc_id})
     let options = {
@@ -197,8 +194,8 @@ class WalletApiService {
   }
 
   async getWalletBalance(){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/get/wallet/balance`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/get/wallet/balance`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -210,8 +207,8 @@ class WalletApiService {
   }
 
   async addBank(ifsc_code, bank_name, bank_acc_no, acc_holder_name, otp){
-    let token = `Bearer ` + basic.getLocalObject().jwt;
-    let url = `${this.authUrl}/sales/add/bank/details`;
+    let token = await basic.getBearerToken()
+    let url = `${AUTHMICRO}/sales/add/bank/details`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({"ifsc_code":ifsc_code,"otp":otp,"bank_acc_no":bank_acc_no,"bank_name":bank_name,"acc_holder_name":acc_holder_name})
     let options = {

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     EditT: {
       flexDirection: "row",
-      width: '100%',
+      width: 100,
       height: 40,
       justifyContent: "center",
       alignItems: "center",
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
       color: ColorsConstant.White,
       fontFamily: "WorkSans-Medium",
       fontSize: 12,
-      paddingLeft: 12
+      paddingHorizontal: 12
     },
     mobView: {
       width: '100%',
@@ -277,10 +277,6 @@ const styles = StyleSheet.create({
           fontSize: 16,
           textAlign: "center",
           color: "#367CFF"
-        },
-        TextName: {
-          paddingHorizontal: 10,
-          marginTop: 20,
         },
         viewName: {
           flexDirection: 'row',

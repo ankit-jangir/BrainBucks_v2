@@ -1,6 +1,6 @@
 import bsaic from "../BasicServices";
 
-class SavedApiService{
+export default class SavedApiService{
 
     async getSavedExams(){}
     async enrollInExam(){}
