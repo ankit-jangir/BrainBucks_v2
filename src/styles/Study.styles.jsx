@@ -275,7 +275,349 @@ const styles = StyleSheet.create({
           fontFamily: 'WorkSans-SemiBold',
           fontSize: 16,
           color:'#000'
-        }
+        },
+
+        // 34567899999/**************freepdf***************************** */
+          // container: {
+          //   marginBottom: 10,
+          //   marginHorizontal: 10,
+          // },
+          touchableOpacity: {
+            width: '100%',
+            height: 70,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: '#EFEFEF',
+            marginTop: 10,
+            flexDirection: 'row',
+          },
+          innerContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            flex: 1,
+            justifyContent: 'center',
+          },
+          imageContainer: {
+            width: 35,
+            height: 60,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 0.18,
+            backgroundColor: '#EFEFEF',
+            borderRadius: 100,
+          },
+          image: {
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+          },
+          textContainer: {
+            flex: 0.65,
+            width: '90%',
+            height: 60,
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+          },
+          title: {
+            fontFamily: 'WorkSans-SemiBold',
+            fontSize: 20,
+            paddingLeft: 10,
+            color: '#000',
+          },
+          detailsContainer: {
+            flexDirection: 'row',
+            paddingLeft: 10,
+          },
+          detailsText: {
+            fontFamily: 'WorkSans-Medium',
+            fontSize: 16,
+            color: '#7E7E7E',
+          },
+          count: {
+            color: '#D92828',
+            paddingHorizontal: 5,
+          },
+          arrowContainer: {
+            flex: 0.1,
+            width: '100%',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+          },
+          arrowButton: {
+            width: 45,
+            height: 45,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 100,
+          },
+          arrowIcon: {
+            width: 25,
+            height: 20,
+            borderRadius: 25,
+          },
+              // **********************online class css******************/********** */
+                lottiV:
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                },
+                lottie:
+                {
+                  width: 300,
+                  height: 250,
+                  backgroundColor: 'transparent',
+                },
+                IndustryV:
+                {
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: "center"
+                },
+                IndustryT:
+                {
+                  fontFamily: "WorkSans-SemiBold",
+                  fontSize: 24,
+                  textAlign: "center"
+                },
+                comingSoon: {
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: "center",
+                  marginTop: 20
+                },
+                comingSoonT: {
+                  width: '80%',
+                  height: 50,
+                  backgroundColor: "#367CFF",
+                  borderRadius: 10,
+                  justifyContent: 'center'
+                  , alignItems: "center"
+                },
+
+                // **************************studymaterials css*********************************
+                  container: {
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    margin: 10
+                  },
+                  button: {
+                    paddingHorizontal: 35,
+                    padding: 10,
+                    borderRadius: 10,
+                    margin: 5
+                  },
+                  button1: {
+                    paddingHorizontal: 51,
+                    padding: 10,
+                    borderRadius: 10,
+                    margin: 5
+                  },
+                  selectedButton: {
+                    backgroundColor: 'black',
+                  },
+                  deselectedButton: {
+                    backgroundColor: 'rgba(239, 239, 239, 1)'
+                  },
+                  text: {
+                    fontSize: 16,
+                  },
+                  selectedText: {
+                    color: 'white',
+                  },
+                  deselectedText: {
+                    color: 'black',
+                  },
+                  mainView: {
+                    width: '100%',
+                    height: 70,
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: ColorsConstant.LightGray
+                  },
+                  arrowView: {
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  },
+                  TouchArrow: {
+                    flex: 0.15,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginHorizontal: 4,
+                    width: 50,
+                    height: 50,
+                    borderColor: ColorsConstant.BlurWhite,
+                    borderWidth: 1,
+                    borderRadius: 100
+                  },
+                  StdView: {
+                    flex: 0.80,
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    paddingLeft: 20
+                  },
+                  TextStd: {
+                    fontSize: 22,
+                    fontFamily: 'WorkSans-SemiBold',
+                    color: '#000'
+                  },
+
+                  // ***********************************questionpaper*****************************************************
+                
+  mainView: {
+    width: "100%",
+    height: 70,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray
+  },
+  mainView1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: "center"
+  },
+  touchView: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100
+  },
+  QView: {
+    flex: 0.80,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20
+  },
+  textQ: {
+    fontSize: 22,
+    fontFamily: "WorkSans-SemiBold",
+    color:'#000',
+    fontWeight:'600'
+  },
+  inputV: {
+    flex: 1,
+    paddingHorizontal: 10
+  },
+  inputV1: {
+    width: '100%',
+    height: 80,
+    justifyContent: 'center',
+  },
+  inputv2: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: ColorsConstant.LightGray,
+    borderRadius: 10,
+    height: 45,
+    marginTop: 0
+  },
+  Inview: {
+    color: ColorsConstant.GrayyColor,
+    fontSize: 15,
+    flex: 0.80,
+    fontFamily: "WorkSans-Regular"
+  },
+  PView: {
+    flex: 1,
+    marginBottom: 20,
+    alignItems: 'center'
+  },
+  Ptouch: {
+    width: 340,
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: ColorsConstant.LightWhite,
+    backgroundColor:ColorsConstant.White
+  },
+  textQue: {
+    fontFamily: 'WorkSans-SemiBold',
+    fontSize: 20,
+    color:'#000',
+    fontWeight:'600'
+
+  },
+  TrView: {
+    width: '100%',
+    height: 50,
+  },
+  TrView1: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: 'center'
+  },
+  touchTR: {
+    width: 150,
+    height: 30,
+    backgroundColor: "#EFFFF6",
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: 'center'
+  },
+  TextTrans: {
+    fontFamily: 'WorkSans-Regular',
+    fontSize: 14,
+    color: '#1DC173'
+  },
+  dateView: {
+    width: 140,
+    height: 30,
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  textDate: {
+    fontFamily: 'WorkSans-Medium',
+    fontSize: 14,
+    color: '#8A8A8A'
+  },
+  downView: {
+    flexDirection: 'row',
+    justifyContent: "space-between"
+  },
+  touchDown: {
+    width: '45%',
+    height: 45,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+  },
+  textDown: {
+    color: ColorsConstant.Black,
+    fontSize: 14,
+    fontFamily: 'WorkSans-Regular',
+    color:'#000'
+  },
+  touchEng: {
+    width: '45%',
+    height: 45,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: ColorsConstant.Black
+  },
+  textEng: {
+    fontSize: 14,
+    fontFamily: 'WorkSans-Regular',
+    color: ColorsConstant.White,
+  }
   });
 
   export default  styles
