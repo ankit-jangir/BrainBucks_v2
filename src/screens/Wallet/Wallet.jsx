@@ -1,30 +1,230 @@
-import {StyleSheet, Text, View, Linking} from 'react-native';
+import {StyleSheet, View, Linking, TouchableOpacity,ScrollView} from 'react-native';
 import React from 'react';
-import Header from '../../components/Header';
 import LinearGradient from 'react-native-linear-gradient';
+import {Image} from 'react-native-elements';
+import {Text} from '../../utils/Translate';
+import History from './History';
 
-const Wallet = () => {
+const Wallet = ({navigation}) => {
+  const data = [
+    {
+      r:"₹ 15,600",
+      s:"12:34 | 20 Dec 2022",
+      sucess:1,
+      type:0,
+    },
+    {
+      r:"₹ 15,600",
+      s:"12:34 | 20 Dec 2022",
+      sucess:-1,
+      type:"debit",
+    },
+    {
+      r:"₹ 15,600",
+      s:"12:34 | 20 Dec 2022",
+      sucess:0,
+      type:"credit",
+    },
+    {
+      r:"₹ 15,600",
+      s:"12:34 | 20 Dec 2022",
+      sucess:1,
+      type:"debit",
+    },  {
+      r:"₹ 15,600",
+      s:"12:34 | 20 Dec 2022",
+      sucess:0,
+      type:"credit",
+    }
+    
+  ]
   return (
     <View style={styles.container}>
-      <View style={styles.container11}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 15,
+          marginBottom: 30,
+        }}>
+        <View>
+          <Image
+            source={require('../../assets/img/menu.png')}
+            tintColor={'black'}
+            style={{height: 25, width: 25}}
+          />
+        </View>
+        <View>
+          <Text style={styles.heading}>My Wallet</Text>
+        </View>
+        <View>
+          <Image
+            source={require('../../assets/img/homedark.png')}
+            tintColor={'balck'}
+            style={{height: 25, width: 25}}
+          />
+        </View>
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={[{width: '100%', borderRadius: 10}]}
+          style={{width: '100%', borderRadius: 10}}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
-            <View>
-            <Text>dsa</Text>
-            <Text></Text>
+            <View style={styles.headerLeft}>
+              <Image
+                source={require('../../assets/img/walletI.png')}
+                style={styles.walletIcon}
+                resizeMode="contain"
+              />
+              <Text style={styles.headerTitle}> My Wallet </Text>
             </View>
 
-            <View>
-            <Text>dasd</Text>
-            <Text></Text>
+            <View style={styles.headerRight}>
+              <Text style={styles.shareText}>Share</Text>
+              <TouchableOpacity>
+              <Image
+                tintColor="white"
+                source={require('../../assets/img/share.png')}
+                style={styles.shareIcon}
+                resizeMode="contain"
+              />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.balanceText}>₹ 45,600 </Text>
+          </View>
+
+          <View style={styles.containerImg1}>
+            <View style={styles.growthContainer}>
+              <Text style={styles.growthText}>+121.56%</Text>
+            </View>
+
+            <View style={styles.investedContainer}>
+              <Text style={styles.investedText}>Invested</Text>
+              <Text style={styles.investedAmount}>₹ 4,500</Text>
+            </View>
+          </View>
+
+          <View style={styles.containerImg2}>
+            <View style={styles.redeemableContainer}>
+              <Text style={styles.redeemableText}>
+                Redeemable Balance ₹ 42,600
+              </Text>
+            </View>
+
+            <View style={styles.detailsContainer}>
+              <Text
+                style={styles.detailsText}
+                onPress={() => navigation.navigate('myEarning')}>
+                Details
+              </Text>
+              <Image
+                tintColor="white"
+                source={require('../../assets/img/rightarrow1.png')}
+                style={styles.detailsIcon}
+                resizeMode="contain"
+              />
             </View>
           </View>
         </LinearGradient>
+
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => navigation.navigate('deposit')}>
+            <View style={styles.actionIconContainer}>
+              <Image
+                tintColor="gray"
+                source={require('../../assets/img/downarrow.png')}
+                style={styles.actionIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.actionText}>Deposit</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => navigation.navigate('withdraw')}>
+            <View style={styles.actionIconContainer}>
+              <Image
+                tintColor="gray"
+                source={require('../../assets/img/uparrow.png')}
+                style={styles.actionIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.actionText}>Withdraw</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => navigation.navigate('history')}>
+            <View style={styles.actionIconContainer}>
+              <Image
+                tintColor="gray"
+                source={require('../../assets/img/updown.png')}
+                style={styles.actionIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.actionText}>History</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbanksucessfully')}}>
+            <View style={styles.actionIconContainer}>
+              <Image
+                tintColor="gray"
+                source={require('../../assets/img/plus.png')}
+                style={styles.actionIcon}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.actionText}>Add Bank</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.actionsContainer1}>
+          <Text style={styles.RecentText}>Recent Transactions</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('history')}
+            style={styles.TouchableButton}>
+            <Text style={styles.ViewText}>View</Text>
+          </TouchableOpacity>
+        </View>
       </View>
+      <ScrollView>
+
+      {
+
+        data.map((res)=>{
+          return(
+            <View style={styles.historyContainer}>
+        <View style={styles.transactionEntry}>
+          <View style={styles.iconContainer}>
+            <Image source={require('../../assets/img/downarrow.png')} style={styles.icon} tintColor={"#129C73"} />
+          </View>
+          <View>
+            <Text style={styles.transactionAmount}>{res.r}</Text>
+            <Text style={styles.timestamp}>{res.s}</Text>
+          </View>
+          <View style={styles.statusContainer}>
+            <View style={styles.statusIcon}>
+              <Image source={require('../../assets/img/radic.png')} style={styles.icon1} tintColor={"white"} />
+            </View>
+            <Text style={styles.statusText}>Failed</Text>
+          </View>
+          <View style={styles.arrowIconContainer}>
+            <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
+          </View>
+        </View>
+      </View>
+          )
+        })
+      }
+      </ScrollView>
     </View>
   );
 };
@@ -34,15 +234,221 @@ export default Wallet;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
-  container11: {
-    height: 110,
+  container1: {
+    padding: 8,
   },
-  container1:{
- padding:8
+  heading: {
+    color: 'black',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
-  containerImg1:{
-    justifyContent:"space-between",
-    flexDirection:"row"
-  }
+  containerImg1: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  containerImg2: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: '#f5d0f1',
+    borderBottomRightRadius: 5,
+    borderBottomStartRadius: 5,
+    marginTop: 30,
+    padding: 10,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+  },
+  walletIcon: {
+    height: 25,
+    width: 25,
+  },
+  headerTitle: {
+    marginLeft: 10,
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 21,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  shareText: {
+    color: 'white',
+  },
+  shareIcon: {
+    height: 20,
+    width: 20,
+    marginLeft: 10,
+  },
+  balanceText: {
+    margin: 20,
+    fontSize: 27,
+    fontWeight: '700',
+    color: 'white',
+  },
+  growthContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+    padding: 4,
+    backgroundColor: '#f5d0f1',
+    borderRadius: 5,
+  },
+  growthText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  investedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  investedText: {
+    color: 'white',
+  },
+  investedAmount: {
+    marginLeft: 10,
+    color: 'white',
+  },
+  redeemableContainer: {
+    alignItems: 'center',
+    marginLeft: 15,
+  },
+  redeemableText: {
+    color: 'white',
+  },
+  detailsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  detailsText: {
+    color: 'white',
+  },
+  detailsIcon: {
+    height: 15,
+    width: 15,
+    marginLeft: 10,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    marginTop: 30,
+    justifyContent: 'space-between',
+  },
+  actionsContainer1: {
+    flexDirection: 'row',
+    marginTop: 40,
+    justifyContent: 'space-between',
+  },
+  actionItem: {
+    alignItems: 'center',
+  },
+  actionIconContainer: {
+    height: 80,
+    width: 80,
+    borderRadius: 50,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionIcon: {
+    height: 30,
+    width: 30,
+  },
+  actionText: {
+    textAlign: 'center',
+  },
+  RecentText: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'black',
+  },
+  TouchableButton: {
+    backgroundColor: 'lightgray',
+    padding: 10,
+    borderRadius: 8,
+    marginRight: 10,
+    paddingRight: 15,
+    paddingLeft: 15,
+  },
+  ViewText: {
+    fontSize: 13,
+     color: '#8A8C94', 
+     fontWeight: '500'
+    },
+    historyContainer: {
+      margin: 10,
+      backgroundColor:"#FFFFFF"
+    },
+    transactionEntry: {
+      flexDirection: "row",
+      backgroundColor: "#FFFFFF",
+      justifyContent: "space-between",
+      padding: 15,
+      borderRadius: 10,
+      elevation: 2,
+    },
+    iconContainer: {
+      height: 40,
+      width: 40,
+      borderRadius: 50,
+      backgroundColor: "#EFFFF6",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    icon: {
+      height: 20,
+      width: 20,
+      alignSelf: "center",
+    },
+    icon2: {
+      height: 15,
+      width: 15,
+      alignSelf: "center",
+    },
+    icon1: {
+      height: 10,
+      width: 10,
+      alignSelf: "center",
+    },
+    transactionAmount: {
+      color: "black",
+      fontSize: 21,
+      fontWeight: "600",
+    },
+    timestamp: {
+      color: "#8A8A8A",
+    },
+    statusContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    statusIcon: {
+      height: 25,
+      width: 25,
+      backgroundColor: "#DC1111",
+      borderRadius: 50,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    statusText: {
+      color: "#DC1111",
+      paddingLeft: 8,
+      fontSize:17,
+      fontWeight:"600"
+    },
+    arrowIconContainer: {
+      // height: 40,
+      // width: 40,
+      // borderRadius: 50,
+      // backgroundColor: "#f0f2f5",
+      justifyContent: "center",
+      alignItems: "center",
+    },
 });
