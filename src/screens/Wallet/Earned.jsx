@@ -97,7 +97,9 @@ export default Earned;
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding:10
+    padding:10,
+    flex:1,
+    backgroundColor:"white"
   },
   card: {
     backgroundColor: 'white',

@@ -97,7 +97,9 @@ export default MyEarningSpent;
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding:10
+    padding:10,
+    flex:1,
+    backgroundColor:"white"
   },
   card: {
     backgroundColor: 'white',
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: 25,
-    width: 25,
+    height: 35,
+    width: 35,
   },
   info: {
     marginLeft: 10,
@@ -152,8 +154,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   mainImage: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
   },
   textTitle: {
     marginLeft: 15,

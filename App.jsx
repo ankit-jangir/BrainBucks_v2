@@ -25,6 +25,12 @@ import onAppBootstrap from './src/config/FirebaseConfig';
 import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
 import History from './src/screens/Wallet/History';
+import Withdraw from './src/screens/Wallet/Withdraw';
+import AddBank from './src/screens/Wallet/AddBank';
+import BankDetails from './src/screens/Wallet/BankDetails';
+import WalletOtp from './src/screens/Wallet/WalletOtp';
+import AddBankSucessfully from './src/screens/Wallet/AddBankSucessfully';
+import WithdrawReq from './src/screens/Wallet/WithdrawReq';
 
 
 
@@ -61,6 +67,13 @@ useEffect(()=>{
      <Stack.Screen name="myEarning" component={MyEarning} />
      <Stack.Screen name="deposit" component={Deposit} />
      <Stack.Screen name="history" component={History} />
+     <Stack.Screen name="withdraw" component={Withdraw} />
+     <Stack.Screen name="addbank" component={AddBank} />
+     <Stack.Screen name="addbankDetails" component={BankDetails} />
+     <Stack.Screen name="walletotp" component={WalletOtp} />
+     <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
+     <Stack.Screen name="withdrawReq" component={WithdrawReq} />
+
 
     </Stack.Navigator>
   );

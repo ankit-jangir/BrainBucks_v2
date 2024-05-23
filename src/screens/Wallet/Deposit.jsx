@@ -15,7 +15,7 @@ const Deposit = () => {
         />
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text>In my Brain Bucks Wallet</Text>
+          <Text style={{fontSize:14}}>In my Brain Bucks Wallet</Text>
         </View>
       </View>
       <View style={styles.amountInputContainer}>
@@ -67,10 +67,11 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop:50 
   },
   actionIcon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   headerTextContainer: {
     alignItems: 'center',
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: '500',
+    fontWeight: '600',
     color: 'black',
   },
   amountInputContainer: {

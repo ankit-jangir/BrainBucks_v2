@@ -1,6 +1,5 @@
-import { StyleSheet, View,} from 'react-native';
 import React from 'react';
-import { Image, Tab, TabView, Text } from '@rneui/themed';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import MyEarningSpent from './MyEarningSpent';
 import Earned from './Earned';
 
@@ -8,47 +7,39 @@ const MyEarning = () => {
   const [index, setIndex] = React.useState(0);
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
       <View style={styles.header}>
         <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
         <Text style={styles.headerText}>My Earnings</Text>
       </View>
-      
-      <Tab
-        value={index}
-        onChange={(e) => setIndex(e)}
-        indicatorStyle={styles.indicator}
-        style={styles.tabContainer}
-      >
-        <Tab.Item
-          title="Spent"
-          titleStyle={styles.tabTitle}
-          containerStyle={[
-            styles.tabItem,
-            index === 0 ? styles.selectedTab : styles.spentTab,
-          ]}
-        />
-        <Tab.Item
-          title="My Earning"
-          titleStyle={styles.tabTitle}
-          containerStyle={[
-            styles.tabItem,
-            index === 1 ? styles.selectedTab : styles.earningTab,
-          ]}
-        />
-      </Tab>
 
-      <TabView value={index} onChange={setIndex} animationType="spring">
-        <TabView.Item style={styles.tabViewItem}>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tabItem, index === 0 ? styles.selectedTab : styles.spentTab]}
+          onPress={() => setIndex(0)}
+        >
+          <Text style={styles.tabTitle}>Spent</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabItem, index === 1 ? styles.selectedTab : styles.earningTab]}
+          onPress={() => setIndex(1)}
+        >
+          <Text style={styles.tabTitle}>My Earning</Text>
+        </TouchableOpacity>
+      </View>
+
+      {index === 0 ? (
+        <View style={styles.tabViewItem}>
           <MyEarningSpent />
-        </TabView.Item>
-        <TabView.Item style={styles.tabViewItem}>
+        </View>
+      ) : (
+        <View style={styles.tabViewItem}>
           <Earned />
-        </TabView.Item>
-      </TabView>
-    </>
+        </View>
+      )}
+    </SafeAreaView>
   );
-}
+};
 
 export default MyEarning;
 
@@ -65,26 +56,26 @@ const styles = StyleSheet.create({
   backImage: {
     height: 45,
     width: 45,
-    marginRight: 8, 
+    marginRight: 8,
   },
   headerText: {
     fontSize: 24,
-    fontWeight:"600" 
-  },
-  indicator: {
-    backgroundColor: 'white',
-    height: 1,
+    fontWeight: "600",
   },
   tabContainer: {
+    flexDirection: 'row',
     margin: 10,
     backgroundColor: "lightgray",
     borderRadius: 5,
   },
   tabTitle: {
-    fontSize: 14,
+    fontSize: 21,
     color: 'white',
   },
   tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
     borderRadius: 5,
   },
   spentTab: {
@@ -97,6 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#701DDB',
   },
   tabViewItem: {
+    flex: 1,
     width: '100%',
   },
 });
