@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 import { StyleConstants } from '../../constants/Style.constant'
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { Text } from '../../utils/Translate';
-
+import styles from '../../styles/Study.styles';
 
 export default function OnlineClasses({ navigation }) {
   return (
@@ -34,43 +34,3 @@ export default function OnlineClasses({ navigation }) {
   )
 }
 
-const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
-  lottiV:
-  {
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  lottie:
-  {
-    width: 300,
-    height: 250,
-    backgroundColor: 'transparent',
-  },
-  IndustryV:
-  {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: "center"
-  },
-  IndustryT:
-  {
-    fontFamily: "WorkSans-SemiBold",
-    fontSize: 24,
-    textAlign: "center"
-  },
-  comingSoon: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: "center",
-    marginTop: 20
-  },
-  comingSoonT: {
-    width: '80%',
-    height: 50,
-    backgroundColor: "#367CFF",
-    borderRadius: 10,
-    justifyContent: 'center'
-    , alignItems: "center"
-  },
- 
-})

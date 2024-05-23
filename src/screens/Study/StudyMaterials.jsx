@@ -4,7 +4,9 @@ import FreePdf from './FreePdf';
 import OnlineClasses from './OnlineClasses';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import styles from '../../styles/Study.styles';
+
+
 
 export default function StudyMaterials({ navigation }) {
   const [selected, setSelected] = useState('FreePdf');
@@ -63,73 +65,4 @@ export default function StudyMaterials({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    margin: 10
-  },
-  button: {
-    paddingHorizontal: 35,
-    padding: 10,
-    borderRadius: 10,
-    margin: 5
-  },
-  button1: {
-    paddingHorizontal: 51,
-    padding: 10,
-    borderRadius: 10,
-    margin: 5
-  },
-  selectedButton: {
-    backgroundColor: 'black',
-  },
-  deselectedButton: {
-    backgroundColor: 'rgba(239, 239, 239, 1)'
-  },
-  text: {
-    fontSize: 16,
-  },
-  selectedText: {
-    color: 'white',
-  },
-  deselectedText: {
-    color: 'black',
-  },
-  mainView: {
-    width: '100%',
-    height: 70,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: ColorsConstant.LightGray
-  },
-  arrowView: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  TouchArrow: {
-    flex: 0.15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 4,
-    width: 50,
-    height: 50,
-    borderColor: ColorsConstant.BlurWhite,
-    borderWidth: 1,
-    borderRadius: 100
-  },
-  StdView: {
-    flex: 0.80,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    paddingLeft: 20
-  },
-  TextStd: {
-    fontSize: 22,
-    fontFamily: 'WorkSans-SemiBold',
-    color: '#000'
-  }
-});
+
