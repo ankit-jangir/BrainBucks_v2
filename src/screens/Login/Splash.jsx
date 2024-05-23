@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, Animated, Easing, useNativeDriver, StatusBar, SafeAreaView, ToastAndroid, BackHandler, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Animated, Easing, useNativeDriver, StatusBar, SafeAreaView, ToastAndroid, BackHandler, StyleSheet, ActivityIndicator } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import { Dimensions } from 'react-native';
@@ -8,29 +8,37 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
 import { getSavedLanguage, setSavedLanguage } from '../../utils/Translate';
 import basic from '../../services/BasicServices';
+import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
   const [checklang, setCheckLang] = useState()
+  const auth = new AuthenticationApiService()
 
-  useEffect(()=>{
-    async function getLang(){
+  useEffect(() => {
+    async function getLang() {
       let langinasync = await AsyncStorage.getItem("language")
-      if(langinasync){
+      if (langinasync) {
         let localobj = await basic.getLocalObject()
-        if(localobj.jwt){
-          navigation.reset({ index: 0, routes: [{ name: "signup" }] });
+        if (localobj.jwt) {
+          let res;
+          try{res = await auth.getUserProfile();}catch(err){console.log("ERROR IN GETTING PROFILE",err.message)}
+          if (res&&res.status === 1) {
+            navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+          }
         }
       }
     }
-    getLang()
-  },[])
+    try { getLang() } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE") }
+  }, [])
 
-  try{AsyncStorage.getItem("language").then((res)=>{
-    basic.getLocalObject().then(result=>{
-      setCheckLang(result.jwt)
+  try {
+    AsyncStorage.getItem("language").then((res) => {
+      basic.getLocalObject().then(result => {
+        setCheckLang(result.jwt)
+      })
     })
-  })}catch(err){
+  } catch (err) {
     console.log("ERROR IN RETREIEVING SPLASH LOGIC", err.message)
   }
 
@@ -67,7 +75,9 @@ export default function Splash({ navigation }) {
       deasing: Easing.bounce,
       useNativeDriver: true,
     }).start();
-    GetReferCode();
+    try { GetReferCode(); } catch (err) {
+      console.log("ERROR IN GETTING REFER CODE");
+    }
   }, []);
 
   return (
@@ -77,7 +87,9 @@ export default function Splash({ navigation }) {
         <Animated.View style={styles.aniView}>
           <Image source={require('../../assets/img/bblogo.png')} resizeMode='center' style={styles.logo} />
         </Animated.View>
-        {!checklang &&
+        {checklang ?
+          <ActivityIndicator style={{ marginVertical: "auto" }} size={50} color={"#fff"} />
+          :
           <>
             <View style={{ marginTop: 40 }}>
               <View style={styles.aniView2}>

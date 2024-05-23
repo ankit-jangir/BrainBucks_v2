@@ -5,14 +5,21 @@ import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Overlay } from '@rneui/themed';
+import { Button } from '../../utils/Translate';
 
 const Sidebar = ({ navigation }) => {
   const auth = new AuthenticationApiService();
   const [userData, setUserData] = useState({
-    name:"User Name"
+    name: "User Name"
   })
   const [loggingOut, setLoggingOut] = useState(false)
   const [totalPlayed, setTotalPlayed] = useState(0)
+  const [visible, setVisible] = useState(false)
+
+  function toggleOverlay() {
+    setVisible(!visible)
+  }
 
   useEffect(() => {
     try {
@@ -64,7 +71,6 @@ const Sidebar = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Toast />
-
         <View style={styles.headerContent}>
           <Text style={styles.welcomeText}>Welcome</Text>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
@@ -74,9 +80,9 @@ const Sidebar = ({ navigation }) => {
         <View style={styles.profileSection}>
           <Image source={require('../../assets/img/boy.png')} resizeMode="contain" style={styles.profileImage} />
           <View style={styles.profileInfo}>
-            <TouchableOpacity onPress={() => navigation.navigate('ViewProfile',{
-              userData:userData,
-              totalPlayed:totalPlayed
+            <TouchableOpacity onPress={() => navigation.navigate('ViewProfile', {
+              userData: userData,
+              totalPlayed: totalPlayed
             })}>
               <Text style={styles.profileName}>{userData.name}</Text>
               <Text style={styles.profileLink}>View Profile</Text>
@@ -116,12 +122,31 @@ const Sidebar = ({ navigation }) => {
         />
 
         <MenuItem
-          action={logOut}
+          action={toggleOverlay}
           beingPerformmed={loggingOut}
           image={require('../../assets/img/logout.png')}
           text="Logout"
         />
       </ScrollView>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={styles.logoutView}>
+        <Text style={styles.welcomeText}>
+          Do You Want To Log Out
+        </Text>
+        <View style={styles.logoutbuttons}>
+        <Button
+          title="Yes"
+          color={"secondary"}
+          buttonStyle={styles.logoutyesbutton}
+          onPress={()=>{logOut().then(toggleOverlay)}}
+        />
+        <Button
+        color={"primary"}
+          title="Cancel"
+          onPress={toggleOverlay} />
+        </View>
+        </View>
+      </Overlay>
     </View>
   );
 };

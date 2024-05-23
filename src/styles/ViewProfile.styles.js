@@ -285,21 +285,39 @@ const styles = StyleSheet.create({
         textContact: {
           fontFamily: 'WorkSans-Regular',
           fontSize: 16,
-          color: "#8A8A8A"
+          color: ColorsConstant.Black,
+          fontWeight:"bold"
         },
         inputView: {
           flex: 1,
-          justifyContent: 'center',
-          alignItems: 'flex-start',
+          alignItems: 'center',
+          justifyContent:"space-between",
           height: 50,
-          borderBottomWidth: 1,
-          borderColor: "#ccc"
+          borderColor: "#ccc",
+          flexDirection:"row",
+          backgroundColor:ColorsConstant.BackgroundGrey,
+          borderRadius:6,
+          elevation:1,
+          marginVertical:10,
+          marginHorizontal:5
+        },
+        errormsg:{
+          color:"red",
+          fontSize:13,
+          padding:10,
+          paddingTop:1
         },
         inputTe: {
-          fontSize: 20,
-          width: "100%",
+          fontSize: 16,
+          width: "80%",
           fontFamily: "WorkSans-SemiBold",
-          color:'#8A8A8A'
+          color:ColorsConstant.AshGray,
+          paddingLeft:10
+        },
+        penciledit:{
+          width:15,
+          height:15,
+          marginRight:20,
         },
         viewNumber: {
           flex: 1,
@@ -335,8 +353,38 @@ const styles = StyleSheet.create({
           borderRadius: 5,
           justifyContent: 'center',
           alignItems: "center"
-        }
-     
+        },
+        logoutView:{
+          height:300,
+          width:300,
+          alignItems:"center",
+          justifyContent:"center",
+          gap:40,
+        },
+        logoutbuttons:{
+          gap:20,
+          flexDirection:"row",
+          alignItems:"center",
+          justifyContent:"center"
+        },
+        logoutyesbutton:{
+          paddingHorizontal:20
+        },
+        logoutText:{
+          color:ColorsConstant.Error,
+          padding:4,
+        },
+        modalContainer: {
+          flex: 1,
+          justifyContent: 'flex-end',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        modalContent: {
+          backgroundColor: 'white',
+          padding: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        },
 
   })
 

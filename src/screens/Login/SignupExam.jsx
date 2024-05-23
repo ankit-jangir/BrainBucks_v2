@@ -23,10 +23,10 @@ export default function SignUpExam({ navigation, route }) {
   }
 
   async function finalRegister() {
-    if(selectedExams.size===0){
+    if (selectedExams.size === 0) {
       Toast.show({
-        type:'error',
-        text1:"Atleast select one exam to continue"
+        type: 'error',
+        text1: "Atleast select one exam to continue"
       })
       return;
     }
@@ -34,7 +34,7 @@ export default function SignUpExam({ navigation, route }) {
     try {
       let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams))
       if (res.status === 1) {
-        console.log("JWT TOKEN",res.token);
+        console.log("JWT TOKEN", res.token);
         BasicServices.setJwt(res.token).then(() => {
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         })
@@ -97,8 +97,9 @@ export default function SignUpExam({ navigation, route }) {
     }, 3000);
   }
   return (
+    <>
       <View style={styles.containerView}>
-        <Toast />
+        <View style={{zIndex:2}}><Toast /></View>
         <View style={styles.FinalView} >
           <View style={styles.FinalView1}>
             <View style={styles.StepView}>
@@ -110,11 +111,6 @@ export default function SignUpExam({ navigation, route }) {
             <Image source={require('../../assets/img/flower.png')} resizeMode='contain' style={styles.flowerPic} />
           </View>
         </View>
-
-
-
-
-
 
         <View style={styles.CardView}>
           <View style={styles.CardView2}>
@@ -152,9 +148,9 @@ export default function SignUpExam({ navigation, route }) {
                           <View style={styles.TouchhView}>
                             <TouchableOpacity onPress={() => { selectExam(item._id) }} style={[styles.plus, selectedExams.has(item._id) && { "backgroundColor": ColorsConstant.Checkedcolor }]} >
                               {
-                                selectedExams.has(item._id)?
-                                <Text key="selected" style={{ color:'#fff'}} >✓</Text>:
-                                <Text key="nonselected" style={{ color: "#000" }} >+</Text>
+                                selectedExams.has(item._id) ?
+                                  <Text key="selected" style={{ color: '#fff' }} >✓</Text> :
+                                  <Text key="nonselected" style={{ color: "#000" }} >+</Text>
                               }
 
                             </TouchableOpacity>
@@ -180,8 +176,9 @@ export default function SignUpExam({ navigation, route }) {
           </View>
         </View>
 
-        
+
       </View>
+    </>
   );
 }
 

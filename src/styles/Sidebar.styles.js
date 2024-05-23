@@ -1,6 +1,7 @@
 
 
 import { StyleSheet } from 'react-native';
+import { ColorsConstant } from '../constants/Colors.constant';
 
 
 const styles = StyleSheet.create({
@@ -79,6 +80,22 @@ const styles = StyleSheet.create({
       fontFamily: "WorkSans-Medium",
       fontSize: 16,
       color: 'gray'
+    },
+    logoutView:{
+      height:250,
+      width:250,
+      alignItems:"center",
+      justifyContent:"center",
+      gap:40,
+    },
+    logoutbuttons:{
+      gap:20,
+      flexDirection:"row",
+      alignItems:"center",
+      justifyContent:"center"
+    },
+    logoutyesbutton:{
+      paddingHorizontal:20
     },
   });
 

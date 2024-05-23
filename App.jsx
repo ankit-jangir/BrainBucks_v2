@@ -15,7 +15,7 @@ import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
-import VideoPlayer from './src/screens/courses/VideoPlayer';
+import VideoPlayer from './src/screens/Courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
@@ -27,7 +27,7 @@ import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
 import Courses from './src/screens/Courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
-import PaidCourses from './src/screens/courses/PaidCourses';
+import PaidCourses from './src/screens/Courses/PaidCourses';
 import QuestionPapers from './src/screens/Study/QuestionPapers';
 
 const Drawer = createDrawerNavigator();
@@ -65,10 +65,9 @@ function MyStack() {
       <Stack.Screen name="FreePdf" component={FreePdf} />
       <Stack.Screen name="OnlineClasses" component={OnlineClasses} />
       <Stack.Screen name="StudyMaterials" component={StudyMaterials} />
-      <Stack.Screen name="Course" component={Course} />
+      <Stack.Screen name="Courses" component={Courses} />
       <Stack.Screen name="PaidCourses" component={PaidCourses} />
       <Stack.Screen name="QuestionPapers" component={QuestionPapers} />
-
     </Stack.Navigator>
   );
 }
@@ -149,8 +148,8 @@ function MyTabs() {
 
           <Tab.Screen
             style={{position: 'relative '}}
-            name="Course"
-            component={Course}
+            name="Courses"
+            component={Courses}
             options={{
               tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
               tabBarLabel: 'Courses',

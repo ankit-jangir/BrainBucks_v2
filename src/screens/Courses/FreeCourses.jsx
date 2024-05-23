@@ -11,11 +11,14 @@ import {List} from 'react-native-paper';
 import styles from '../../styles/Home.styles';
 
 
-const PaidCourses = ({navigation,data}) => {
+const FreeCourses = ({navigation,data}) => {
   const [expanded, setExpanded] = useState(false);
   const [innerExpanded, setInnerExpanded] = useState(false);
 
-  const handlePress = () => setExpanded(!expanded);
+
+  const handlePress = (e) => {
+    setExpanded(!expanded);
+  }
   const handleInnerPress = () => setInnerExpanded(!innerExpanded);
 
   return (
@@ -32,7 +35,7 @@ const PaidCourses = ({navigation,data}) => {
               <Text style={{color: '#000', fontSize: 16, fontWeight: '600'}}>
                 1.
               </Text>
-              <Text style={{color: '#000'}}>Courses name</Text>
+              <Text style={{color: '#000'}}>Courses name {" "}</Text>
             </View>
           }
           expanded={expanded}
@@ -40,6 +43,7 @@ const PaidCourses = ({navigation,data}) => {
           right={props => (
             <View style={{flexDirection: 'row'}}>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity key={"sdl"} onPress={(e)=>{e.preventDefault(), console.log("SD:K")}}>
                 <Text
                   style={{
                     backgroundColor: 'rgba(112, 29, 219, 1)',
@@ -49,6 +53,7 @@ const PaidCourses = ({navigation,data}) => {
                   }}>
                   Buy Now
                 </Text>
+                </TouchableOpacity>
               </View>
               <TouchableOpacity onPress={handlePress}>
                 <Image
@@ -121,4 +126,4 @@ const PaidCourses = ({navigation,data}) => {
   );
 };
 
-export default PaidCourses;
+export default FreeCourses;
