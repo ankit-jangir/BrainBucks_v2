@@ -1,61 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import FreePdf from './FreePdf';
-import  OnlineClasses from './OnlineClasses';
-import { View, TouchableOpacity, Image, Text , StyleSheet } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import OnlineClasses from './OnlineClasses';
+import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
 
-const Tab = createMaterialTopTabNavigator();
-
 export default function StudyMaterials({ navigation }) {
+  const [selected, setSelected] = useState('FreePdf');
 
   return (
-    <>
-      <View style={StyleConstants.safeArView}>
-        <View style={styles.mainView} >
-          <View style={styles.arrowView} >
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.TouchArrow}>
-              <Text style={{color:'#000'}}>arrowleft</Text>
-            </TouchableOpacity>
-            <View style={styles.StdView} >
-              <Text style={styles.TextStd}>Study Materials</Text>
-            </View>
+    <View style={StyleConstants.safeArView}>
+      <View style={styles.mainView}>
+        <View style={styles.arrowView}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.TouchArrow}>
+            <Image source={require('../../assets/img/arrows.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+          <View style={styles.StdView}>
+            <Text style={styles.TextStd}>Study Materials</Text>
           </View>
-        </View>
-
-        <View style={styles.titleView} >
-          <View style={styles.titleView1} >
-            <View style={styles.titleView2} >
-              <View style={styles.imgView}>
-                <Image source={require('../../assets/img/banner.png')} resizeMode='contain' style={styles.img} />
-              </View>
-              <View style={styles.vtitle}>
-                <Text style={styles.textTitle}>PDF</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.roomView} >
-      <Tab.Navigator style={{ flex: 1, }} screenOptions={{
-        tabBarActiveTintColor: '#fff',
-        tabBarLabelStyle: { fontSize: 16, textTransform: "none", color: '#808080', },
-        tabBarStyle: { width: "100%", elevation: 0, height: 50, backgroundColor: "#EFEFEF", justifyContent: "center", borderRadius: 10 },
-        tabBarIndicatorStyle: { backgroundColor: "#000000", borderRadius: 10, height: 50 },
-      }} >
-        <Tab.Screen name="Free PDF">{() => <FreePdf></FreePdf>}</Tab.Screen>
-        <Tab.Screen name="Online Classes">{() => <OnlineClasses ></OnlineClasses>}</Tab.Screen>
-      </Tab.Navigator>
-    </View>
         </View>
       </View>
-    </>
-  )
+
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={[
+            styles.button1,
+            selected === 'FreePdf' ? styles.selectedButton : styles.deselectedButton
+          ]}
+          onPress={() => setSelected('FreePdf')}
+        >
+          <Text style={[
+            styles.text,
+            selected === 'FreePdf' ? styles.selectedText : styles.deselectedText
+          ]}>
+            FreePdf
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            selected === 'OnlineClasses' ? styles.selectedButton : styles.deselectedButton
+          ]}
+          onPress={() => setSelected('OnlineClasses')}
+        >
+          <Text style={[
+            styles.text,
+            selected === 'OnlineClasses' ? styles.selectedText : styles.deselectedText
+          ]}>
+            Online Classes
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {selected === 'FreePdf' && (
+        <FreePdf navigation={navigation} />
+      )}
+      {selected === 'OnlineClasses' && (
+        <OnlineClasses navigation={navigation} />
+      )}
+    </View>
+  );
 }
 
-
-const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    margin: 10
+  },
+  button: {
+    paddingHorizontal: 35,
+    padding: 10,
+    borderRadius: 10,
+    margin: 5
+  },
+  button1: {
+    paddingHorizontal: 51,
+    padding: 10,
+    borderRadius: 10,
+    margin: 5
+  },
+  selectedButton: {
+    backgroundColor: 'black',
+  },
+  deselectedButton: {
+    backgroundColor: 'rgba(239, 239, 239, 1)'
+  },
+  text: {
+    fontSize: 16,
+  },
+  selectedText: {
+    color: 'white',
+  },
+  deselectedText: {
+    color: 'black',
+  },
   mainView: {
-    width: "100%",
+    width: '100%',
     height: 70,
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -65,7 +108,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'center',
-    alignItems: "center"
+    alignItems: 'center'
   },
   TouchArrow: {
     flex: 0.15,
@@ -86,44 +129,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
   },
   TextStd: {
     fontSize: 22,
-    fontFamily: "WorkSans-SemiBold"
-  },
-  titleView: {
-    flex: 1,
-    paddingHorizontal: 10
-  },
-  titleView1: {
-    width: "100%",
-    height: 70,
-    backgroundColor: ColorsConstant.White
-  },
-  titleView2: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  imgView: {
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: "center",
-  },
-  img: {
-    width: 35,
-    height: 35
-  },
-  vtitle: {
-    width: "100%",
-    height: 50,
-    alignItems: 'flex-start',
-    justifyContent: 'center'
-  },
-  textTitle: {
     fontFamily: 'WorkSans-SemiBold',
-    fontSize: 20,
-  },
-  roomView: {
-    flex: 1,
-    marginTop: 10,
+    color: '#000'
   }
-})
+});

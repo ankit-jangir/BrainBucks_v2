@@ -7,7 +7,6 @@ const Wallet = () => {
   return (
     <View style={styles.container}>
       <View style={styles.container11}>
-        <Header view="someView" />
       </View>
       <View style={styles.container1}>
         <LinearGradient
