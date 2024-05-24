@@ -48,7 +48,6 @@ export default function Splash({ navigation }) {
     } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) }
   }, [])
 
-
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");
     // console.log("refer", ReferCode);

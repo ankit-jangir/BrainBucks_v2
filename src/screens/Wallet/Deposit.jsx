@@ -48,15 +48,18 @@ const Deposit = () => {
     <View style={styles.container}>
       <Toast/>
       <View style={styles.header}>
-        <Image
+      <TouchableOpacity onPress={()=>{navigation.navigate("Wallet")}}>
+      <Image
           tintColor="gray"
           source={require('../../assets/img/radic.png')}
           style={styles.actionIcon}
           resizeMode="contain"
         />
+      </TouchableOpacity>
+        
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text style={{ fontSize: 14 }}>In my Brain Bucks Wallet</Text>
+          <Text style={{fontSize: 14}}>In my Brain Bucks Wallet</Text>
         </View>
       </View>
       <View style={styles.amountInputContainer}>
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 50
+    paddingTop: 50,
   },
   actionIcon: {
     width: 20,

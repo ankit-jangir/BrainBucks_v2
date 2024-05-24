@@ -2,11 +2,14 @@ import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native'
 import React from 'react'
 import { Image } from 'react-native-elements'
 
-const AddBankSucessfully = () => {
+const AddBankSucessfully = ({navigation}) => {
   return (
     <View style={{flex:1,backgroundColor:"#610ECD"}}>
       <View>
+      <TouchableOpacity onPress={()=>{navigation.navigate("walletotp")}}>
       <Image source={require('../../assets/img/radic.png')} style={{height:30,width:30,margin:20}} tintColor={"white"}/>
+
+      </TouchableOpacity>
       </View>
       <View style={{justifyContent:"center",alignItems:"center",marginTop:60,padding:40}}>
       <Text style={{color:"white",fontSize:20,fontWeight:"600",textAlign:"center"}}>Remove following Bank account from Withdrawals</Text>

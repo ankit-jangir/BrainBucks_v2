@@ -143,34 +143,33 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   icon: {
-    height: 25,
-    width: 25,
+    height: 35,
+    width: 35,
   },
   info: {
     marginLeft: 10,
   },
   amount: {
-    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
     color: "#16AC72"
   },
   date: {
     color: 'gray',
-    fontSize: 12,
+    fontSize: 10,
   },
   titleWrapper: {
-    paddingLeft: 20,
+    paddingLeft: 5,
     flex: 1,
   },
   title: {
     color: 'black',
     fontSize: 17,
     fontWeight: '400',
-    textAlign: "right"
+    paddingRight:5,
+    textAlign:"right"
 
   },
   spentForWrapper: {
@@ -186,8 +185,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   mainImage: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
   },
   textTitle: {
     marginLeft: 15,

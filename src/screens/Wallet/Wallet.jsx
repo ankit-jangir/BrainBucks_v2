@@ -5,25 +5,29 @@ import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
 import History from './History';
 import WalletApiService from '../../services/api/WalletApiService';
+import {useNavigation,NavigationContainer,useIsFocused} from '@react-navigation/native';
 
-const Wallet = ({ navigation }) => {
+
+
+export default function Wallet  ({navigation}) {
+  // const isFocused = useNavigation();
   const data = [
     {
       r: "₹ 15,600",
       s: "12:34 | 20 Dec 2022",
-      sucess: 1,
-      type: 0,
+      success: 1,
+      type: "credit",
     },
     {
       r: "₹ 15,600",
       s: "12:34 | 20 Dec 2022",
-      sucess: -1,
+      success: -1,
       type: "debit",
     },
     {
       r: "₹ 15,600",
       s: "12:34 | 20 Dec 2022",
-      sucess: 0,
+      success: 0,
       type: "credit",
     },
     {
@@ -34,11 +38,16 @@ const Wallet = ({ navigation }) => {
     }, {
       r: "₹ 15,600",
       s: "12:34 | 20 Dec 2022",
-      sucess: 0,
+      success: 1,
+      type: "debit",
+    },
+    {
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      success: 0,
       type: "credit",
     }
-
-  ]
+  ];
   const [walletData, setWalletData] = useState({
     investmoney: 0,
     wallet: 0,
@@ -75,6 +84,7 @@ const Wallet = ({ navigation }) => {
     }
   }
 
+    
   return (
     <View style={styles.container}>
       <View
@@ -83,13 +93,16 @@ const Wallet = ({ navigation }) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           padding: 15,
-          marginBottom: 30,
+          marginBottom:5,
         }}>
         <View>
           <Image
             source={require('../../assets/img/menu.png')}
             tintColor={'black'}
-            style={{ height: 25, width: 25 }}
+            style={{height: 25, width: 25}}
+
+           onPress={() => navigation.openDrawer()}
+
           />
         </View>
         <View>
@@ -99,7 +112,9 @@ const Wallet = ({ navigation }) => {
           <Image
             source={require('../../assets/img/homedark.png')}
             tintColor={'balck'}
-            style={{ height: 25, width: 25 }}
+            style={{height: 25, width: 25}}
+        onPress={() => navigation.navigate('Home')}
+
           />
         </View>
       </View>
@@ -211,7 +226,7 @@ const Wallet = ({ navigation }) => {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem} onPress={() => { navigation.navigate('addbanksucessfully') }}>
+          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbankDetails')}}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -233,40 +248,46 @@ const Wallet = ({ navigation }) => {
         </View>
       </View>
       <ScrollView>
-
-        {
-
-          data.map((res) => {
-            return (
-              <View key={res.data1} style={styles.historyContainer}>
-                <View style={styles.transactionEntry}>
-                  <View style={styles.iconContainer}>
-                    <Image source={require('../../assets/img/downarrow.png')} style={styles.icon} tintColor={"#129C73"} />
-                  </View>
-                  <View>
-                    <Text style={styles.transactionAmount}>{res.r}</Text>
-                    <Text style={styles.timestamp}>{res.s}</Text>
-                  </View>
-                  <View style={styles.statusContainer}>
-                    <View style={styles.statusIcon}>
-                      <Image source={require('../../assets/img/radic.png')} style={styles.icon1} tintColor={"white"} />
-                    </View>
-                    <Text style={styles.statusText}>Failed</Text>
-                  </View>
-                  <View style={styles.arrowIconContainer}>
-                    <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
-                  </View>
-                </View>
-              </View>
-            )
-          })
-        }
-      </ScrollView>
+      {data.map((res, index) => (
+        <View key={index} style={styles.historyContainer}>
+        <TouchableOpacity onPress={()=>{navigation.navigate('transactionDetails')}}>
+        <View style={styles.transactionEntry}>
+        <View style={[styles.iconContainer,{ backgroundColor: res.success === 1 ? "#EFFFF6" : "#FFEFEF" }]}>
+          <Image
+            source={res.success === 1 ? require('../../assets/img/uparrow.png') : require('../../assets/img/downarrow.png')}
+            style={styles.icon}
+            tintColor={res.success === 1 ? "#129C73" : "#DC1111"}
+          />
+        </View>
+        <View>
+          <Text style={styles.transactionAmount}>{res.r}</Text>
+          <Text style={styles.timestamp}>{res.s}</Text>
+        </View>
+        <View style={styles.statusContainer}>
+          <View style={[styles.statusIcon, ]}>
+            <Image
+              source={res.success === 1 ? require('../../assets/img/arrowright.png') : require('../../assets/img/cross.png')}
+              style={styles.icon1}
+            />
+          </View>
+          <Text style={[styles.statusText, { color: res.success === 1 ? "#129C73" : "#DC1111" }]}>
+            {res.success === 1 ? "Success" : "Pending"}
+          </Text>
+        </View>
+        <View style={styles.arrowIconContainer}>
+          <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
+        </View>
+      </View>
+        </TouchableOpacity>
+      
+        </View>
+      ))}
+    </ScrollView>
     </View>
   );
 };
 
-export default Wallet;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -289,11 +310,12 @@ const styles = StyleSheet.create({
   containerImg2: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    backgroundColor: '#f5d0f1',
+    backgroundColor: '#ffffff50',
     borderBottomRightRadius: 5,
     borderBottomStartRadius: 5,
-    marginTop: 30,
+    marginTop: 15,
     padding: 10,
+    marginBottom:10
   },
   headerLeft: {
     flexDirection: 'row',
@@ -334,7 +356,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     padding: 4,
-    backgroundColor: '#f5d0f1',
+    backgroundColor: '#ffffff50',
     borderRadius: 5,
   },
   growthText: {
@@ -375,40 +397,41 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     flexDirection: 'row',
-    marginTop: 30,
+    marginTop: 12,
     justifyContent: 'space-between',
   },
   actionsContainer1: {
     flexDirection: 'row',
-    marginTop: 40,
+    marginTop: 10,
     justifyContent: 'space-between',
+    paddingLeft:5
   },
   actionItem: {
     alignItems: 'center',
   },
   actionIconContainer: {
-    height: 80,
-    width: 80,
+    height: 60,
+    width: 60,
     borderRadius: 50,
-    backgroundColor: 'lightgray',
+    backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
   },
   actionIcon: {
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
   },
   actionText: {
     textAlign: 'center',
   },
   RecentText: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: '500',
     color: 'black',
   },
   TouchableButton: {
-    backgroundColor: 'lightgray',
-    padding: 10,
+    backgroundColor: '#F5F5F5',
+    padding:5,
     borderRadius: 8,
     marginRight: 10,
     paddingRight: 15,
@@ -416,76 +439,71 @@ const styles = StyleSheet.create({
   },
   ViewText: {
     fontSize: 13,
-    color: '#8A8C94',
-    fontWeight: '500'
-  },
-  historyContainer: {
-    margin: 10,
-    backgroundColor: "#FFFFFF"
-  },
-  transactionEntry: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    justifyContent: "space-between",
-    padding: 15,
-    borderRadius: 10,
-    elevation: 2,
-  },
-  iconContainer: {
-    height: 40,
-    width: 40,
-    borderRadius: 50,
-    backgroundColor: "#EFFFF6",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  icon: {
-    height: 20,
-    width: 20,
-    alignSelf: "center",
-  },
-  icon2: {
-    height: 15,
-    width: 15,
-    alignSelf: "center",
-  },
-  icon1: {
-    height: 10,
-    width: 10,
-    alignSelf: "center",
-  },
-  transactionAmount: {
-    color: "black",
-    fontSize: 21,
-    fontWeight: "600",
-  },
-  timestamp: {
-    color: "#8A8A8A",
-  },
-  statusContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  statusIcon: {
-    height: 25,
-    width: 25,
-    backgroundColor: "#DC1111",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  statusText: {
-    color: "#DC1111",
-    paddingLeft: 8,
-    fontSize: 17,
-    fontWeight: "600"
-  },
-  arrowIconContainer: {
-    // height: 40,
-    // width: 40,
-    // borderRadius: 50,
-    // backgroundColor: "#f0f2f5",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+     color: '#8A8C94', 
+     fontWeight: '500'
+    },
+    historyContainer: {
+      margin: 10,
+      backgroundColor: "#FFFFFF",
+    },
+    transactionEntry: {
+      flexDirection: "row",
+      backgroundColor: "#FFFFFF",
+      justifyContent: "space-between",
+      padding: 15,
+      borderRadius: 10,
+      borderWidth:1,
+      borderColor:"lightgray"
+    },
+    iconContainer: {
+      height: 40,
+      width: 40,
+      borderRadius: 50,
+      backgroundColor: "#EFFFF6",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    icon: {
+      height: 20,
+      width: 20,
+      alignSelf: "center",
+    },
+    icon2: {
+      height: 15,
+      width: 15,
+      alignSelf: "center",
+    },
+    icon1: {
+      height: 20,
+      width: 20,
+      alignSelf: "center",
+    },
+    transactionAmount: {
+      color: "black",
+      fontSize: 21,
+      fontWeight: "600",
+    },
+    timestamp: {
+      color: "#8A8A8A",
+    },
+    statusContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    statusIcon: {
+      height: 25,
+      width: 25,
+      borderRadius: 50,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    statusText: {
+      paddingLeft: 8,
+      fontSize: 17,
+      fontWeight: "600",
+    },
+    arrowIconContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
 });

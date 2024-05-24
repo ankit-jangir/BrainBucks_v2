@@ -3,7 +3,7 @@ import React from 'react';
 import {Text, TextInput} from '../../utils/Translate';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const Withdraw = () => {
+const Withdraw = ({navigation}) => {
   const data = [
     {
       bankname: 'Federal Bank',
@@ -43,14 +43,20 @@ const Withdraw = () => {
     },
   ];
   return (
-    <View style={{flex: 1,backgroundColor:"white",paddingBottom: 80,}}>
+    <View style={{flex: 1, backgroundColor: 'white', paddingBottom: 80}}>
       <View style={styles.header}>
-        <Image
-          tintColor="gray"
-          source={require('../../assets/img/radic.png')}
-          style={styles.actionIcon}
-          resizeMode="contain"
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Wallet');
+          }}>
+          <Image
+            tintColor="gray"
+            source={require('../../assets/img/radic.png')}
+            style={styles.actionIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Withdraw Money</Text>
           <Text style={{fontSize: 14, color: '#D92828'}}>
@@ -80,36 +86,39 @@ const Withdraw = () => {
         {data.map((res, index) => {
           return (
             <>
-            <TouchableOpacity>
-            <View key={index} style={styles.bankDetailsContainer}>
-            <View style={styles.bankDetailsHeader}>
-              <View style={styles.bankIconContainer}>
-                <Image
-                  source={require('../../assets/img/bb.png')}
-                  resizeMode="contain"
-                  style={styles.bankIcon}
-                />
-              </View>
-              <Text style={styles.bankName}>{res.bankname}</Text>
-            </View>
-            <Text style={styles.bankHolder}>{res.HolName}</Text>
-            <View style={styles.bankAccountDetails}>
-              <Text style={styles.accountText}>{res.Acc}</Text>
-              <Text style={styles.ifscText}>{res.ifc}</Text>
-            </View>
-            <View style={{margin: 0}}>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Remove Account</Text>
+              <TouchableOpacity>
+                <View key={index} style={styles.bankDetailsContainer}>
+                  <View style={styles.bankDetailsHeader}>
+                    <View style={styles.bankIconContainer}>
+                      <Image
+                        source={require('../../assets/img/bb.png')}
+                        resizeMode="contain"
+                        style={styles.bankIcon}
+                      />
+                    </View>
+                    <Text style={styles.bankName}>{res.bankname}</Text>
+                  </View>
+                  <Text style={styles.bankHolder}>{res.HolName}</Text>
+                  <View style={styles.bankAccountDetails}>
+                    <Text style={styles.accountText}>{res.Acc}</Text>
+                    <Text style={styles.ifscText}>{res.ifc}</Text>
+                  </View>
+                  <View style={{margin: 0}}>
+                    <TouchableOpacity style={styles.button}>
+                      <Text style={styles.buttonText}>Remove Account</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </TouchableOpacity>
-            </View>
-          </View>
-            </TouchableOpacity>
-             
             </>
           );
         })}
       </ScrollView>
-      <TouchableOpacity style={styles.payNowButton}>
+      <TouchableOpacity
+        style={styles.payNowButton}
+        onPress={() => {
+          navigation.navigate('withdrawMoney');
+        }}>
         <Text style={styles.payNowText}>Withdraw Now</Text>
       </TouchableOpacity>
     </View>
@@ -123,7 +132,6 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 50,
   },
   actionIcon: {
     width: 20,
@@ -140,6 +148,7 @@ const styles = StyleSheet.create({
   },
   balanceContainer: {
     margin: 10,
+    marginBottom: 0,
     borderColor: '#EFEFEF',
     padding: 10,
     borderWidth: 1,
@@ -150,13 +159,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   balanceAmount1: {
-    fontSize: 21,
-    fontWeight: '600',
-    color:"black",
-    paddingLeft:20
+    fontSize: 17,
+    fontWeight: '500',
+    color: 'black',
+    paddingLeft: 20,
   },
   amountInputContainer: {
-    margin: 20,
+    padding: 15,
   },
   amountLabel: {
     color: 'black',
@@ -166,16 +175,17 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
-    padding: 10,
-    marginTop: 10,
+    padding: 5,
+    marginTop: 5,
     fontSize: 17,
   },
   bankDetailsContainer: {
-    margin: 20,
+    marginTop: 5,
+    margin: 10,
     // padding: 10,
     // backgroundColor:'#EFEFEF',
     borderRadius: 10,
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: 'lightgray',
   },
   bankDetailsHeader: {
@@ -220,11 +230,11 @@ const styles = StyleSheet.create({
   },
   payNowButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
     left: 20,
     right: 20,
     backgroundColor: '#701DDB',
-    padding: 13,
+    padding: 10,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',

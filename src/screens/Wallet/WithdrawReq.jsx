@@ -21,7 +21,7 @@ const WithdrawReq = () => {
         />
         <View style={styles.messageTextContainer}>
           <Text style={styles.messageText}>
-            Withdrawal Request Placed Successfully
+            Withdrawal Request{'\n'}Placed Successfully
           </Text>
         </View>
       </View>
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    padding: 15,
     alignItems: 'center',
-    marginBottom: 10,
+    marginLeft:10,
+    marginTop:5
   },
   backImage: {
     height: 45,
@@ -98,15 +98,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   amountText: {
-    fontSize: 42,
+    fontSize:40,
     fontWeight: '800',
     color: '#FFFFFF',
   },
   messageContainer: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     flexDirection: 'row',
-    marginTop: 20,
-    padding: 20,
+    alignItems:"center",
+    // paddingLeft:80,
+    marginTop:10,
+    marginBottom:10
   },
   tickImage: {
     height: 45,
@@ -114,12 +116,13 @@ const styles = StyleSheet.create({
   },
   messageTextContainer: {
     alignItems: 'center',
+
   },
   messageText: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: '800',
     color: '#FFFFFF',
-    textAlign: 'center',
+    paddingLeft:7
   },
   detailsContainer: {
     backgroundColor: 'white',
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 25,
     borderTopLeftRadius: 25,
 
-    marginTop: 10,
+    marginTop: 30,
     paddingLeft: 15,
     paddingTop: 15,
     paddingRight: 15,
@@ -139,10 +142,10 @@ const styles = StyleSheet.create({
   },
   transactionId: {
     color: '#A1A2AD',
-    fontSize: 24,
+    fontSize: 19,
   },
   transactionDetails: {
-    paddingTop: 20,
+    paddingTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -151,12 +154,12 @@ const styles = StyleSheet.create({
     width: 35,
   },
   transactionDate: {
-    paddingLeft: 20,
-    fontSize: 20,
+    paddingLeft: 15,
+    fontSize: 17,
     color: '#A1A2AD',
   },
   beneficiaryLabel: {
-    paddingTop: 30,
+    paddingTop: 10,
     fontSize: 16,
   },
   bankDetailsContainer: {
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgray',
     marginTop: 10,
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
   bankDetailsHeader: {
     flexDirection: 'row',
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   bankName: {
-    fontSize: 21,
+    fontSize: 17,
     fontWeight: '500',
     paddingLeft: 15,
     color: 'black',
@@ -193,25 +196,28 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     fontWeight: '400',
     color: '#7E7E7E',
-    paddingTop: 20,
-    fontSize: 17,
+    paddingTop: 5,
+    fontSize: 14,
   },
   bankAccountDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 10,
+    // padding: 10,
+    paddingLeft:10,
+    paddingRight:10
   },
   accountText: {
     color: 'black',
-    fontSize: 17,
+    fontSize: 14,
+    
   },
   ifscText: {
     color: 'black',
-    fontSize: 17,
+    fontSize: 14,
   },
   statusContainer: {
     flexDirection: 'row',
-    margin: 10,
+    margin:5,
   },
   statusButton: {
     backgroundColor: '#EFF4FA',
@@ -244,5 +250,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     resizeMode: 'contain',
+    marginBottom:20
   },
 });

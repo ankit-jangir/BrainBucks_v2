@@ -11,7 +11,7 @@ import { OtpInput } from "react-native-otp-entry";
 import basic from "../../services/BasicServices";
 
 
-export default function WalletOtp({ navigation, route }) {
+export default function WithdrawOtp({ navigation, route }) {
     const [otp, setOtp] = useState();
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
@@ -128,7 +128,7 @@ export default function WalletOtp({ navigation, route }) {
                         >
                         </TouchableOpacity>
                         <Button
-                            onPress={next}
+                            onPress={()=>{navigation.navigate("withdrawReq")}}
                             title="Confirm"
                             loading={loading}
                             titleStyle={styles.textOt}

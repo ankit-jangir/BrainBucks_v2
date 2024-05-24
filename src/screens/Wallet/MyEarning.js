@@ -3,13 +3,16 @@ import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image } from 'r
 import MyEarningSpent from './MyEarningSpent';
 import Earned from './Earned';
 
-const MyEarning = () => {
+const MyEarning = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
 
   return (
     <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
       <View style={styles.header}>
-        <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
+      <TouchableOpacity onPress={()=>{navigation.navigate("Wallet")}}>
+      <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
+      
+      </TouchableOpacity>
         <Text style={styles.headerText}>My Earnings</Text>
       </View>
 

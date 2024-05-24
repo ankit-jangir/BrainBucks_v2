@@ -10,7 +10,6 @@ import Sidebar from './src/screens/Home/Sidebar';
 import Wallet from './src/screens/Wallet/Wallet';
 import Study from './src/screens/Study/Study';
 import Saved from './src/screens/saved/Saved';
-import TransactionHistory from './src/screens/Wallet/TransactionHistory';
 import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
@@ -33,12 +32,20 @@ import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
 import History from './src/screens/Wallet/History';
 import Withdraw from './src/screens/Wallet/Withdraw';
-import AddBank from './src/screens/Wallet/AddBank';
-import BankDetails from './src/screens/Wallet/BankDetails';
-import WalletOtp from './src/screens/Wallet/WalletOtp';
+import AddBank from './src/screens/Wallet/AddBankAccount';
+import BankDetails from './src/screens/Wallet/AddBanks';
+import WalletOtp from './src/screens/Wallet/WithdrawOtp';
 import AddBankSucessfully from './src/screens/Wallet/AddBankSucessfully';
 import WithdrawReq from './src/screens/Wallet/WithdrawReq';
 import DailyUpdates from './src/screens/Sidebar/DailyUpdates';
+import TransctionDetails from './src/screens/Wallet/TransctionDetails';
+import WithdrawMoney from './src/screens/Wallet/WithdrawMoney';
+import AccoountDeatils from './src/screens/Wallet/AccountDeatils';
+import BankOtp from './src/screens/Wallet/BankOtp';
+import BackWithdraw from './src/screens/Wallet/BackWithdraw';
+import WithdrawOtp from './src/screens/Wallet/WithdrawOtp';
+import AddBanks from './src/screens/Wallet/AddBanks';
+import AddBankAccount from './src/screens/Wallet/AddBankAccount';
 
 
 
@@ -65,7 +72,6 @@ function MyStack() {
       <Stack.Screen name="wallet" component={Wallet} />
       <Stack.Screen name="study" component={Study} />
       <Stack.Screen name="saved" component={Saved} />
-      <Stack.Screen name="transactionHistory" component={TransactionHistory} />
       <Stack.Screen name="SearchBar" component={SearchBar} />
       <Stack.Screen name="videoplayer" component={VideoPlayer} />
       <Stack.Screen name="SignupName" component={SignupName} />
@@ -83,13 +89,21 @@ function MyStack() {
       <Stack.Screen name="myEarning" component={MyEarning} />
       <Stack.Screen name="history" component={History} />
       <Stack.Screen name="withdraw" component={Withdraw} />
-      <Stack.Screen name="addbank" component={AddBank} />
-      <Stack.Screen name="addbankDetails" component={BankDetails} />
-      <Stack.Screen name="walletotp" component={WalletOtp} />
+      <Stack.Screen name="addbankAccount" component={AddBankAccount} />
+      <Stack.Screen name="addbankDetails" component={AddBanks} />
+      <Stack.Screen name="withdrawOtp" component={WithdrawOtp} />
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
       <Stack.Screen name='dailyupdates' component={DailyUpdates}/>
+      <Stack.Screen name="transactionDetails"  component={TransctionDetails} />
+      <Stack.Screen name="withdrawMoney" component={WithdrawMoney} />
+      <Stack.Screen name="AccountDeatils" component={AccoountDeatils} />
+      <Stack.Screen name="bankotp" component={BankOtp} />
+      <Stack.Screen name="backwithdraw" component={BackWithdraw} />
+
+
+
     </Stack.Navigator>
   );
 }
