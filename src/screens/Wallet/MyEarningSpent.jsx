@@ -58,7 +58,9 @@ const MyEarningSpent = () => {
             return(
                 <View style={styles.card}>
                 <View style={styles.row}>
-                  <Image
+                <View>
+                <View style={{flexDirection:"row"}}>
+                <Image
                     source={require('../../assets/img/bb.png')}
                     style={styles.icon}
                   />
@@ -66,6 +68,9 @@ const MyEarningSpent = () => {
                     <Text style={styles.amount}>{res.data1}</Text>
                     <Text style={styles.date}>{res.time}</Text>
                   </View>
+                </View>
+                </View>
+                  
                   <View style={styles.titleWrapper}>
                     <Text style={styles.title}>{res.part}</Text>
                   </View>
@@ -111,7 +116,6 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   icon: {
     height: 35,
@@ -121,23 +125,23 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   amount: {
-    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
     color:"#DC1111"
   },
   date: {
     color: 'gray',
-    fontSize: 12,
+    fontSize: 10,
   },
   titleWrapper: {
-    paddingLeft: 20,
+    paddingLeft: 5,
     flex: 1,
   },
   title: {
     color: 'black',
     fontSize: 17,
     fontWeight: '400',
+    paddingRight:5,
     textAlign:"right"
 
   },
@@ -154,8 +158,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   mainImage: {
-    width: 35,
-    height: 35,
+    width: 20,
+    height: 20,
   },
   textTitle: {
     marginLeft: 15,

@@ -2,7 +2,7 @@ import { StyleSheet, View,Image, TouchableOpacity ,ScrollView} from 'react-nativ
 import React from 'react'
 import { Text } from '../../utils/Translate'
 
-const BankDetails = ({navigation}) => {
+const AddBanks = ({navigation}) => {
     const data = [
         {
           bankname: 'Federal Bank',
@@ -44,12 +44,19 @@ const BankDetails = ({navigation}) => {
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
     <View style={styles.header}>
-    <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
     <TouchableOpacity
-    onPress={() => navigation.navigate('addbank')}
+    onPress={() => navigation.navigate('wallet')}>
+    <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
+  </TouchableOpacity>
+
+    <TouchableOpacity
+    onPress={() => navigation.navigate('addbankAccount')}
     style={styles.TouchableButton}>
     <Text style={styles.ViewText}>+Add</Text>
   </TouchableOpacity>
+  </View>
+  <View style={{marginLeft:10}}>
+  <Text style={{color:"black",fontSize:17,fontWeight:"600"}}>Your Banks</Text>
   </View>
   <ScrollView>
   {data.map((res, index) => {
@@ -89,7 +96,7 @@ const BankDetails = ({navigation}) => {
   )
 }
 
-export default BankDetails
+export default AddBanks
 
 const styles = StyleSheet.create({
     header: {
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 0.2,
         borderBottomColor: 'gray',
-        marginBottom: 20,
+        marginBottom: 10,
         justifyContent:"space-between"
       },
       backImage: {
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
          fontWeight: '500'
         },
         bankDetailsContainer: {
-            margin: 20,
+            margin: 10,
             // padding: 10,
             // backgroundColor:'#EFEFEF',
             borderRadius: 10,

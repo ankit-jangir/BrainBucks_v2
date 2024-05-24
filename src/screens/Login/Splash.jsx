@@ -24,25 +24,20 @@ export default function Splash({ navigation }) {
           let res;
           try{
             res = await auth.getUserProfile();
+            if(res.status===1){
+              setCheckLang(res)
+            }
           }catch(err){console.log("ERROR IN GETTING PROFILE",err.message)}
           if (res&&res.status === 1) {
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+          }else{
+            setCheckLang(null)
           }
         }
       }
     }
     try { getLang() } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE") }
   }, [])
-
-  try {
-    AsyncStorage.getItem("language").then((res) => {
-      basic.getLocalObject().then(result => {
-        setCheckLang(result.jwt)
-      })
-    })
-  } catch (err) {
-    console.log("ERROR IN RETREIEVING SPLASH LOGIC", err.message)
-  }
 
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");

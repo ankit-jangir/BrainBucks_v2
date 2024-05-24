@@ -1,23 +1,31 @@
-import { StyleSheet, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
-import { Text, TextInput } from '../../utils/Translate';
+import {Text, TextInput} from '../../utils/Translate';
 
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
-const AddBank = ({navigation}) => {
+const AddBankAccount = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
+        <TouchableOpacity onPress={() => navigation.navigate('addbankDetails')}>
+          <Image
+            source={require('../../assets/img/back.png')}
+            style={styles.backImage}
+          />
+        </TouchableOpacity>
         <Text style={styles.headerText}>Add Bank Account</Text>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Enter Bank Name</Text>
-          <TextInput
-            placeholder="Enter Bank Name"
-            style={styles.inputs}
-          />
+          <TextInput placeholder="Enter Bank Name" style={styles.inputs} />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Beneficiary Name</Text>
@@ -41,14 +49,18 @@ const AddBank = ({navigation}) => {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.navigate("addbankDetails")}}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          navigation.navigate('AccountDeatils');
+        }}>
         <Text style={styles.addButtonText}>Add Account</Text>
       </TouchableOpacity>
     </View>
   );
-}
+};
 
-export default AddBank;
+export default AddBankAccount;
 
 const styles = StyleSheet.create({
   container: {
@@ -75,7 +87,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   formContainer: {
-    marginTop: 80,
+    marginTop: 20,
     paddingHorizontal: 10,
   },
   inputContainer: {
@@ -96,7 +108,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: 'absolute',
-    bottom: height * 0.1,
+    bottom: 20,
     left: 20,
     right: 20,
     backgroundColor: '#701DDB',
