@@ -4,7 +4,7 @@ import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
 import { Image } from '@rneui/base';
-import styles from '../../styles/Study.styles';
+import styles from '../../styles/Studymaterials.styles';
 export default function QuestionPaperList({ navigation, route }) {
 
 

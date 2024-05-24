@@ -309,6 +309,79 @@ const styles = StyleSheet.create({
       alignItems: 'flex-start',
       justifyContent: 'center',
     },
+        Hview: {
+      width: '100%',
+      height: 70,
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: ColorsConstant.LightGray,
+    },
+    Hview1: {
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    THead: {
+      flex: 0.15,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 4,
+      width: 50,
+      height: 50,
+      borderColor: ColorsConstant.LightWhite,
+      borderWidth: 1,
+      borderRadius: 100,
+    },
+    ViewMy: {
+      flex: 0.8,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      paddingLeft: 20,
+    },
+    TextMy: {
+      fontSize: 22,
+      fontFamily: 'WorkSans-SemiBold',
+      color: '#000',
+    },
+
+
+
+    CView: {
+      width: 140,
+      height: 30,
+      backgroundColor: '#EFFFF6',
+      borderRadius: 5,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    TextC: {
+      fontFamily: 'WorkSans-Regular',
+      fontSize: 14,
+      color: '#1DC173',
+    },
+   
+    PView: {
+      width: '100%',
+      height: 40,
+      justifyContent: 'center',
+    },
+    TextP: {
+      fontFamily: 'WorkSans-Medium',
+      fontSize: 14,
+      color: '#8A8A8A',
+    },
+    lView: {
+      height: 10,
+      backgroundColor: 'whitesmoke',
+      borderRadius: 10,
+    },
+   
+    RView: {
+      flex: 1,
+      margin:0,
+    },
   });
 
   export default styles

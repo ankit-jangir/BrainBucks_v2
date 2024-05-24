@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 // import { Text } from '../../../Translate';
-import styles from '../../styles/Study.styles';
+import styles from '../../styles/Studymaterials.styles';
 
 export default function StudyExam({route, navigation}) {
   const [refresh, setRefresh] = useState(false);
