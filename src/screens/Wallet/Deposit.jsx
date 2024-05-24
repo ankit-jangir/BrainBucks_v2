@@ -1,11 +1,52 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {Text, TextInput} from '../../utils/Translate';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Text, TextInput } from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import Toast from 'react-native-toast-message';
+import WalletApiService from '../../services/api/WalletApiService';
+import RazorpayCheckout from 'react-native-razorpay';
 
 const Deposit = () => {
-  const [amout, setAmount] = useState([]);
+  const [amount, setAmount] = useState();
+  const [loading, setLoading] = useState(false)
+  const [errMsg, setErrMsg] = useState()
+
+  let walletService = new WalletApiService()
+
+  async function createOrder(){
+    setErrMsg(null)
+    if(!amount){
+      setErrMsg("Enter a valid amount first")
+      return;
+    }
+    try{
+      setLoading(true)
+      let res = await walletService.createOrder(amount)
+      if(res.status===1){
+        RazorpayCheckout.open(res.option2).then((data) => {
+          alert(`Success: ${data.razorpay_payment_id}`);
+        }).catch((error) => {
+          alert(`Error: ${error.code} | ${error.description}`);
+        });
+      }else{
+        Toast.show({
+          type:'error',
+          text1:res.Backend_Error
+        })
+      }
+    }catch(err){
+      console.log("Error while creating order",err.message);
+      Toast.show({
+        type:'error',
+        text1:"Something went wrong"
+      })
+    }finally{
+      setLoading(false)
+    }
+  }
   return (
     <View style={styles.container}>
+      <Toast/>
       <View style={styles.header}>
         <Image
           tintColor="gray"
@@ -15,17 +56,20 @@ const Deposit = () => {
         />
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text style={{fontSize:14}}>In my Brain Bucks Wallet</Text>
+          <Text style={{ fontSize: 14 }}>In my Brain Bucks Wallet</Text>
         </View>
       </View>
       <View style={styles.amountInputContainer}>
-        <Text style={styles.amountLabel}>Enter Amount</Text>
+        <Text style={styles.amountLabel}>Select Amount {'(₹)'}</Text>
         <TextInput
+          placeholderTextColor='gray'
           keyboardType="numeric"
           placeholder="Type Here..."
-          style={styles.inputs}
-          value={amout}
+          style={[styles.inputs, errMsg&&{borderWidth:1, borderColor:'red'}]}
+          value={amount}
+          editable={false}
         />
+        {errMsg && <Text style={styles.errmsg} key={errMsg}>*{errMsg}</Text>}
       </View>
       <View style={styles.quickAmountContainer}>
         <TouchableOpacity
@@ -49,9 +93,20 @@ const Deposit = () => {
           <Text style={styles.quickAmountText}>₹ 1000</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.payNowButton}>
+      <TouchableOpacity onPress={createOrder} style={styles.payNowButton}>
         <Text style={styles.payNowText}>Pay Now</Text>
       </TouchableOpacity>
+      <Button
+              onPress={createOrder}
+              title="Start Preparing"
+              loading={loading}
+              titleStyle={styles.payNowText}
+              buttonStyle={styles.payNowButton}
+              loadingProps={{
+                size: 'large',
+                color: 'white',
+              }}
+            />
     </View>
   );
 };
@@ -67,7 +122,7 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop:50 
+    paddingTop: 50
   },
   actionIcon: {
     width: 20,
@@ -97,6 +152,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     fontSize: 21,
+    color:ColorsConstant.Black
   },
   quickAmountContainer: {
     margin: 20,
@@ -131,4 +187,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 21,
   },
+  errmsg:{
+    color:"red",
+    fontSize:13,
+    marginTop:6 
+  }
 });

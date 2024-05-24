@@ -7,6 +7,9 @@ import AuthenticationApiService from '../../services/api/AuthenticationApiServic
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Overlay } from '@rneui/themed';
 import { Button } from '../../utils/Translate';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useDrawerStatus } from '@react-navigation/drawer';
+import { BLOBURL } from '../../config/urls';
 
 const Sidebar = ({ navigation }) => {
   const auth = new AuthenticationApiService();
@@ -16,6 +19,9 @@ const Sidebar = ({ navigation }) => {
   const [loggingOut, setLoggingOut] = useState(false)
   const [totalPlayed, setTotalPlayed] = useState(0)
   const [visible, setVisible] = useState(false)
+  const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
+
+  const status = useDrawerStatus()
 
   function toggleOverlay() {
     setVisible(!visible)
@@ -26,6 +32,9 @@ const Sidebar = ({ navigation }) => {
       auth.getUserProfile().then((res) => {
         if (res.status === 1) {
           setUserData(res.user_details)
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image)
+          }
           setTotalPlayed(res.totalquizplayed)
         } else {
           Toast.show({ type: "error", text1: res.Backend_Error })
@@ -38,7 +47,7 @@ const Sidebar = ({ navigation }) => {
         text1: "Something Went Wrong"
       })
     }
-  }, [])
+  }, [status])
 
   async function logOut() {
     setLoggingOut(true)
@@ -78,7 +87,7 @@ const Sidebar = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.profileSection}>
-          <Image source={require('../../assets/img/boy.png')} resizeMode="contain" style={styles.profileImage} />
+          <Image source={{ uri: image1 }} resizeMode="contain" style={styles.profileImage} />
           <View style={styles.profileInfo}>
             <TouchableOpacity onPress={() => navigation.navigate('ViewProfile', {
               userData: userData,
@@ -92,6 +101,7 @@ const Sidebar = ({ navigation }) => {
       </View>
       <ScrollView style={styles.menu}>
         <MenuItem
+        action={()=>{navigation.navigate("dailyupdates")}}
           image={require('../../assets/img/dailyupdate.png')}
           text="Daily Updates"
         />
@@ -130,21 +140,21 @@ const Sidebar = ({ navigation }) => {
       </ScrollView>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
         <View style={styles.logoutView}>
-        <Text style={styles.welcomeText}>
-          Do You Want To Log Out
-        </Text>
-        <View style={styles.logoutbuttons}>
-        <Button
-          title="Yes"
-          color={"secondary"}
-          buttonStyle={styles.logoutyesbutton}
-          onPress={()=>{logOut().then(toggleOverlay)}}
-        />
-        <Button
-        color={"primary"}
-          title="Cancel"
-          onPress={toggleOverlay} />
-        </View>
+          <Text style={styles.welcomeText}>
+            Do You Want To Log Out
+          </Text>
+          <View style={styles.logoutbuttons}>
+            <Button
+              title="Yes"
+              color={"secondary"}
+              buttonStyle={styles.logoutyesbutton}
+              onPress={() => { logOut().then(toggleOverlay) }}
+            />
+            <Button
+              color={"primary"}
+              title="Cancel"
+              onPress={toggleOverlay} />
+          </View>
         </View>
       </Overlay>
     </View>

@@ -2,14 +2,47 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ImageBackground, SafeAreaView, Share, StyleSheet,ScrollView } from 'react-native';
 import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/ViewProfile.styles';
+import Toast from 'react-native-toast-message';
+import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import { useIsFocused } from '@react-navigation/native';
+import { BLOBURL } from '../../config/urls';
 
 
 
 export default function ViewProfile({ navigation, route }) {
   const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
-  let user = route.params.userData;
+  const [user,setUser] = useState(route.params.userData);
+  let auth = new AuthenticationApiService();
+  let  isFocused = useIsFocused()
+
+  useEffect(()=>{
+    try{
+      auth.getUserProfile().then(res=>{
+        if(res.status===1){
+          setUser(res.user_details)
+          if(res.user_details.image){
+            setImage1(BLOBURL+res.user_details.image)
+          }
+        }else{
+          Toast.show({
+            type:'error',
+            text1:res.Backend_Error
+          })
+        }
+      })
+    }catch(err){
+      console.log("Error in Fetching Profile in Edit Profile", err.message)
+      Toast.show({
+        type:'error',
+        text1:"Something went wrong. Try again later"
+      })
+    }
+  },[isFocused])
+
+
   return (
     <SafeAreaView style={StyleConstants.safeArView}>
+      <Toast/>
             <View style={styles.HeaderView} >
               <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
                 <TouchableOpacity onPress={() => navigation.goBack()} style={StyleConstants.H2Nd} >

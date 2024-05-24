@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTHMICRO } from "../../config/urls";
 import basic from "../BasicServices";
-import { toast } from "react-toastify";
+import { ToastAndroid } from "react-native";
 
 class WalletApiService {
   
@@ -241,7 +241,7 @@ class WalletApiService {
     );
 
     if (!res) {
-      toast("Razorpay SDK failed to load. Are you online?");
+      ToastAndroid.show("error in loading razorpay",ToastAndroid.SHORT)
       return;
     }
 

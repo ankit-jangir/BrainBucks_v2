@@ -4,10 +4,12 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/ViewProfile.styles';
 import { Button, Text } from '../../utils/Translate';
-import { color } from '@rneui/base';
 import Toast from 'react-native-toast-message';
 import { Overlay } from '@rneui/themed';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import { useIsFocused } from '@react-navigation/native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { BLOBURL } from '../../config/urls';
 
 export default function EditProfile({ navigation, route }) {
 
@@ -34,11 +36,38 @@ export default function EditProfile({ navigation, route }) {
   const [numErrorMessage, setNumErrorMessage] = useState();
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [picVisible, setPicVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState()
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const nameRef = useRef()
   const numRef = useRef()
 
   let auth = new AuthenticationApiService();
+
+  useEffect(() => {
+    try {
+      auth.getUserProfile().then(res => {
+        if (res.status === 1) {
+          setUser(res.user_details)
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image)
+          }
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: res.Backend_Error
+          })
+        }
+      })
+    } catch (err) {
+      console.log("Error in Fetching Profile in Edit Profile", err.message)
+      Toast.show({
+        type: 'error',
+        text1: "Something went wrong. Try again later"
+      })
+    }
+  }, [])
 
   function setGender(gender) {
     setUser({ ...user, gender: gender })
@@ -52,15 +81,43 @@ export default function EditProfile({ navigation, route }) {
     numRef.current.blur()
     setNameEditable(false)
     setNumberEditable(false)
-    if (nameErrorMessage || numErrorMessage || user.phone.length !== 13) {
+    if (nameErrorMessage || numErrorMessage || user.phone.length !== 13 || user.name.length < 1) {
       setVisible(true)
       return;
     }
     try {
-    setLoading(true)
+      setLoading(true)
       let resp = await auth.editProfile(user.gender, user.name, user.phone);
       if (resp.status === 1) {
-        Toast.show("Profile updated succesfully")
+        if (selectedImage) {
+          let imguploadres = await auth.uploadProfile(selectedImage)
+          if (imguploadres.status !== 1) {
+            Toast.show({
+              type: 'error',
+              text1: imguploadres.Backend_Error
+            })
+            return;
+          }
+        }
+        else if(isDeleting){
+          let imguploadres = await auth.uploadProfile('remove')
+          if (imguploadres.status !== 1) {
+            Toast.show({
+              type: 'error',
+              text1: imguploadres.Backend_Error
+            })            
+            return;
+          }else{
+            setImage1('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
+            setIsDeleting(false)
+          }
+        }
+          Toast.show(
+            {
+              type:'success',
+              text1:"Profile Updated Succesfully"
+            }
+          )
       } else {
         Toast.show({
           type: 'error',
@@ -68,7 +125,7 @@ export default function EditProfile({ navigation, route }) {
         })
       }
     } catch (err) {
-      console.log("Error in updating profile", err.message);
+      console.log("Error in updating profile", err);
       Toast.show({
         type: 'error',
         text1: 'Something went wrong'
@@ -77,6 +134,13 @@ export default function EditProfile({ navigation, route }) {
     finally {
       setLoading(false)
     }
+  }
+
+  function deleteClicked(){
+    setSelectedImage(null)
+    setIsDeleting(true)
+    setImage1('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png')
+    setPicVisible(false)
   }
 
   function editName() {
@@ -117,6 +181,51 @@ export default function EditProfile({ navigation, route }) {
     }
   }
 
+  function openCamera() {
+    const options = {
+      StorageOptions: {
+        path: 'images',
+        mediaType: 'photo'
+      },
+      cameraRoll: false
+    }
+    launchCamera(options, (res) => {
+      if (res.errorCode) {
+        console.log('Camera launch error', res.errorMessage);
+        Toast.show({
+          type: 'error',
+          text1: "Error in opening the Camera. Check your Permissions"
+        })
+      } else if (!res.didCancel) {
+        setSelectedImage(res.assets[0])
+        setPicVisible(false)
+      }
+    })
+  }
+
+  function openGallery() {
+    const options = {
+      StorageOptions: {
+        path: 'images',
+        skipBackup: true,
+        mediaType: 'photo'
+      },
+      cameraRoll: false
+    }
+    launchImageLibrary(options, (res) => {
+      if (res.errorCode) {
+        console.log('Gallery launch error', res.errorMessage);
+        Toast.show({
+          type: 'error',
+          text1: "Error in opening the gallery. Check your Permissions"
+        })
+      } else if (!res.didCancel) {
+        setSelectedImage(res.assets[0]);
+        setPicVisible(false)
+      }
+    })
+  }
+
   function onNumberChange(text) {
     setNumErrorMessage(null)
     const regex = /^\d*$/;
@@ -137,6 +246,7 @@ export default function EditProfile({ navigation, route }) {
       setNumErrorMessage("Only numbers are allowed")
     }
   }
+
 
   return (
     <>
@@ -165,12 +275,14 @@ export default function EditProfile({ navigation, route }) {
             <View style={{ flexDirection: "row", }} >
               <View style={styles.Cview1} >
                 <View style={styles.Cview2} >
-                  <Image source={{ uri: image1 }} resizeMode='contain' style={styles.ProfileImg} />
+                  <Image source={{ uri: selectedImage ? selectedImage.uri : image1 }} resizeMode='contain' style={styles.ProfileImg} />
                 </View>
               </View>
             </View>
 
-            <TouchableOpacity style={{ width: '100%', marginVertical: 10 }} >
+            <TouchableOpacity onPress={() => {
+              setPicVisible(true)
+            }} style={{ width: '100%', marginVertical: 10 }} >
               <Text style={styles.textChnage}>Change Picture</Text>
             </TouchableOpacity>
             <View style={styles.TextName}>
@@ -226,6 +338,26 @@ export default function EditProfile({ navigation, route }) {
             </View>
           </View>
         </Overlay>
+        <Overlay animationType='slide' isVisible={picVisible} backdropStyle={{ position: 'relative' }} overlayStyle={styles.overlayBox} onBackdropPress={() => setPicVisible(!picVisible)}>
+          <View style={styles.chooseoptionview}>
+            <Text style={styles.chooseOptionText}>Choose An Option {" "}</Text>
+            <TouchableOpacity onPress={() => setPicVisible(false)} style={styles.xview}>
+              <Text style={styles.chooseOptionText}>✕</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.iconview}>
+            <TouchableOpacity onPress={openCamera} style={styles.iconcontainer}>
+              <Image style={styles.cameraicon} source={require('../../assets/img/camera.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={openGallery} style={styles.iconcontainer}>
+              <Image style={styles.galleryicon} source={require('../../assets/img/image.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={deleteClicked} style={styles.iconcontainer}>
+              <Image style={styles.galleryicon} source={require('../../assets/img/delete.png')} />
+            </TouchableOpacity>
+
+          </View>
+        </Overlay>
       </SafeAreaView>
     </>
   )
@@ -234,7 +366,7 @@ export default function EditProfile({ navigation, route }) {
 const SelectGender = (props) => {
   return (
     <View style={{ alignItems: "center", }}>
-      <TouchableOpacity onPress={() => { props.setGender(props.item.gen) }} style={{ width: 80, height: 80, alignItems: "center", borderRadius: 100, backgroundColor: "whitesmoke", justifyContent: 'flex-end', borderWidth: 1, borderColor: props.user.gender.toLocaleLowerCase() == props.item.gen.toLocaleLowerCase() ? '#12D95B' : ColorsConstant.White, }}>
+      <TouchableOpacity onPress={() => { props.setGender(props.item.gen) }} style={{ width: 80, height: 80, alignItems: "center", borderRadius: 100, backgroundColor: "whitesmoke", justifyContent: 'flex-end', borderWidth: 1, borderColor: props?.user?.gender?.toLocaleLowerCase() == props?.item?.gen?.toLocaleLowerCase() ? '#12D95B' : ColorsConstant.White, }}>
         <View style={styles.Selectview}>
           <Image source={props.item.image} resizeMode='contain' style={{ width: 60, height: 60, borderRadius: 100, }} uncheckedColor={"#DBDBDB"}
             color={ColorsConstant.White}
@@ -244,10 +376,7 @@ const SelectGender = (props) => {
           </Image>
         </View>
       </TouchableOpacity>
-      <Text style={{ fontFamily: 'WorkSans-Regular', fontSize: 16, color: props.user.gender === props.item.gen ? '#12D95B' : '#8A8C94', paddingTop: 5 }}>{props.item.gen}</Text>
+      <Text style={{ fontFamily: 'WorkSans-Regular', fontSize: 16, color: props?.user?.gender === props?.item?.gen ? '#12D95B' : '#8A8C94', paddingTop: 5 }}>{props.item.gen}</Text>
     </View>
   )
 }
-
-
-

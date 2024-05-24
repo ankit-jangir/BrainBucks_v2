@@ -1,43 +1,80 @@
-import {StyleSheet, View, Linking, TouchableOpacity,ScrollView} from 'react-native';
-import React from 'react';
+import { StyleSheet, View, Linking, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {Image} from 'react-native-elements';
-import {Text} from '../../utils/Translate';
+import { Image } from 'react-native-elements';
+import { Text } from '../../utils/Translate';
 import History from './History';
+import WalletApiService from '../../services/api/WalletApiService';
 
-const Wallet = ({navigation}) => {
+const Wallet = ({ navigation }) => {
   const data = [
     {
-      r:"₹ 15,600",
-      s:"12:34 | 20 Dec 2022",
-      sucess:1,
-      type:0,
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      sucess: 1,
+      type: 0,
     },
     {
-      r:"₹ 15,600",
-      s:"12:34 | 20 Dec 2022",
-      sucess:-1,
-      type:"debit",
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      sucess: -1,
+      type: "debit",
     },
     {
-      r:"₹ 15,600",
-      s:"12:34 | 20 Dec 2022",
-      sucess:0,
-      type:"credit",
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      sucess: 0,
+      type: "credit",
     },
     {
-      r:"₹ 15,600",
-      s:"12:34 | 20 Dec 2022",
-      sucess:1,
-      type:"debit",
-    },  {
-      r:"₹ 15,600",
-      s:"12:34 | 20 Dec 2022",
-      sucess:0,
-      type:"credit",
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      sucess: 1,
+      type: "debit",
+    }, {
+      r: "₹ 15,600",
+      s: "12:34 | 20 Dec 2022",
+      sucess: 0,
+      type: "credit",
     }
-    
+
   ]
+  const [walletData, setWalletData] = useState({
+    investmoney: 0,
+    wallet: 0,
+    redemmoney: 0,
+    transactions: []
+  })
+  const [loading, setLoading] = useState(false)
+  const wallet = new WalletApiService()
+  useEffect(() => {
+    getWalletData();
+  }, [])
+
+  async function getWalletData() {
+    try {
+      setLoading(true)
+      let res = await wallet.getTransactions()
+      if (res.status === 1) {
+        console.log(res);
+        setWalletData(res)
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error
+        })
+      }
+    } catch (err) {
+      console.log("Error while getting earned data", err.message);
+      Toast.show({
+        type: 'error',
+        text1: "Something went wrong"
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -52,7 +89,7 @@ const Wallet = ({navigation}) => {
           <Image
             source={require('../../assets/img/menu.png')}
             tintColor={'black'}
-            style={{height: 25, width: 25}}
+            style={{ height: 25, width: 25 }}
           />
         </View>
         <View>
@@ -62,13 +99,13 @@ const Wallet = ({navigation}) => {
           <Image
             source={require('../../assets/img/homedark.png')}
             tintColor={'balck'}
-            style={{height: 25, width: 25}}
+            style={{ height: 25, width: 25 }}
           />
         </View>
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={{width: '100%', borderRadius: 10}}
+          style={{ width: '100%', borderRadius: 10 }}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
             <View style={styles.headerLeft}>
@@ -83,18 +120,18 @@ const Wallet = ({navigation}) => {
             <View style={styles.headerRight}>
               <Text style={styles.shareText}>Share</Text>
               <TouchableOpacity>
-              <Image
-                tintColor="white"
-                source={require('../../assets/img/share.png')}
-                style={styles.shareIcon}
-                resizeMode="contain"
-              />
+                <Image
+                  tintColor="white"
+                  source={require('../../assets/img/share.png')}
+                  style={styles.shareIcon}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
             </View>
           </View>
 
           <View>
-            <Text style={styles.balanceText}>₹ 45,600 </Text>
+            <Text style={styles.balanceText}>₹ {walletData.wallet} </Text>
           </View>
 
           <View style={styles.containerImg1}>
@@ -104,14 +141,14 @@ const Wallet = ({navigation}) => {
 
             <View style={styles.investedContainer}>
               <Text style={styles.investedText}>Invested</Text>
-              <Text style={styles.investedAmount}>₹ 4,500</Text>
+              <Text style={styles.investedAmount}>₹ {walletData.investmoney}</Text>
             </View>
           </View>
 
           <View style={styles.containerImg2}>
             <View style={styles.redeemableContainer}>
               <Text style={styles.redeemableText}>
-                Redeemable Balance ₹ 42,600
+                Total Transactions ₹ {walletData.redemmoney}
               </Text>
             </View>
 
@@ -174,7 +211,7 @@ const Wallet = ({navigation}) => {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbanksucessfully')}}>
+          <TouchableOpacity style={styles.actionItem} onPress={() => { navigation.navigate('addbanksucessfully') }}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -197,33 +234,33 @@ const Wallet = ({navigation}) => {
       </View>
       <ScrollView>
 
-      {
+        {
 
-        data.map((res)=>{
-          return(
-            <View style={styles.historyContainer}>
-        <View style={styles.transactionEntry}>
-          <View style={styles.iconContainer}>
-            <Image source={require('../../assets/img/downarrow.png')} style={styles.icon} tintColor={"#129C73"} />
-          </View>
-          <View>
-            <Text style={styles.transactionAmount}>{res.r}</Text>
-            <Text style={styles.timestamp}>{res.s}</Text>
-          </View>
-          <View style={styles.statusContainer}>
-            <View style={styles.statusIcon}>
-              <Image source={require('../../assets/img/radic.png')} style={styles.icon1} tintColor={"white"} />
-            </View>
-            <Text style={styles.statusText}>Failed</Text>
-          </View>
-          <View style={styles.arrowIconContainer}>
-            <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
-          </View>
-        </View>
-      </View>
-          )
-        })
-      }
+          data.map((res) => {
+            return (
+              <View key={res.data1} style={styles.historyContainer}>
+                <View style={styles.transactionEntry}>
+                  <View style={styles.iconContainer}>
+                    <Image source={require('../../assets/img/downarrow.png')} style={styles.icon} tintColor={"#129C73"} />
+                  </View>
+                  <View>
+                    <Text style={styles.transactionAmount}>{res.r}</Text>
+                    <Text style={styles.timestamp}>{res.s}</Text>
+                  </View>
+                  <View style={styles.statusContainer}>
+                    <View style={styles.statusIcon}>
+                      <Image source={require('../../assets/img/radic.png')} style={styles.icon1} tintColor={"white"} />
+                    </View>
+                    <Text style={styles.statusText}>Failed</Text>
+                  </View>
+                  <View style={styles.arrowIconContainer}>
+                    <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
+                  </View>
+                </View>
+              </View>
+            )
+          })
+        }
       </ScrollView>
     </View>
   );
@@ -379,76 +416,76 @@ const styles = StyleSheet.create({
   },
   ViewText: {
     fontSize: 13,
-     color: '#8A8C94', 
-     fontWeight: '500'
-    },
-    historyContainer: {
-      margin: 10,
-      backgroundColor:"#FFFFFF"
-    },
-    transactionEntry: {
-      flexDirection: "row",
-      backgroundColor: "#FFFFFF",
-      justifyContent: "space-between",
-      padding: 15,
-      borderRadius: 10,
-      elevation: 2,
-    },
-    iconContainer: {
-      height: 40,
-      width: 40,
-      borderRadius: 50,
-      backgroundColor: "#EFFFF6",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    icon: {
-      height: 20,
-      width: 20,
-      alignSelf: "center",
-    },
-    icon2: {
-      height: 15,
-      width: 15,
-      alignSelf: "center",
-    },
-    icon1: {
-      height: 10,
-      width: 10,
-      alignSelf: "center",
-    },
-    transactionAmount: {
-      color: "black",
-      fontSize: 21,
-      fontWeight: "600",
-    },
-    timestamp: {
-      color: "#8A8A8A",
-    },
-    statusContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    statusIcon: {
-      height: 25,
-      width: 25,
-      backgroundColor: "#DC1111",
-      borderRadius: 50,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    statusText: {
-      color: "#DC1111",
-      paddingLeft: 8,
-      fontSize:17,
-      fontWeight:"600"
-    },
-    arrowIconContainer: {
-      // height: 40,
-      // width: 40,
-      // borderRadius: 50,
-      // backgroundColor: "#f0f2f5",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+    color: '#8A8C94',
+    fontWeight: '500'
+  },
+  historyContainer: {
+    margin: 10,
+    backgroundColor: "#FFFFFF"
+  },
+  transactionEntry: {
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
+    justifyContent: "space-between",
+    padding: 15,
+    borderRadius: 10,
+    elevation: 2,
+  },
+  iconContainer: {
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    backgroundColor: "#EFFFF6",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  icon: {
+    height: 20,
+    width: 20,
+    alignSelf: "center",
+  },
+  icon2: {
+    height: 15,
+    width: 15,
+    alignSelf: "center",
+  },
+  icon1: {
+    height: 10,
+    width: 10,
+    alignSelf: "center",
+  },
+  transactionAmount: {
+    color: "black",
+    fontSize: 21,
+    fontWeight: "600",
+  },
+  timestamp: {
+    color: "#8A8A8A",
+  },
+  statusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statusIcon: {
+    height: 25,
+    width: 25,
+    backgroundColor: "#DC1111",
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  statusText: {
+    color: "#DC1111",
+    paddingLeft: 8,
+    fontSize: 17,
+    fontWeight: "600"
+  },
+  arrowIconContainer: {
+    // height: 40,
+    // width: 40,
+    // borderRadius: 50,
+    // backgroundColor: "#f0f2f5",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

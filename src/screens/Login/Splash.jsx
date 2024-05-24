@@ -12,7 +12,7 @@ import AuthenticationApiService from '../../services/api/AuthenticationApiServic
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
-  const [checklang, setCheckLang] = useState()
+  const [checklang, setCheckLang] = useState({ i: 'a' })
   const auth = new AuthenticationApiService()
 
   useEffect(() => {
@@ -22,27 +22,32 @@ export default function Splash({ navigation }) {
         let localobj = await basic.getLocalObject()
         if (localobj.jwt) {
           let res;
-          try{
+          try {
             res = await auth.getUserProfile();
-          }catch(err){console.log("ERROR IN GETTING PROFILE",err.message)}
-          if (res&&res.status === 1) {
+            if (res.status === 1) {
+              setCheckLang(res)
+            } else {
+              setCheckLang(null)
+            }
+          } catch (err) {
+            console.log("ERROR IN GETTING PROFILE", err.message)
+            setCheckLang(null)
+          }
+          if (res && res.status === 1) {
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+          } else {
+            setCheckLang(null)
           }
         }
+      } else {
+        setCheckLang(null)
       }
     }
-    try { getLang() } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE") }
+    try { 
+      getLang() 
+    } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) }
   }, [])
 
-  try {
-    AsyncStorage.getItem("language").then((res) => {
-      basic.getLocalObject().then(result => {
-        setCheckLang(result.jwt)
-      })
-    })
-  } catch (err) {
-    console.log("ERROR IN RETREIEVING SPLASH LOGIC", err.message)
-  }
 
   const GetReferCode = async () => {
     let ReferCode = await AsyncStorage.getItem("referCode");
@@ -90,7 +95,7 @@ export default function Splash({ navigation }) {
           <Image source={require('../../assets/img/bblogo.png')} resizeMode='center' style={styles.logo} />
         </Animated.View>
         {checklang ?
-          <ActivityIndicator style={{ marginVertical: "auto" }} size={50} color={"#fff"} />
+          <LottieView source={require('../../assets/img/loadbook.json')} autoPlay style={{ flex: 1, }} />
           :
           <>
             <View style={{ marginTop: 40 }}>

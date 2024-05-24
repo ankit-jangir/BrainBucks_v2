@@ -1,8 +1,10 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
 import { ScrollView } from 'react-native-gesture-handler';
+import WalletApiService from '../../services/api/WalletApiService';
+import Toast from 'react-native-toast-message';
 
 const MyEarningSpent = () => {
     const data = [
@@ -49,8 +51,39 @@ const MyEarningSpent = () => {
             data3:"SBI-PO Current Affairs"
         },
     ]
+
+  const [loading, setLoading] = useState(false)
+  const wallet = new WalletApiService()
+  useEffect(() => {
+    getSpentData();
+  }, [])
+
+  async function getSpentData() {
+    try {
+      setLoading(true)
+      let res = await wallet.getSpentMoney()
+      if (res.status === 1) {
+        console.log(res);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error
+        })
+      }
+    } catch (err) {
+      console.log("Error while getting earned data", err.message);
+      Toast.show({
+        type: 'error',
+        text1: "Something went wrong"
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
+    <Toast/>
     <ScrollView>
     <View style={styles.wrapper}>
       {

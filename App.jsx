@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, Image, View, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -38,6 +38,7 @@ import BankDetails from './src/screens/Wallet/BankDetails';
 import WalletOtp from './src/screens/Wallet/WalletOtp';
 import AddBankSucessfully from './src/screens/Wallet/AddBankSucessfully';
 import WithdrawReq from './src/screens/Wallet/WithdrawReq';
+import DailyUpdates from './src/screens/Sidebar/DailyUpdates';
 
 
 
@@ -88,6 +89,7 @@ function MyStack() {
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
+      <Stack.Screen name='dailyupdates' component={DailyUpdates}/>
     </Stack.Navigator>
   );
 }

@@ -11,6 +11,7 @@ import {
 import SearchBar from './SearchBar';
 import Carousel from 'react-native-reanimated-carousel';
 import styles from '../../styles/Home.styles';
+import LottieView from 'lottie-react-native';
 
 const Home = () => {
   const width = Dimensions.get('window').width;

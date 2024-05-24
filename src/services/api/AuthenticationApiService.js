@@ -97,10 +97,19 @@ class AuthenticationApiService {
   }
 
   async uploadProfile(picture) {
-    console.log("picture", picture);
     let bearer = await basic.getBearerToken();
     const formdata = new FormData();
-    formdata.append("profile", picture);
+    if(picture==='remove'){
+      formdata.append('profile',null)
+    }else{
+      formdata.append("profile", {
+        name: picture.fileName,
+        size: picture.fileSize,
+        type: picture.type,
+        uri: picture.uri
+      });
+    }
+    
     let url = `${AUTHMICRO}/auth/participant/upload/photo`;
     let headers = { "content-type": "multipart/form-data", "authorization": bearer };
     let options = {
