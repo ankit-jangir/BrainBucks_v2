@@ -7,7 +7,7 @@ const Deposit = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity onPress={()=>{navigation.navigate("wallet")}}>
+      <TouchableOpacity onPress={()=>{navigation.navigate("Wallet")}}>
       <Image
           tintColor="gray"
           source={require('../../assets/img/radic.png')}

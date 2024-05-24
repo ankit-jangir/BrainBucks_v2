@@ -40,7 +40,7 @@ const History = ({navigation}) => {
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={styles.header}>
-       <TouchableOpacity         onPress={()=>{navigation.navigate("wallet")}}
+       <TouchableOpacity         onPress={()=>{navigation.navigate("Wallet")}}
        >
        <Image
        source={require('../../assets/img/back.png')}

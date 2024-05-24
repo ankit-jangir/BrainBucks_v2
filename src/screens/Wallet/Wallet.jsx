@@ -181,7 +181,7 @@ export default function Wallet  ({navigation}) {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbanks')}}>
+          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbankDetails')}}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"

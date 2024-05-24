@@ -45,7 +45,7 @@ const AddBanks = ({navigation}) => {
     <View style={{flex:1,backgroundColor:"white"}}>
     <View style={styles.header}>
     <TouchableOpacity
-    onPress={() => navigation.navigate('wallet')}>
+    onPress={() => navigation.navigate('Wallet')}>
     <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
   </TouchableOpacity>
 
