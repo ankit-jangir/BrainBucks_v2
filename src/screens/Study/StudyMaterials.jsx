@@ -4,7 +4,7 @@ import FreePdf from './FreePdf';
 import OnlineClasses from './OnlineClasses';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
-import styles from '../../styles/Study.styles';
+import styles from '../../styles/Studymaterials.styles';
 
 
 

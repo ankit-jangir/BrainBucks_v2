@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook from react-navigation
-import styles  from '../../styles/Study.styles';
+import styles  from '../../styles/Studymaterials.styles';
 const FreePdf = ({navigation}) => {
 
   return (

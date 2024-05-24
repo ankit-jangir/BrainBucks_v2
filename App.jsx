@@ -15,7 +15,7 @@ import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
-import VideoPlayer from './src/screens/Courses/VideoPlayer';
+import VideoPlayer from './src/screens/courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
@@ -25,9 +25,9 @@ import StudyExam from './src/screens/Study/StudyExam';
 import FreePdf from './src/screens/Study/FreePdf';
 import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
-import Courses from './src/screens/Courses/Courses';
+import Courses from './src/screens/courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
-import PaidCourses from './src/screens/Courses/PaidCourses';
+import PaidCourses from './src/screens/courses/PaidCourses';
 import QuestionPapers from './src/screens/Study/QuestionPapers';
 import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
@@ -38,6 +38,10 @@ import BankDetails from './src/screens/Wallet/BankDetails';
 import WalletOtp from './src/screens/Wallet/WalletOtp';
 import AddBankSucessfully from './src/screens/Wallet/AddBankSucessfully';
 import WithdrawReq from './src/screens/Wallet/WithdrawReq';
+import ExamDetail from './src/screens/saved/ExamDetail';
+import Quizze from './src/screens/saved/Quizze';
+import Challenges from './src/screens/saved/Challenges';
+import FreeTrivia from './src/screens/saved/FreeTrivia';
 
 
 
@@ -88,6 +92,13 @@ function MyStack() {
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
+      <Stack.Screen name="Quizze" component={Quizze} />
+      <Stack.Screen name="Challenges" component={Challenges} />
+      <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
+      <Stack.Screen name="ExamDetail" component={ExamDetail} />
+
+
+
     </Stack.Navigator>
   );
 }

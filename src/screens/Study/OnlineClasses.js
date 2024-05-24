@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 import { StyleConstants } from '../../constants/Style.constant'
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { Text } from '../../utils/Translate';
-import styles from '../../styles/Study.styles';
+import styles from '../../styles/Studymaterials.styles';
 
 export default function OnlineClasses({ navigation }) {
   return (
