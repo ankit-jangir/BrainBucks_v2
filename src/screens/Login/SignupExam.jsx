@@ -71,6 +71,7 @@ export default function SignUpExam({ navigation, route }) {
   async function reloadExams() {
     setRefresh(true)
     auth.getExams(search).then((res) => {
+      console.log(res);
       if (res.status === 1) {
         setExams(res.categories)
       } else {

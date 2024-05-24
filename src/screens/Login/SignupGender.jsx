@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import {ColorsConstant} from '../../constants/Colors.constant';
@@ -33,7 +34,7 @@ export default function SignupGender({navigation, route}) {
   ];
 
   return (
-    <View style={{flex: 1, backgroundColor: ColorsConstant.White}}>
+    <ScrollView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
       <View style={styles.mainView}>
         <View style={styles.mainView1}>
           <View style={styles.mainView2}>
@@ -97,7 +98,7 @@ export default function SignupGender({navigation, route}) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
