@@ -48,7 +48,6 @@ export default function EditProfile({ navigation, route }) {
     if (loading) {
       return;
     }
-    setLoading(true)
     nameRef.current.blur()
     numRef.current.blur()
     setNameEditable(false)
@@ -58,6 +57,7 @@ export default function EditProfile({ navigation, route }) {
       return;
     }
     try {
+    setLoading(true)
       let resp = await auth.editProfile(user.gender, user.name, user.phone);
       if (resp.status === 1) {
         Toast.show("Profile updated succesfully")
@@ -215,7 +215,7 @@ export default function EditProfile({ navigation, route }) {
             </View>
           </View>
         </ScrollView>
-        <Overlay backdropStyle={{flex:1}} overlayStyle={{flex:1}} isVisible={true} onBackdropPress={() => setVisible(!visible)}>
+        <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
           <View style={styles.logoutView}>
             <Text style={styles.logoutText}>*Entered details must be correct {" "}</Text>
             <View style={styles.logoutbuttons}>

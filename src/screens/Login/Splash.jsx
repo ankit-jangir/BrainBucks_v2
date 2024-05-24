@@ -22,7 +22,9 @@ export default function Splash({ navigation }) {
         let localobj = await basic.getLocalObject()
         if (localobj.jwt) {
           let res;
-          try{res = await auth.getUserProfile();}catch(err){console.log("ERROR IN GETTING PROFILE",err.message)}
+          try{
+            res = await auth.getUserProfile();
+          }catch(err){console.log("ERROR IN GETTING PROFILE",err.message)}
           if (res&&res.status === 1) {
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
           }

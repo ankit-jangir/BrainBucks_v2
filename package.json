@@ -45,7 +45,6 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-vector-icons": "^10.1.0",
     "react-native-video": "^6.0.0",
-    "react-native-view-pdf": "^0.14.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "translate": "^3.0.0"
   },
