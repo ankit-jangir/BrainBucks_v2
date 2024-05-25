@@ -48,6 +48,31 @@ export default function Wallet  ({navigation}) {
       type: "credit",
     }
   ];
+  const getArrowImage = (type) => {
+    return type === 'credit' 
+      ? require('../../assets/img/downarrow.png')
+      : require('../../assets/img/uparrowss.png');
+  };
+
+  const getStatusIcon = (success) => {
+    if (success === 1) return require('../../assets/img/arrowright.png');
+    else if(success === -1) return require('../../assets/img/pending.png');
+    else return require('../../assets/img/cross.png');
+  };
+
+  const getStatusText = (success) => {
+    if (success === 1) return 'Success';
+    else if (success === -1) return 'Pending';
+    else return 'Failed';
+  };
+
+  const getStatusColor = (success, type) => {
+    if (success === 1) return '#129C73'; 
+    else if (success === -1) return 'orange'; 
+    else if (type === 'credit') return 'red'; 
+    else return '#FFEFEF';
+  };
+
   const [walletData, setWalletData] = useState({
     investmoney: 0,
     wallet: 0,
@@ -250,36 +275,50 @@ export default function Wallet  ({navigation}) {
       <ScrollView>
       {data.map((res, index) => (
         <View key={index} style={styles.historyContainer}>
-        <TouchableOpacity onPress={()=>{navigation.navigate('transactionDetails')}}>
-        <View style={styles.transactionEntry}>
-        <View style={[styles.iconContainer,{ backgroundColor: res.success === 1 ? "#EFFFF6" : "#FFEFEF" }]}>
-          <Image
-            source={res.success === 1 ? require('../../assets/img/uparrow.png') : require('../../assets/img/downarrow.png')}
-            style={styles.icon}
-            tintColor={res.success === 1 ? "#129C73" : "#DC1111"}
-          />
-        </View>
-        <View>
-          <Text style={styles.transactionAmount}>{res.r}</Text>
-          <Text style={styles.timestamp}>{res.s}</Text>
-        </View>
-        <View style={styles.statusContainer}>
-          <View style={[styles.statusIcon, ]}>
-            <Image
-              source={res.success === 1 ? require('../../assets/img/arrowright.png') : require('../../assets/img/cross.png')}
-              style={styles.icon1}
-            />
-          </View>
-          <Text style={[styles.statusText, { color: res.success === 1 ? "#129C73" : "#DC1111" }]}>
-            {res.success === 1 ? "Success" : "Pending"}
-          </Text>
-        </View>
-        <View style={styles.arrowIconContainer}>
-          <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
-        </View>
-      </View>
-        </TouchableOpacity>
-      
+          <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
+            <View style={styles.transactionEntry}>
+              <View
+              style={[
+                styles.iconContainer,
+                { 
+                  backgroundColor: res.success === -1 ? '#fff9ef' : 
+                                   res.success === 1 ? '#EFFFF6' : '#FFEFEF' 
+                },
+              ]}>
+              <Image
+                source={getArrowImage(res.type)}
+                style={styles.icon}
+                tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
+              />
+              </View>
+              <View>
+                <Text style={styles.transactionAmount}>{res.r}</Text>
+                <Text style={styles.timestamp}>{res.s}</Text>
+              </View>
+              <View style={styles.statusContainer}>
+                <View style={[styles.statusIcon]}>
+                  <Image
+                    source={getStatusIcon(res.success)}
+                    style={styles.icon1}
+                  />
+                </View>
+                <Text
+                  style={[
+                    styles.statusText,
+                    { color: getStatusColor(res.success, res.type) },
+                  ]}>
+                  {getStatusText(res.success)}
+                </Text>
+              </View>
+              <View style={styles.arrowIconContainer}>
+                <Image
+                  source={require('../../assets/img/rightarrow1.png')}
+                  style={styles.icon2}
+                  tintColor={'gray'}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
       ))}
     </ScrollView>
@@ -399,12 +438,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     justifyContent: 'space-between',
+    paddingHorizontal:5
   },
   actionsContainer1: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 12,
     justifyContent: 'space-between',
-    paddingLeft:5
+    paddingLeft:7,
   },
   actionItem: {
     alignItems: 'center',

@@ -119,6 +119,8 @@ const Sidebar = ({ navigation }) => {
           imageStyle={{ width: 25, height: 25 }}
         />
         <MenuItem
+        action={()=>{navigation.navigate("myhistory")}}
+
           image={require('../../assets/img/historyimg.png')}
           text="History"
         />
