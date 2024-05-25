@@ -47,7 +47,7 @@ import ExamDetail from './src/screens/saved/ExamDetail';
 import Quizze from './src/screens/saved/Quizze';
 import Challenges from './src/screens/saved/Challenges';
 import FreeTrivia from './src/screens/saved/FreeTrivia';
-
+import PaymentPopup from './src/screens/Wallet/PaymentPopup';
 
 
 const Drawer = createDrawerNavigator();
@@ -106,7 +106,7 @@ function MyStack() {
       <Stack.Screen name="Challenges" component={Challenges} />
       <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
-
+      <Stack.Screen name='paymentpopup' component={PaymentPopup}/>
 
 
     </Stack.Navigator>

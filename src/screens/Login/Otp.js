@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Image, SafeAreaView, ToastAndroid } from "react-native";
 import styles from "../../styles/Login.style";
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -15,9 +15,9 @@ export default function Otp({ navigation, route }) {
     const [otp, setOtp] = useState();
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
-    const otpRef = useRef();
     const auth = new AuthenticationApiService();
     let phone = route.params.phone;
+
 
     function otpChanged(value) {
         setOtp(value + "")
@@ -70,7 +70,7 @@ export default function Otp({ navigation, route }) {
                 })
             }
             else{
-                setErrorMessage(response.Backend_Error)
+                setErrorMessage("*"+response.Custom_Error)
             }
 
         }catch(err){

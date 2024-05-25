@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { Button, Text, TextInput } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message';
 import WalletApiService from '../../services/api/WalletApiService';
 import RazorpayCheckout from 'react-native-razorpay';
 
-const Deposit = () => {
+const Deposit = ({navigation}) => {
   const [amount, setAmount] = useState();
   const [loading, setLoading] = useState(false)
   const [errMsg, setErrMsg] = useState()
@@ -14,6 +14,9 @@ const Deposit = () => {
   let walletService = new WalletApiService()
 
   async function createOrder(){
+    if(loading){
+      return;
+    }
     setErrMsg(null)
     if(!amount){
       setErrMsg("Enter a valid amount first")
@@ -24,10 +27,14 @@ const Deposit = () => {
       let res = await walletService.createOrder(amount)
       if(res.status===1){
         RazorpayCheckout.open(res.option2).then((data) => {
-          alert(`Success: ${data.razorpay_payment_id}`);
+         navigation.navigate('paymentpopup',{
+          status:1
+         })
         }).catch((error) => {
-          alert(`Error: ${error.code} | ${error.description}`);
-        });
+          navigation.navigate('paymentpopup',{
+            status:0
+           })
+        })
       }else{
         Toast.show({
           type:'error',
@@ -97,19 +104,9 @@ const Deposit = () => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={createOrder} style={styles.payNowButton}>
-        <Text style={styles.payNowText}>Pay Now</Text>
+        {loading?<ActivityIndicator size={30}/>:<Text style={styles.payNowText}>Pay Now</Text>}
       </TouchableOpacity>
-      <Button
-              onPress={createOrder}
-              title="Start Preparing"
-              loading={loading}
-              titleStyle={styles.payNowText}
-              buttonStyle={styles.payNowButton}
-              loadingProps={{
-                size: 'large',
-                color: 'white',
-              }}
-            />
+
     </View>
   );
 };

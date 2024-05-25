@@ -5,12 +5,13 @@ import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
 import History from './History';
 import WalletApiService from '../../services/api/WalletApiService';
-import {useNavigation,NavigationContainer,useIsFocused} from '@react-navigation/native';
+import { useNavigation, NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native-paper';
+import NoDataFound from '../../components/NoDataFound';
 
 
 
-export default function Wallet  ({navigation}) {
-  // const isFocused = useNavigation();
+export default function Wallet({ navigation }) {
   const data = [
     {
       r: "₹ 15,600",
@@ -65,7 +66,6 @@ export default function Wallet  ({navigation}) {
       setLoading(true)
       let res = await wallet.getTransactions()
       if (res.status === 1) {
-        console.log(res);
         setWalletData(res)
       } else {
         Toast.show({
@@ -84,7 +84,7 @@ export default function Wallet  ({navigation}) {
     }
   }
 
-    
+
   return (
     <View style={styles.container}>
       <View
@@ -93,15 +93,15 @@ export default function Wallet  ({navigation}) {
           flexDirection: 'row',
           justifyContent: 'space-between',
           padding: 15,
-          marginBottom:5,
+          marginBottom: 5,
         }}>
         <View>
           <Image
             source={require('../../assets/img/menu.png')}
             tintColor={'black'}
-            style={{height: 25, width: 25}}
+            style={{ height: 25, width: 25 }}
 
-           onPress={() => navigation.openDrawer()}
+            onPress={() => navigation.openDrawer()}
 
           />
         </View>
@@ -112,8 +112,8 @@ export default function Wallet  ({navigation}) {
           <Image
             source={require('../../assets/img/homedark.png')}
             tintColor={'balck'}
-            style={{height: 25, width: 25}}
-        onPress={() => navigation.navigate('Home')}
+            style={{ height: 25, width: 25 }}
+            onPress={() => navigation.navigate('Home')}
 
           />
         </View>
@@ -226,7 +226,7 @@ export default function Wallet  ({navigation}) {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem} onPress={()=>{navigation.navigate('addbankDetails')}}>
+          <TouchableOpacity style={styles.actionItem} onPress={() => { navigation.navigate('addbankDetails') }}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -248,41 +248,48 @@ export default function Wallet  ({navigation}) {
         </View>
       </View>
       <ScrollView>
-      {data.map((res, index) => (
-        <View key={index} style={styles.historyContainer}>
-        <TouchableOpacity onPress={()=>{navigation.navigate('transactionDetails')}}>
-        <View style={styles.transactionEntry}>
-        <View style={[styles.iconContainer,{ backgroundColor: res.success === 1 ? "#EFFFF6" : "#FFEFEF" }]}>
-          <Image
-            source={res.success === 1 ? require('../../assets/img/uparrow.png') : require('../../assets/img/downarrow.png')}
-            style={styles.icon}
-            tintColor={res.success === 1 ? "#129C73" : "#DC1111"}
-          />
-        </View>
-        <View>
-          <Text style={styles.transactionAmount}>{res.r}</Text>
-          <Text style={styles.timestamp}>{res.s}</Text>
-        </View>
-        <View style={styles.statusContainer}>
-          <View style={[styles.statusIcon, ]}>
-            <Image
-              source={res.success === 1 ? require('../../assets/img/arrowright.png') : require('../../assets/img/cross.png')}
-              style={styles.icon1}
-            />
+        {
+          loading?
+          <ActivityIndicator size={30}/>
+          :
+          walletData.transactions.length===0?
+          <NoDataFound action={getWalletData} actionText={"Reload"} message={"No Transaction History Found"}/>
+          :
+        walletData.transactions.map((res, index) => (
+          <View key={index} style={styles.historyContainer}>
+            <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
+              <View style={styles.transactionEntry}>
+                <View style={[styles.iconContainer, { backgroundColor: res.success === 1 ? "#EFFFF6" : "#FFEFEF" }]}>
+                  <Image
+                    source={res.success === 1 ? require('../../assets/img/uparrow.png') : require('../../assets/img/downarrow.png')}
+                    style={styles.icon}
+                    tintColor={res.success === 1 ? "#129C73" : "#DC1111"}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.transactionAmount}>{res.r}</Text>
+                  <Text style={styles.timestamp}>{res.s}</Text>
+                </View>
+                <View style={styles.statusContainer}>
+                  <View style={[styles.statusIcon,]}>
+                    <Image
+                      source={res.success === 1 ? require('../../assets/img/arrowright.png') : require('../../assets/img/cross.png')}
+                      style={styles.icon1}
+                    />
+                  </View>
+                  <Text style={[styles.statusText, { color: res.success === 1 ? "#129C73" : "#DC1111" }]}>
+                    {res.success === 1 ? "Success" : "Pending"}
+                  </Text>
+                </View>
+                <View style={styles.arrowIconContainer}>
+                  <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
+                </View>
+              </View>
+            </TouchableOpacity>
+
           </View>
-          <Text style={[styles.statusText, { color: res.success === 1 ? "#129C73" : "#DC1111" }]}>
-            {res.success === 1 ? "Success" : "Pending"}
-          </Text>
-        </View>
-        <View style={styles.arrowIconContainer}>
-          <Image source={require('../../assets/img/rightarrow1.png')} style={styles.icon2} tintColor={"gray"} />
-        </View>
-      </View>
-        </TouchableOpacity>
-      
-        </View>
-      ))}
-    </ScrollView>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -315,7 +322,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 5,
     marginTop: 15,
     padding: 10,
-    marginBottom:10
+    marginBottom: 10
   },
   headerLeft: {
     flexDirection: 'row',
@@ -404,7 +411,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10,
     justifyContent: 'space-between',
-    paddingLeft:5
+    paddingLeft: 5
   },
   actionItem: {
     alignItems: 'center',
@@ -423,6 +430,8 @@ const styles = StyleSheet.create({
   },
   actionText: {
     textAlign: 'center',
+    color:'#000',
+    padding:2,
   },
   RecentText: {
     fontSize: 17,
@@ -431,7 +440,7 @@ const styles = StyleSheet.create({
   },
   TouchableButton: {
     backgroundColor: '#F5F5F5',
-    padding:5,
+    padding: 5,
     borderRadius: 8,
     marginRight: 10,
     paddingRight: 15,
@@ -439,71 +448,71 @@ const styles = StyleSheet.create({
   },
   ViewText: {
     fontSize: 13,
-     color: '#8A8C94', 
-     fontWeight: '500'
-    },
-    historyContainer: {
-      margin: 10,
-      backgroundColor: "#FFFFFF",
-    },
-    transactionEntry: {
-      flexDirection: "row",
-      backgroundColor: "#FFFFFF",
-      justifyContent: "space-between",
-      padding: 15,
-      borderRadius: 10,
-      borderWidth:1,
-      borderColor:"lightgray"
-    },
-    iconContainer: {
-      height: 40,
-      width: 40,
-      borderRadius: 50,
-      backgroundColor: "#EFFFF6",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    icon: {
-      height: 20,
-      width: 20,
-      alignSelf: "center",
-    },
-    icon2: {
-      height: 15,
-      width: 15,
-      alignSelf: "center",
-    },
-    icon1: {
-      height: 20,
-      width: 20,
-      alignSelf: "center",
-    },
-    transactionAmount: {
-      color: "black",
-      fontSize: 21,
-      fontWeight: "600",
-    },
-    timestamp: {
-      color: "#8A8A8A",
-    },
-    statusContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    statusIcon: {
-      height: 25,
-      width: 25,
-      borderRadius: 50,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    statusText: {
-      paddingLeft: 8,
-      fontSize: 17,
-      fontWeight: "600",
-    },
-    arrowIconContainer: {
-      justifyContent: "center",
-      alignItems: "center",
-    },
+    color: '#8A8C94',
+    fontWeight: '500'
+  },
+  historyContainer: {
+    margin: 10,
+    backgroundColor: "#FFFFFF",
+  },
+  transactionEntry: {
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
+    justifyContent: "space-between",
+    padding: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "lightgray"
+  },
+  iconContainer: {
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    backgroundColor: "#EFFFF6",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  icon: {
+    height: 20,
+    width: 20,
+    alignSelf: "center",
+  },
+  icon2: {
+    height: 15,
+    width: 15,
+    alignSelf: "center",
+  },
+  icon1: {
+    height: 20,
+    width: 20,
+    alignSelf: "center",
+  },
+  transactionAmount: {
+    color: "black",
+    fontSize: 21,
+    fontWeight: "600",
+  },
+  timestamp: {
+    color: "#8A8A8A",
+  },
+  statusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statusIcon: {
+    height: 25,
+    width: 25,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  statusText: {
+    paddingLeft: 8,
+    fontSize: 17,
+    fontWeight: "600",
+  },
+  arrowIconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

@@ -10,7 +10,6 @@ import {
   StyleSheet,
 } from "react-native";
 import SearchBar from './SearchBar';
-import styles from '../../styles/Home.styles';
 import LottieView from 'lottie-react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { StyleConstants } from "../../constants/Style.constant";
