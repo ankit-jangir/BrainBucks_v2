@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,29 +10,48 @@ import styles from '../../styles/Login.style';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import {StyleConstants} from '../../constants/Style.constant';
 import {Text} from '../../utils/Translate';
-import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import Toast from 'react-native-toast-message';
 import {Button} from '../../utils/Translate';
 import {OtpInput} from 'react-native-otp-entry';
 import basic from '../../services/BasicServices';
+import { useAddBank } from '../../context/AddBankReducer';
+import WalletApiService from '../../services/api/WalletApiService';
+import { StackActions, useIsFocused } from '@react-navigation/native';
 
 export default function BankOtp({navigation, route}) {
-  const [otp, setOtp] = useState();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const otpRef = useRef();
-  const auth = new AuthenticationApiService();
-  // let phone = route.params.phone;
+  const [phone,setPhone] = useState('0000000000')
+  const wallServ = new WalletApiService()
+  
+  const {addBankState, dispatch} = useAddBank()
+
+  const isFocused = useIsFocused()
 
   function otpChanged(value) {
-    setOtp(value + '');
+    dispatch({type:'details', bankDetails:{otp:value}})
   }
 
+  useEffect(()=>{
+   try{
+    setLoading(true) 
+    basic.getLocalObject().then(res=>{
+      setPhone(res.number.substring(3,13))
+    })}catch(err){
+      console.log("Error in fetching local object: ", err.message);
+    }finally{
+      setLoading(false)
+    }
+  },[isFocused])
+
   async function resendOtp() {
+    if(loading){
+      return;
+    }
     setErrorMessage(null);
     setLoading(true);
     try {
-      let response = await auth.sendOtp(phone);
+      let response = await wallServ.sendOtp()
       if (response.status === 1) {
         Toast.show({
           type: 'success',
@@ -53,7 +72,10 @@ export default function BankOtp({navigation, route}) {
   }
 
   async function next() {
-    if (otp.length !== 4) {
+    if(loading){
+      return
+    }
+    if (addBankState.otp.length !== 4) {
       setErrorMessage('*Enter The OTP First');
       return;
     }
@@ -61,22 +83,14 @@ export default function BankOtp({navigation, route}) {
     try {
       setErrorMessage(null);
       setLoading(true);
-      let response = await auth.verifyOtpAndRegister(phone, otp);
-      if (response.status === 1) {
-        setErrorMessage(null);
-        await basic.setJwt(response.token);
-        console.log('JWT Token: ', response.token);
-        navigation.reset({index: 0, routes: [{name: 'Home'}]});
-      } else if (response.status === 2) {
-        setErrorMessage(null);
-        navigation.replace('SignupName', {
-          phone: phone,
-        });
+      let res = await wallServ.addBank(addBankState.ifsc, addBankState.bankName, addBankState.accnum, addBankState.holderName, addBankState.otp)
+      if (res.status === 1) {
+        navigation.dispatch(StackActions.replace('addbanksucessfully'));
       } else {
-        setErrorMessage(response.Backend_Error);
+        setErrorMessage(res.Backend_Error);
       }
     } catch (err) {
-      console.log('Error in Verifying OTP: ', error.message);
+      console.log('Error in Verifying OTP in add babk: ', err.message);
       setErrorMessage('*Something went wrong');
     } finally {
       setLoading(false);
@@ -99,8 +113,8 @@ export default function BankOtp({navigation, route}) {
             <View style={StyleConstants.LetsView}>
               <View style={styles.Lastview1}>
                 <View>
-                  <Text style={[styles.EnterOtp, {marginTop: 20}]}>
-                    Enter OTP sent to XXX XXX 4329 to add Bank Account{' '}
+                  <Text key={phone} style={[styles.EnterOtp, {marginTop: 20}]}>
+                    Enter OTP sent to XXX XXX {phone.substring(6,10)} to add Bank Account{' '}
                   </Text>
                 </View>
               </View>
@@ -110,7 +124,7 @@ export default function BankOtp({navigation, route}) {
                 numberOfDigits={4}
                 focusColor="blue"
                 focusStickBlinkingDuration={500}
-                // onTextChange={otpChanged}
+                onTextChange={otpChanged}
                 theme={{
                   pinCodeContainerStyle: styles.OtpBoxView,
                   pinCodeTextStyle: styles.textOtp,
@@ -128,9 +142,7 @@ export default function BankOtp({navigation, route}) {
                 navigation.goBack();
               }}></TouchableOpacity>
             <Button
-              onPress={() => {
-                navigation.navigate('addbanksucessfully');
-              }}
+              onPress={next}
               title="Confirm"
               loading={loading}
               titleStyle={styles.textOt}

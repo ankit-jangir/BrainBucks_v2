@@ -8,56 +8,22 @@ import WalletApiService from '../../services/api/WalletApiService';
 import { useNavigation, NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
-
+import { useSignal } from '@preact/signals-react';
+import Toast from 'react-native-toast-message';
+import { useWithdraw } from '../../context/WithdrawReducer';
 
 
 export default function Wallet({ navigation }) {
-  const data = [
-    {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: 1,
-      type: "credit",
-    },
-    {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: -1,
-      type: "debit",
-    },
-    {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: 0,
-      type: "credit",
-    },
-    {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      sucess: 1,
-      type: "debit",
-    }, {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: 1,
-      type: "debit",
-    },
-    {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: 0,
-      type: "credit",
-    }
-  ];
+
   const getArrowImage = (type) => {
-    return type === 'credit' 
+    return type === 'debit'
       ? require('../../assets/img/downarrow.png')
       : require('../../assets/img/uparrowss.png');
   };
 
   const getStatusIcon = (success) => {
     if (success === 1) return require('../../assets/img/arrowright.png');
-    else if(success === -1) return require('../../assets/img/pending.png');
+    else if (success === -1) return require('../../assets/img/pending.png');
     else return require('../../assets/img/cross.png');
   };
 
@@ -68,30 +34,33 @@ export default function Wallet({ navigation }) {
   };
 
   const getStatusColor = (success, type) => {
-    if (success === 1) return '#129C73'; 
-    else if (success === -1) return 'orange'; 
-    else if (type === 'credit') return 'red'; 
-    else return '#FFEFEF';
+    if (success === 1) return '#129C73';
+    else if (success === -1) return 'orange';
+    else return '#B71C1C';
   };
 
-  const [walletData, setWalletData] = useState({
+  const walletData = useSignal({
     investmoney: 0,
     wallet: 0,
     redemmoney: 0,
     transactions: []
   })
+  const { withdrawState, dispatch } = useWithdraw()
   const [loading, setLoading] = useState(false)
   const wallet = new WalletApiService()
+  const isFocused = useIsFocused()
+
   useEffect(() => {
     getWalletData();
-  }, [])
+  }, [isFocused])
 
   async function getWalletData() {
     try {
       setLoading(true)
       let res = await wallet.getTransactions()
       if (res.status === 1) {
-        setWalletData(res)
+        walletData.value = res;
+        dispatch({ type: 'details', withdrawDetails: { balance: res.wallet } })
       } else {
         Toast.show({
           type: 'error',
@@ -112,6 +81,9 @@ export default function Wallet({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={{zIndex:100}}>
+      <Toast />
+      </View>
       <View
         style={{
           backgroundColor: 'white',
@@ -171,7 +143,7 @@ export default function Wallet({ navigation }) {
           </View>
 
           <View>
-            <Text style={styles.balanceText}>₹ {walletData.wallet} </Text>
+            <Text key={walletData.value.wallet + "balance"} style={styles.balanceText}>₹ {walletData.value.wallet} </Text>
           </View>
 
           <View style={styles.containerImg1}>
@@ -180,15 +152,15 @@ export default function Wallet({ navigation }) {
             </View>
 
             <View style={styles.investedContainer}>
-              <Text style={styles.investedText}>Invested</Text>
-              <Text style={styles.investedAmount}>₹ {walletData.investmoney}</Text>
+              <Text style={styles.investedText + "invested"}>Invested</Text>
+              <Text key={walletData.value.investmoney} style={styles.investedAmount}>₹ {walletData.value.investmoney}</Text>
             </View>
           </View>
 
           <View style={styles.containerImg2}>
             <View style={styles.redeemableContainer}>
-              <Text style={styles.redeemableText}>
-                Total Transactions ₹ {walletData.redemmoney}
+              <Text style={styles.redeemableText} key={walletData.value.redemmoney + "redeem"}>
+                Total Transactions ₹ {walletData.value.redemmoney}
               </Text>
             </View>
 
@@ -273,55 +245,63 @@ export default function Wallet({ navigation }) {
         </View>
       </View>
       <ScrollView>
-      {data.map((res, index) => (
-        <View key={index} style={styles.historyContainer}>
-          <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
-            <View style={styles.transactionEntry}>
-              <View
-              style={[
-                styles.iconContainer,
-                { 
-                  backgroundColor: res.success === -1 ? '#fff9ef' : 
-                                   res.success === 1 ? '#EFFFF6' : '#FFEFEF' 
-                },
-              ]}>
-              <Image
-                source={getArrowImage(res.type)}
-                style={styles.icon}
-                tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
-              />
-              </View>
-              <View>
-                <Text style={styles.transactionAmount}>{res.r}</Text>
-                <Text style={styles.timestamp}>{res.s}</Text>
-              </View>
-              <View style={styles.statusContainer}>
-                <View style={[styles.statusIcon]}>
-                  <Image
-                    source={getStatusIcon(res.success)}
-                    style={styles.icon1}
-                  />
+        {
+          loading
+            ?
+            <ActivityIndicator />
+            :
+            walletData.value.transactions.length === 0 ?
+              <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
+              :
+              walletData.value.transactions.map((res, index) => (
+                <View key={res._id} style={styles.historyContainer}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
+                    <View style={styles.transactionEntry}>
+                      <View
+                        style={[
+                          styles.iconContainer,
+                          {
+                            backgroundColor: res.success === -1 ? '#fff9ef' :
+                              res.success === 1 ? '#EFFFF6' : '#FFEFEF'
+                          },
+                        ]}>
+                        <Image
+                          source={getArrowImage(res.type)}
+                          style={styles.icon}
+                          tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
+                        />
+                      </View>
+                      <View>
+                        <Text style={styles.transactionAmount}>₹ {res.amount}</Text>
+                        <Text style={styles.timestamp}>{res.order_datetime}</Text>
+                      </View>
+                      <View style={styles.statusContainer}>
+                        <View style={[styles.statusIcon]}>
+                          <Image
+                            source={getStatusIcon(res.success)}
+                            style={styles.icon1}
+                          />
+                        </View>
+                        <Text
+                          style={[
+                            styles.statusText,
+                            { color: getStatusColor(res.success, res.type) },
+                          ]}>
+                          {getStatusText(res.success)}
+                        </Text>
+                      </View>
+                      <View style={styles.arrowIconContainer}>
+                        <Image
+                          source={require('../../assets/img/rightarrow1.png')}
+                          style={styles.icon2}
+                          tintColor={'gray'}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <Text
-                  style={[
-                    styles.statusText,
-                    { color: getStatusColor(res.success, res.type) },
-                  ]}>
-                  {getStatusText(res.success)}
-                </Text>
-              </View>
-              <View style={styles.arrowIconContainer}>
-                <Image
-                  source={require('../../assets/img/rightarrow1.png')}
-                  style={styles.icon2}
-                  tintColor={'gray'}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </ScrollView>
+              ))}
+      </ScrollView>
     </View>
   );
 };
@@ -438,13 +418,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     justifyContent: 'space-between',
-    paddingHorizontal:5
+    paddingHorizontal: 5
   },
   actionsContainer1: {
     flexDirection: 'row',
     marginTop: 12,
     justifyContent: 'space-between',
-    paddingLeft:7,
+    paddingLeft: 7,
   },
   actionItem: {
     alignItems: 'center',
@@ -463,8 +443,8 @@ const styles = StyleSheet.create({
   },
   actionText: {
     textAlign: 'center',
-    color:'#000',
-    padding:2,
+    color: '#000',
+    padding: 2,
   },
   RecentText: {
     fontSize: 17,

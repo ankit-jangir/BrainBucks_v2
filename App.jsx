@@ -14,7 +14,7 @@ import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
-import VideoPlayer from './src/screens/courses/VideoPlayer';
+import VideoPlayer from './src/screens/Courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
@@ -24,9 +24,9 @@ import StudyExam from './src/screens/Study/StudyExam';
 import FreePdf from './src/screens/Study/FreePdf';
 import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
-import Courses from './src/screens/courses/Courses';
+import Courses from './src/screens/Courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
-import PaidCourses from './src/screens/courses/PaidCourses';
+import PaidCourses from './src/screens/Courses/PaidCourses';
 import QuestionPapers from './src/screens/Study/QuestionPapers';
 import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
@@ -55,6 +55,8 @@ import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
 import MyHistory from './src/screens/Sidebar/MyHistory';
+import AddBankReducer from './src/context/AddBankReducer';
+import WithdrawReducer from './src/context/WithdrawReducer';
 
 
 
@@ -104,8 +106,8 @@ function MyStack() {
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
-      <Stack.Screen name='dailyupdates' component={DailyUpdates}/>
-      <Stack.Screen name="transactionDetails"  component={TransctionDetails} />
+      <Stack.Screen name='dailyupdates' component={DailyUpdates} />
+      <Stack.Screen name="transactionDetails" component={TransctionDetails} />
       <Stack.Screen name="withdrawMoney" component={WithdrawMoney} />
       <Stack.Screen name="AccountDeatils" component={AccoountDeatils} />
       <Stack.Screen name="bankotp" component={BankOtp} />
@@ -114,7 +116,7 @@ function MyStack() {
       <Stack.Screen name="Challenges" component={Challenges} />
       <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
-      <Stack.Screen name='paymentpopup' component={PaymentPopup}/>
+      <Stack.Screen name='paymentpopup' component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
       <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
       <Stack.Screen name="StartExam" component={StartExam} />
@@ -319,8 +321,8 @@ function MyTabs() {
               ),
             }}
           />
-      </>
-    </Tab.Navigator>
+        </>
+      </Tab.Navigator>
     </SafeAreaProvider >
   );
 }
@@ -337,9 +339,15 @@ function MyDrawer() {
 
 export default function App() {
   return (
+
     <NavigationContainer>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
-      <MyStack />
+      <AddBankReducer>
+        <WithdrawReducer>
+          <MyStack />
+        </WithdrawReducer>
+      </AddBankReducer>
     </NavigationContainer>
+
   );
 }

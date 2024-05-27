@@ -1,49 +1,97 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {Text, TextInput} from '../../utils/Translate';
-import {ScrollView} from 'react-native-gesture-handler';
+import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, BackHandler } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Text, TextInput } from '../../utils/Translate';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useWithdraw } from '../../context/WithdrawReducer';
+import Toast from 'react-native-toast-message';
+import WalletApiService from '../../services/api/WalletApiService';
+import NoDataFound from '../../components/NoDataFound';
+import { useIsFocused } from '@react-navigation/native';
 
-const Withdraw = ({navigation}) => {
-  const data = [
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-  ];
+const Withdraw = ({ navigation }) => {
+  const { withdrawState, dispatch } = useWithdraw()
+  const [verifiedBanks, setVerifiedBanks] = useState([])
+  const [loading, setLoading] = useState(false)
+  const wallServ = new WalletApiService();
+
+  const bhRef = useRef()
+
+  useEffect(() => {
+    getVerifiedBanks()
+    bhRef.current = BackHandler.addEventListener(
+      'hardwareBackPress', () => {dispatch({type:'empty'})}
+    )
+    return () => bhRef.current.remove()
+  }, [])
+
+  async function getVerifiedBanks() {
+    try {
+      setLoading(true)
+      let res = await wallServ.getVerfiedBanks()
+      if (res.status === 1) {
+        setVerifiedBanks(res.banks)
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error
+        })
+      }
+    } catch (err) {
+      console.log("Error in getting verified banks: ", err.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong'
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function selectBank(bank) {
+    dispatch({ type: 'details', withdrawDetails: { bank: bank } })
+  }
+
+  function inputAmount(text) {
+    let reg = /^\d*$/
+    if (reg.test(text)) {
+      dispatch({ type: 'details', withdrawDetails: { amount: parseInt(text) } })
+    }
+  }
+
+  async function next() {
+    if (!withdrawState.amount) {
+      Toast.show({
+        type: 'error',
+        text1: "Enter an amount to withdraw "
+      })
+      return;
+    }
+
+    if (!withdrawState.bank || Object.keys(withdrawState.bank).length===0) {
+      Toast.show({
+        type: 'error',
+        text1: "Select a bank to withdraw the money "
+      })
+      return;
+    }
+
+    if (withdrawState.amount > withdrawState.balance - 10) {
+      Toast.show({
+        type: 'error',
+        text1: "You can't withdraw more than Redeemable balance "
+      })
+      return;
+    }
+
+    bhRef.current.remove()
+    navigation.navigate('withdrawMoney');
+  }
+
   return (
-    <View style={{flex: 1, backgroundColor: 'white', paddingBottom: 80}}>
+    <View style={{ flex: 1, backgroundColor: 'white', paddingBottom: 80 }}>
+      <View style={{ zIndex: 100 }}>
+        <Toast />
+      </View>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
@@ -59,66 +107,71 @@ const Withdraw = ({navigation}) => {
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Withdraw Money</Text>
-          <Text style={{fontSize: 14, color: '#D92828'}}>
-            Transaction fees = 10/Transaction
+          <Text style={{ fontSize: 14, color: '#D92828' }}>
+            Transaction fees = ₹10/Transaction
           </Text>
         </View>
       </View>
       <View style={styles.balanceContainer}>
         <Text>Total Redeemable Balance</Text>
-        <Text style={styles.balanceAmount}>₹ 15,600</Text>
+        <Text style={styles.balanceAmount}>₹ {withdrawState.balance - 10 >= 0 ? withdrawState.balance - 10 : 0}</Text>
       </View>
       <View style={styles.amountInputContainer}>
         <Text style={styles.amountLabel}>Enter Amount</Text>
         <TextInput
           keyboardType="numeric"
           placeholder="Type Here..."
+          value={withdrawState.amount}
+          onChangeText={inputAmount}
           style={styles.inputs}
         />
         <Text>
           Entered amount should be less{' '}
-          <Text style={{color: '#D92828'}}>₹ 15,600</Text>{' '}
+          <Text style={{ color: '#D92828' }}>₹ {withdrawState.balance - 10 >= 0 ? withdrawState.balance - 10 : 0}</Text>{' '}
         </Text>
       </View>
       <Text style={styles.balanceAmount1}>Select Bank account</Text>
 
       <ScrollView>
-        {data.map((res, index) => {
-          return (
-            <>
-              <TouchableOpacity>
-                <View key={index} style={styles.bankDetailsContainer}>
-                  <View style={styles.bankDetailsHeader}>
-                    <View style={styles.bankIconContainer}>
-                      <Image
-                        source={require('../../assets/img/bb.png')}
-                        resizeMode="contain"
-                        style={styles.bankIcon}
-                      />
+        {
+          loading ?
+            <ActivityIndicator size={40} />
+            :
+            verifiedBanks.length === 0 ?
+              <NoDataFound message={"No Verified Banks yet. Wait for your banks to get verified or add new banks if not added"} action={getVerifiedBanks} actionText={"Load Again"} />
+              :
+              verifiedBanks.map((res, index) => {
+                return (
+                  <TouchableOpacity key={res._id} onPress={() => selectBank(res)}>
+                    <View key={index} style={[styles.bankDetailsContainer, withdrawState.bank._id === res._id && { borderWidth: 2, borderColor: 'green' }]}>
+                      <View style={styles.bankDetailsHeader}>
+                        <View style={styles.bankIconContainer}>
+                          <Image
+                            source={require('../../assets/img/bb.png')}
+                            resizeMode="contain"
+                            style={styles.bankIcon}
+                          />
+                        </View>
+                        <Text style={styles.bankName}>{res.bank_name}</Text>
+                      </View>
+                      <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
+                      <View style={styles.bankAccountDetails}>
+                        <Text style={styles.accountText}>{res.bank_acc_no}</Text>
+                        <Text style={styles.ifscText}>{res.ifsc_code}</Text>
+                      </View>
+                      <View style={{ margin: 0 }}>
+                        <TouchableOpacity style={styles.button}>
+                          <Text style={styles.buttonText}>Remove Account</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                    <Text style={styles.bankName}>{res.bankname}</Text>
-                  </View>
-                  <Text style={styles.bankHolder}>{res.HolName}</Text>
-                  <View style={styles.bankAccountDetails}>
-                    <Text style={styles.accountText}>{res.Acc}</Text>
-                    <Text style={styles.ifscText}>{res.ifc}</Text>
-                  </View>
-                  <View style={{margin: 0}}>
-                    <TouchableOpacity style={styles.button}>
-                      <Text style={styles.buttonText}>Remove Account</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </>
-          );
-        })}
+                  </TouchableOpacity>
+                );
+              })}
       </ScrollView>
       <TouchableOpacity
         style={styles.payNowButton}
-        onPress={() => {
-          navigation.navigate('withdrawMoney');
-        }}>
+        onPress={next}>
         <Text style={styles.payNowText}>Withdraw Now</Text>
       </TouchableOpacity>
     </View>
@@ -157,6 +210,7 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: 32,
     fontWeight: '600',
+    color: 'gray'
   },
   balanceAmount1: {
     fontSize: 17,
@@ -178,6 +232,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 5,
     fontSize: 17,
+    color: '#000'
   },
   bankDetailsContainer: {
     marginTop: 5,

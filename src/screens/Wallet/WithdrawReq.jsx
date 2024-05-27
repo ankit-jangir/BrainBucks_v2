@@ -1,18 +1,38 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {Text} from '../../utils/Translate';
+import { StyleSheet, View, Image, TouchableOpacity, BackHandler } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text } from '../../utils/Translate';
+import { useWithdraw } from '../../context/WithdrawReducer';
 
-const WithdrawReq = () => {
+const WithdrawReq = ({ navigation }) => {
+
+  const { withdrawState, dispatch } = useWithdraw()
+
+  function goback(type) {
+    dispatch({ type: 'empty' })
+    if (type === 'hardware') {
+      navigation.pop(2)
+    } else {
+      navigation.pop(3)
+    }
+  }
+
+  useEffect(() => {
+    let bh = BackHandler.addEventListener('hardwareBackPress', () => { goback('hardware') })
+    return () => { bh.remove() }
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={require('../../assets/img/back.png')}
-          style={styles.backImage}
-        />
+        <TouchableOpacity onPress={goback}>
+          <Image
+            source={require('../../assets/img/back.png')}
+            style={styles.backImage}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.amountContainer}>
-        <Text style={styles.amountText}>₹ 15,600</Text>
+        <Text style={styles.amountText}>₹ {withdrawState.amount}</Text>
       </View>
       <View style={styles.messageContainer}>
         <Image
@@ -26,15 +46,6 @@ const WithdrawReq = () => {
         </View>
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.transactionLabel}>Transaction ID</Text>
-        <Text style={styles.transactionId}>#htnOP1256BHIPOK569822</Text>
-        <View style={styles.transactionDetails}>
-          <Image
-            source={require('../../assets/img/Timer.png')}
-            style={styles.timerImage}
-          />
-          <Text style={styles.transactionDate}>20 Dec 2022 | 12:34 IST</Text>
-        </View>
         <Text style={styles.beneficiaryLabel}>Beneficiary Details</Text>
         <TouchableOpacity>
           <View style={styles.bankDetailsContainer}>
@@ -46,12 +57,12 @@ const WithdrawReq = () => {
                   style={styles.bankIcon}
                 />
               </View>
-              <Text style={styles.bankName}>Federal Bank</Text>
+              <Text style={styles.bankName}>{withdrawState.bank.bank_name}</Text>
             </View>
-            <Text style={styles.bankHolder}>Holder Name</Text>
+            <Text style={styles.bankHolder}>{withdrawState.bank.acc_holder_name}</Text>
             <View style={styles.bankAccountDetails}>
-              <Text style={styles.accountText}>xxx xxx xxx xxx</Text>
-              <Text style={styles.ifscText}>122 asdf qwer fgb</Text>
+              <Text style={styles.accountText}>{withdrawState.bank.bank_acc_no}</Text>
+              <Text style={styles.ifscText}>{withdrawState.bank.ifsc_code}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -85,8 +96,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft:10,
-    marginTop:5
+    marginLeft: 10,
+    marginTop: 5
   },
   backImage: {
     height: 45,
@@ -98,17 +109,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   amountText: {
-    fontSize:40,
+    fontSize: 40,
     fontWeight: '800',
     color: '#FFFFFF',
   },
   messageContainer: {
     justifyContent: 'center',
     flexDirection: 'row',
-    alignItems:"center",
+    alignItems: "center",
     // paddingLeft:80,
-    marginTop:10,
-    marginBottom:10
+    marginTop: 10,
+    marginBottom: 10
   },
   tickImage: {
     height: 45,
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '800',
     color: '#FFFFFF',
-    paddingLeft:7
+    paddingLeft: 7
   },
   detailsContainer: {
     backgroundColor: 'white',
@@ -203,13 +214,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     // padding: 10,
-    paddingLeft:10,
-    paddingRight:10
+    paddingLeft: 10,
+    paddingRight: 10
   },
   accountText: {
     color: 'black',
     fontSize: 14,
-    
+
   },
   ifscText: {
     color: 'black',
@@ -217,7 +228,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flexDirection: 'row',
-    margin:5,
+    margin: 5,
   },
   statusButton: {
     backgroundColor: '#EFF4FA',
@@ -250,6 +261,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     resizeMode: 'contain',
-    marginBottom:20
+    marginBottom: 20
   },
 });
