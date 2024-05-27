@@ -54,6 +54,8 @@ import StartExam from './src/screens/Quizzes/StartExam';
 import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
+import MyHistory from './src/screens/Sidebar/MyHistory';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -119,9 +121,7 @@ function MyStack() {
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
-
-
-
+      <Stack.Screen name="myhistory" component={MyHistory} />
 
 
 
