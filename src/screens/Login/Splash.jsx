@@ -43,8 +43,8 @@ export default function Splash({ navigation }) {
         setCheckLang(null)
       }
     }
-    try { 
-      getLang() 
+    try {
+      getLang()
     } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) }
   }, [])
 

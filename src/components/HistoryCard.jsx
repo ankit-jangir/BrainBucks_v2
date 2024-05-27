@@ -4,7 +4,7 @@ import {LinearProgress, Button} from '@rneui/themed';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-const TriviaQuiz = () => {
+const HistoryCard = () => {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
@@ -26,7 +26,7 @@ const TriviaQuiz = () => {
       <View style={styles.container}>
         <View style={styles.containerImg}>
           <Image
-            source={require('../assets/img/Rectangle.png')}
+            source={require('../../assets/img/Rectangle.png')}
             resizeMode="contain"
             style={styles.mainImage}
           />
@@ -36,14 +36,14 @@ const TriviaQuiz = () => {
           <View style={styles.containerImg122}>
             <Text style={styles.subText}>Fees</Text>
             <Image
-              source={require('../assets/img/bb.png')}
+              source={require('../../assets/img/bb.png')}
               style={styles.icon}
             />
             <Text style={styles.highlightedText}>2024</Text>
           </View>
           <View style={styles.containerImg1222}>
             <Image
-              source={require('../assets/img/Timer.png')}
+              source={require('../../assets/img/Timer.png')}
               resizeMode="contain"
               style={styles.smallIcon}
             />
@@ -54,14 +54,14 @@ const TriviaQuiz = () => {
           <View style={styles.containerImg122}>
             <Text style={styles.subText}>Prize</Text>
             <Image
-              source={require('../assets/img/bb.png')}
+              source={require('../../assets/img/bb.png')}
               style={styles.icon}
             />
             <Text style={styles.highlightedText}>2024</Text>
           </View>
           <View style={styles.containerImg1222}>
             <Image
-              source={require('../assets/img/Clock.png')}
+              source={require('../../assets/img/Clock.png')}
               resizeMode="contain"
               style={styles.smallIcon}
             />
@@ -70,7 +70,7 @@ const TriviaQuiz = () => {
         </View>
         <View style={styles.scoreContainer}>
           <Image
-            source={require('../assets/img/Vector.png')}
+            source={require('../../assets/img/Vector.png')}
             style={styles.vectorIcon}
             resizeMode="contain"
           />
@@ -82,20 +82,16 @@ const TriviaQuiz = () => {
           variant="determinate"
         />
         <Button
-          linearGradientProps={{
-            colors: ['#54ACFD', '#2289E7'],
-            start: {x: 0, y: 0.5},
-            end: {x: 1, y: 0.5},
-          }}
-          buttonStyle={styles.button}>
-          Register Now
-        </Button>
+        title="View Result"
+        buttonStyle={styles.button}
+        titleStyle={styles.buttonTitle}
+      />
       </View>
     </View>
   );
 };
 
-export default TriviaQuiz;
+export default HistoryCard;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -127,13 +123,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 2,
+
   },
   containerImg122: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   subText: {
-    fontSize: screenWidth * 0.045,
+    fontSize: 17,
     fontWeight: '700',
     color: 'lightgray',
   },
@@ -176,5 +173,14 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
+  },
+  button: {
+    borderRadius: 5,
+    borderColor: "#C922E4",
+    borderWidth: 1,
+    backgroundColor: "white",  
+  },
+  buttonTitle: {
+    color: "#C922E4",
   },
 });

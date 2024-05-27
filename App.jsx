@@ -47,12 +47,15 @@ import ExamDetail from './src/screens/saved/ExamDetail';
 import Quizze from './src/screens/saved/Quizze';
 import Challenges from './src/screens/saved/Challenges';
 import FreeTrivia from './src/screens/saved/FreeTrivia';
+import PaymentPopup from './src/screens/Wallet/PaymentPopup';
 import AllLiveQuizzes from './src/screens/Quizzes/AllLiveQuizzes';
 import RulesofParticipation from './src/screens/Quizzes/RulesofParticipation';
 import StartExam from './src/screens/Quizzes/StartExam';
 import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
+import MyHistory from './src/screens/Sidebar/MyHistory';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -111,15 +114,14 @@ function MyStack() {
       <Stack.Screen name="Challenges" component={Challenges} />
       <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
+      <Stack.Screen name='paymentpopup' component={PaymentPopup}/>
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
       <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
-
-
-
+      <Stack.Screen name="myhistory" component={MyHistory} />
 
 
 

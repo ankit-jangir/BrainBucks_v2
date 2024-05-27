@@ -1,9 +1,18 @@
 import axios from "axios";
-import { AUTHMICRO } from "../../config/urls";
+import { AUTHMICRO, IFSC_CHECk } from "../../config/urls";
 import basic from "../BasicServices";
 import { ToastAndroid } from "react-native";
 
 class WalletApiService {
+
+  async checkIfsc(ifsc){
+    let options = {
+      method:'get',
+      url:IFSC_CHECk+"/"+ifsc
+    }
+    const res = await axios(options)
+    return res
+  }
   
   async createOrder(amount) {
     amount = parseInt(amount + "")
