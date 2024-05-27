@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 0.2,
     borderBottomColor: 'gray',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   backImage: {
     height: 45,
@@ -160,6 +160,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'black',
+    fontFamily:"Work Sans"
+
   },
   formContainer: {
     marginTop: 20,
@@ -173,6 +175,8 @@ const styles = StyleSheet.create({
     color: '#2E2E2E',
     fontWeight: '400',
     fontSize: 18,
+    fontFamily:"Work Sans"
+
   },
   inputs: {
     borderColor: 'gray',
@@ -181,6 +185,8 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 10,
     fontSize: 17,
+    fontFamily:"Work Sans"
+
   },
   addButtonContainer: {
     width: '100%',
@@ -200,10 +206,14 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: 'white',
     fontSize: 21,
+    fontFamily:"Work Sans"
+
   },
   errmsg: {
     fontSize: 14,
     color: 'red',
-    marginTop: 13
+    marginTop: 13,
+    fontFamily:"Work Sans"
+
   }
 });

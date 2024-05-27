@@ -107,8 +107,9 @@ const Withdraw = ({ navigation }) => {
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Withdraw Money</Text>
-          <Text style={{ fontSize: 14, color: '#D92828' }}>
-            Transaction fees = ₹10/Transaction
+          <Text style={{fontSize: 14, color: '#D92828',    fontFamily:"Work Sans"
+        }}>
+            Transaction fees = 10/Transaction
           </Text>
         </View>
       </View>
@@ -198,6 +199,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'black',
+    fontFamily:"Work Sans"
+
   },
   balanceContainer: {
     margin: 10,
@@ -210,13 +213,17 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: 32,
     fontWeight: '600',
-    color: 'gray'
+    fontFamily:"Work Sans"
+
   },
   balanceAmount1: {
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: '500',
     color: 'black',
     paddingLeft: 20,
+    fontFamily:"Work Sans",
+    paddingBottom:5
+
   },
   amountInputContainer: {
     padding: 15,
@@ -224,6 +231,8 @@ const styles = StyleSheet.create({
   amountLabel: {
     color: 'black',
     fontSize: 17,
+    fontFamily:"Work Sans"
+
   },
   inputs: {
     borderColor: 'gray',
@@ -232,7 +241,8 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 5,
     fontSize: 17,
-    color: '#000'
+    fontFamily:"Work Sans"
+
   },
   bankDetailsContainer: {
     marginTop: 5,
@@ -265,23 +275,32 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     paddingLeft: 15,
     color: 'black',
+    fontFamily:"Work Sans"
+
   },
   bankHolder: {
     paddingLeft: 10,
     fontWeight: '400',
     color: '#7E7E7E',
     paddingTop: 20,
+    fontFamily:"Work Sans"
+
   },
   bankAccountDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
+
   },
   accountText: {
     color: 'black',
+    fontFamily:"Work Sans"
+
   },
   ifscText: {
     color: 'black',
+    fontFamily:"Work Sans"
+
   },
   payNowButton: {
     position: 'absolute',
@@ -297,6 +316,8 @@ const styles = StyleSheet.create({
   payNowText: {
     color: 'white',
     fontSize: 21,
+    fontFamily:"Work Sans"
+
   },
   button: {
     backgroundColor: '#FFF2F2',
@@ -310,5 +331,6 @@ const styles = StyleSheet.create({
     color: '#D92828',
     fontSize: 14,
     fontWeight: '400',
+
   },
 });

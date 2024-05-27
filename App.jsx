@@ -57,6 +57,10 @@ import Particpants from './src/screens/Quizzes/Particpants';
 import MyHistory from './src/screens/Sidebar/MyHistory';
 import AddBankReducer from './src/context/AddBankReducer';
 import WithdrawReducer from './src/context/WithdrawReducer';
+import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
+import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
+import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
+import Share from './src/screens/Wallet/Share';
 
 
 
@@ -124,7 +128,11 @@ function MyStack() {
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
+      <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
+      <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
+      <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
 
+      <Stack.Screen name="share" component={Share} />
 
 
     </Stack.Navigator>

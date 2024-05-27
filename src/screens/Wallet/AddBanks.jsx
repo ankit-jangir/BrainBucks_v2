@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
   ViewText: {
     fontSize: 13,
     color: '#367CFF',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily:"Work Sans"
+
   },
   bankDetailsContainer: {
     margin: 10,

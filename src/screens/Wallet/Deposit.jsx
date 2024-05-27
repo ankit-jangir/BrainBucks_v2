@@ -1,85 +1,105 @@
-import { StyleSheet, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import React, { useState } from 'react';
-import { Button, Text, TextInput } from '../../utils/Translate';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState} from 'react';
+import {Button, Text, TextInput} from '../../utils/Translate';
+import {ColorsConstant} from '../../constants/Colors.constant';
 import Toast from 'react-native-toast-message';
 import WalletApiService from '../../services/api/WalletApiService';
 import RazorpayCheckout from 'react-native-razorpay';
 
 const Deposit = ({navigation}) => {
   const [amount, setAmount] = useState();
-  const [loading, setLoading] = useState(false)
-  const [errMsg, setErrMsg] = useState()
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState();
 
-  let walletService = new WalletApiService()
+  let walletService = new WalletApiService();
 
-  async function createOrder(){
-    if(loading){
+  async function createOrder() {
+    if (loading) {
       return;
     }
-    setErrMsg(null)
-    if(!amount){
-      setErrMsg("Enter a valid amount first")
+    setErrMsg(null);
+    if (!amount) {
+      setErrMsg('Enter a valid amount first');
       return;
     }
-    try{
-      setLoading(true)
-      let res = await walletService.createOrder(amount)
-      if(res.status===1){
-        RazorpayCheckout.open(res.option2).then((data) => {
-         navigation.navigate('paymentpopup',{
-          status:1
-         })
-        }).catch((error) => {
-          navigation.navigate('paymentpopup',{
-            status:0
-           })
-        })
-      }else{
+    try {
+      setLoading(true);
+      let res = await walletService.createOrder(amount);
+      if (res.status === 1) {
+        RazorpayCheckout.open(res.option2)
+          .then(data => {
+            navigation.navigate('paymentpopup', {
+              status: 1,
+            });
+          })
+          .catch(error => {
+            navigation.navigate('paymentpopup', {
+              status: 0,
+            });
+          });
+      } else {
         Toast.show({
-          type:'error',
-          text1:res.Backend_Error
-        })
+          type: 'error',
+          text1: res.Backend_Error,
+        });
       }
-    }catch(err){
-      console.log("Error while creating order",err.message);
+    } catch (err) {
+      console.log('Error while creating order', err.message);
       Toast.show({
-        type:'error',
-        text1:"Something went wrong"
-      })
-    }finally{
-      setLoading(false)
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <View style={styles.container}>
-      <Toast/>
+      <Toast />
       <View style={styles.header}>
-      <TouchableOpacity onPress={()=>{navigation.navigate("Wallet")}}>
-      <Image
-          tintColor="gray"
-          source={require('../../assets/img/radic.png')}
-          style={styles.actionIcon}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-        
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Wallet');
+          }}>
+          <Image
+            tintColor="gray"
+            source={require('../../assets/img/radic.png')}
+            style={styles.actionIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text style={{fontSize: 14}}>In my Brain Bucks Wallet</Text>
+          <Text style={{fontSize: 14, fontFamily: 'Work Sans'}}>
+            In my Brain Bucks Wallet
+          </Text>
         </View>
       </View>
       <View style={styles.amountInputContainer}>
         <Text style={styles.amountLabel}>Select Amount {'(₹)'}</Text>
         <TextInput
-          placeholderTextColor='gray'
+          placeholderTextColor="gray"
           keyboardType="numeric"
           placeholder="Type Here..."
-          style={[styles.inputs, errMsg&&{borderWidth:1, borderColor:'red'}]}
+          style={[
+            styles.inputs,
+            errMsg && {borderWidth: 1, borderColor: 'red'},
+          ]}
           value={amount}
           editable={false}
         />
-        {errMsg && <Text style={styles.errmsg} key={errMsg}>*{errMsg}</Text>}
+        {errMsg && (
+          <Text style={styles.errmsg} key={errMsg}>
+            *{errMsg}
+          </Text>
+        )}
       </View>
       <View style={styles.quickAmountContainer}>
         <TouchableOpacity
@@ -104,9 +124,12 @@ const Deposit = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={createOrder} style={styles.payNowButton}>
-        {loading?<ActivityIndicator size={30}/>:<Text style={styles.payNowText}>Pay Now</Text>}
+        {loading ? (
+          <ActivityIndicator size={30} />
+        ) : (
+          <Text style={styles.payNowText}>Pay Now</Text>
+        )}
       </TouchableOpacity>
-
     </View>
   );
 };
@@ -136,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'black',
+    fontFamily: 'Work Sans',
   },
   amountInputContainer: {
     margin: 20,
@@ -144,6 +168,7 @@ const styles = StyleSheet.create({
   amountLabel: {
     color: 'black',
     fontSize: 17,
+    fontFamily: 'Work Sans',
   },
   inputs: {
     borderColor: 'gray',
@@ -152,7 +177,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     fontSize: 21,
-    color:ColorsConstant.Black
+    color: ColorsConstant.Black,
+    fontFamily: 'Work Sans',
   },
   quickAmountContainer: {
     margin: 20,
@@ -171,6 +197,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 17,
     fontWeight: '400',
+    fontFamily: 'Work Sans',
   },
   payNowButton: {
     position: 'absolute',
@@ -186,10 +213,11 @@ const styles = StyleSheet.create({
   payNowText: {
     color: 'white',
     fontSize: 21,
+    fontFamily: 'Work Sans',
   },
-  errmsg:{
-    color:"red",
-    fontSize:13,
-    marginTop:6 
-  }
+  errmsg: {
+    color: 'red',
+    fontSize: 13,
+    marginTop: 6,
+  },
 });

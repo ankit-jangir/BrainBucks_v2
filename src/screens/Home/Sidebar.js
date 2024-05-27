@@ -106,10 +106,14 @@ const Sidebar = ({ navigation }) => {
           text="Daily Updates"
         />
         <MenuItem
+        action={()=>{navigation.navigate("RulesRegulations")}}
+
           image={require('../../assets/img/rulesregulation.png')}
           text="Rules & Regulations"
         />
         <MenuItem
+        action={()=>{navigation.navigate("privacypolice")}}
+
           image={require('../../assets/img/privacypolicy.png')}
           text="Privacy Policy"
         />
@@ -125,10 +129,14 @@ const Sidebar = ({ navigation }) => {
           text="History"
         />
         <MenuItem
+        action={()=>{navigation.navigate("coursesplanhistory")}}
+
           image={require('../../assets/img/ebook.png')}
           text="Course Plan History"
         />
         <MenuItem
+        action={()=>{navigation.navigate(" ")}}
+
           image={require('../../assets/img/audit.png')}
           text="Refer & Earn"
         />

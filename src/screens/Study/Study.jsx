@@ -76,7 +76,7 @@ export default function Study({ navigation }) {
         })
       }
     } catch (err) {
-      console.log("Error in fetching enrolled exams ", err.message)
+      console.log("Error in fetching enrolled exams in study: ", err.message)
       Toast.show({
         type: "error",
         text1: "Something Went Wrong"

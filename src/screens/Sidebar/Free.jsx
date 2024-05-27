@@ -4,7 +4,7 @@ import {LinearProgress, Button} from '@rneui/themed';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-const TriviaQuiz = () => {
+const Free = () => {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
@@ -91,12 +91,13 @@ const TriviaQuiz = () => {
   );
 };
 
-export default TriviaQuiz;
+export default Free;
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    margin: 10,
+    padding: 10,
+    backgroundColor:"white"
   },
   container: {
     width: '100%',
@@ -116,8 +117,11 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     marginLeft: screenWidth * 0.03,
-    fontSize: screenWidth * 0.05,
-    fontWeight: '800',
+    fontSize:17,
+    fontWeight: '600',
+    fontFamily:"Inter",
+    color:"#2E2E2E"
+
   },
   containerImg12: {
     flexDirection: 'row',
@@ -130,9 +134,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subText: {
-    fontSize: 17,
-    fontWeight: '700',
+    fontSize: 16,
+    fontWeight: '600',
     color: 'lightgray',
+    fontFamily:"Inter"
   },
   icon: {
     width: 20,
@@ -140,10 +145,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   highlightedText: {
-    fontSize: screenWidth * 0.045,
-    fontWeight: '700',
+    fontSize:16 ,
+    fontWeight: '600',
     paddingLeft: screenWidth * 0.02,
     color: '#F5B807',
+    fontFamily:"Inter"
+
   },
   containerImg1222: {
     flexDirection: 'row',
@@ -155,6 +162,8 @@ const styles = StyleSheet.create({
   },
   dateText: {
     paddingLeft: 8,
+    fontFamily:"Inter"
+
   },
   scoreContainer: {
     flexDirection: 'row',
@@ -167,6 +176,8 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     paddingLeft: 5,
+    fontFamily:"Inter"
+
   },
   progress: {
     marginVertical: 10,
@@ -176,11 +187,13 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
-    borderColor: "#C922E4",
+    borderColor: "#367CFF",
     borderWidth: 1,
     backgroundColor: "white",  
   },
   buttonTitle: {
-    color: "#C922E4",
+    color: "#367CFF",
+    fontFamily:"Inter"
+
   },
 });

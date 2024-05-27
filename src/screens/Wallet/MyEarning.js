@@ -27,7 +27,7 @@ const MyEarning = ({navigation}) => {
           style={[styles.tabItem, index === 1 ? styles.selectedTab : styles.earningTab]}
           onPress={() => setIndex(1)}
         >
-          <Text style={styles.tabTitle}>My Earning</Text>
+          <Text style={styles.tabTitle}>Earned</Text>
         </TouchableOpacity>
       </View>
 
@@ -64,6 +64,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     fontWeight: "600",
+    fontFamily:"Work Sans",
+    color:"black"
+
   },
   tabContainer: {
     flexDirection: 'row',
@@ -72,8 +75,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   tabTitle: {
-    fontSize: 21,
     color: 'white',
+    fontFamily:"Work Sans"
+
   },
   tabItem: {
     flex: 1,
