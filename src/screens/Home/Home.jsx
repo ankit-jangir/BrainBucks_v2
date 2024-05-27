@@ -478,6 +478,7 @@ const FreeTrivia = props => {
           borderColor: '#F5F5F5',
           marginRight: 20,
           backgroundColor: '#fff',
+          alignItems:"center"
         }}>
         <View style={styles.QuizzView1}>
           <View style={styles.QuizzView2}>
