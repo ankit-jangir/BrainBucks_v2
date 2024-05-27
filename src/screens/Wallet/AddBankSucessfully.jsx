@@ -76,13 +76,17 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         paddingLeft: 15,
         color: 'black',
+        fontFamily:"Work Sans"
+
       },
       bankHolder: {
         paddingLeft: 10,
         fontWeight: '400',
         color: '#7E7E7E',
         paddingTop: 20,
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
+
       },
       bankAccountDetails: {
         flexDirection: 'row',
@@ -102,16 +106,20 @@ const styles = StyleSheet.create({
       payNowText: {
         color: 'white',
         fontSize: 16,
-        fontWeight:"500"
+        fontWeight:"500",
+        fontFamily:"Work Sans"
+
       },
       accountText: {
         color: 'black',
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
 
       },
       ifscText: {
         color: 'black',
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
 
       },
 })

@@ -122,6 +122,8 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.03,
     fontSize: screenWidth * 0.05,
     fontWeight: '800',
+    fontFamily:"Work Sans"
+
   },
   containerImg12: {
     flexDirection: 'row',
@@ -136,6 +138,8 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.045,
     fontWeight: '700',
     color: 'lightgray',
+    fontFamily:"Work Sans"
+
   },
   icon: {
     width: 20,
@@ -147,6 +151,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     paddingLeft: screenWidth * 0.02,
     color: '#F5B807',
+    fontFamily:"Work Sans"
+
   },
   containerImg1222: {
     flexDirection: 'row',

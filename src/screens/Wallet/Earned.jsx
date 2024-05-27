@@ -154,22 +154,28 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: "#16AC72"
+    color: "#16AC72",
+    fontFamily:"Work Sans"
+
   },
   date: {
     color: 'gray',
     fontSize: 10,
+    fontFamily:"Work Sans"
+
   },
   titleWrapper: {
     paddingLeft: 5,
     flex: 1,
   },
   title: {
-    color: 'black',
-    fontSize: 17,
+    color: '#2E2E2E',
+    fontSize: 14,
     fontWeight: '400',
     paddingRight:5,
-    textAlign:"right"
+    textAlign:"right",
+    fontFamily:"Work Sans"
+
 
   },
   spentForWrapper: {
@@ -178,6 +184,8 @@ const styles = StyleSheet.create({
   spentFor: {
     color: 'lightgray',
     fontSize: 14,
+    fontFamily:"Work Sans"
+
   },
   containerImg: {
     flexDirection: 'row',
@@ -192,5 +200,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 16,
     fontWeight: '500',
+    fontFamily:"Inter",
+    color:"#2E2E2E"
+
   },
 });

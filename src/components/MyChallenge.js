@@ -79,20 +79,30 @@ const styles = StyleSheet.create({
   },
   text1: {
     color: '#FFFFFF',
+    fontFamily:"Work Sans"
+
   },
   text12: {
     color: 'gray',
+    fontFamily:"Work Sans"
+
   },
   text122: {
     color: '#F0F0F0',
+    fontFamily:"Work Sans"
+
   },
   text11: {
     color: '#F0F0F0',
     fontSize: 32,
     fontWeight: '600',
+    fontFamily:"Work Sans"
+
   },
   text13: {
     color: 'lightgray',
+    fontFamily:"Work Sans"
+
   },
   button: {
     borderRadius: 5,
@@ -101,6 +111,8 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: 'white',
+    fontFamily:"Work Sans"
+
   },
   row1: {
     justifyContent: 'space-between',

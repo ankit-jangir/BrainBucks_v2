@@ -14,7 +14,7 @@ import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
-import VideoPlayer from './src/screens/courses/VideoPlayer';
+import VideoPlayer from './src/screens/Courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
@@ -24,9 +24,9 @@ import StudyExam from './src/screens/Study/StudyExam';
 import FreePdf from './src/screens/Study/FreePdf';
 import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
-import Courses from './src/screens/courses/Courses';
+import Courses from './src/screens/Courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
-import PaidCourses from './src/screens/courses/PaidCourses';
+import PaidCourses from './src/screens/Courses/PaidCourses';
 import QuestionPapers from './src/screens/Study/QuestionPapers';
 import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
@@ -55,6 +55,10 @@ import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
 import MyHistory from './src/screens/Sidebar/MyHistory';
+import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
+import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
+import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
+import Share from './src/screens/Wallet/Share';
 
 
 
@@ -122,7 +126,11 @@ function MyStack() {
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
+      <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
+      <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
+      <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
 
+      <Stack.Screen name="share" component={Share} />
 
 
     </Stack.Navigator>

@@ -1,76 +1,85 @@
-import { StyleSheet, View, Linking, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Linking,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { Image } from 'react-native-elements';
-import { Text } from '../../utils/Translate';
+import {Image} from 'react-native-elements';
+import {Text} from '../../utils/Translate';
 import History from './History';
 import WalletApiService from '../../services/api/WalletApiService';
-import { useNavigation, NavigationContainer, useIsFocused } from '@react-navigation/native';
-import { ActivityIndicator } from 'react-native-paper';
+import {
+  useNavigation,
+  NavigationContainer,
+  useIsFocused,
+} from '@react-navigation/native';
+import {ActivityIndicator} from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
 
-
-
-export default function Wallet({ navigation }) {
+export default function Wallet({navigation}) {
   const data = [
     {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
       success: 1,
-      type: "credit",
+      type: 'credit',
     },
     {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
       success: -1,
-      type: "debit",
+      type: 'debit',
     },
     {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
       success: 0,
-      type: "credit",
+      type: 'credit',
     },
     {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
       sucess: 1,
-      type: "debit",
-    }, {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
-      success: 1,
-      type: "debit",
+      type: 'debit',
     },
     {
-      r: "₹ 15,600",
-      s: "12:34 | 20 Dec 2022",
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
+      success: 1,
+      type: 'debit',
+    },
+    {
+      r: '₹ 15,600',
+      s: '12:34 | 20 Dec 2022',
       success: 0,
-      type: "credit",
-    }
+      type: 'credit',
+    },
   ];
-  const getArrowImage = (type) => {
-    return type === 'credit' 
+  const getArrowImage = type => {
+    return type === 'credit'
       ? require('../../assets/img/downarrow.png')
       : require('../../assets/img/uparrowss.png');
   };
 
-  const getStatusIcon = (success) => {
+  const getStatusIcon = success => {
     if (success === 1) return require('../../assets/img/arrowright.png');
-    else if(success === -1) return require('../../assets/img/pending.png');
+    else if (success === -1) return require('../../assets/img/pending.png');
     else return require('../../assets/img/cross.png');
   };
 
-  const getStatusText = (success) => {
+  const getStatusText = success => {
     if (success === 1) return 'Success';
     else if (success === -1) return 'Pending';
     else return 'Failed';
   };
 
   const getStatusColor = (success, type) => {
-    if (success === 1) return '#129C73'; 
-    else if (success === -1) return 'orange'; 
-    else if (type === 'credit') return 'red'; 
+    if (success === 1) return '#129C73';
+    else if (success === -1) return 'orange';
+    else if (type === 'credit') return 'red';
     else return '#FFEFEF';
   };
 
@@ -78,37 +87,36 @@ export default function Wallet({ navigation }) {
     investmoney: 0,
     wallet: 0,
     redemmoney: 0,
-    transactions: []
-  })
-  const [loading, setLoading] = useState(false)
-  const wallet = new WalletApiService()
+    transactions: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const wallet = new WalletApiService();
   useEffect(() => {
     getWalletData();
-  }, [])
+  }, []);
 
   async function getWalletData() {
     try {
-      setLoading(true)
-      let res = await wallet.getTransactions()
+      setLoading(true);
+      let res = await wallet.getTransactions();
       if (res.status === 1) {
-        setWalletData(res)
+        setWalletData(res);
       } else {
         Toast.show({
           type: 'error',
-          text1: res.Backend_Error
-        })
+          text1: res.Backend_Error,
+        });
       }
     } catch (err) {
-      console.log("Error while getting earned data", err.message);
+      console.log('Error while getting earned data', err.message);
       Toast.show({
         type: 'error',
-        text1: "Something went wrong"
-      })
+        text1: 'Something went wrong',
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -124,10 +132,8 @@ export default function Wallet({ navigation }) {
           <Image
             source={require('../../assets/img/menu.png')}
             tintColor={'black'}
-            style={{ height: 25, width: 25 }}
-
+            style={{height: 25, width: 25}}
             onPress={() => navigation.openDrawer()}
-
           />
         </View>
         <View>
@@ -137,15 +143,14 @@ export default function Wallet({ navigation }) {
           <Image
             source={require('../../assets/img/homedark.png')}
             tintColor={'balck'}
-            style={{ height: 25, width: 25 }}
+            style={{height: 25, width: 25}}
             onPress={() => navigation.navigate('Home')}
-
           />
         </View>
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={{ width: '100%', borderRadius: 10 }}
+          style={{width: '100%', borderRadius: 10}}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
             <View style={styles.headerLeft}>
@@ -181,7 +186,9 @@ export default function Wallet({ navigation }) {
 
             <View style={styles.investedContainer}>
               <Text style={styles.investedText}>Invested</Text>
-              <Text style={styles.investedAmount}>₹ {walletData.investmoney}</Text>
+              <Text style={styles.investedAmount}>
+                ₹ {walletData.investmoney}
+              </Text>
             </View>
           </View>
 
@@ -251,7 +258,11 @@ export default function Wallet({ navigation }) {
             <Text style={styles.actionText}>History</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionItem} onPress={() => { navigation.navigate('addbankDetails') }}>
+          <TouchableOpacity
+            style={styles.actionItem}
+            onPress={() => {
+              navigation.navigate('addbankDetails');
+            }}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -273,60 +284,65 @@ export default function Wallet({ navigation }) {
         </View>
       </View>
       <ScrollView>
-      {data.map((res, index) => (
-        <View key={index} style={styles.historyContainer}>
-          <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
-            <View style={styles.transactionEntry}>
-              <View
-              style={[
-                styles.iconContainer,
-                { 
-                  backgroundColor: res.success === -1 ? '#fff9ef' : 
-                                   res.success === 1 ? '#EFFFF6' : '#FFEFEF' 
-                },
-              ]}>
-              <Image
-                source={getArrowImage(res.type)}
-                style={styles.icon}
-                tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
-              />
-              </View>
-              <View>
-                <Text style={styles.transactionAmount}>{res.r}</Text>
-                <Text style={styles.timestamp}>{res.s}</Text>
-              </View>
-              <View style={styles.statusContainer}>
-                <View style={[styles.statusIcon]}>
+        {data.map((res, index) => (
+          <View key={index} style={styles.historyContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('transactionDetails');
+              }}>
+              <View style={styles.transactionEntry}>
+                <View
+                  style={[
+                    styles.iconContainer,
+                    {
+                      backgroundColor:
+                        res.success === -1
+                          ? '#fff9ef'
+                          : res.success === 1
+                          ? '#EFFFF6'
+                          : '#FFEFEF',
+                    },
+                  ]}>
                   <Image
-                    source={getStatusIcon(res.success)}
-                    style={styles.icon1}
+                    source={getArrowImage(res.type)}
+                    style={styles.icon}
+                    tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
                   />
                 </View>
-                <Text
-                  style={[
-                    styles.statusText,
-                    { color: getStatusColor(res.success, res.type) },
-                  ]}>
-                  {getStatusText(res.success)}
-                </Text>
+                <View>
+                  <Text style={styles.transactionAmount}>{res.r}</Text>
+                  <Text style={styles.timestamp}>{res.s}</Text>
+                </View>
+                <View style={styles.statusContainer}>
+                  <View style={[styles.statusIcon]}>
+                    <Image
+                      source={getStatusIcon(res.success)}
+                      style={styles.icon1}
+                    />
+                  </View>
+                  <Text
+                    style={[
+                      styles.statusText,
+                      {color: getStatusColor(res.success, res.type)},
+                    ]}>
+                    {getStatusText(res.success)}
+                  </Text>
+                </View>
+                <View style={styles.arrowIconContainer}>
+                  <Image
+                    source={require('../../assets/img/rightarrow1.png')}
+                    style={styles.icon2}
+                    tintColor={'gray'}
+                  />
+                </View>
               </View>
-              <View style={styles.arrowIconContainer}>
-                <Image
-                  source={require('../../assets/img/rightarrow1.png')}
-                  style={styles.icon2}
-                  tintColor={'gray'}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </ScrollView>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
-};
-
-
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -340,6 +356,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 22,
     fontWeight: 'bold',
+    fontFamily: 'Work Sans',
   },
   containerImg1: {
     justifyContent: 'space-between',
@@ -354,7 +371,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 5,
     marginTop: 15,
     padding: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -369,7 +386,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: 'white',
     fontWeight: '600',
-    fontSize: 21,
+    fontSize: 16,
+    fontFamily: 'Work Sans',
   },
   headerRight: {
     flexDirection: 'row',
@@ -378,6 +396,8 @@ const styles = StyleSheet.create({
   },
   shareText: {
     color: 'white',
+    fontFamily: 'Work Sans',
+    fontSize: 16,
   },
   shareIcon: {
     height: 20,
@@ -389,6 +409,7 @@ const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: '700',
     color: 'white',
+    fontFamily: 'Work Sans',
   },
   growthContainer: {
     flexDirection: 'row',
@@ -401,6 +422,7 @@ const styles = StyleSheet.create({
   growthText: {
     color: 'white',
     textAlign: 'center',
+    fontFamily: 'Work Sans',
   },
   investedContainer: {
     flexDirection: 'row',
@@ -409,10 +431,12 @@ const styles = StyleSheet.create({
   },
   investedText: {
     color: 'white',
+    fontFamily: 'Work Sans',
   },
   investedAmount: {
     marginLeft: 10,
     color: 'white',
+    fontFamily: 'Work Sans',
   },
   redeemableContainer: {
     alignItems: 'center',
@@ -420,6 +444,9 @@ const styles = StyleSheet.create({
   },
   redeemableText: {
     color: 'white',
+    fontFamily: 'Work Sans',
+    fontSize: 16,
+    fontWeight: '500',
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -428,6 +455,7 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     color: 'white',
+    fontFamily: 'Work Sans',
   },
   detailsIcon: {
     height: 15,
@@ -438,13 +466,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     justifyContent: 'space-between',
-    paddingHorizontal:5
+    paddingHorizontal: 5,
   },
   actionsContainer1: {
     flexDirection: 'row',
     marginTop: 12,
     justifyContent: 'space-between',
-    paddingLeft:7,
+    paddingLeft: 7,
   },
   actionItem: {
     alignItems: 'center',
@@ -463,13 +491,16 @@ const styles = StyleSheet.create({
   },
   actionText: {
     textAlign: 'center',
-    color:'#000',
-    padding:2,
+    color: '#8A8C94',
+    padding: 2,
+    fontFamily: 'Work Sans',
+    fontSize: 16,
   },
   RecentText: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '500',
-    color: 'black',
+    color: '#000000',
+    fontFamily: 'Work Sans',
   },
   TouchableButton: {
     backgroundColor: '#F5F5F5',
@@ -482,70 +513,76 @@ const styles = StyleSheet.create({
   ViewText: {
     fontSize: 13,
     color: '#8A8C94',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Work Sans',
   },
   historyContainer: {
     margin: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   transactionEntry: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'space-between',
     padding: 15,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "lightgray"
+    borderColor: 'lightgray',
   },
   iconContainer: {
     height: 40,
     width: 40,
     borderRadius: 50,
-    backgroundColor: "#EFFFF6",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#EFFFF6',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     height: 20,
     width: 20,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   icon2: {
     height: 15,
     width: 15,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   icon1: {
     height: 20,
     width: 20,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   transactionAmount: {
-    color: "black",
+    color: 'black',
     fontSize: 21,
-    fontWeight: "600",
+    fontWeight: '600',
+    fontFamily: 'Work Sans',
   },
   timestamp: {
-    color: "#8A8A8A",
+    color: '#8A8A8A',
+    fontFamily: 'Work Sans',
+    fontSize: 12,
+    fontWeight: '400',
   },
   statusContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statusIcon: {
     height: 25,
     width: 25,
     borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   statusText: {
     paddingLeft: 8,
-    fontSize: 17,
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: 'Work Sans',
   },
   arrowIconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

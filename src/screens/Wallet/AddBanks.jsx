@@ -94,7 +94,8 @@ const AddBanks = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={{ marginLeft: 10 }}>
-        <Text style={{ color: "black", fontSize: 17, fontWeight: "600" }}>Your Banks</Text>
+        <Text style={{ color: "black", fontSize: 17, fontWeight: "600",fontFamily:"Work Sans"
+      }}>Your Banks</Text>
       </View>
       <ScrollView>
         {
@@ -118,6 +119,8 @@ const AddBanks = ({ navigation }) => {
                             />
                           </View>
                           <Text style={styles.bankName}>{res.bankname}</Text>
+                          <Text style={styles.bankName}>{res.bankname}</Text>
+
                         </View>
                         <Text style={styles.bankHolder}>{res.HolName}</Text>
                         <View style={styles.bankAccountDetails}>
@@ -175,7 +178,9 @@ const styles = StyleSheet.create({
   ViewText: {
     fontSize: 13,
     color: '#367CFF',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily:"Work Sans"
+
   },
   bankDetailsContainer: {
     margin: 10,

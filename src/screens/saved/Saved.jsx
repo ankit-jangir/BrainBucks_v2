@@ -15,11 +15,20 @@ import {Text} from '../../utils/Translate';
 import {StyleConstants} from '../../constants/Style.constant';
 import styles from '../../styles/Saved.styles';
 
-
 export default function Saved({navigation}) {
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [search, setSearch] = useState('');
+  const [loading,setloading]= useState()
+
+  async function ExamEndrolledStudy() {
+    setloading(true)
+  try {
+    
+  } catch (error) {
+    
+  }
+  }
 
   return (
     <>
