@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   TextSearch: {
     color: 'rgba(126, 126, 126, 1)',
-    fontSize: 16,
+    fontSize: 14,
     flex: 0.8,
     fontFamily: 'WorkSans-Regular',
   },
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     LiveText: {
       color: '#000',
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'WorkSans-Medium',
     },
     lotiView: {
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     SeeAll: {
       color: ColorsConstant.GreenColor,
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
     },
     ViewLoti: {
       width: 25,
@@ -119,12 +119,12 @@ const styles = StyleSheet.create({
     },
     TextEarn: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
+      fontSize: 14,
       color: ColorsConstant.White,
     },
     TextRupee: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 36,
+      fontSize: 28,
       color: ColorsConstant.White,
     },
     FreeView: {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     QuizzView1: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       backgroundColor: ColorsConstant.White,
     },
     QuizzView2: {
@@ -183,8 +183,12 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     CatePic: {
-      width: 40,
-      height: 40,
+      objectFit:'cover',
+      height:'100%',
+      width:'100%',
+      borderRadius:50,
+
+
     },
     TitleView: {
       width: '100%',
@@ -194,15 +198,16 @@ const styles = StyleSheet.create({
     },
     TitleTextt: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
+      fontSize: 16,
       width: '90%',
       color: '#000',
+      alignItems:'center'
     },
     FeeView: {
       width: '100%',
-      height: 60,
+      height: 50,
       backgroundColor: ColorsConstant.White,
-      marginTop: 0,
+      marginTop: 10,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -217,7 +222,7 @@ const styles = StyleSheet.create({
     },
     TextPrice: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
       color: ColorsConstant.GrayyColor,
       flex: 0.3,
     },
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
     },
     TextEntryFee: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
       color: '#F5B807',
       paddingLeft: 10,
     },
@@ -251,7 +256,7 @@ const styles = StyleSheet.create({
     },
     TextLobi: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 16,
+      fontSize: 14,
       color: '#8A8A8A',
       paddingLeft: 10,
     },
@@ -273,7 +278,7 @@ const styles = StyleSheet.create({
     TextSlot: {
       color: '#2188E7',
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
+      fontSize: 14,
     },
     LiniView: {
       width: '100%',
@@ -293,7 +298,7 @@ const styles = StyleSheet.create({
     },
     TextRegister: {
       color: ColorsConstant.White,
-      fontSize: 17,
+      fontSize: 13,
       fontFamily: 'WorkSans-Medium',
     },
     SourecView: {
@@ -304,7 +309,7 @@ const styles = StyleSheet.create({
     TextMin: {
       color: '#C922E4',
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
+      fontSize: 16,
     },
     ExamView: {
       flex: 1,
@@ -321,17 +326,18 @@ const styles = StyleSheet.create({
       backgroundColor: ColorsConstant.White,
     },
     ActiveView: {
-      width: '100%',
+      width: 50,
+      height:50,
       justifyContent: 'center',
       alignItems: 'center',
     },
     TextCat: {
-      fontSize: 20,
+      fontSize: 18,
       fontFamily: 'WorkSans-SemiBold',
       textAlign: 'center',
     },
     TextActive: {
-      fontSize: 16,
+      fontSize: 14,
       fontFamily: 'WorkSans-Regular',
       textAlign: 'center',
       color: ColorsConstant.GrayyColor,
@@ -355,7 +361,7 @@ const styles = StyleSheet.create({
     TextHash: {
       color: '#F0F0F050',
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 18,
     },
     CountView: {
       flexDirection: 'row',
@@ -364,12 +370,12 @@ const styles = StyleSheet.create({
     TextCount: {
       color: '#F0F0F050',
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
     },
     TextJoin: {
       color: ColorsConstant.White,
       fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
+      fontSize: 14,
     },
     ViewCatName: {
       justifyContent: 'flex-start',
@@ -378,7 +384,7 @@ const styles = StyleSheet.create({
     CateName: {
       color: ColorsConstant.White,
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 30,
+      fontSize: 26,
     },
     ViewCatName1: {
       width: '100%',
