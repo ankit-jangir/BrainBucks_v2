@@ -1,7 +1,22 @@
 import { StyleSheet } from 'react-native';
-import { ColorsConstant } from '../constants/Colors.constant';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import { StyleConstants } from '../../constants/Style.constant';
+import { Config } from "../Services/Config";
 
 const styles = StyleSheet.create({
+    FeesV9:
+    {
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      flexDirection: 'row',
+    },
+    FeesText3:
+    {
+      fontSize: 12,
+      fontFamily: 'WorkSans-Regular',
+      textAlign: "justify",
+      color:'#000'
+    },
     centeredView: {
       flex: 1,
       justifyContent: 'center',

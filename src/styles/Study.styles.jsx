@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     AddText: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 16,
       color:'#000'
     },
     touchExam: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     TextSave: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
       color: '#367CFF',
     },
     inputView: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
       color: ColorsConstant.LightGray,
-      fontSize: 15,
+      fontSize: 13,
       flex: 0.8,
       fontFamily: 'WorkSans-Regular',
     },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     TextYou: {
       paddingVertical: 120,
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: '600',
     },
     stdView: {
@@ -121,14 +121,15 @@ const styles = StyleSheet.create({
     },
     textStudy: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 24,
+      fontSize: 20,
       paddingRight: 40,
       fontWeight: '600',
       color: 'rgba(46, 46, 46, 1)',
     },
     examMainView: {
       width: '100%',
-      height: 80,
+      height: 60,
+      marginBottom:20
     },
     examsView: {
       flex: 1,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     },
     TextExam: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 34,
+      fontSize: 28,
       color: 'rgba(46, 46, 46, 1)',
       fontWeight: '600',
     },
@@ -155,25 +156,25 @@ const styles = StyleSheet.create({
     },
     TextAdd: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
+      fontSize: 14,
       color: '#367CFF',
     },
     viewStudy: {
-      paddingHorizontal: 10,
+      paddingHorizontal: 5,
       justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
-      marginTop: 20,
+      padding:6,
+      marginHorizontal:6
     },
     TouchData: {
       width: '100%',
-      height: 70,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: ColorsConstant.White,
       borderRadius: 5,
-      elevation: 1.5,
-      marginBottom: 20,
+      elevation: 1,
+      padding:10
     },
     DataView: {
       flexDirection: 'row',
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     },
     Textname: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 16,
       paddingLeft: 10,
       color: '#000',
     },

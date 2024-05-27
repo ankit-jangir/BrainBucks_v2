@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     AddText: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 18,
       color:'#000'
     },
     touchExam: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     TextSave: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
+      fontSize: 14,
       color: '#367CFF',
     },
     inputView: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
       color: ColorsConstant.LightGray,
-      fontSize: 15,
+      fontSize: 13,
       flex: 0.8,
       fontFamily: 'WorkSans-Regular',
     },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     TextYou: {
       paddingVertical: 120,
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: '600',
     },
     stdView: {
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
     textStudy: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 24,
+      fontSize: 22,
       paddingRight: 40,
       fontWeight: '600',
       color: 'rgba(46, 46, 46, 1)',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     },
     TextExam: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 34,
+      fontSize: 29,
       color: 'rgba(46, 46, 46, 1)',
       fontWeight: '600',
     },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
     TextAdd: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
+      fontSize: 14,
       color: '#367CFF',
     },
     viewStudy: {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     },
     Textname: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 18,
       paddingLeft: 10,
       color: '#000',
     },
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
         ExamSaveText:
         {
           fontFamily: 'WorkSans-SemiBold',
-          fontSize: 16,
+          fontSize: 14,
           color:'#000'
         },
 
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
           },
           title: {
             fontFamily: 'WorkSans-SemiBold',
-            fontSize: 20,
+            fontSize: 18,
             paddingLeft: 10,
             color: '#000',
           },
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
           },
           detailsText: {
             fontFamily: 'WorkSans-Medium',
-            fontSize: 16,
+            fontSize: 14,
             color: '#7E7E7E',
           },
           count: {
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
                 IndustryT:
                 {
                   fontFamily: "WorkSans-SemiBold",
-                  fontSize: 24,
+                  fontSize: 21,
                   textAlign: "center"
                 },
                 comingSoon: {
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
                     paddingLeft: 20
                   },
                   TextStd: {
-                    fontSize: 22,
+                    fontSize: 20,
                     fontFamily: 'WorkSans-SemiBold',
                     color: '#000'
                   },
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20
   },
   textQ: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: "WorkSans-SemiBold",
     color:'#000',
     fontWeight:'600'
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
   },
   Inview: {
     color: ColorsConstant.GrayyColor,
-    fontSize: 15,
+    fontSize: 14,
     flex: 0.80,
     fontFamily: "WorkSans-Regular"
   },
@@ -544,7 +544,7 @@ const styles = StyleSheet.create({
   },
   textQue: {
     fontFamily: 'WorkSans-SemiBold',
-    fontSize: 20,
+    fontSize: 18,
     color:'#000',
     fontWeight:'600'
 
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
   },
   TextTrans: {
     fontFamily: 'WorkSans-Regular',
-    fontSize: 14,
+    fontSize: 13,
     color: '#1DC173'
   },
   dateView: {
@@ -583,7 +583,7 @@ const styles = StyleSheet.create({
   },
   textDate: {
     fontFamily: 'WorkSans-Medium',
-    fontSize: 14,
+    fontSize: 13,
     color: '#8A8A8A'
   },
   downView: {
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
   },
   textDown: {
     color: ColorsConstant.Black,
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'WorkSans-Regular',
     color:'#000'
   },
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
     backgroundColor: ColorsConstant.Black
   },
   textEng: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'WorkSans-Regular',
     color: ColorsConstant.White,
   }

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   participantText: {
     fontFamily: 'WorkSans-Medium',
-    fontSize: 15,
+    fontSize: 14,
     color:'#000'
   },
 });

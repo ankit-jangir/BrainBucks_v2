@@ -157,7 +157,7 @@ export default function Home({navigation}) {
                 <View style={styles.LoadingView}>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('AllTriviaQuizzes', {data: trivia})
+                      navigation.navigate('AllTriviaQuizzes',)
                     }
                     style={styles.TouchAll}>
                     <Text style={styles.SeeAll}>See All</Text>
@@ -466,20 +466,11 @@ const LiveQuizz = props => {
   );
 };
 
-const FreeTrivia = props => {
+const FreeTrivia = (props) => {
   return (
-    <View style={{flex: 1, paddingVertical: 5}}>
+    <View style={{flex: 1,}}>
       <View
-        style={{
-          width: 340,
-          padding: 10,
-          borderRadius: 5,
-          borderWidth: 1,
-          borderColor: '#F5F5F5',
-          marginRight: 20,
-          backgroundColor: '#fff',
-          alignItems:"center"
-        }}>
+        style={styles.MaskedVieww}>
         <View style={styles.QuizzView1}>
           <View style={styles.QuizzView2}>
             <Image
@@ -549,7 +540,7 @@ const FreeTrivia = props => {
           </View>
         </View>
 
-        <TouchableOpacity
+        <TouchableOpacity onPress={() => props.navigation.navigate('FreeTriviaStarExam')}
           style={{
             width: '100%',
             height: 45,
@@ -562,7 +553,7 @@ const FreeTrivia = props => {
           <Text
             style={{
               color: '#C922E4',
-              fontSize: 17,
+              fontSize: 14,
               fontFamily: 'WorkSans-Medium',
             }}>
             Participate Now
@@ -575,24 +566,27 @@ const FreeTrivia = props => {
 
 const Exams = () => {
   return (
-    <View style={styles.ExamView}>
-      <TouchableOpacity style={styles.TouchExam}>
+<View style={styles.ExamView}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("MyExamQuizzes",)
+        }
+        style={styles.TouchExam}
+      >
         <View style={styles.ActiveView}>
-          <Image
-            source={require('../../assets/img/banner.png')}
-            resizeMode="contain"
-            style={styles.CatePic}
-          />
+         
+          
+          <Image source={require('../../assets/img/image.png')} style={{ width: 40, height: 40, borderRadius: 100 }} />
         </View>
         <View style={styles.ActiveView}>
-          <Text style={styles.TextCat}>000</Text>
+          <Text style={styles.TextCat}>category_name</Text>
         </View>
         <View style={styles.ActiveView}>
           <Text style={styles.TextActive}>Active Quizzes</Text>
         </View>
         <View style={styles.ActiveView}>
-          <Text style={[styles.TextActive, {color: '#DC1111', fontSize: 32}]}>
-            999
+          <Text style={[styles.TextActive, { color: "#DC1111", fontSize: 32 }]}>
+           77
           </Text>
         </View>
       </TouchableOpacity>

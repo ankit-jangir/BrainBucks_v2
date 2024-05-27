@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
     },
     headerTitle: {
-      fontSize: 22,
+      fontSize: 20,
       fontFamily: 'WorkSans-SemiBold',
       color: '#000',
       fontWeight: '600',
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     },
     quizTitle: {
       color: '#000',
-      fontSize: 20,
+      fontSize:18,
       paddingLeft: 20,
+      fontFamily: 'WorkSans-SemiBold',
       fontWeight: '700',
     },
     quizDetails: {
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     },
     quizDetailLabel: {
       color: 'rgba(126, 126, 126, 1)',
-      fontSize: 14,
+      fontSize: 13,
       paddingLeft: 6,
       fontWeight: '500',
     },
@@ -96,9 +97,11 @@ const styles = StyleSheet.create({
     },
     coinText: {
       color: 'rgba(245, 184, 7, 1)',
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: '700',
       paddingLeft: 5,
+      fontFamily: 'WorkSans-SemiBold',
+
     },
     timeImage: {
       width: 20,
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     },
     calendarText: {
       color: 'rgba(138, 138, 138, 1)',
-      fontSize: 14,
+      fontSize: 13,
       fontWeight: '500',
       paddingLeft: 5,
       fontFamily: 'WorkSans-SemiBold',
@@ -142,12 +145,12 @@ const styles = StyleSheet.create({
     earningPrimaryText: {
       color: '#2188E7',
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
+      fontSize: 16,
     },
     earningSecondaryText: {
       color: '#333333',
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
+      fontSize: 16,
     },
     progressContainer: {
       flexDirection: 'row',
@@ -191,26 +194,34 @@ const styles = StyleSheet.create({
       },
       liBullet: {
         fontWeight: 'bold',
-        fontSize: 24,
-        color:"#000"
+        fontSize: 21,
+        color:"#000",
+      fontFamily: 'WorkSans-SemiBold',
+
 
       },
       liBullet1: {
         fontWeight: '500',
-        fontSize: 16,
-        color:"#000"
+        fontSize: 14,
+        color:"#000",
+      fontFamily: 'WorkSans-SemiBold',
+
 
       },
       liText: {
-        fontSize: 14,
-        color:"rgba(46, 46, 46, 1)",
-        fontWeight:'500'
-      },
-      liText1: {
-        fontSize: 14,
+        fontSize: 13,
         color:"rgba(46, 46, 46, 1)",
         fontWeight:'500',
-        marginLeft:10
+      fontFamily: 'WorkSans-SemiBold',
+
+      },
+      liText1: {
+        fontSize: 13,
+        color:"rgba(46, 46, 46, 1)",
+        fontWeight:'500',
+        marginLeft:10,
+      fontFamily: 'WorkSans-SemiBold',
+
 
       },
       AgreeV:
@@ -245,7 +256,7 @@ const styles = StyleSheet.create({
       RulesPText:
       {
           fontFamily: 'WorkSans-SemiBold',
-          fontSize: 22,
+          fontSize: 20,
           paddingLeft: 10
       },
       RulesTouchable2:
@@ -278,7 +289,7 @@ const styles = StyleSheet.create({
       RulesText:
       {
           fontFamily: "WorkSans-SemiBold",
-          fontSize: 24,
+          fontSize: 22,
           color:'#000'
       },
       RulesLott:
@@ -290,7 +301,7 @@ const styles = StyleSheet.create({
       RegisteredT:
       {
           fontFamily: "WorkSans-Medium",
-          fontSize: 16,
+          fontSize: 14,
           color:'#000'
       },
       RegisteredV:
@@ -322,7 +333,7 @@ const styles = StyleSheet.create({
       NameText:
       {
           fontFamily: 'WorkSans-SemiBold',
-          fontSize: 20,
+          fontSize: 18,
           color:'#000',
           fontWeight:'600'
       },
@@ -340,7 +351,7 @@ const styles = StyleSheet.create({
       continueText:
       {
           fontFamily: 'WorkSans-Medium',
-          fontSize: 20,
+          fontSize: 18,
           color: "#2188E7"
       },
   });

@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
       flex: 0.4,
     },
     textMy: {
-      fontSize: 22,
+      fontSize: 18,
       fontFamily: 'WorkSans-SemiBold',
       color:"#000",
       textAlign:'center'
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     },
     textAdd1: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
+      fontSize: 14,
       color: '#367CFF',
     },
     liveVIew: {
@@ -168,11 +168,11 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       color:'#000',
       marginLeft:20,
-      fontSize:20
+      fontSize:18
     },
     cateName1: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 18,
       color:'#000',
       fontWeight:'700'
     },
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     },
     textAct: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 14,
+      fontSize: 13,
       color: '#367CFF',
     },
     Cview: {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     },
     textC: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 14,
+      fontSize: 13,
       color: '#1DC173',
     },
     textP: {
@@ -235,12 +235,12 @@ const styles = StyleSheet.create({
     },
     textPro: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 14,
+      fontSize: 13,
       color: 'rgba(138, 138, 138, 1)',
     },
     textPer: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 14,
+      fontSize: 13,
       color: '#DCA815',
     },
     LiniView: {
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     },
     textDetails: {
       color: '#000',
-      fontSize: 17,
+      fontSize: 15,
       fontFamily: 'WorkSans-Medium',
     },
     EListss: {
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     },
     ItmText: {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
+      fontSize: 18,
       paddingLeft: 10,
       color:'#000'
     },
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
     },
     TextMy: {
-      fontSize: 22,
+      fontSize: 20,
       fontFamily: 'WorkSans-SemiBold',
       color: '#000',
     },
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     },
     TextC: {
       fontFamily: 'WorkSans-Regular',
-      fontSize: 14,
+      fontSize: 13,
       color: '#1DC173',
     },
    
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     },
     TextP: {
       fontFamily: 'WorkSans-Medium',
-      fontSize: 14,
+      fontSize: 13,
       color: '#8A8A8A',
     },
     lView: {
@@ -381,6 +381,159 @@ const styles = StyleSheet.create({
     RView: {
       flex: 1,
       margin:0,
+    },
+
+
+    // ***************************************************freetrivia
+    cupPic: {
+      width: 20,
+      height: 20
+    },
+    container: {
+      backgroundColor: '#ffffff',
+      margin: 7,
+      padding: 20,
+      borderRadius: 8,
+      elevation: 1,
+    },
+    touchPar: {
+      width: '100%',
+      height: 45,
+      borderRadius: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: "#C922E4"
+    },
+    textPar: {
+      color: '#C922E4',
+      fontSize: 15,
+      fontFamily: 'WorkSans-Medium'
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    PerView: {
+      marginTop:5,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: "center",
+    },
+    PerView1: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingLeft: 10
+    },
+    textPer: {
+      color: '#C922E4',
+      fontFamily: 'WorkSans-SemiBold',
+      fontSize: 15
+    },
+    bannerImage: {
+      width: 35,
+      height: 35,
+      borderRadius: 100,
+    },
+    title: {
+      color: '#000',
+      fontSize: 17,
+      paddingLeft: 20,
+      fontWeight: '700',
+    },
+    feeAndDateRow: {
+      marginTop: 20,
+      justifyContent: 'space-between',
+    },
+    feeLabel: {
+      color: 'rgba(126, 126, 126, 1)',
+      fontSize: 13,
+      paddingLeft: 6,
+      fontWeight: '500',
+    },
+    feeAmountContainer: {
+      flexDirection: 'row',
+      paddingLeft: 10,
+      alignItems: 'center',
+    },
+    coinImage: {
+      width: 25,
+      height: 25,
+    },
+    feeAmount: {
+      color: 'rgba(245, 184, 7, 1)',
+      fontSize: 14,
+      fontWeight: '700',
+      paddingLeft: 5,
+    },
+    iconImage: {
+      width: 20,
+      height: 20,
+    },
+    date: {
+      color: 'rgba(138, 138, 138, 1)',
+      fontSize: 13,
+      fontWeight: '500',
+      paddingLeft: 5,
+    },
+    prizeAndDateRow: {
+      marginTop: 10,
+      justifyContent: 'space-between',
+    },
+    prizeLabel: {
+      color: 'rgba(126, 126, 126, 1)',
+      fontSize: 12,
+      paddingLeft: 6,
+      fontWeight: '500',
+    },
+    prizeAmountContainer: {
+      flexDirection: 'row',
+      paddingLeft: 10,
+      alignItems: 'center',
+    },
+    prizeAmount: {
+      color: 'rgba(245, 184, 7, 1)',
+      fontSize: 14,
+      fontWeight: '600',
+      paddingLeft: 5,
+    },
+    iconImageSmall: {
+      width: 17,
+      height: 17,
+    },
+    earningContainer: {
+      marginTop: 10,
+      justifyContent: 'flex-start',
+    },
+    dollarImage: {
+      width: 25,
+      height: 25,
+    },
+    earningAmountContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingLeft: 10,
+    },
+    earningAmountBlue: {
+      color: '#2188E7',
+      fontFamily: 'WorkSans-SemiBold',
+      fontSize: 16,
+    },
+    earningAmount: {
+      color: '#333333',
+      fontFamily: 'WorkSans-SemiBold',
+      fontSize: 16,
+    },
+    progressBarContainer: {
+      width: "100%",
+      height: 40,
+      justifyContent: "center",
+    },
+    progressBar: {
+      height: 10,
+      backgroundColor: 'whitesmoke',
+      borderRadius: 10,
     },
   });
 

@@ -11,6 +11,7 @@ import { StyleConstants } from '../constants/Style.constant';
         },
         errormsg:{
           fontSize:12,
+          fontFamily: 'WorkSans-SemiBold',
           color:"#FF3333",
           marginTop:7,
           fontWeight:'500'
@@ -37,7 +38,8 @@ import { StyleConstants } from '../constants/Style.constant';
         text: {
           fontSize: 14,
           fontWeight: 'bold',
-          marginHorizontal: 10
+          marginHorizontal: 10,
+          fontFamily: 'WorkSans-SemiBold',
         },
         touchPro: {
         //   width:60,
