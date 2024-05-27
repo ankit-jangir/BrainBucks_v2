@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,22 +8,26 @@ import {
   SafeAreaView,
   RefreshControl,
   StyleSheet,
-} from "react-native";
+  Dimensions,
+  FlatList,
+} from 'react-native';
 import SearchBar from './SearchBar';
 import LottieView from 'lottie-react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { StyleConstants } from "../../constants/Style.constant";
-import { ColorsConstant } from "../../constants/Colors.constant";
-import { Text } from "../../utils/Translate";
+import {StyleConstants} from '../../constants/Style.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import {Text} from '../../utils/Translate';
+import Carousel from 'react-native-reanimated-carousel';
+import styles from '../../styles/Home.styles';
 
 export default function Home({navigation}) {
-  const [refresh, setRefresh] = useState(false);  
+  const [refresh, setRefresh] = useState(false);
+  const width = Dimensions.get('window').width;
+
   const onRefresh = () => {
     setRefresh(true);
-    setTimeout(()=>(
-      setRefresh(false)
-    ),3000)
-  }
+    setTimeout(() => setRefresh(false), 3000);
+  };
   const DATA = [
     {
       id: '1',
@@ -33,6 +37,23 @@ export default function Home({navigation}) {
       prize: '99',
       earning: '988/88',
     },
+    {
+      id: '2',
+      title: 'SBI-PO Current Affairs',
+      fee: '99',
+      date: '12/10/2002',
+      prize: '99',
+      earning: '988/88',
+    },
+    {
+      id: '2',
+      title: 'SBI-PO Current Affairs',
+      fee: '99',
+      date: '12/10/2002',
+      prize: '99',
+      earning: '988/88',
+    },
+
     {
       id: '2',
       title: 'SBI-PO Current Affairs',
@@ -57,144 +78,182 @@ export default function Home({navigation}) {
           <SearchBar />
         </View>
         <ScrollView
+          style={{margin: 10, height: 1000}}
           refreshControl={
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
-          }
-          style={{paddingHorizontal: 10}}>
-          <View style={styles.carouselContainer}>
-            {/* <Carousel
-              loop
-              width={width}
-              height={width / 2}
-              autoPlay={true}
-              data={banner}
-              // scrollAnimationDuration={1000}
-              renderItem={({index, item}) => (
-                <View style={styles.carouselItem}>
-                  <Image source={item.image} style={styles.carouselImage} />
-                </View>
-              )}
-            /> */}
-          </View>
-          <View style={styles.LiveView}>
-            <View style={styles.LiveView1}>
-              <View style={styles.LiveView2}>
-                <Text style={styles.LiveText}>Live Quizzes</Text>
-                <View style={styles.lotiView}>
-                  <LottieView
-                    autoPlay
-                    style={styles.ViewLoti}
-                    source={require('../../assets/img/live-pulse.json')}
-                  />
+          }>
+          <View style={{marginBottom: 100}}>
+            <View style={styles.carouselContainer}>
+              <Carousel
+                loop
+                width={width}
+                height={width / 2}
+                autoPlay={true}
+                data={banner}
+                scrollAnimationDuration={100}
+                renderItem={({index, item}) => (
+                  <View style={styles.carouselItem}>
+                    <Image source={item.image} style={styles.carouselImage} />
+                  </View>
+                )}
+              />
+            </View>
+            <View style={styles.LiveView}>
+              <View style={styles.LiveView1}>
+                <View style={styles.LiveView2}>
+                  <Text style={styles.LiveText}>Live Quizzes</Text>
+                  <View style={styles.lotiView}>
+                    <LottieView
+                      autoPlay
+                      style={styles.ViewLoti}
+                      source={require('../../assets/img/live-pulse.json')}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-            <View style={styles.SeeView}>
+              <View style={styles.SeeView}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('AllLiveQuizzes')}
                   style={styles.TouchAll}>
                   <Text style={styles.SeeAll}>See All</Text>
                 </TouchableOpacity>
-            </View>
-          </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <LiveQuizz item={DATA} navigation={navigation} />
-          </ScrollView>
-
-          <TouchableOpacity
-            onPress={() => {
-              Url();
-            }}
-            style={styles.ReferCard}>
-            <ImageBackground
-              source={require('../../assets/img/background2.png')}
-              resizeMode="contain"
-              style={styles.bgPic}>
-              <View style={styles.ReferView}>
-                <Text style={styles.TextEarn}>Refer & Earn upto </Text>
-                <Text style={styles.TextRupee}>50,000</Text>
-              </View>
-            </ImageBackground>
-          </TouchableOpacity>
-          <View>
-            <View style={styles.FreeView}>
-              <View style={styles.FreeView1}>
-                <Text style={styles.TextExam}>Free Trivia</Text>
-              </View>
-              <View style={styles.LoadingView}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AllTriviaQuizzes', {data: trivia})
-                  }
-                  style={styles.TouchAll}>
-                  <Text style={styles.SeeAll}>See All</Text>
-                </TouchableOpacity>
               </View>
             </View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              <FreeTrivia item={DATA}  navigation={navigation} />
-            </ScrollView>
-          </View>
-          <View>
-            <View style={styles.FreeView}>
-              <View style={styles.FreeView1}>
-                <Text style={styles.TextExam}>Exams</Text>
-              </View>
-              <View style={styles.LoadingView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('MyExams', {data: exam});
-                  }}
-                  style={styles.TouchAll}>
-                  <Text style={styles.SeeAll}>See All</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              <Exams item={DATA} navigation={navigation} />
-            </ScrollView>
-          </View>
-          <View>
-            <View style={styles.FreeView}>
-              <View style={styles.FreeView1}>
-                <Text style={styles.TextExam}>Enrolled Quizes</Text>
-              </View>
-              <View style={styles.LoadingView}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('EnrolledQuizes', {
-                      data: enrolledquizes,
-                    })
-                  }
-                  style={styles.TouchAll}>
-                  <Text style={styles.SeeAll}>See All</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={{flex: 1, elevation: 4}}>
+              <FlatList
+                data={DATA}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => (
+                  <LiveQuizz
+                    key={item.id}
+                    item={item}
+                    navigation={navigation}
+                  />
+                )}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                snapToInterval={width}
+                decelerationRate="fast"
+              />
             </View>
 
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={{marginBottom: 100}}>
-              <Enrolledquizes item={DATA}  navigation={navigation} />
-            </ScrollView>
+            <TouchableOpacity style={styles.ReferCard}>
+              <ImageBackground
+                source={require('../../assets/img/background2.png')}
+                resizeMode="contain"
+                style={styles.bgPic}>
+                <View style={styles.ReferView}>
+                  <Text style={styles.TextEarn}>Refer & Earn upto </Text>
+                  <Text style={styles.TextRupee}>50,000</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+            <View>
+              <View style={styles.FreeView}>
+                <View style={styles.FreeView1}>
+                  <Text style={styles.TextExam}>Free Trivia</Text>
+                </View>
+                <View style={styles.LoadingView}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('AllTriviaQuizzes', {data: trivia})
+                    }
+                    style={styles.TouchAll}>
+                    <Text style={styles.SeeAll}>See All</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{flex: 1, elevation: 4}}>
+                <FlatList
+                  data={DATA}
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={({item}) => (
+                    <FreeTrivia
+                      key={item.id}
+                      item={item}
+                      navigation={navigation}
+                    />
+                  )}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  snapToInterval={width}
+                  decelerationRate="fast"
+                />
+              </View>
+            </View>
+            <View>
+              <View style={styles.FreeView}>
+                <View style={styles.FreeView1}>
+                  <Text style={styles.TextExam}>Exams</Text>
+                </View>
+                <View style={styles.LoadingView}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('MyExams');
+                    }}
+                    style={styles.TouchAll}>
+                    <Text style={styles.SeeAll}>See All</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                {DATA.map(item => (
+                  <Exams key={item.id} item={item} navigation={navigation} />
+                ))}
+              </ScrollView>
+            </View>
+            <View>
+              <View style={styles.FreeView}>
+                <View style={styles.FreeView1}>
+                  <Text style={styles.TextExam}>Enrolled Quizes</Text>
+                </View>
+                <View style={styles.LoadingView}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('EnrolledQuizes', {
+                        data: enrolledquizes,
+                      })
+                    }
+                    style={styles.TouchAll}>
+                    <Text style={styles.SeeAll}>See All</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{flex: 1, elevation: 4}}>
+                <FlatList
+                  data={DATA}
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={({item}) => (
+                    <Enrolledquizes
+                      key={item.id}
+                      item={item}
+                      navigation={navigation}
+                    />
+                  )}
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  snapToInterval={width}
+                  decelerationRate="fast"
+                />
+              </View>
+            </View>
           </View>
-          <View></View>
         </ScrollView>
       </SafeAreaView>
     </>
   );
 }
 
-const Enrolledquizes = () => {
+const Enrolledquizes = props => {
   return (
     <View style={styles.QuizzView}>
-      <View
-        style={styles.MaskedVieww}>
+      <View style={styles.MaskedVieww}>
         <View style={styles.QuizzView1}>
           <View style={styles.QuizzView2}>
             <Image
@@ -204,7 +263,7 @@ const Enrolledquizes = () => {
             />
           </View>
           <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>098765</Text>
+            <Text style={styles.TitleTextt}>{props.item.title}</Text>
           </View>
         </View>
         <View style={styles.FeeView}>
@@ -217,9 +276,7 @@ const Enrolledquizes = () => {
                     source={require('../../assets/img/bbcoin.png')}
                     style={styles.CoinPic}
                   />
-                  <Text style={styles.TextEntryFee}>
-                  666
-                  </Text>
+                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
                 </View>
               </View>
               <View
@@ -235,22 +292,29 @@ const Enrolledquizes = () => {
                     source={require('../../assets/img/bbcoin.png')}
                     style={styles.CoinPic}
                   />
-                  <Text style={styles.TextEntryFee}>98765</Text>
+                  <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
                 </View>
               </View>
             </View>
 
             <View style={styles.TimeView}>
               <View style={styles.TimeView1}>
-                <Text style={styles.TextLobi}>
-                 7654567
-                </Text>
+                <Image
+                  source={require('../../assets/img/time2.png')}
+                  resizeMode="contain"
+                  tintColor={'rgba(138, 138, 138, 1)'}
+                  style={{width: 20, height: 20}}
+                />
+                <Text style={styles.TextLobi}>{props.item.date}</Text>
               </View>
               <View style={styles.TimeView1}>
-              
-                <Text style={styles.TextLobi}>
-                  8765678
-                </Text>
+                <Image
+                  source={require('../../assets/img/calendar.png')}
+                  resizeMode="contain"
+                  tintColor={'rgba(138, 138, 138, 1)'}
+                  style={{width: 17, height: 17}}
+                />
+                <Text style={styles.TextLobi}>{props.item.date}</Text>
               </View>
             </View>
           </View>
@@ -263,10 +327,7 @@ const Enrolledquizes = () => {
             style={styles.DollarPic}
           />
           <View style={styles.FilledSlot1}>
-            <Text style={styles.TextSlot}>88/</Text>
-            <Text style={[styles.TextSlot, {color: '#333333'}]}>
-             000
-            </Text>
+            <Text style={styles.TextSlot}>{props.item.earning}</Text>
           </View>
         </View>
         <View style={styles.LiniView}>
@@ -277,42 +338,38 @@ const Enrolledquizes = () => {
               colors={['#54ACFD', '#2289E7']}
               style={{
                 borderRadius: 8,
-               
                 height: 10,
               }}></LinearGradient>
           </View>
         </View>
-        <TouchableOpacity
-          
-            style={{width: '100%'}}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.6, y: 2.0}}
-              colors={['#54ACFD', '#2289E7']}
-              style={styles.RegiView}>
-              <Text style={styles.TextRegister}>JOIN</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+        <TouchableOpacity style={{width: '100%'}}>
+          <LinearGradient
+            start={{x: 0.0, y: 0.25}}
+            end={{x: 0.6, y: 2.0}}
+            colors={['#54ACFD', '#2289E7']}
+            style={styles.RegiView}>
+            <Text style={styles.TextRegister}>JOIN NOW</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const LiveQuizz = () => {
+const LiveQuizz = props => {
   return (
     <View style={styles.QuizzView}>
-      <View
-        style={styles.MaskedVieww}>
+      <View style={styles.MaskedVieww}>
         <View style={styles.QuizzView1}>
           <View style={styles.QuizzView2}>
-          <Image
+            <Image
               source={require('../../assets/img/banner.png')}
               resizeMode="contain"
               style={styles.CatePic}
             />
           </View>
           <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>9988</Text>
+            <Text style={styles.TitleTextt}>{props.item.title}</Text>
           </View>
         </View>
         <View style={styles.FeeView}>
@@ -325,9 +382,7 @@ const LiveQuizz = () => {
                     source={require('../../assets/img/bbcoin.png')}
                     style={styles.CoinPic}
                   />
-                  <Text style={styles.TextEntryFee}>
-                   0987
-                  </Text>
+                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
                 </View>
               </View>
               <View
@@ -343,20 +398,29 @@ const LiveQuizz = () => {
                     source={require('../../assets/img/bbcoin.png')}
                     style={styles.CoinPic}
                   />
-                  <Text style={styles.TextEntryFee}>678</Text>
+                  <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
                 </View>
               </View>
             </View>
 
             <View style={styles.TimeView}>
               <View style={styles.TimeView1}>
-                <Text style={styles.TextLobi}>
-                  ooo
-                </Text>
+                <Image
+                  source={require('../../assets/img/time2.png')}
+                  resizeMode="contain"
+                  tintColor={'rgba(138, 138, 138, 1)'}
+                  style={{width: 20, height: 20}}
+                />
+                <Text style={styles.TextLobi}>{props.item.date}</Text>
               </View>
               <View style={styles.TimeView1}>
-                <Text style={styles.TextLobi}>09876544
-                </Text>
+                <Image
+                  source={require('../../assets/img/calendar.png')}
+                  resizeMode="contain"
+                  tintColor={'rgba(138, 138, 138, 1)'}
+                  style={{width: 17, height: 17}}
+                />
+                <Text style={styles.TextLobi}>{props.item.date}</Text>
               </View>
             </View>
           </View>
@@ -369,10 +433,7 @@ const LiveQuizz = () => {
             style={styles.DollarPic}
           />
           <View style={styles.FilledSlot1}>
-            <Text style={styles.TextSlot}>99/</Text>
-            <Text style={[styles.TextSlot, {color: '#333333'}]}>
-          00
-            </Text>
+            <Text style={styles.TextSlot}>{props.item.earning}</Text>
           </View>
         </View>
         <View style={styles.LiniView}>
@@ -387,22 +448,25 @@ const LiveQuizz = () => {
               }}></LinearGradient>
           </View>
         </View>
-          <TouchableOpacity
-           style={{width: '100%'}}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.6, y: 2.0}}
-              colors={['#54ACFD', '#2289E7']}
-              style={styles.RegiView}>
-              <Text style={styles.TextRegister}>Register Now</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '100%'}}
+          onPress={() => {
+            props.navigation.navigate('RulesofParticipation');
+          }}>
+          <LinearGradient
+            start={{x: 0.0, y: 0.25}}
+            end={{x: 0.6, y: 2.0}}
+            colors={['#54ACFD', '#2289E7']}
+            style={styles.RegiView}>
+            <Text style={styles.TextRegister}>Register Now</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const FreeTrivia = () => {
+const FreeTrivia = props => {
   return (
     <View style={{flex: 1, paddingVertical: 5}}>
       <View
@@ -417,14 +481,14 @@ const FreeTrivia = () => {
         }}>
         <View style={styles.QuizzView1}>
           <View style={styles.QuizzView2}>
-          <Image
+            <Image
               source={require('../../assets/img/banner.png')}
               resizeMode="contain"
               style={styles.CatePic}
             />
           </View>
           <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>8888</Text>
+            <Text style={styles.TitleTextt}>{props.item.title}</Text>
           </View>
         </View>
 
@@ -438,7 +502,7 @@ const FreeTrivia = () => {
                     source={require('../../assets/img/bbcoin.png')}
                     style={styles.CoinPic}
                   />
-                  <Text style={styles.TextEntryFee}>0</Text>
+                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
                 </View>
                 <View
                   style={{
@@ -453,7 +517,7 @@ const FreeTrivia = () => {
                       source={require('../../assets/img/bbcoin.png')}
                       style={styles.CoinPic}
                     />
-                    <Text style={styles.TextEntryFee}>99</Text>
+                    <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
                   </View>
                 </View>
               </View>
@@ -468,9 +532,7 @@ const FreeTrivia = () => {
             style={{width: 20, height: 20}}
           />
           <View style={styles.SourecView}>
-            <Text style={styles.TextMin}>
-              00 %
-            </Text>
+            <Text style={styles.TextMin}>{props.item.earning} %</Text>
           </View>
         </View>
         <View style={styles.LiniView}>
@@ -513,15 +575,14 @@ const FreeTrivia = () => {
 const Exams = () => {
   return (
     <View style={styles.ExamView}>
-      <TouchableOpacity
-        style={styles.TouchExam}>
+      <TouchableOpacity style={styles.TouchExam}>
         <View style={styles.ActiveView}>
-        <Image
-              source={require('../../assets/img/banner.png')}
-              resizeMode="contain"
-              style={styles.CatePic}
-            />
-   </View>
+          <Image
+            source={require('../../assets/img/banner.png')}
+            resizeMode="contain"
+            style={styles.CatePic}
+          />
+        </View>
         <View style={styles.ActiveView}>
           <Text style={styles.TextCat}>000</Text>
         </View>
@@ -530,355 +591,10 @@ const Exams = () => {
         </View>
         <View style={styles.ActiveView}>
           <Text style={[styles.TextActive, {color: '#DC1111', fontSize: 32}]}>
-            uuuuu
+            999
           </Text>
         </View>
       </TouchableOpacity>
     </View>
   );
 };
-
-
-const ls = StyleConstants,
-  s = StyleConstants,
-  styles = StyleSheet.create({
-    MainView: {
-      width: '100%',
-      height: 145,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    LiveView: {
-      flexDirection: 'row',
-      height: 50,
-      justifyContent: 'center',
-      flex: 1,
-    },
-    LiveView1: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    LiveView2: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    LiveText: {
-      color: '#000',
-      fontSize: 16,
-      fontFamily: 'WorkSans-Medium',
-    },
-    lotiView: {
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    SeeView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-    },
-    TouchAll: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-    },
-    SeeAll: {
-      color: ColorsConstant.GreenColor,
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
-    },
-    ViewLoti: {
-      width: 25,
-      height: 25,
-      backgroundColor: 'transparent',
-    },
-    ReferCard: {
-      width: '100%',
-      paddingHorizontal: 0,
-      marginBottom: 10,
-      height: 'auto',
-    },
-    bgPic: {
-      width: '100%',
-      height: 100,
-      alignItems: 'flex-start',
-    },
-    ReferView: {
-      width: '100%',
-      paddingLeft: 10,
-      paddingVertical: 13,
-    },
-    TextEarn: {
-      fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
-      color: ColorsConstant.White,
-    },
-    TextRupee: {
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 36,
-      color: ColorsConstant.White,
-    },
-    FreeView: {
-      flexDirection: 'row',
-      height: 50,
-      justifyContent: 'center',
-      flex: 1,
-    },
-    FreeView1: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    TextExam: {
-      color: '#000',
-      fontSize: 16,
-      fontFamily: 'WorkSans-Medium',
-    },
-    LoadingView: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-    },
-    TouchRender: {
-      flex: 1,
-      width: 100,
-      height: 100,
-      paddingHorizontal: 10,
-    },
-    Pic: {
-      width: '100%',
-      height: 145,
-    },
-    QuizzView: {
-      flex: 1,
-      paddingVertical: 5,
-    },
-    MaskedVieww: {
-      width: 340,
-      padding: 10,
-      borderRadius: 5,
-      borderWidth: 1,
-      borderColor: '#F5F5F5',
-      marginRight: 20,
-      backgroundColor: ColorsConstant.White,
-    },
-    QuizzView1: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      backgroundColor: ColorsConstant.White,
-    },
-    QuizzView2: {
-      width: 50,
-      height: 50,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    CatePic: {
-      width: 40,
-      height: 40,
-    },
-    TitleView: {
-      width: '100%',
-      height: 'auto',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    TitleTextt: {
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
-      width: '90%',
-    },
-    FeeView: {
-      width: '100%',
-      height: 60,
-      backgroundColor: ColorsConstant.White,
-      marginTop: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    FeeView1: {
-      flex: 1,
-      flexDirection: 'row',
-    },
-    FeeView2: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    TextPrice: {
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
-      color: ColorsConstant.GrayyColor,
-      flex: 0.3,
-    },
-    CoinView: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      flex: 0.7,
-      alignItems: 'center',
-    },
-    CoinPic: {
-      width: 20,
-      height: 20,
-    },
-    TextEntryFee: {
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
-      color: '#F5B807',
-      paddingLeft: 10,
-    },
-    TimeView: {
-      flex: 4,
-      backgroundColor: ColorsConstant.White,
-      justifyContent: 'center',
-      alignItems: 'flex-start',
-    },
-    TimeView1: {
-      flexDirection: 'row',
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    TextLobi: {
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 16,
-      color: '#8A8A8A',
-      paddingLeft: 10,
-    },
-    FilledSlot: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    },
-    DollarPic: {
-      width: 25,
-      height: 25,
-    },
-    FilledSlot1: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingLeft: 10,
-    },
-    TextSlot: {
-      color: '#2188E7',
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
-    },
-    LiniView: {
-      width: '100%',
-      height: 40,
-      justifyContent: 'center',
-    },
-    LiniView1: {
-      height: 10,
-      backgroundColor: 'whitesmoke',
-      borderRadius: 10,
-    },
-    RegiView: {
-      height: 45,
-      borderRadius: 5,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    TextRegister: {
-      color: ColorsConstant.White,
-      fontSize: 17,
-      fontFamily: 'WorkSans-Medium',
-    },
-    SourecView: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingLeft: 10,
-    },
-    TextMin: {
-      color: '#C922E4',
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
-    },
-    ExamView: {
-      flex: 1,
-      flexDirection: 'row',
-      paddingVertical: 5,
-    },
-    TouchExam: {
-      width: 160,
-      padding: 8,
-      borderRadius: 5,
-      borderWidth: 1,
-      borderColor: '#F5F5F5',
-      marginRight: 20,
-      backgroundColor: ColorsConstant.White,
-    },
-    ActiveView: {
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    TextCat: {
-      fontSize: 20,
-      fontFamily: 'WorkSans-SemiBold',
-      textAlign: 'center',
-    },
-    TextActive: {
-      fontSize: 16,
-      fontFamily: 'WorkSans-Regular',
-      textAlign: 'center',
-      color: ColorsConstant.GrayyColor,
-    },
-    ChalView: {
-      flex: 1,
-      flexDirection: 'row',
-      marginBottom: 20,
-    },
-    GraView: {
-      width: 340,
-      borderRadius: 10,
-      padding: 15,
-      justifyContent: 'space-between',
-      marginRight: 20,
-    },
-    GraView1: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    TextHash: {
-      color: '#F0F0F050',
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 20,
-    },
-    CountView: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    TextCount: {
-      color: '#F0F0F050',
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 16,
-    },
-    TextJoin: {
-      color: ColorsConstant.White,
-      fontFamily: 'WorkSans-Medium',
-      fontSize: 16,
-    },
-    ViewCatName: {
-      justifyContent: 'flex-start',
-      paddingTop: 20,
-    },
-    CateName: {
-      color: ColorsConstant.White,
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 30,
-    },
-    ViewCatName1: {
-      width: '100%',
-      height: 30,
-      justifyContent: 'center',
-    },
-    GradientView: {
-      height: 10,
-      backgroundColor: '#F8F8F840',
-      borderRadius: 10,
-    },
-  });
