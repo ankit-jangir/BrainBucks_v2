@@ -1,11 +1,45 @@
 import { StyleSheet, View, Image,TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from '../../utils/Translate';
 import LinearGradient from 'react-native-linear-gradient';
+import SavedApiService from '../../services/api/SavedApiService';
+import { useCurrentId } from '../../context/IdReducer';
+import { useNavigation } from '@react-navigation/native';
 
 const Quizze = () => {
+  const navigation = useNavigation()
+  const saved = new SavedApiService();
+  const [loading,setloading]=useState()
+  const{idState, context} = useCurrentId()
+  useEffect(()=>{
+getTriviaQuizzes()
+console.log(idState);
+  },[])
+ async function getTriviaQuizzes (){
+  setloading(true)
+ try {
+  let res = await saved.getTriviaQuizzes()
+  if(res.status===1){
+    console.log(res)
+  }else{
+    Toast.show({
+      type: 'error',
+      text1: res.Backend_Error,
+    });
+  }
+ } catch (err) {
+  console.log('Error while getting Saved exam data', err.message);
+  Toast.show({
+    type: 'error',
+    text1: 'Something went wrong',
+  });
+ }finally{
+setloading(false)
+ }
+ }
+
   return (
-    <>
+    <View style={{padding:10,backgroundColor:"white",flex:1}}>
       <View style={styles.container}>
         <View style={styles.row}>
           <View>
@@ -61,13 +95,13 @@ const Quizze = () => {
          </LinearGradient>
           </View>
         </View>
-        <TouchableOpacity onPress={() => props.navigation.navigate('RulesParticipation', {id: props.item.id, img:props.item.category_image})} style={{width:'100%',}} >
+        <TouchableOpacity onPress={() =>{}} style={{width:'100%',}} >
           <LinearGradient start={{x: 0.0, y: 0.25}} end={{x: 0.6, y: 2.0}} colors={['#54ACFD', '#2289E7']} style={{height:45,borderRadius:5,justifyContent:'center',alignItems:'center',}}>
             <Text style={{color:'#ffffff',fontSize:14,fontFamily:'WorkSans-Medium'}} >Register Now</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -76,9 +110,8 @@ export default Quizze;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
-    margin: 7,
     padding: 20,
-    borderRadius: 8,
+    borderRadius: 5,
     elevation: 1,
   },
   row: {

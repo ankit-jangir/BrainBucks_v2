@@ -5,7 +5,7 @@ import basic from "../BasicServices";
 export default class SavedApiService{
 
     async getSavedExams(){
-        let token = basic.getBearerToken()
+        let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/participants/get/saved`
         let headers = {"content-type":"application/json", authorization:token}
         let options = {
@@ -14,14 +14,48 @@ export default class SavedApiService{
             url
         }
         const response = await axios(options)
-        return response.send_data
+        return response.data
     }
-    async enrollInExam(){
-       
-    }
-    async getOtherExams(){}  
-    async getTriviaQuizzes(){} 
-    async getActiveQuizzes(){} 
-    async getEnrolledQuizzes(){} 
+
+     
+
+    async getTriviaQuizzes(id){
+    let token = await basic.getBearerToken()
+        let url = `${QUIZMICRO}/participants/particular/exam/trivia/quizes?category_id=${id}&page=1`
+        let headers = {"content-type":"application/json", authorization:token}
+        let options = {
+            method: 'get',
+            headers:headers,
+            url
+        }
+        const response = await axios(options)
+        return response.data
+
+    } 
+    async getActiveQuizzes(id){
+        let token =await basic.getBearerToken()
+        let url = `${QUIZMICRO}/participants/particular/exam/active/quiz?category_id=${id}&page=1`
+        let headers = {"content-type":"application/json", authorization:token}
+        let options = {
+            method: 'get',
+            headers:headers,
+            url
+        }
+        const response = await axios(options)
+        return response.data  
+    } 
+    async getEnrolledQuizzes(id){
+        let token = await basic.getBearerToken()
+        let url = `${QUIZMICRO}/participants/particular/exam/enrolled/quizes?category_id=${id}&page=1`
+        let headers = {"content-type":"application/json", authorization:token}
+        let options = {
+            method: 'get',
+            headers:headers,
+            url
+        }
+        const response = await axios(options)
+        return response.data
+    }    
+    
     async getStudyMaterial(){}
 }

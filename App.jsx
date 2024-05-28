@@ -76,6 +76,7 @@ import Share from './src/screens/Wallet/Share';
 import Notification from './src/screens/Home/Notification';
 
 
+import IdReducer from './src/context/IdReducer';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -123,7 +124,7 @@ function MyStack() {
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
-      <Stack.Screen name='dailyupdates' component={DailyUpdates} />
+      <Stack.Screen name="dailyupdates" component={DailyUpdates} />
       <Stack.Screen name="transactionDetails" component={TransctionDetails} />
       <Stack.Screen name="withdrawMoney" component={WithdrawMoney} />
       <Stack.Screen name="AccountDeatils" component={AccoountDeatils} />
@@ -133,9 +134,12 @@ function MyStack() {
       <Stack.Screen name="Challenges" component={Challenges} />
       <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
-      <Stack.Screen name='paymentpopup' component={PaymentPopup} />
+      <Stack.Screen name="paymentpopup" component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
-      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
+      <Stack.Screen
+        name="RulesofParticipation"
+        component={RulesofParticipation}
+      />
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
@@ -143,22 +147,35 @@ function MyStack() {
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
       <Stack.Screen name="QuestionsPaper" component={QuestionsPaper} />
-      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation} />
+      <Stack.Screen
+        name="ActiveQuizzJoinAnimation"
+        component={ActiveQuizzJoinAnimation}
+      />
       <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
-      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation} />
-      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz} />
+      <Stack.Screen
+        name="FreeRulesParticipation"
+        component={FreeRulesParticipation}
+      />
+      <Stack.Screen
+        name="TriviaAnimationQuizz"
+        component={TriviaAnimationQuizz}
+      />
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
-      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
-      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
+      <Stack.Screen
+        name="TriviaQuestionPaper"
+        component={TriviaQuestionPaper}
+      />
+      <Stack.Screen
+        name="TriviaSubmitConfirmation"
+        component={TriviaSubmitConfirmation}
+      />
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
-      <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} /> 
+      <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
       <Stack.Screen name="share" component={Share} />
-      <Stack.Screen name="Notification" component={Notification}/>
-
-
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 }
@@ -355,7 +372,7 @@ function MyTabs() {
           />
         </>
       </Tab.Navigator>
-    </SafeAreaProvider >
+    </SafeAreaProvider>
   );
 }
 
@@ -371,15 +388,15 @@ function MyDrawer() {
 
 export default function App() {
   return (
-
     <NavigationContainer>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>
-          <MyStack />
+          <IdReducer>
+            <MyStack />
+          </IdReducer>
         </WithdrawReducer>
       </AddBankReducer>
     </NavigationContainer>
-
   );
 }

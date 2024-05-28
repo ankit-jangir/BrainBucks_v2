@@ -17,6 +17,7 @@ class WalletApiService {
   async createOrder(amount) {
     amount = parseInt(amount + "")
     let token = await basic.getBearerToken()
+
     let url = `${AUTHMICRO}/sales/make/payment`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({ amount: amount })
@@ -48,6 +49,7 @@ class WalletApiService {
 
   async verifyPayment() {
     let token = await basic.getBearerToken()
+
     let url = `${AUTHMICRO}/sales/verify/payment`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({})

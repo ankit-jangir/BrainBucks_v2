@@ -170,7 +170,8 @@ export default function Study({ navigation }) {
                     value={search}
                     style={styles.inputText}
                     placeholder="Search for Exams"
-                    placeholderTextColor={'#7E7E7E'}></TextInput>
+                    placeholderTextColor={'#7E7E7E'}>
+                    </TextInput>
                   <TouchableOpacity style={styles.touchSearch}>
                     <Image
                       source={require('../../assets/img/search.png')}

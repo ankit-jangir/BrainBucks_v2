@@ -3,7 +3,7 @@ import React from 'react'
 
 const Challenges = () => {
   return (
-    <View>
+    <View style={{flex:1,backgroundColor:"white"}}>
       <Text>Challenges</Text>
     </View>
   )

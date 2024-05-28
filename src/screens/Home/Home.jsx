@@ -19,12 +19,17 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import {Text} from '../../utils/Translate';
 import Carousel from 'react-native-reanimated-carousel';
 import styles from '../../styles/Home.styles';
+import basic from '../../services/BasicServices';
 
 export default function Home({navigation}) {
   const [refresh, setRefresh] = useState(false);
   const {width} = Dimensions.get('window');
   const CARD_MARGIN = 1; // Adjust this value as needed
   const CARD_WIDTH = width - 7 * CARD_MARGIN; // Subtract margins from total width
+
+  useEffect (()=>{
+    basic.getBearerToken().then(res=>{console.log(res,"token");});
+  })
 
   const onRefresh = () => {
     setRefresh(true);
