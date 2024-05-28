@@ -119,7 +119,7 @@ export default function Home({navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{flex: 1, elevation: 4}}>
+            <View>
               <FlatList
                 data={DATA}
                 keyExtractor={item => item.id.toString()}
