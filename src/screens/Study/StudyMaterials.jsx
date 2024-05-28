@@ -13,16 +13,7 @@ export default function StudyMaterials({ navigation }) {
 
   return (
     <View style={StyleConstants.safeArView}>
-      <View style={styles.mainView}>
-        <View style={styles.arrowView}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.TouchArrow}>
-            <Image source={require('../../assets/img/arrows.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />
-          </TouchableOpacity>
-          <View style={styles.StdView}>
-            <Text style={styles.TextStd}>Study Materials</Text>
-          </View>
-        </View>
-      </View>
+     
 
       <View style={styles.container}>
         <TouchableOpacity

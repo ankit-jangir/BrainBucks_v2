@@ -8,50 +8,7 @@ import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 
 const Earned = () => {
-  const data = [
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-    {
-      data1: "+399",
-      time: "15:36 | 23 Dec 2022",
-      part: "Quiz Reward",
-      data2: "Reward for",
-      data3: "SBI-PO Current Affairs"
-    },
-  ]
+ 
   const [loading, setLoading] = useState(false)
   const [Earned, setEarned] = useState([])
 

@@ -19,10 +19,15 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import {Text} from '../../utils/Translate';
 import Carousel from 'react-native-reanimated-carousel';
 import styles from '../../styles/Home.styles';
+import basic from '../../services/BasicServices';
 
 export default function Home({navigation}) {
   const [refresh, setRefresh] = useState(false);
   const width = Dimensions.get('window').width;
+
+  useEffect (()=>{
+    basic.getBearerToken().then(res=>{console.log(res,"token");});
+  })
 
   const onRefresh = () => {
     setRefresh(true);

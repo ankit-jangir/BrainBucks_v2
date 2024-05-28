@@ -23,7 +23,7 @@ const FreeTrivia = () => {
     }
   ]
   return (
-    <>
+    <View style={{flex:1,backgroundColor:"white",padding:10}}>
       <View style={styles.container}>
         <View style={styles.row}>
           <View>
@@ -78,12 +78,12 @@ const FreeTrivia = () => {
           </LinearGradient>
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('TriviaRules',)}
+        <TouchableOpacity onPress={() => {}}
         style={styles.touchPar} >
         <Text style={styles.textPar} >Participate Now</Text>
       </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 

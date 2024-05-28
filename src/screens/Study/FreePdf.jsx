@@ -7,7 +7,7 @@ const FreePdf = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('QuestionPapers')}
+        onPress={() => {}}
         style={styles.touchableOpacity}>
         <View style={styles.innerContainer}>
           <View style={styles.imageContainer}>

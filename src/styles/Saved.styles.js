@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
       height: 50,
       alignItems: 'flex-start',
       justifyContent: 'center',
+      objectFit:"cover"
     },
     cateName: {
       width: '75%',
@@ -193,12 +194,14 @@ const styles = StyleSheet.create({
     ActiveView: {
       width: '100%',
       height: 50,
+
     },
     ActiveView1: {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      
     },
     ActiveView2: {
       width: 140,
@@ -213,20 +216,24 @@ const styles = StyleSheet.create({
       fontFamily: 'WorkSans-Regular',
       fontSize: 13,
       color: '#367CFF',
+      paddingLeft:4
     },
     Cview: {
-      width: 140,
+      width: 160,
       height: 30,
       backgroundColor: '#EFFFF6',
       borderRadius: 5,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+      padding:5
     },
     textC: {
       fontFamily: 'WorkSans-Regular',
       fontSize: 13,
       color: '#1DC173',
+      paddingLeft:4
+
     },
     textP: {
       width: '100%',
@@ -276,7 +283,6 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#EFEFEF',
       borderRadius: 10,
-      marginBottom: 20,
     },
     EListss1: {
       flexDirection: 'row',
@@ -384,6 +390,8 @@ const styles = StyleSheet.create({
     },
 
 
+    
+
     // ***************************************************freetrivia
     cupPic: {
       width: 20,
@@ -391,9 +399,8 @@ const styles = StyleSheet.create({
     },
     container: {
       backgroundColor: '#ffffff',
-      margin: 7,
       padding: 20,
-      borderRadius: 8,
+      borderRadius: 5,
       elevation: 1,
     },
     touchPar: {
