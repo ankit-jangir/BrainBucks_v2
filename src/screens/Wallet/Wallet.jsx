@@ -265,7 +265,7 @@ export default function Wallet({ navigation }) {
               :
               walletData.value.transactions.map((res, index) => (
                 <View key={res._id} style={styles.historyContainer}>
-                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails',{id:res._id}) }}>
                     <View style={styles.transactionEntry}>
                       <View
                         style={[
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Work Sans',
   },
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: 'white',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Work Sans',
   },
   headerRight: {
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   shareText: {
     color: 'white',
     fontFamily: 'Work Sans',
-    fontSize: 16,
+    fontSize: 14,
   },
   shareIcon: {
     height: 20,
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
   },
   balanceText: {
     margin: 20,
-    fontSize: 27,
+    fontSize: 23,
     fontWeight: '700',
     color: 'white',
     fontFamily: 'Work Sans',
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   redeemableText: {
     color: 'white',
     fontFamily: 'Work Sans',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
   },
   detailsContainer: {
@@ -466,10 +466,10 @@ const styles = StyleSheet.create({
     color: '#8A8C94',
     padding: 2,
     fontFamily: 'Work Sans',
-    fontSize: 16,
+    fontSize: 14,
   },
   RecentText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
     color: '#000000',
     fontFamily: 'Work Sans',
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   ViewText: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#8A8C94',
     fontWeight: '500',
     fontFamily: 'Work Sans',
@@ -526,7 +526,7 @@ const styles = StyleSheet.create({
   },
   transactionAmount: {
     color: 'black',
-    fontSize: 21,
+    fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Work Sans',
   },
@@ -549,7 +549,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     paddingLeft: 8,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     fontFamily: 'Work Sans',
   },

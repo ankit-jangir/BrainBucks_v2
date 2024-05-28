@@ -22,7 +22,9 @@ import styles from '../../styles/Home.styles';
 
 export default function Home({navigation}) {
   const [refresh, setRefresh] = useState(false);
-  const width = Dimensions.get('window').width;
+  const {width} = Dimensions.get('window');
+  const CARD_MARGIN = 1; // Adjust this value as needed
+  const CARD_WIDTH = width - 7 * CARD_MARGIN; // Subtract margins from total width
 
   const onRefresh = () => {
     setRefresh(true);
@@ -77,12 +79,8 @@ export default function Home({navigation}) {
         <View>
           <SearchBar />
         </View>
-        <ScrollView
-          style={{margin: 10, height: 1000}}
-          refreshControl={
-            <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
-          }>
-          <View style={{marginBottom: 100}}>
+        <ScrollView>
+          <View style={{marginBottom: 240}}>
             <View style={styles.carouselContainer}>
               <Carousel
                 loop
@@ -98,10 +96,12 @@ export default function Home({navigation}) {
                 )}
               />
             </View>
+
+            {/* **********************************livequizes******************************* */}
             <View style={styles.LiveView}>
               <View style={styles.LiveView1}>
                 <View style={styles.LiveView2}>
-                  <Text style={styles.LiveText}>Live Quizzes</Text>
+                  <Text style={styles.LiveText}>Enrolled Quizes</Text>
                   <View style={styles.lotiView}>
                     <LottieView
                       autoPlay
@@ -119,25 +119,34 @@ export default function Home({navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{flex: 1, elevation: 4}}>
+            <View style={{flex: 1}}>
               <FlatList
                 data={DATA}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => (
-                  <LiveQuizz
-                    key={item.id}
-                    item={item}
-                    navigation={navigation}
-                  />
+                  <View
+                    style={{
+                      width: CARD_WIDTH,
+                      margin: CARD_MARGIN,
+                    }}>
+                    <Enrolledquizes
+                      key={item.id}
+                      item={item}
+                      navigation={navigation}
+                    />
+                  </View>
                 )}
                 horizontal
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
-                snapToInterval={width}
+                // snapToInterval={width}
+                snapToAlignment="center"
                 decelerationRate="fast"
+                contentContainerStyle={{paddingHorizontal: CARD_MARGIN}}
               />
             </View>
 
+            {/* ********************************************card**************************************** */}
             <TouchableOpacity style={styles.ReferCard}>
               <ImageBackground
                 source={require('../../assets/img/background2.png')}
@@ -149,99 +158,117 @@ export default function Home({navigation}) {
                 </View>
               </ImageBackground>
             </TouchableOpacity>
-            <View>
-              <View style={styles.FreeView}>
-                <View style={styles.FreeView1}>
-                  <Text style={styles.TextExam}>Free Trivia</Text>
-                </View>
-                <View style={styles.LoadingView}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('AllTriviaQuizzes',)
-                    }
-                    style={styles.TouchAll}>
-                    <Text style={styles.SeeAll}>See All</Text>
-                  </TouchableOpacity>
+            {/* ******************************freeTrivia****************************** */}
+            <View style={styles.LiveView}>
+              <View style={styles.LiveView1}>
+                <View style={styles.LiveView2}>
+                  <Text style={styles.LiveText}>Free Trivia</Text>
+                  <View style={styles.lotiView}>
+                    <Text>yh</Text>
+                  </View>
                 </View>
               </View>
-
-              <View style={{flex: 1, elevation: 4}}>
-                <FlatList
-                  data={DATA}
-                  keyExtractor={item => item.id.toString()}
-                  renderItem={({item}) => (
+              <View style={styles.SeeView}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  style={styles.TouchAll}>
+                  <Text style={styles.SeeAll}>See All</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{flex: 1}}>
+              <FlatList
+                data={DATA}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => (
+                  <View
+                    style={{
+                      width: CARD_WIDTH,
+                      margin: CARD_MARGIN,
+                    }}>
                     <FreeTrivia
                       key={item.id}
                       item={item}
                       navigation={navigation}
                     />
-                  )}
-                  horizontal
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  snapToInterval={width}
-                  decelerationRate="fast"
-                />
+                  </View>
+                )}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                // snapToInterval={width}
+                snapToAlignment="center"
+                decelerationRate="fast"
+                contentContainerStyle={{paddingHorizontal: CARD_MARGIN}}
+              />
+            </View>
+            {/* **********************************exam******************************* */}
+
+            <View style={styles.LiveView}>
+              <View style={styles.LiveView1}>
+                <View style={styles.LiveView2}>
+                  <Text style={styles.LiveText}>Exams</Text>
+                  <View style={styles.lotiView}>
+                    <Text>yh</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.SeeView}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  style={styles.TouchAll}>
+                  <Text style={styles.SeeAll}>See All</Text>
+                </TouchableOpacity>
+              </View>
+             </View>
+              
+              
+
+
+
+            {/* **********************************Enrolledquizes******************************* */}
+            <View style={styles.LiveView}>
+              <View style={styles.LiveView1}>
+                <View style={styles.LiveView2}>
+                  <Text style={styles.LiveText}>Enrolled Quizes</Text>
+                  <View style={styles.lotiView}>
+                    <Text>yh</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.SeeView}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  style={styles.TouchAll}>
+                  <Text style={styles.SeeAll}>See All</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View>
-              <View style={styles.FreeView}>
-                <View style={styles.FreeView1}>
-                  <Text style={styles.TextExam}>Exams</Text>
-                </View>
-                <View style={styles.LoadingView}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('MyExams');
-                    }}
-                    style={styles.TouchAll}>
-                    <Text style={styles.SeeAll}>See All</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {DATA.map(item => (
-                  <Exams key={item.id} item={item} navigation={navigation} />
-                ))}
-              </ScrollView>
-            </View>
-            <View>
-              <View style={styles.FreeView}>
-                <View style={styles.FreeView1}>
-                  <Text style={styles.TextExam}>Enrolled Quizes</Text>
-                </View>
-                <View style={styles.LoadingView}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('EnrolledQuizes', {
-                        data: enrolledquizes,
-                      })
-                    }
-                    style={styles.TouchAll}>
-                    <Text style={styles.SeeAll}>See All</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={{flex: 1, elevation: 4}}>
-                <FlatList
-                  data={DATA}
-                  keyExtractor={item => item.id.toString()}
-                  renderItem={({item}) => (
+            <View style={{flex: 1}}>
+              <FlatList
+                data={DATA}
+                keyExtractor={item => item.id.toString()}
+                renderItem={({item}) => (
+                  <View
+                    style={{
+                      width: CARD_WIDTH,
+                      margin: CARD_MARGIN,
+                    }}>
                     <Enrolledquizes
                       key={item.id}
                       item={item}
                       navigation={navigation}
                     />
-                  )}
-                  horizontal
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  snapToInterval={width}
-                  decelerationRate="fast"
-                />
-              </View>
+                  </View>
+                )}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                // snapToInterval={width}
+                snapToAlignment="center"
+                decelerationRate="fast"
+                contentContainerStyle={{paddingHorizontal: CARD_MARGIN}}
+              />
             </View>
           </View>
         </ScrollView>
@@ -252,331 +279,614 @@ export default function Home({navigation}) {
 
 const Enrolledquizes = props => {
   return (
-    <View style={styles.QuizzView}>
-      <View style={styles.MaskedVieww}>
-        <View style={styles.QuizzView1}>
-          <View style={styles.QuizzView2}>
+    <View
+      style={{
+        backgroundColor: '#ffffff',
+        margin: 10,
+        padding: 20,
+        borderRadius: 8,
+        elevation: 3,
+      }}>
+      <View style={{flexDirection: 'row'}}>
+        <View>
+          <Image
+            source={require('../../assets/img/banner.png')}
+            style={{width: 35, height: 35, borderRadius: 100}}
+          />
+        </View>
+        <View>
+          <Text
+            style={{
+              color: '#000',
+              fontSize: 20,
+              paddingLeft: 20,
+              fontWeight: '700',
+            }}>
+            SBI-PO Current Affairs
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 20,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Fees
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
             <Image
-              source={require('../../assets/img/banner.png')}
+              source={require('../../assets/img/bbcoin.png')}
               resizeMode="contain"
-              style={styles.CatePic}
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '700',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Image
+              source={require('../../assets/img/time2.png')}
+              resizeMode="contain"
+              tintColor={'rgba(138, 138, 138, 1)'}
+              style={{width: 20, height: 20}}
             />
           </View>
-          <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>{props.item.title}</Text>
-          </View>
-        </View>
-        <View style={styles.FeeView}>
-          <View style={styles.FeeView1}>
-            <View style={{flex: 6}}>
-              <View style={styles.FeeView2}>
-                <Text style={styles.TextPrice}>Fees</Text>
-                <View style={styles.CoinView}>
-                  <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.CoinPic}
-                  />
-                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={styles.TextPrice}>Prize</Text>
-                <View style={styles.CoinView}>
-                  <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.CoinPic}
-                  />
-                  <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.TimeView}>
-              <View style={styles.TimeView1}>
-                <Image
-                  source={require('../../assets/img/time2.png')}
-                  resizeMode="contain"
-                  tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{width: 20, height: 20}}
-                />
-                <Text style={styles.TextLobi}>{props.item.date}</Text>
-              </View>
-              <View style={styles.TimeView1}>
-                <Image
-                  source={require('../../assets/img/calendar.png')}
-                  resizeMode="contain"
-                  tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{width: 17, height: 17}}
-                />
-                <Text style={styles.TextLobi}>{props.item.date}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.FilledSlot}>
-          <Image
-            source={require('../../assets/img/dollar.png')}
-            resizeMode="contain"
-            style={styles.DollarPic}
-          />
-          <View style={styles.FilledSlot1}>
-            <Text style={styles.TextSlot}>{props.item.earning}</Text>
-          </View>
-        </View>
-        <View style={styles.LiniView}>
-          <View style={styles.LiniView1}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.5, y: 10}}
-              colors={['#54ACFD', '#2289E7']}
+          <View style={{flexDirection: 'row', paddingLeft: 10}}>
+            <Text
               style={{
-                borderRadius: 8,
-                height: 10,
-              }}></LinearGradient>
+                color: 'rgba(138, 138, 138, 1)',
+                fontSize: 14,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              12/10/2002
+            </Text>
           </View>
         </View>
-        <TouchableOpacity style={{width: '100%'}}>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 10,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Prize
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/img/bbcoin.png')}
+              resizeMode="contain"
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Image
+              source={require('../../assets/img/calendar.png')}
+              resizeMode="contain"
+              tintColor={'rgba(138, 138, 138, 1)'}
+              style={{width: 17, height: 17}}
+            />
+          </View>
+          <View style={{flexDirection: 'row', paddingLeft: 10}}>
+            <Text
+              style={{
+                color: 'rgba(138, 138, 138, 1)',
+                fontSize: 14,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              12/10/2002
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          marginTop: 10,
+        }}>
+        <Image
+          source={require('../../assets/img/dollar.png')}
+          resizeMode="contain"
+          style={{width: 25, height: 25}}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingLeft: 10,
+          }}>
+          <Text
+            style={{
+              color: '#2188E7',
+              fontFamily: 'WorkSans-SemiBold',
+              fontSize: 18,
+            }}>
+            988/
+          </Text>
+          <Text
+            style={{
+              color: '#333333',
+              fontFamily: 'WorkSans-SemiBold',
+              fontSize: 18,
+            }}>
+            88
+          </Text>
+        </View>
+      </View>
+      <View style={styles.LiniView}>
+        <View style={styles.LiniView1}>
           <LinearGradient
             start={{x: 0.0, y: 0.25}}
-            end={{x: 0.6, y: 2.0}}
+            end={{x: 0.5, y: 10}}
             colors={['#54ACFD', '#2289E7']}
-            style={styles.RegiView}>
-            <Text style={styles.TextRegister}>JOIN NOW</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+            style={{
+              borderRadius: 8,
+              height: 10,
+            }}></LinearGradient>
+        </View>
       </View>
+
+      <TouchableOpacity style={{width: '100%', marginTop: 16}}>
+        <LinearGradient
+          start={{x: 0.0, y: 0.25}}
+          end={{x: 0.6, y: 2.0}}
+          colors={['#54ACFD', '#2289E7']}
+          tyle={{borderRadius: 10}}>
+          <Text style={{textAlign: 'center', padding: 15, borderRadius: 10}}>
+            JOIN NOW
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const LiveQuizz = props => {
   return (
-    <View style={styles.QuizzView}>
-      <View style={styles.MaskedVieww}>
-        <View style={styles.QuizzView1}>
-          <View style={styles.QuizzView2}>
-            <Image
-              source={require('../../assets/img/banner.png')}
-              resizeMode="contain"
-              style={styles.CatePic}
-            />
-          </View>
-          <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>{props.item.title}</Text>
-          </View>
-        </View>
-        <View style={styles.FeeView}>
-          <View style={styles.FeeView1}>
-            <View style={{flex: 6}}>
-              <View style={styles.FeeView2}>
-                <Text style={styles.TextPrice}>Fees</Text>
-                <View style={styles.CoinView}>
-                  <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.CoinPic}
-                  />
-                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={styles.TextPrice}>Prize</Text>
-                <View style={styles.CoinView}>
-                  <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.CoinPic}
-                  />
-                  <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.TimeView}>
-              <View style={styles.TimeView1}>
-                <Image
-                  source={require('../../assets/img/time2.png')}
-                  resizeMode="contain"
-                  tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{width: 20, height: 20}}
-                />
-                <Text style={styles.TextLobi}>{props.item.date}</Text>
-              </View>
-              <View style={styles.TimeView1}>
-                <Image
-                  source={require('../../assets/img/calendar.png')}
-                  resizeMode="contain"
-                  tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{width: 17, height: 17}}
-                />
-                <Text style={styles.TextLobi}>{props.item.date}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.FilledSlot}>
+    <View
+      style={{
+        backgroundColor: '#ffffff',
+        margin: 10,
+        padding: 20,
+        borderRadius: 8,
+        elevation: 3,
+      }}>
+      <View style={{flexDirection: 'row'}}>
+        <View>
           <Image
-            source={require('../../assets/img/dollar.png')}
-            resizeMode="contain"
-            style={styles.DollarPic}
+            source={require('../../assets/img/banner.png')}
+            style={{width: 35, height: 35, borderRadius: 100}}
           />
-          <View style={styles.FilledSlot1}>
-            <Text style={styles.TextSlot}>{props.item.earning}</Text>
-          </View>
         </View>
-        <View style={styles.LiniView}>
-          <View style={styles.LiniView1}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.5, y: 10}}
-              colors={['#54ACFD', '#2289E7']}
-              style={{
-                borderRadius: 8,
-                height: 10,
-              }}></LinearGradient>
-          </View>
+        <View>
+          <Text
+            style={{
+              color: '#000',
+              fontSize: 20,
+              paddingLeft: 20,
+              fontWeight: '700',
+            }}>
+            SBI-PO Current Affairs
+          </Text>
         </View>
-        <TouchableOpacity
-          style={{width: '100%'}}
-          onPress={() => {
-            props.navigation.navigate('RulesofParticipation');
-          }}>
-          <LinearGradient
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 0.6, y: 2.0}}
-            colors={['#54ACFD', '#2289E7']}
-            style={styles.RegiView}>
-            <Text style={styles.TextRegister}>Register Now</Text>
-          </LinearGradient>
-        </TouchableOpacity>
       </View>
-    </View>
-  );
-};
 
-const FreeTrivia = (props) => {
-  return (
-    <View style={{flex: 1,}}>
       <View
-        style={styles.MaskedVieww}>
-        <View style={styles.QuizzView1}>
-          <View style={styles.QuizzView2}>
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 20,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Fees
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
             <Image
-              source={require('../../assets/img/banner.png')}
+              source={require('../../assets/img/bbcoin.png')}
               resizeMode="contain"
-              style={styles.CatePic}
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '700',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Image
+              source={require('../../assets/img/time2.png')}
+              resizeMode="contain"
+              tintColor={'rgba(138, 138, 138, 1)'}
+              style={{width: 20, height: 20}}
             />
           </View>
-          <View style={styles.TitleView}>
-            <Text style={styles.TitleTextt}>{props.item.title}</Text>
-          </View>
-        </View>
-
-        <View style={styles.FeeView}>
-          <View style={styles.FeeView1}>
-            <View style={{flex: 6}}>
-              <View style={styles.FeeView2}>
-                <Text style={styles.TextPrice}>Fees</Text>
-                <View style={styles.CoinView}>
-                  <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.CoinPic}
-                  />
-                  <Text style={styles.TextEntryFee}>{props.item.fee}</Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={styles.TextPrice}>Prize</Text>
-                  <View style={styles.CoinView}>
-                    <Image
-                      source={require('../../assets/img/bbcoin.png')}
-                      style={styles.CoinPic}
-                    />
-                    <Text style={styles.TextEntryFee}>{props.item.prize}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.FilledSlot}>
-          <Image
-            source={require('../../assets/img/cup.png')}
-            resizeMode="contain"
-            style={{width: 20, height: 20}}
-          />
-          <View style={styles.SourecView}>
-            <Text style={styles.TextMin}>{props.item.earning} %</Text>
-          </View>
-        </View>
-        <View style={styles.LiniView}>
-          <View style={styles.LiniView1}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.5, y: 1.0}}
-              colors={['#DD74EE', '#A715BE']}
+          <View style={{flexDirection: 'row', paddingLeft: 10}}>
+            <Text
               style={{
-                borderRadius: 8,
-                height: 10,
-              }}></LinearGradient>
+                color: 'rgba(138, 138, 138, 1)',
+                fontSize: 14,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              12/10/2002
+            </Text>
           </View>
         </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 10,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Prize
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/img/bbcoin.png')}
+              resizeMode="contain"
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Image
+              source={require('../../assets/img/calendar.png')}
+              resizeMode="contain"
+              tintColor={'rgba(138, 138, 138, 1)'}
+              style={{width: 17, height: 17}}
+            />
+          </View>
+          <View style={{flexDirection: 'row', paddingLeft: 10}}>
+            <Text
+              style={{
+                color: 'rgba(138, 138, 138, 1)',
+                fontSize: 14,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              12/10/2002
+            </Text>
+          </View>
+        </View>
+      </View>
 
-        <TouchableOpacity onPress={() => props.navigation.navigate('FreeTriviaStarExam')}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          marginTop: 10,
+        }}>
+        <Image
+          source={require('../../assets/img/dollar.png')}
+          resizeMode="contain"
+          style={{width: 25, height: 25}}
+        />
+        <View
           style={{
-            width: '100%',
-            height: 45,
-            borderRadius: 5,
-            justifyContent: 'center',
+            flexDirection: 'row',
             alignItems: 'center',
-            borderWidth: 1,
-            borderColor: '#C922E4',
+            justifyContent: 'center',
+            paddingLeft: 10,
           }}>
           <Text
             style={{
-              color: '#C922E4',
-              fontSize: 14,
-              fontFamily: 'WorkSans-Medium',
+              color: '#2188E7',
+              fontFamily: 'WorkSans-SemiBold',
+              fontSize: 18,
             }}>
-            Participate Now
+            988/
           </Text>
-        </TouchableOpacity>
+          <Text
+            style={{
+              color: '#333333',
+              fontFamily: 'WorkSans-SemiBold',
+              fontSize: 18,
+            }}>
+            88
+          </Text>
+        </View>
       </View>
+      <View style={styles.LiniView}>
+        <View style={styles.LiniView1}>
+          <LinearGradient
+            start={{x: 0.0, y: 0.25}}
+            end={{x: 0.5, y: 10}}
+            colors={['#54ACFD', '#2289E7']}
+            style={{
+              borderRadius: 8,
+              height: 10,
+            }}></LinearGradient>
+        </View>
+      </View>
+
+      <TouchableOpacity style={{width: '100%', marginTop: 16}}>
+        <LinearGradient
+          start={{x: 0.0, y: 0.25}}
+          end={{x: 0.6, y: 2.0}}
+          colors={['#54ACFD', '#2289E7']}
+          tyle={{borderRadius: 10}}>
+          <Text style={{textAlign: 'center', padding: 15, borderRadius: 10}}>
+            Register Now
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
 
+const FreeTrivia = props => {
+  return (
+    <View
+      style={{
+        backgroundColor: '#ffffff',
+        margin: 10,
+        padding: 20,
+        borderRadius: 8,
+        elevation: 3,
+      }}>
+      <View style={{flexDirection: 'row'}}>
+        <View>
+          <Image
+            source={require('../../assets/img/banner.png')}
+            style={{width: 35, height: 35, borderRadius: 100}}
+          />
+        </View>
+        <View>
+          <Text
+            style={{
+              color: '#000',
+              fontSize: 20,
+              paddingLeft: 20,
+              fontWeight: '700',
+            }}>
+            SBI-PO Current Affairs
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 20,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Fees
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/img/bbcoin.png')}
+              resizeMode="contain"
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '700',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View>
+            <Text
+              style={{
+                color: 'rgba(126, 126, 126, 1)',
+                fontSize: 14,
+                paddingLeft: 6,
+                fontWeight: '500',
+              }}>
+              Prize
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('../../assets/img/bbcoin.png')}
+              resizeMode="contain"
+              style={{width: 25, height: 25}}
+            />
+            <Text
+              style={{
+                color: 'rgba(245, 184, 7, 1)',
+                fontSize: 16,
+                fontWeight: '600',
+                paddingLeft: 5,
+              }}>
+              99
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={{flexDirection: 'row', marginTop: 10}}>
+        <Image
+          source={require('../../assets/img/cup.png')}
+          resizeMode="contain"
+          style={{width: 20, height: 20}}
+        />
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: '#C922E4', marginLeft: 10}}>8888 %</Text>
+        </View>
+      </View>
+
+      <View style={{marginTop: 5}}>
+        <View style={styles.LiniView1}>
+          <LinearGradient
+            start={{x: 0.0, y: 0.25}}
+            end={{x: 0.5, y: 1.0}}
+            colors={['#DD74EE', '#A715BE']}
+            style={{
+              borderRadius: 8,
+              height: 10,
+            }}></LinearGradient>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('FreeTriviaStarExam')}
+        style={{
+          width: '100%',
+          height: 45,
+          borderRadius: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderWidth: 1,
+          borderColor: '#C922E4',
+          marginTop: 14,
+        }}>
+        <Text
+          style={{
+            color: '#C922E4',
+            fontSize: 14,
+            fontFamily: 'WorkSans-Medium',
+          }}>
+          Participate Now
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 const Exams = () => {
   return (
-<View style={styles.ExamView}>
+    <View style={styles.ExamView}>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("MyExamQuizzes",)
-        }
-        style={styles.TouchExam}
-      >
+        onPress={() => navigation.navigate('MyExamQuizzes')}
+        style={styles.TouchExam}>
         <View style={styles.ActiveView}>
-         
-          
-          <Image source={require('../../assets/img/image.png')} style={{ width: 40, height: 40, borderRadius: 100 }} />
+          <Image
+            source={require('../../assets/img/image.png')}
+            style={{width: 40, height: 40, borderRadius: 100}}
+          />
         </View>
         <View style={styles.ActiveView}>
           <Text style={styles.TextCat}>category_name</Text>
@@ -585,8 +895,8 @@ const Exams = () => {
           <Text style={styles.TextActive}>Active Quizzes</Text>
         </View>
         <View style={styles.ActiveView}>
-          <Text style={[styles.TextActive, { color: "#DC1111", fontSize: 32 }]}>
-           77
+          <Text style={[styles.TextActive, {color: '#DC1111', fontSize: 32}]}>
+            77
           </Text>
         </View>
       </TouchableOpacity>

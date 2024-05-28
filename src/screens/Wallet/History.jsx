@@ -3,7 +3,7 @@ import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {Text} from '../../utils/Translate';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const History = ({navigation}) => {
+const History = ({navigation,route}) => {
   const data = [
     {
       r: '₹ 15,600',
