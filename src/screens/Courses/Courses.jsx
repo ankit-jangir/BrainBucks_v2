@@ -12,6 +12,7 @@ import PaidCourses from './PaidCourses';
 import { Text } from '../../utils/Translate';
 import FreeCourses from './FreeCourses';
 import MyCourses from './MyCourses';
+import { screenHeight } from '../../constants/Sizes.constant';
 
 const Courses = ({navigation}) => {
   const [activeTab, setActiveTab] = useState('Paid Courses');
@@ -92,6 +93,7 @@ const Courses = ({navigation}) => {
         </TouchableOpacity>
       </View>
 
+      <View style={{backgroundColor:'white', height:screenHeight}}>
       {activeTab === 'Paid Courses' && (
         <PaidCourses navigation={navigation} data={DATA} />
       )}
@@ -101,6 +103,7 @@ const Courses = ({navigation}) => {
       {activeTab === 'My Courses' && (
         <MyCourses navigation={navigation} data={DATA} />
       )}
+      </View>
     </>
   );
 };
@@ -111,23 +114,27 @@ export default Courses;
 const styles = StyleSheet.create({
   container: {
     // Add styles for the container if needed
+    backgroundColor:'white'
   },
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: 10,
+    paddingTop: 10,
+    backgroundColor:'white'
   },
   tab: {
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
     color: '#000',
+    backgroundColor:'white',
     // borderWidth: 1,
   },
   activeTab: {
     borderBottomWidth: 1,
     borderColor: '#ccc',
+    
   },
   tabText: {
     fontSize: 16,

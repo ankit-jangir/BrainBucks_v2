@@ -73,6 +73,7 @@ import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
 import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
 import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
 import Share from './src/screens/Wallet/Share';
+import Notification from './src/screens/Home/Notification';
 
 
 
@@ -150,24 +151,12 @@ function MyStack() {
       <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
       <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
-      <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
-
-
-
-
-
-
-
-
-
-
-      
-      
+      <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} /> 
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
-
       <Stack.Screen name="share" component={Share} />
+      <Stack.Screen name="Notification" component={Notification}/>
 
 
     </Stack.Navigator>

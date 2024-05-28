@@ -129,14 +129,12 @@ const Sidebar = ({ navigation }) => {
           text="History"
         />
         <MenuItem
-        action={()=>{navigation.navigate("coursesplanhistory")}}
-
+          action={()=>{navigation.navigate("coursesplanhistory")}}
           image={require('../../assets/img/ebook.png')}
           text="Course Plan History"
         />
         <MenuItem
-        action={()=>{navigation.navigate(" ")}}
-
+          action={()=>{}}
           image={require('../../assets/img/audit.png')}
           text="Refer & Earn"
         />
