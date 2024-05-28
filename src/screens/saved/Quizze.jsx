@@ -63,7 +63,7 @@ const Quizze = () => {
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate('RulesParticipation', {id: props.item.id, img:props.item.category_image})} style={{width:'100%',}} >
           <LinearGradient start={{x: 0.0, y: 0.25}} end={{x: 0.6, y: 2.0}} colors={['#54ACFD', '#2289E7']} style={{height:45,borderRadius:5,justifyContent:'center',alignItems:'center',}}>
-            <Text style={{color:'#ffffff',fontSize:17,fontFamily:'WorkSans-Medium'}} >Register Now</Text>
+            <Text style={{color:'#ffffff',fontSize:14,fontFamily:'WorkSans-Medium'}} >Register Now</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#000',
-    fontSize: 20,
+    fontSize: 18,
     paddingLeft: 20,
     fontWeight: '600',
   },
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   feeLabel: {
     color: 'rgba(126, 126, 126, 1)',
-    fontSize: 14,
+    fontSize: 12,
     paddingLeft: 6,
     fontWeight: '500',
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   feeAmount: {
     color: 'rgba(245, 184, 7, 1)',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     paddingLeft: 5,
   },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   date: {
     color: 'rgba(138, 138, 138, 1)',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '500',
     paddingLeft: 5,
   },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   prizeLabel: {
     color: 'rgba(126, 126, 126, 1)',
-    fontSize: 14,
+    fontSize: 12,
     paddingLeft: 6,
     fontWeight: '500',
   },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   prizeAmount: {
     color: 'rgba(245, 184, 7, 1)',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     paddingLeft: 5,
   },
@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
   earningAmountBlue: {
     color: '#2188E7',
     fontFamily: 'WorkSans-SemiBold',
-    fontSize: 18,
+    fontSize: 14,
   },
   earningAmount: {
     color: '#333333',
     fontFamily: 'WorkSans-SemiBold',
-    fontSize: 18,
+    fontSize: 13,
   },
   progressBarContainer: {
     width: "100%",

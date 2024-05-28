@@ -55,6 +55,18 @@ import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
 import MyHistory from './src/screens/Sidebar/MyHistory';
+import InsideLobby from './src/screens/Quizzes/InsideLobby';
+import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
+import ActiveQuizzJoinAnimation from './src/screens/Quizzes/ActiveQuizzJoinAnimation';
+import FreeTriviaStarExam from './src/screens/Freetrivia/FreeTriviaStarExam';
+import FreeRulesParticipation from './src/screens/Freetrivia/FreeRulesParticipation';
+import TriviaAnimationQuizz from './src/screens/Freetrivia/TriviaAnimationQuizz';
+import TriviaQuestionPaper from './src/screens/Freetrivia/TriviaQuestionPaper';
+import TriviaSubmit from './src/screens/Freetrivia/TriviaSubmit';
+import TriviaSubmitConfirmation from './src/screens/Freetrivia/TriviaSubmitConfirmation';
+import TriviaResult from './src/screens/Freetrivia/TriviaResult';
+import TriviaScoreCard from './src/screens/Freetrivia/TriviaScoreCard';
+
 import AddBankReducer from './src/context/AddBankReducer';
 import WithdrawReducer from './src/context/WithdrawReducer';
 import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
@@ -128,6 +140,29 @@ function MyStack() {
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
+      <Stack.Screen name="InsideLobby" component={InsideLobby} />
+      <Stack.Screen name="QuestionsPaper" component={QuestionsPaper} />
+      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation} />
+      <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
+      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation} />
+      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz} />
+      <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
+      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
+      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
+      <Stack.Screen name="TriviaResult" component={TriviaResult} />
+      <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
+
+
+
+
+
+
+
+
+
+
+      
+      
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />

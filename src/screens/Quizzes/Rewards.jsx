@@ -1,11 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
 
-export default function Rewards({ navigation, quizzes, rewards }) {
+const ParticipantsData = ({ item, index }) => {
+    return (
+        <View style={styles.RewardsV}>
+            <View style={styles.RewardsV1}>
+                <View style={styles.RewardsV2}>
+                    <Image source={require('../../assets/img/crown.png')} style={styles.RewardImg} />
+                    <Text style={styles.Btext}>{index + 1}.</Text>
+                </View>
+                <View style={styles.RewardsV3}>
+                    <View style={styles.RewardsV4}>
+                        <Image source={require('../../assets/img/bbcoin.png')} style={styles.RewardImg} />
+                        <Text style={styles.Btext}>{item.name}</Text>
+                    </View>
+                </View>
+            </View>
+        </View>
+    );
+};
 
+export default function Rewards({ navigation, quizzes, rewards }) {
     return (
         <>
             <View style={StyleConstants.safeArView}>
@@ -14,7 +32,7 @@ export default function Rewards({ navigation, quizzes, rewards }) {
                         <View style={styles.RankV2}>
                             <Text style={styles.RankV3}>Rank</Text>
                         </View>
-                        <View style={{ flex: 1, }}>
+                        <View style={{ flex: 1.6 }}>
                             <Text style={styles.RankV3}>Reward</Text>
                         </View>
                     </View>
@@ -22,44 +40,24 @@ export default function Rewards({ navigation, quizzes, rewards }) {
                 <View style={styles.RankV4}>
                     <FlatList
                         data={rewards}
-                        renderItem={Particpantsdata}
+                        renderItem={({ item, index }) => <ParticipantsData item={item} index={index} />}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
             </View>
         </>
-    )
+    );
 }
 
-const Particpantsdata = (props) => {
-    return (
-        <View style={styles.RewardsV}>
-            <View style={styles.RewardsV1}>
-                <View style={styles.RewardsV2}>
-                    <Image source={require('../../assets/img/crown.png')} style={styles.RewardImg} />
-                    <Text style={styles.Btext}>{props.item+1}.</Text>
-                </View>
-                <View style={styles.RewardsV3}>
-                    <View style={styles.RewardsV4}>
-                        <Image source={require('../../assets/img/bbcoin.png')} style={styles.RewardImg} />
-                        <Text style={styles.Btext}>{props.item.name}</Text>
-                    </View>
-                </View>
-            </View>
-        </View>
-    )
-}
-const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
-    RankV:
-    {
+const styles = StyleSheet.create({
+    RankV: {
         width: "100%",
         height: 30,
         paddingHorizontal: 15,
         justifyContent: "center"
     },
-    RankV1:
-    {
+    RankV1: {
         flexDirection: "row",
         flex: 1,
         justifyContent: "center",
@@ -69,46 +67,40 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start"
     },
-    RankV3:
-    {
+    RankV3: {
         fontFamily: 'WorkSans-Medium',
-        fontSize: 18,
+        fontSize: 14,
         color: "#2E2E2E"
     },
-    RewardsV:
-    {
+    RewardsV: {
         width: '100%',
         height: 50,
         justifyContent: "center",
         paddingHorizontal: 15
     },
-    RankV4:
-    {
+    RankV4: {
         flex: 1,
         backgroundColor: '#fff',
     },
-    RewardsV1:
-    {
+    RewardsV1: {
         flexDirection: 'row',
         flex: 1,
         justifyContent: "center",
         alignItems: 'center'
     },
-    RewardsV2:
-    {
+    RewardsV2: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     Btext: {
-        fontFamily: 'WorkSans-SemiBold',
-        fontSize: 16,
+        fontFamily: 'WorkSans-Medium',
+        fontSize: 14,
         paddingLeft: 10,
-        color:'#000'
+        color: '#000'
     },
-    RewardImg:
-    {
+    RewardImg: {
         width: 18,
         height: 18,
     },
@@ -116,11 +108,9 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
         flex: 2,
         justifyContent: "flex-start"
     },
-    RewardsV4:
-    {
+    RewardsV4: {
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'flex-start'
-
     }
-})
+});

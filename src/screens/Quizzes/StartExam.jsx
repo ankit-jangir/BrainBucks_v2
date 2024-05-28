@@ -75,9 +75,6 @@ export default function StartExam({navigation, route}) {
           source={require('../../assets/img/banner.png')}
           style={{flex: 1}}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.reset({index: 0, routes: [{name: 'Home'}]})
-            }
             style={styles.InsufficientTouchable1}>
             <Image
               source={require('../../assets/img/arrows.png')}
@@ -125,7 +122,7 @@ export default function StartExam({navigation, route}) {
                   />
                   <Text style={styles.EnteryFeesBText}>656</Text>
                 </View>
-              </View>
+              </View> 
             </View>
             <View style={styles.DateV}>
               <View style={styles.DateV1}>
@@ -170,7 +167,9 @@ export default function StartExam({navigation, route}) {
           </View>
         </View>
         <View style={styles.StartExamV}>
-          <TouchableOpacity style={{width: '80%'}}>
+          <TouchableOpacity  onPress={() => {
+                  navigation.navigate('InsideLobby')
+                }} style={{width: '80%'}}>
             <LinearGradient
               start={{x: 0.0, y: 0.25}}
               end={{x: 0.6, y: 2.0}}

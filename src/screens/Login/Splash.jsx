@@ -25,6 +25,7 @@ export default function Splash({ navigation }) {
           try {
             res = await auth.getUserProfile();
             if (res.status === 1) {
+              console.log("jwt token: "+localobj.jwt);
               setCheckLang(res)
             } else {
               setCheckLang(null)

@@ -14,7 +14,7 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/AllLiveQuizzes.styles';
 import LottieView from 'lottie-react-native';
 
-export default function AllLiveQuizzes({navigation}) {
+export default function FreeRulesParticipation({navigation}) {
   const [live, setLive] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -233,13 +233,13 @@ export default function AllLiveQuizzes({navigation}) {
         <View style={styles.AgreeV}>
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(!modalVisible);
+              navigation.navigate('TriviaAnimationQuizz')
             }}
             style={{width: '100%'}}>
             <LinearGradient
               start={{x: 0.0, y: 0.25}}
               end={{x: 0.6, y: 2.0}}
-              colors={['#54ACFD', '#2289E7']}
+              colors={['#DC3DAA', '#C23596']}
               style={{
                 height: 50,
                 borderRadius: 5,

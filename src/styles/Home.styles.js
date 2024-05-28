@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     },
     ExamView: {
       flex: 1,
-      flexDirection: 'row',
+      flexDirection: "row",
       paddingVertical: 5,
     },
     TouchExam: {
@@ -321,15 +321,14 @@ const styles = StyleSheet.create({
       padding: 8,
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: '#F5F5F5',
+      borderColor: "#F5F5F5",
       marginRight: 20,
       backgroundColor: ColorsConstant.White,
     },
-    ActiveView: {
-      width: 50,
-      height:50,
-      justifyContent: 'center',
-      alignItems: 'center',
+      ActiveView: {
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center", 
     },
     TextCat: {
       fontSize: 18,
