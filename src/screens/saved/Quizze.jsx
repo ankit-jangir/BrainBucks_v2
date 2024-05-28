@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SavedApiService from '../../services/api/SavedApiService';
 import { useCurrentId } from '../../context/IdReducer';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const Quizze = () => {
   const navigation = useNavigation()
