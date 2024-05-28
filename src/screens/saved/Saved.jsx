@@ -171,10 +171,10 @@ export default function Saved({navigation}) {
                     />
                   </TouchableOpacity>
                   <TextInput
-                    onChangeText={value => {
-                      setSearch(value);
-                      updateResult(value);
-                    }}
+                    // onChangeText={value => {
+                    //   setSearch(value);
+                    //   updateResult(value);
+                    // }}
                     value={search}
                     style={styles.SerchIn}
                     placeholder="Search for Exams"
