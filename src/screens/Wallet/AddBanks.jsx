@@ -1,56 +1,42 @@
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Text } from '../../utils/Translate'
+import { Button, Text } from '../../utils/Translate'
 import WalletApiService from '../../services/api/WalletApiService'
 import Toast from 'react-native-toast-message'
 import NoDataFound from '../../components/NoDataFound'
+import { Overlay } from '@rneui/themed'
 
 const AddBanks = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false)
   const [banks, setBanks] = useState([])
+  const [visible, setVisible] = useState(false)
+  const [delId, setDelId] = useState('')
 
   const wallService = new WalletApiService()
 
-  const data = [
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-    {
-      bankname: 'Federal Bank',
-      HolName: 'Holder Name',
-      Acc: 'xxx xxx xxx xxx',
-      ifc: '122 asdf qwer fgb',
-    },
-  ];
-
+  async function removeAccount() {
+    try {
+      setLoading(true)
+      let res = await wallService.deleteBank(delId)
+      if (res.status === 1) {
+        Toast.show({
+          type: 'success',
+          text1: "Bank Deleted Succesfully"
+        })
+        await getBanks()
+      }
+    } catch (err) {
+      console.log("Error in deleting bank", err.message);
+      Toast.show({
+        type: "error",
+        text1: "Something went wrong"
+      })
+    } finally {
+      setLoading(false)
+      setVisible(false)
+    }
+  }
 
   useEffect(() => {
     getBanks()
@@ -61,8 +47,7 @@ const AddBanks = ({ navigation }) => {
       setLoading(true)
       let res = await wallService.getAllBanks()
       if (res.status === 1) {
-        console.log(res, "RES");
-        setBanks(banks)
+        setBanks(res.banks)
       } else {
         Toast.show({
           type: 'error',
@@ -80,22 +65,22 @@ const AddBanks = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <Toast />
+      <View style={{ zIndex: 100 }} >
+        <Toast />
+      </View>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.navigate('Wallet')}>
           <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
         </TouchableOpacity>
-
+        <Text style={{ color: "black", fontSize: 20, fontWeight: "600" }}>Your Banks</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('addbankAccount')}
           style={styles.TouchableButton}>
           <Text style={styles.ViewText}>+Add</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ marginLeft: 10 }}>
-        <Text style={{ color: "black", fontSize: 17, fontWeight: "600" }}>Your Banks</Text>
-      </View>
+      
       <ScrollView>
         {
           loading ?
@@ -106,7 +91,7 @@ const AddBanks = ({ navigation }) => {
               :
               banks.map((res, index) => {
                 return (
-                  <>
+                  <View key={res._id}>
                     <TouchableOpacity>
                       <View key={index} style={styles.bankDetailsContainer}>
                         <View style={styles.bankDetailsHeader}>
@@ -117,25 +102,53 @@ const AddBanks = ({ navigation }) => {
                               style={styles.bankIcon}
                             />
                           </View>
-                          <Text style={styles.bankName}>{res.bankname}</Text>
+                          <Text style={styles.bankName}>{res.bank_name}</Text>
+                          <Text style={styles.verified}>{res.is_verifed ? 'verified' : 'not verified'}</Text>
                         </View>
-                        <Text style={styles.bankHolder}>{res.HolName}</Text>
+                        <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
                         <View style={styles.bankAccountDetails}>
-                          <Text style={styles.accountText}>{res.Acc}</Text>
-                          <Text style={styles.ifscText}>{res.ifc}</Text>
+                          <Text style={styles.accountText}>{res.bank_acc_no}</Text>
+                          <Text style={styles.ifscText}>{res.ifsc_code}</Text>
                         </View>
                         <View style={{ margin: 0 }}>
-                          <TouchableOpacity style={styles.button}>
+                          <TouchableOpacity onPress={() => { setDelId(res._id), setVisible(true) }} style={styles.button}>
                             <Text style={styles.buttonText}>Remove Account</Text>
                           </TouchableOpacity>
                         </View>
                       </View>
                     </TouchableOpacity>
 
-                  </>
+                  </View>
                 );
               })}
       </ScrollView>
+
+      <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
+        <View style={styles.logoutView}>
+          <Text style={styles.deletebanktext}>
+            Press Delete to Confirm Deletion
+          </Text>
+          <View style={styles.logoutbuttons}>
+            <Button
+              title="Delete"
+              color={"secondary"}
+              buttonStyle={styles.logoutyesbutton}
+              onPress={() => {
+                removeAccount()
+                setVisible(!visible)
+                getBanks()
+              }
+              }
+            />
+            <Button
+              color={"primary"}
+              title="Cancel"
+              onPress={() => { setVisible(!visible) }} />
+          </View>
+        </View>
+      </Overlay>
+      
+    
 
     </View>
   )
@@ -175,7 +188,9 @@ const styles = StyleSheet.create({
   ViewText: {
     fontSize: 13,
     color: '#367CFF',
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily:"Work Sans"
+
   },
   bankDetailsContainer: {
     margin: 10,
@@ -238,4 +253,33 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
   },
+  logoutView: {
+    height: 250,
+    width: 250,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 40,
+  },
+  logoutbuttons: {
+    gap: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  logoutyesbutton: {
+    paddingHorizontal: 20
+  },
+  deletebanktext: {
+    color: "gray",
+    fontSize: 20,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent'
+  },
+  verified:{
+    color:'#367CFF',
+    textAlign:"right",
+    flex:1,
+    paddingRight:13,
+  }
 })

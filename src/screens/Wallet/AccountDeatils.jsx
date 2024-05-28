@@ -1,11 +1,50 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, View, Image, TouchableOpacity, ToastAndroid} from 'react-native';
+import React, { useState } from 'react';
 import {Text} from '../../utils/Translate';
-import {color} from '@rneui/base';
+import { useAddBank } from '../../context/AddBankReducer';
+import WalletApiService from '../../services/api/WalletApiService';
+import Toast from 'react-native-toast-message';
+import { ActivityIndicator } from 'react-native';
 
 const AccountDetails = ({navigation}) => {
+
+  const [isLoading, setLoading] = useState(false)
+  const {addBankState, dispatch} = useAddBank()
+
+  
+async function next(){
+  let wallServ = new WalletApiService()
+  try{
+    setLoading(true)
+    let res = await wallServ.sendOtp()
+    if(res.status===1){
+      if(res.otp){
+        dispatch({type:"details", bankDetails:{'otp':res.otp}})
+        ToastAndroid.show(res.otp+"", ToastAndroid.LONG)
+      }
+      navigation.navigate('bankotp')
+    }else{
+      Toast.show({
+        type:'error',
+        text1:res.Backend_Error
+      })
+    }
+  }catch(err){
+    Toast.show({
+      type:'error',
+      text1:"Something went wrong"
+    })
+  }finally{
+    setLoading(false)
+  }
+}
+
+
   return (
     <View style={styles.container}>
+      <View style={{zIndex:100}}>
+      <Toast/>
+      </View>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate("addbank")}>
           <Image
@@ -24,30 +63,30 @@ const AccountDetails = ({navigation}) => {
             style={styles.bankImage}
             resizeMode="contain"
           />
-          <Text style={styles.bankName}>Name of Bank</Text>
+          <Text style={styles.bankName}>{addBankState.bankName}</Text>
         </View>
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Beneficiary Name</Text>
-        <Text style={styles.value}>Raghuveer Singh Prajapat</Text>
+        <Text style={styles.value}>{addBankState.holderName}</Text>
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Account Number</Text>
-        <Text style={styles.value}>1234 4567 8901</Text>
+        <Text style={styles.value}>{addBankState.accnum}</Text>
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.label}>IFSC Code</Text>
-        <Text style={styles.value}>0000FDRB23</Text>
+        <Text style={styles.value}>{addBankState.ifsc}</Text>
       </View>
 
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('bankotp')}
+        onPress={next}
       >
-        <Text style={styles.addButtonText}>Add Account</Text>
+        {isLoading?<ActivityIndicator size={25}/>:<Text style={styles.addButtonText}>Add Account</Text>}
       </TouchableOpacity>
     </View>
   );
@@ -119,5 +158,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: 'white',
     fontSize: 21,
+    borderWidth:1,
+    borderColor:'transparent'
   },
 });

@@ -4,30 +4,32 @@ import styles from "../../styles/Login.style";
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
 import { Text } from "../../utils/Translate";
-import AuthenticationApiService from "../../services/api/AuthenticationApiService";
 import Toast from "react-native-toast-message";
 import { Button } from '../../utils/Translate';
 import { OtpInput } from "react-native-otp-entry";
-import basic from "../../services/BasicServices";
+import WalletApiService from "../../services/api/WalletApiService";
+import { useWithdraw } from "../../context/WithdrawReducer";
+import { StackActions } from "@react-navigation/native";
 
 
 export default function WithdrawOtp({ navigation, route }) {
-    const [otp, setOtp] = useState();
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
-    const otpRef = useRef();
-    const auth = new AuthenticationApiService();
-    // let phone = route.params.phone;
+    const wallServ = new WalletApiService();
+    const {withdrawState, dispatch} = useWithdraw()
 
     function otpChanged(value) {
-        setOtp(value + "")
+        dispatch({type:"details", withdrawDetails:{'otp':value}})
     }
 
     async function resendOtp() {
+        if(loading){
+            return;
+        }
         setErrorMessage(null)
         setLoading(true)
         try {
-            let response = await auth.sendOtp(phone)
+            let response = await wallServ.sendOtp()
             if (response.status === 1) {
                 Toast.show({
                     type: "success",
@@ -49,7 +51,13 @@ export default function WithdrawOtp({ navigation, route }) {
     }
 
     async function next(){
-        if(otp.length!==4){
+        if(loading){
+            return;
+        }
+
+        let ot = withdrawState.otp+""
+        
+        if(ot.length!==4){
             setErrorMessage("*Enter The OTP First")
             return;
         }
@@ -57,24 +65,17 @@ export default function WithdrawOtp({ navigation, route }) {
         try{
             setErrorMessage(null)
             setLoading(true)
-            let response = await auth.verifyOtpAndRegister(phone,otp)
+            let response = await wallServ.withdrawMoney(withdrawState.amount,withdrawState.otp,withdrawState.bank._id)
             if(response.status===1){
                 setErrorMessage(null)
-                await basic.setJwt(response.token)
-                console.log("JWT Token: ",response.token);
-                navigation.reset({ index: 0, routes: [{ name: "Home" }] });
-            }else if(response.status===2){
-                setErrorMessage(null)
-                navigation.replace("SignupName",{
-                    phone:phone
-                })
+                navigation.dispatch(StackActions.replace('withdrawReq'));
             }
             else{
                 setErrorMessage(response.Backend_Error)
             }
 
         }catch(err){
-            console.log("Error in Verifying OTP: ", error.message);
+            console.log("Error in Verifying OTP in withdraw : ", err.message);
             setErrorMessage("*Something went wrong")
         }finally{
             setLoading(false)
@@ -108,7 +109,7 @@ export default function WithdrawOtp({ navigation, route }) {
                             numberOfDigits={4}
                             focusColor="blue"
                             focusStickBlinkingDuration={500}
-                            // onTextChange={otpChanged}
+                            onTextChange={otpChanged}
                             theme={{
                               pinCodeContainerStyle: styles.OtpBoxView,
                               pinCodeTextStyle: styles.textOtp,
@@ -128,7 +129,7 @@ export default function WithdrawOtp({ navigation, route }) {
                         >
                         </TouchableOpacity>
                         <Button
-                            onPress={()=>{navigation.navigate("withdrawReq")}}
+                            onPress={next}
                             title="Confirm"
                             loading={loading}
                             titleStyle={styles.textOt}

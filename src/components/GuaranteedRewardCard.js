@@ -109,7 +109,9 @@ const styles = StyleSheet.create({
         height:200,
         padding:8,
         borderTopEndRadius:5,
-        borderBottomRightRadius:5
+        borderBottomRightRadius:5,
+        fontFamily:"Work Sans"
+
     },
     containerImg: {
         flexDirection: 'row',
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
         marginLeft: screenWidth * 0.03,
         fontSize:16,
         fontWeight: '500',
+        fontFamily:"Work Sans"
         
       },
       textt:{
@@ -132,18 +135,24 @@ const styles = StyleSheet.create({
       },
       textt1:{
         color:"#7E7E7E",
-        fontSize:16
+        fontSize:16,
+        fontFamily:"Work Sans"
+
       },
       textt11:{
         color:"white",
         fontSize:16,
         backgroundColor:"black",
-        padding:10
+        padding:10,
+        fontFamily:"Work Sans"
+
       },
       textt11:{
         color:"black",
         fontSize:16,
-        fontWeight:"400"
+        fontWeight:"400",
+        fontFamily:"Work Sans"
+
       },
       conatiner12:{
         flexDirection:"row",
@@ -165,12 +174,16 @@ const styles = StyleSheet.create({
       },
       scoreText: {
         paddingLeft: 5,
-        fontWeight:"600"
+        fontWeight:"600",
+        fontFamily:"Work Sans"
+
       },
       progress: {
         marginVertical: 10,
       },
       button: {
         borderRadius: 5,
+        fontFamily:"Work Sans"
+
       },
 })

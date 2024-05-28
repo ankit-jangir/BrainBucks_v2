@@ -19,29 +19,28 @@ const MyHistory = ({navigation}) => {
           backgroundColor: 'white',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          padding: 15,
+          padding: 10,
           marginBottom: 5,
           borderColor:"lightgray",
           borderWidth:0.2
         }}>
         <View>
-          <Image
-            source={require('../../assets/img/menu.png')}
-            tintColor={'black'}
-            style={{height: 25, width: 25}}
-            onPress={() => navigation.openDrawer()}
-          />
+        <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Home');
+        }}>
+        <Image
+          style={{height: 35, width: 35}}
+          source={require('../../assets/img/back.png')}
+        />
+      </TouchableOpacity>
         </View>
         <View>
           <Text style={styles.heading}>My History</Text>
         </View>
         <View>
-          <Image
-            source={require('../../assets/img/homedark.png')}
-            tintColor={'balck'}
-            style={{height: 25, width: 25}}
-            onPress={() => navigation.navigate('Home')}
-          />
+        <Image source={require('../../assets/img/CalederUp.png')} style={{height:40,width:40}} resizeMode='contain'/>
+
         </View>
       </View>
       <View style={styles.RView} >
@@ -57,7 +56,6 @@ const MyHistory = ({navigation}) => {
         <Tab.Screen name="Free">{(props) => <Free/>}</Tab.Screen>
 
       </Tab.Navigator>
-      <Image source={require('../../assets/img/CalederUp.png')} style={{height:20,width:20}}/>
 
     </View>
 
@@ -71,7 +69,9 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontFamily:"Work Sans"
+
   },
   RView: {
     flex: 1,

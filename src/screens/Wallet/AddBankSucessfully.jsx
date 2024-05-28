@@ -1,42 +1,59 @@
-import { StyleSheet, Text, View ,TouchableOpacity} from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native'
+import React, { useEffect } from 'react'
 import { Image } from 'react-native-elements'
+import { useAddBank } from '../../context/AddBankReducer'
 
-const AddBankSucessfully = ({navigation}) => {
+const AddBankSucessfully = ({ navigation }) => {
+  const { addBankState, dispatch } = useAddBank()
+
+  function removeDetails(type) {
+    dispatch({ type: 'empty' })
+
+    if (type === 'hardware')
+      navigation.pop(2)
+    else
+      navigation.pop(3)
+  }
+
+  useEffect(() => {
+    let eh = BackHandler.addEventListener('hardwareBackPress', ()=>{removeDetails('hardware')})
+    return () => eh.remove()
+  }, [])
+
   return (
-    <View style={{flex:1,backgroundColor:"#610ECD"}}>
+    <View style={{ flex: 1, backgroundColor: "#610ECD" }}>
       <View>
-      <TouchableOpacity onPress={()=>{navigation.navigate("walletotp")}}>
-      <Image source={require('../../assets/img/radic.png')} style={{height:30,width:30,margin:20}} tintColor={"white"}/>
+        <TouchableOpacity onPress={removeDetails}>
+          <Image source={require('../../assets/img/radic.png')} style={{ height: 30, width: 30, margin: 20 }} tintColor={"white"} />
 
-      </TouchableOpacity>
+        </TouchableOpacity>
       </View>
-      <View style={{justifyContent:"center",alignItems:"center",marginTop:60,padding:40}}>
-      <Text style={{color:"white",fontSize:20,fontWeight:"600",textAlign:"center"}}>Remove following Bank account from Withdrawals</Text>
+      <View style={{ justifyContent: "center", alignItems: "center", marginTop: 60, padding: 40 }}>
+        <Text style={{ color: "white", fontSize: 20, fontWeight: "600", textAlign: "center" }}>Added following Bank account </Text>
       </View>
       <TouchableOpacity>
-      <View style={styles.bankDetailsContainer}>
-      <View style={styles.bankDetailsHeader}>
-        <View style={styles.bankIconContainer}>
-          <Image
-            source={require('../../assets/img/bb.png')}
-            resizeMode="contain"
-            style={styles.bankIcon}
-          />
+        <View style={styles.bankDetailsContainer}>
+          <View style={styles.bankDetailsHeader}>
+            <View style={styles.bankIconContainer}>
+              <Image
+                source={require('../../assets/img/bb.png')}
+                resizeMode="contain"
+                style={styles.bankIcon}
+              />
+            </View>
+            <Text style={styles.bankName}>{addBankState.bankName}</Text>
+          </View>
+          <Text style={styles.bankHolder}>{addBankState.holderName}</Text>
+          <View style={styles.bankAccountDetails}>
+            <Text style={styles.accountText}>{addBankState.accnum}</Text>
+            <Text style={styles.ifscText}>{addBankState.ifsc}</Text>
+          </View>
+
         </View>
-        <Text style={styles.bankName}>Federal Bank</Text>
-      </View>
-      <Text style={styles.bankHolder}>Holder Name</Text>
-      <View style={styles.bankAccountDetails}>
-        <Text style={styles.accountText}>xxx xxx xxx xxx</Text>
-        <Text style={styles.ifscText}>122 asdf qwer fgb</Text>
-      </View>
-     
-    </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.payNowButton}>
-      <Text style={styles.payNowText}>Continue</Text>
-    </TouchableOpacity>
+      <TouchableOpacity onPress={removeDetails} style={styles.payNowButton}>
+        <Text style={styles.payNowText}>Back To Adding bank</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -76,13 +93,17 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         paddingLeft: 15,
         color: 'black',
+        fontFamily:"Work Sans"
+
       },
       bankHolder: {
         paddingLeft: 10,
         fontWeight: '400',
         color: '#7E7E7E',
         paddingTop: 20,
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
+
       },
       bankAccountDetails: {
         flexDirection: 'row',
@@ -102,16 +123,20 @@ const styles = StyleSheet.create({
       payNowText: {
         color: 'white',
         fontSize: 16,
-        fontWeight:"500"
+        fontWeight:"500",
+        fontFamily:"Work Sans"
+
       },
       accountText: {
         color: 'black',
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
 
       },
       ifscText: {
         color: 'black',
-        fontSize:17
+        fontSize:17,
+        fontFamily:"Work Sans"
 
-      },
+  },
 })

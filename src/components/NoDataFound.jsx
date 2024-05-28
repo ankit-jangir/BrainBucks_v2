@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
   Text1: {
     color: 'black',
     marginVertical:10,
-    fontSize:22
+    fontSize:22,
+    textAlign:'center',
+    padding:2
   },
   actionContainer: {
     flexDirection: 'row',

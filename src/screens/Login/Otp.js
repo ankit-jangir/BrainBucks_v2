@@ -74,7 +74,7 @@ export default function Otp({ navigation, route }) {
             }
 
         }catch(err){
-            console.log("Error in Verifying OTP: ", error.message);
+            console.log("Error in Verifying OTP: ", err.message);
             setErrorMessage("*Something went wrong")
         }finally{
             setLoading(false)

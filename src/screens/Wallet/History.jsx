@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import { Text } from '../../utils/Translate';
-import { ScrollView } from 'react-native-gesture-handler';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {Text} from '../../utils/Translate';
+import {ScrollView} from 'react-native-gesture-handler';
 
-const History = ({ navigation }) => {
+const History = ({navigation}) => {
   const data = [
     {
       r: '₹ 15,600',
@@ -37,35 +37,37 @@ const History = ({ navigation }) => {
     },
   ];
 
-  const getArrowImage = (type) => {
-    return type === 'credit' 
+  const getArrowImage = type => {
+    return type === 'credit'
       ? require('../../assets/img/downarrow.png')
       : require('../../assets/img/uparrowss.png');
   };
 
-  const getStatusIcon = (success) => {
+  const getStatusIcon = success => {
     if (success === 1) return require('../../assets/img/arrowright.png');
-    else if(success === -1) return require('../../assets/img/pending.png');
+    else if (success === -1) return require('../../assets/img/pending.png');
     else return require('../../assets/img/cross.png');
   };
 
-  const getStatusText = (success) => {
+  const getStatusText = success => {
     if (success === 1) return 'Success';
     else if (success === -1) return 'Pending';
     else return 'Failed';
   };
 
   const getStatusColor = (success, type) => {
-    if (success === 1) return '#129C73'; 
-    else if (success === -1) return 'orange'; 
-    else if (type === 'credit') return 'red'; 
+    if (success === 1) return '#129C73';
+    else if (success === -1) return 'orange';
     else return '#FFEFEF';
   };
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => { navigation.navigate("Wallet") }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Wallet');
+          }}>
           <Image
             source={require('../../assets/img/back.png')}
             style={styles.backImage}
@@ -76,21 +78,28 @@ const History = ({ navigation }) => {
       <ScrollView>
         {data.map((res, index) => (
           <View key={index} style={styles.historyContainer}>
-            <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails') }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('transactionDetails');
+              }}>
               <View style={styles.transactionEntry}>
                 <View
-                style={[
-                  styles.iconContainer,
-                  { 
-                    backgroundColor: res.success === -1 ? '#fff9ef' : 
-                                     res.success === 1 ? '#EFFFF6' : '#FFEFEF' 
-                  },
-                ]}>
-                <Image
-                  source={getArrowImage(res.type)}
-                  style={styles.icon}
-                  tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
-                />
+                  style={[
+                    styles.iconContainer,
+                    {
+                      backgroundColor:
+                        res.success === -1
+                          ? '#fff9ef'
+                          : res.success === 1
+                          ? '#EFFFF6'
+                          : '#FFEFEF',
+                    },
+                  ]}>
+                  <Image
+                    source={getArrowImage(res.type)}
+                    style={styles.icon}
+                    tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
+                  />
                 </View>
                 <View>
                   <Text style={styles.transactionAmount}>{res.r}</Text>
@@ -106,7 +115,7 @@ const History = ({ navigation }) => {
                   <Text
                     style={[
                       styles.statusText,
-                      { color: getStatusColor(res.success, res.type) },
+                      {color: getStatusColor(res.success, res.type)},
                     ]}>
                     {getStatusText(res.success)}
                   </Text>
@@ -148,6 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'black',
+    fontFamily: 'Work Sans',
   },
   historyContainer: {
     margin: 10,
@@ -160,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "lightgray"
+    borderColor: 'lightgray',
   },
   iconContainer: {
     height: 40,
@@ -189,9 +199,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 21,
     fontWeight: '600',
+    fontFamily: 'Work Sans',
   },
   timestamp: {
     color: '#8A8A8A',
+    fontFamily: 'Work Sans',
+    fontSize: 12,
   },
   statusContainer: {
     flexDirection: 'row',
@@ -208,6 +221,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     fontSize: 17,
     fontWeight: '600',
+    fontFamily: 'Work Sans',
   },
   arrowIconContainer: {
     justifyContent: 'center',

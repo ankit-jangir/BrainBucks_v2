@@ -216,6 +216,8 @@ class WalletApiService {
   }
 
   async addBank(ifsc_code, bank_name, bank_acc_no, acc_holder_name, otp){
+    ifsc_code = ifsc_code.toLocaleUpperCase()
+    console.log(ifsc_code,"SERVICE");
     let token = await basic.getBearerToken()
     let url = `${AUTHMICRO}/sales/add/bank/details`;
     let headers = { "content-type": "application/json", authorization: token };

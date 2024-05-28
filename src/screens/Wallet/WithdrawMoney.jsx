@@ -1,11 +1,49 @@
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, View, Image, TouchableOpacity, ToastAndroid, ActivityIndicator} from 'react-native';
+import React, { useState } from 'react';
 import {Text} from '../../utils/Translate';
 import {color} from '@rneui/base';
+import { useWithdraw } from '../../context/WithdrawReducer';
+import Toast from 'react-native-toast-message';
+import WalletApiService from '../../services/api/WalletApiService';
 
 const WithdrawMoney = ({navigation}) => {
+  const [loading, setLoading] = useState(false)
+  const {withdrawState, dispatch} = useWithdraw()
+  const wallServ = new WalletApiService()
+
+  async function next(){
+    try{
+      setLoading(true)
+      let res = await wallServ.sendOtp()
+      if(res.status===1){
+        if(res.otp){
+          ToastAndroid.show(res.otp+"",ToastAndroid.LONG)
+        }
+        dispatch({type:"details", withdrawDetails:{otp:res.otp}})
+        navigation.navigate('withdrawOtp')
+
+      }else{
+        Toast.show({
+          type:"error",
+          text1:res.Backend_Error
+        })
+      }
+    }catch(err){
+      console.log("ERROR in withdraw money send otp: ", err.message)
+      Toast.show({
+        type:'error',
+        text1:'Something went wrong'
+      })
+    }finally{
+      setLoading(false)
+    }
+  }
+
   return (
     <View style={styles.container}>
+      <View style={{zIndex:100}}>
+        <Toast/>
+      </View>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('withdraw')}>
           <Image
@@ -15,7 +53,7 @@ const WithdrawMoney = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.amountContainer}>
-        <Text style={styles.amountText}>₹ 15,600</Text>
+        <Text style={styles.amountText}>₹ {withdrawState.amount}</Text>
         <Text style={styles.infoText}>
           will be deposited in the following Bank Account{' '}
         </Text>
@@ -31,26 +69,26 @@ const WithdrawMoney = ({navigation}) => {
             style={styles.bankImage}
             resizeMode="contain"
           />
-          <Text style={styles.bankName}>Name of Bank</Text>
+          <Text style={styles.bankName}>{withdrawState.bank.bank_name}</Text>
         </View>
       </View>
       <View style={styles.accountContainer}>
         <Text style={styles.accountLabel}>Beneficiary Name</Text>
-        <Text style={styles.accountValue}>Raghuveer Singh Prajapat</Text>
+        <Text style={styles.accountValue}>{withdrawState.bank.acc_holder_name}</Text>
       </View>
       <View style={styles.accountContainer}>
         <Text style={styles.accountLabel}>Account Number</Text>
-        <Text style={styles.accountValue}>1234 4567 8901</Text>
+        <Text style={styles.accountValue}>{withdrawState.bank.bank_acc_no}</Text>
       </View>
       <View style={styles.accountContainer}>
         <Text style={styles.accountLabel}>IFSC Code</Text>
-        <Text style={styles.accountValue}>0000FDRB23</Text>
+        <Text style={styles.accountValue}>{withdrawState.bank.ifsc_code}</Text>
       </View>
       <TouchableOpacity
         style={styles.payNowButton}
-        onPress={() => navigation.navigate('withdrawOtp')}
+        onPress={next}
       >
-        <Text style={styles.payNowText}>Confirm</Text>
+        {loading?<ActivityIndicator size={25}/>:<Text style={styles.payNowText}>Confirm {" "}</Text>}
       </TouchableOpacity>
     </View>
   );

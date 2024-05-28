@@ -59,16 +59,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     marginTop: 10,
+    fontFamily:"Work Sans"
+
   },
   subtitle: {
     color: 'lightgray',
     marginTop: 5,
+    fontFamily:"Work Sans"
+
   },
   quizCount: {
     textAlign: 'center',
     fontWeight: '600',
     marginTop: 2,
     fontSize: 21,
-    color:"red"
+    color:"red",
+    fontFamily:"Work Sans"
+
   },
 })
