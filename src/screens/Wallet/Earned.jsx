@@ -5,6 +5,7 @@ import { Text } from '../../utils/Translate';
 import { ScrollView } from 'react-native-gesture-handler';
 import WalletApiService from '../../services/api/WalletApiService';
 import Toast from 'react-native-toast-message';
+import { BLOBURL } from '../../config/urls';
 
 const Earned = () => {
   const data = [
@@ -52,6 +53,8 @@ const Earned = () => {
     },
   ]
   const [loading, setLoading] = useState(false)
+  const [Earned, setEarned] = useState([])
+
   const wallet = new WalletApiService()
   useEffect(() => {
     getEarnedData();
@@ -62,7 +65,7 @@ const Earned = () => {
       setLoading(true)
       let res = await wallet.getEarnedMoney()
       if (res.status === 1) {
-        console.log(res);
+          setEarned(res.mashup)
       } else {
         Toast.show({
           type: 'error',
@@ -86,7 +89,7 @@ const Earned = () => {
       <ScrollView>
         <View style={styles.wrapper}>
           {
-            data.map((res) => {
+            Earned.map((res) => {
               return (
                 <View style={styles.card}>
                   <View style={styles.row}>
@@ -95,23 +98,25 @@ const Earned = () => {
                       style={styles.icon}
                     />
                     <View style={styles.info}>
-                      <Text style={styles.amount}>{res.data1}</Text>
-                      <Text style={styles.date}>{res.time}</Text>
+                      <Text style={styles.amount}>{res.amount}</Text>
+                      <Text style={styles.date}>{res.date}</Text>
                     </View>
                     <View style={styles.titleWrapper}>
-                      <Text style={styles.title}>{res.part}</Text>
+                      <Text style={styles.title}>{res.type}</Text>
                     </View>
                   </View>
                   <View style={styles.spentForWrapper}>
-                    <Text style={styles.spentFor}>{res.data2}</Text>
+                    <Text style={styles.spentFor}>Reward for</Text>
                   </View>
                   <View style={styles.containerImg}>
-                    <Image
-                      source={require('../../assets/img/Rectangle.png')}
-                      resizeMode="contain"
-                      style={styles.mainImage}
-                    />
-                    <Text style={styles.textTitle}>{res.data3}</Text>
+                  <View style={styles.containerImg1}>
+                  <Image
+                  source={{uri:BLOBURL+res.banner}}
+                    resizeMode="contain"
+                    style={styles.mainImage}
+                  />
+                  </View>
+                    <Text style={styles.textTitle}>{res.name}</Text>
                   </View>
                 </View>
               )
@@ -191,6 +196,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 15,
+  },
+  containerImg1:{
+    borderWidth:0.2,
+    borderColor:"lightgray",
+    padding:8,
+    borderRadius:50,
+    objectFit:"cover",
+
   },
   mainImage: {
     width: 20,
