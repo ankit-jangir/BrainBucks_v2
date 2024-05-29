@@ -2,40 +2,10 @@ import React from 'react';
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {Text} from '../../utils/Translate';
 import {ScrollView} from 'react-native-gesture-handler';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 const History = ({navigation,route}) => {
-  const data = [
-    {
-      r: '₹ 15,600',
-      s: '12:34 | 20 Dec 2022',
-      success: 1,
-      type: 'credit',
-    },
-    {
-      r: '₹ 15,600',
-      s: '12:34 | 20 Dec 2022',
-      success: -1,
-      type: 'debit',
-    },
-    {
-      r: '₹ 15,600',
-      s: '12:34 | 20 Dec 2022',
-      success: 0,
-      type: 'credit',
-    },
-    {
-      r: '₹ 15,600',
-      s: '12:34 | 20 Dec 2022',
-      success: 1,
-      type: 'debit',
-    },
-    {
-      r: '₹ 15,600',
-      s: '12:34 | 20 Dec 2022',
-      success: 0,
-      type: 'credit',
-    },
-  ];
+  const datahistory = route.params.data
 
   const getArrowImage = type => {
     return type === 'credit'
@@ -58,7 +28,7 @@ const History = ({navigation,route}) => {
   const getStatusColor = (success, type) => {
     if (success === 1) return '#129C73';
     else if (success === -1) return 'orange';
-    else return '#FFEFEF';
+    else return ColorsConstant.RedLight;
   };
 
   return (
@@ -76,11 +46,11 @@ const History = ({navigation,route}) => {
         <Text style={styles.headerText}>Transaction History</Text>
       </View>
       <ScrollView>
-        {data.map((res, index) => (
+        {datahistory.map((res, index) => (
           <View key={index} style={styles.historyContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('transactionDetails');
+                navigation.navigate('transactionDetails',{res:res});
               }}>
               <View style={styles.transactionEntry}>
                 <View
@@ -102,8 +72,8 @@ const History = ({navigation,route}) => {
                   />
                 </View>
                 <View>
-                  <Text style={styles.transactionAmount}>{res.r}</Text>
-                  <Text style={styles.timestamp}>{res.s}</Text>
+                  <Text style={styles.transactionAmount}>{res.amount}</Text>
+                  <Text style={styles.timestamp}>{res.order_datetime}</Text>
                 </View>
                 <View style={styles.statusContainer}>
                   <View style={[styles.statusIcon]}>
