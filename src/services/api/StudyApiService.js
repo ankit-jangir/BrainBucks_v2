@@ -47,9 +47,9 @@ export default class StudyApiService {
         const response = await axios(options);
         return response.data;
     }
-    async getStudyMaterial(cat_id, page, pdf_id) {
+    async getStudyMaterial(cat_id, pdf_type) {
         let bearer = await basic.getBearerToken();
-        let url = `${QUIZMICRO}/participants/get/materials/of/particular/exam/in/particular/pdftype?cat_id=${cat_id}&page=${page}&pdf_type=${pdf_type}&search`;
+        let url = `${QUIZMICRO}/participants/get/materials/of/particular/exam/in/particular/pdftype?cat_id=${cat_id}&pdf_type=${pdf_type}&search`;
         let headers = { "content-type": "application/json", "authorization": bearer };
         let options = {
             method: "get",

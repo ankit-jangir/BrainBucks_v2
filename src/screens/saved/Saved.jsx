@@ -68,7 +68,6 @@ export default function Saved({navigation}) {
       let res = await study.getOtherExams();
       if (res.status === 1) {
         setOtherExams(res.exams);
-        console.log(res,"<<<<<<")
       } else {
         Toast.show({
           type: 'error',

@@ -555,22 +555,19 @@ const styles = StyleSheet.create({
   },
   TrView1: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: "center",
-    justifyContent: 'center'
+paddingTop:10   
   },
   touchTR: {
-    width: 150,
+    // width: 150,
     height: 30,
-    backgroundColor: "#EFFFF6",
+    // backgroundColor: "#EFFFF6",
     borderRadius: 5,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: 'center'
+    
   },
   TextTrans: {
     fontFamily: 'WorkSans-Regular',
-    fontSize: 13,
+    fontSize: 17,
     color: '#1DC173'
   },
   dateView: {
@@ -591,7 +588,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   touchDown: {
-    width: '45%',
     height: 45,
     borderRadius: 10,
     justifyContent: 'center',
@@ -606,7 +602,6 @@ const styles = StyleSheet.create({
     color:'#000'
   },
   touchEng: {
-    width: '45%',
     height: 45,
     borderRadius: 10,
     justifyContent: 'center',

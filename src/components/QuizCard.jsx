@@ -47,85 +47,7 @@ const QuizCard = ({
           </View>
         </View>
 
-        {type === 'trivia' ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 20,
-              justifyContent: 'space-between',
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View>
-                <Text
-                  style={{
-                    color: 'rgba(126, 126, 126, 1)',
-                    fontSize: 14,
-                    paddingLeft: 6,
-                    fontWeight: '500',
-                  }}>
-                  Fees
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingLeft: 10,
-                  alignItems: 'center',
-                }}>
-                <Image
-                  source={require('../assets/img/bbcoin.png')}
-                  resizeMode="contain"
-                  style={{width: 25, height: 25}}
-                />
-                <Text
-                  style={{
-                    color: 'rgba(245, 184, 7, 1)',
-                    fontSize: 16,
-                    fontWeight: '700',
-                    paddingLeft: 5,
-                  }}>
-                  99
-                </Text>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View>
-                <Text
-                  style={{
-                    color: 'rgba(126, 126, 126, 1)',
-                    fontSize: 14,
-                    paddingLeft: 6,
-                    fontWeight: '500',
-                  }}>
-                  Prize
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingLeft: 10,
-                  alignItems: 'center',
-                }}>
-                <Image
-                  source={require('../assets/img/bbcoin.png')}
-                  resizeMode="contain"
-                  style={{width: 25, height: 25}}
-                />
-                <Text
-                  style={{
-                    color: 'rgba(245, 184, 7, 1)',
-                    fontSize: 16,
-                    fontWeight: '600',
-                    paddingLeft: 5,
-                  }}>
-                  99
-                </Text>
-              </View>
-            </View>
-          </View>
-        ) : (
-          <>
+        <>
             <View
               style={{
                 flexDirection: 'row',
@@ -163,7 +85,7 @@ const QuizCard = ({
                       fontWeight: '700',
                       paddingLeft: 5,
                     }}>
-                    {fees}
+                    {type==='trivia'?'0':fees}
                   </Text>
                 </View>
               </View>
@@ -253,57 +175,60 @@ const QuizCard = ({
               </View>
             </View>
           </>
+        {type !== 'trivia' && (
+          <>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <Image
+                source={require('../assets/img/dollar.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
+                resizeMode="contain"
+                tintColor={type === 'trivia' ? '#C922E4' : '#333333'}
+                style={{width: 25, height: 25}}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingLeft: 10,
+                }}>
+                <Text
+                  style={{
+                    color: type === 'trivia' ? '#C922E4' : '#2188E7',
+                    fontFamily: 'WorkSans-SemiBold',
+                    fontSize: 18,
+                  }}>
+                  {totalslots}/
+                </Text>
+                <Text
+                  style={{
+                    color: type === 'trivia' ? '#C922E4' : '#333333',
+
+                    fontFamily: 'WorkSans-SemiBold',
+                    fontSize: 18,
+                  }}>
+                  {alotedslots}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.LiniView}>
+              <View style={styles.LiniView1}>
+                <LinearProgress
+                  style={{marginVertical: 10, height: 8, borderRadius: 10}}
+                  value={0.4}
+                  variant="determinate"
+                  color={type === 'trivia' ? '#C922E4' : '#54ACFD'}
+                />
+              </View>
+            </View>
+          </>
         )}
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          <Image
-            source={require('../assets/img/dollar.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
-            resizeMode="contain"
-            tintColor={type==="trivia"?"#C922E4":'#333333'}
-            style={{width: 25, height: 25}}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingLeft: 10,
-            }}>
-            <Text
-              style={{
-                color: type === 'trivia' ? '#C922E4' : '#2188E7',
-                fontFamily: 'WorkSans-SemiBold',
-                fontSize: 18,
-              }}>
-              {totalslots}/
-            </Text>
-            <Text
-              style={{
-                color: type === 'trivia' ? '#C922E4' : '#333333',
-
-                fontFamily: 'WorkSans-SemiBold',
-                fontSize: 18,
-              }}>
-              {alotedslots}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.LiniView}>
-          <View style={styles.LiniView1}>
-            <LinearProgress
-              style={{marginVertical: 10, height: 8, borderRadius: 10}}
-              value={0.4}
-              variant="determinate"
-              color={type === 'trivia' ? '#C922E4' : '#54ACFD'}
-            />
-          </View>
-        </View>
 
         {type === 'active' ? (
           <TouchableOpacity
