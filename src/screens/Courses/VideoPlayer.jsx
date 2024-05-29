@@ -1,20 +1,78 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Video, { DRMType } from 'react-native-video'
+import CourseApiService from '../../services/api/CourseApiService';
+import { ActivityIndicator } from 'react-native';
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
+
+
 
 //todo: add styles to the video player
-export default function VideoPlayer() {
+export default function VideoPlayer({navigation, route}) {
+
+    const [video, setVideo] = useState()
+    const course_id = route.params.course_id
+    const video_id = route.params.video_id
+    const serv = new CourseApiService()
+
+    useEffect(()=>{
+        getVideo()
+    },[])
+
+    async function getVideo(){
+    try{
+        let res = await serv.startVideo(course_id, video_id)
+        if(res.status===1){
+            console.log(res);
+            setVideo(res)
+        }
+        else{
+            Toast.show({
+                type:'error',
+                text1:res.Backend_Error
+            })
+        }
+      }catch (err) {
+        console.log("Error in playing video in video player: ", err.message);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong'
+        })
+      } 
+    }
+
     return (
-        <Video
+        <>
+        <View style={{zIndex:100}}>
+            <Toast/>
+        </View>
+        {
+            !video?
+            <ActivityIndicator size={"large"}/>
+            :
+            <Video
+            controls={true}
+            onError={console.log}
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+              }}
             source={{
-                uri: 'https://media.axprod.net/TestVectors/v7-MultiDRM-SingleKey/Manifest_1080p.mpd',
+                uri:video.url,
             }}
             drm={{
                 type: DRMType.WIDEVINE,
-                licenseServer: 'https://drm-widevine-licensing.axtest.net/AcquireLicense',
+                licenseServer: 'https://drm-widevine-licensing.axprod.net/AcquireLicense',
                 headers: {
-                    'X-AxDRM-Message': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZXJzaW9uIjoxLCJjb21fa2V5X2lkIjoiYjMzNjRlYjUtNTFmNi00YWUzLThjOTgtMzNjZWQ1ZTMxYzc4IiwibWVzc2FnZSI6eyJ0eXBlIjoiZW50aXRsZW1lbnRfbWVzc2FnZSIsImZpcnN0X3BsYXlfZXhwaXJhdGlvbiI6NjAsInBsYXlyZWFkeSI6eyJyZWFsX3RpbWVfZXhwaXJhdGlvbiI6dHJ1ZX0sImtleXMiOlt7ImlkIjoiOWViNDA1MGQtZTQ0Yi00ODAyLTkzMmUtMjdkNzUwODNlMjY2IiwiZW5jcnlwdGVkX2tleSI6ImxLM09qSExZVzI0Y3Iya3RSNzRmbnc9PSJ9XX19.FAbIiPxX8BHi9RwfzD7Yn-wugU19ghrkBFKsaCPrZmU'
+                    'X-AxDRM-Message':video.token,
                 },
             }}
         />
+        }
+        </>
     )
 }

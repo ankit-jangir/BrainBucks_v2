@@ -45,7 +45,7 @@ export default function Accordion({ buttonText, buttonStyle, onExpand, container
                 </View>
                 <View style={{ flexDirection: 'row', alignItems:'center' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ marginHorizontal: 10 }} onPress={onButtonPress}>
+                        {buttonText&&<TouchableOpacity style={{ marginHorizontal: 10 }} onPress={onButtonPress}>
                             <Text
                                 style={{
                                     backgroundColor: 'rgba(112, 29, 219, 1)',
@@ -60,7 +60,7 @@ export default function Accordion({ buttonText, buttonStyle, onExpand, container
                                 }}>
                                 {buttonText}
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
                     </View>
                     {
                         visible ?

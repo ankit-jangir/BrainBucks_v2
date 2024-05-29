@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Pressable } from 'react-native';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
-import StudyApiService from '../../services/api/StudyApiService';
 import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
-import { ColorsConstant } from '../../constants/Colors.constant';
 
 const PaidCourses = () => {
 
@@ -79,8 +77,9 @@ const PaidCourses = () => {
       setLoading2(true)
       let res = await serv.getStudyMaterial(course_id, video_id)
       if (res.status === 1) {
-        console.log(res);
-        // setCourses(res.data)
+        setMaterial(old => {
+          return { ...old, [video_id]: res.study_materials }
+        })
       } else {
         Toast.show({
           type: 'error',
@@ -142,18 +141,18 @@ const PaidCourses = () => {
                       loading2
                         ?
                         <ActivityIndicator size={40} />
-                        :<View style={{height:200}}>
-                        <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
-                      </View>
-                      )
+                        : <View style={{ height: 200 }}>
+                          <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
+                        </View>
+                    )
                     :
                     (
                       (videos[item._id].length === 0)
                         ?
-                        <View style={{height:200}}>
-                        <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
-                      </View>
-                      :
+                        <View style={{ height: 200 }}>
+                          <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
+                        </View>
+                        :
                         videos[item._id].map((video, index) =>
                           <Accordion
                             containerStyle={{
@@ -175,41 +174,79 @@ const PaidCourses = () => {
                             buttonText={"Play Now"}
                             itemText={video.title}
                             icon={require('../../assets/img/play-button.png')}
-                            onButtonPress={() => { console.log("Video Play"); }}
+                            onButtonPress={() => { Toast.show({
+                              type:'error',
+                              text1:"Buy the course to watch the video"
+                            }) }}
+                            onExpand={() => { getMaterialForParticularVideo(item._id, video._id) }}
                           >
-                            <FlatList
-                              data={material[video._id]}
-                              renderItem={({ item }) => {
-                                return (
-                                  <View style={{ backgroundColor: '#fff', elevation: 1, marginTop: 2, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginHorizontal: 7, padding: 10 }}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                      }}>
-                                      <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                                        1.
-                                      </Text>
-                                      <Text style={{ color: '#000' }}>{item.title}</Text>
+                            {
+                              (!material[video._id])
+                                ?
+                                (
+                                  loading2
+                                    ?
+                                    <ActivityIndicator size={40} />
+                                    : <View style={{ height: 200 }}>
+                                      <NoDataFound scale={0.5} message={"No Study Material Found for this Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <TouchableOpacity >
-                                          <Text
-                                            style={{
-                                              backgroundColor: 'rgba(112, 29, 219, 1)',
-                                              padding: 5,
-                                              borderRadius: 5,
-                                              color: '#fff',
-                                            }}>
-                                            View Pdf
-                                          </Text>
-                                        </TouchableOpacity>
-                                      </View>
-                                    </View>
-                                  </View>
                                 )
-                              }}>
-                            </FlatList>
+                                : (
+                                  material[video._id].length === 0
+                                    ?
+                                    <View style={{ height: 200 }}>
+                                      <NoDataFound scale={0.5} message={"No Study Material For This Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
+                                    </View>
+                                    :
+                                    <FlatList
+                                      data={material[video._id]}
+                                      renderItem={({ item, index }) => {
+                                        return (
+                                          <Pressable>
+                                            <View key={item._id} style={{
+                                              backgroundColor: '#fff',
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              paddingHorizontal: 10,
+                                              paddingVertical: 8,
+                                              marginHorizontal: 10,
+                                              marginBottom: 4,
+                                              elevation: 4,
+                                              borderRadius: 5,
+                                              marginTop: index === 0 ? 5 : 0,
+                                            }}>
+                                              <View
+                                                style={{
+                                                  flexDirection: 'row',
+                                                  flex: 1,
+                                                  alignItems: 'center'
+                                                }}>
+                                                <Text style={{ color: '#000', flex: 1 }}>{item.title}</Text>
+                                              </View>
+                                              <View style={{ flexDirection: 'row' }}>
+                                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                                  <TouchableOpacity >
+                                                    <Text
+                                                      style={{
+                                                        padding: 5,
+                                                        borderRadius: 5,
+                                                        backgroundColor: '#eee3fc',
+                                                        color: '#701DDB',
+                                                        fontSize: 12,
+                                                        fontWeight: 400
+                                                      }}>
+                                                      View Pdf
+                                                    </Text>
+                                                  </TouchableOpacity>
+                                                </View>
+                                              </View>
+                                            </View>
+                                          </Pressable>
+                                        )
+                                      }}>
+                                    </FlatList>
+                                )
+                            }
                           </Accordion>
                         )
                     )
