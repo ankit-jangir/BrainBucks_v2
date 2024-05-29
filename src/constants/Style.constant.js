@@ -182,7 +182,6 @@ export const StyleConstants = StyleSheet.create({
     },
     safeArView: {
         backgroundColor: ColorsConstant.White,
-        paddingHorizontal:10
     },
     icon: {
         width: 20,

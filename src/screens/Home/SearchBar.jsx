@@ -27,7 +27,7 @@ export default function SearchBar() {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Search');
+         
         }}
         style={styles.SearchBar}>
         <TouchableOpacity style={{flex: 0.20,paddingHorizontal:5}}>
