@@ -36,7 +36,7 @@ export default function TriviaScoreCard({ navigation, route }) {
                 onPress={() => navigation.goBack()}
                 style={styles.mainviewtouc}
               >
-              <Text>ss</Text>
+         <Image source={require('../../assets/img/back.png')}/>
               </TouchableOpacity>
             </View>
             <View style={{ alignItems: "center" }}>
@@ -145,6 +145,7 @@ export default function TriviaScoreCard({ navigation, route }) {
 }
 
 function Answerkey(props) {
+  console.log(props,'dfghjkl;');
   return (
     <View style={[StyleConstants.safeArView, { borderColor: "#CFCFCF" }]}>
       <View
@@ -154,7 +155,7 @@ function Answerkey(props) {
           style={styles.View14Q}
         >
           <Text style={styles.fonttext}>
-            {props.item.question_no}
+           {props.item.marks}
           </Text>
         </View>
         <View
@@ -167,21 +168,21 @@ function Answerkey(props) {
               color:'#000',
             }}
           >
-            {props.item.my_answer}
+                       {props.item.marks}
           </Text>
         </View>
         <View
           style={styles.View16Q}
         >
           <Text style={styles.fonttext}>
-            {props.item.correct_answer}
+          {props.item.marks}
           </Text>
         </View>
         <View
           style={styles.View17Q}
         >
           <Text style={styles.fonttext}>
-            {props.item.marks}
+           {props.item.marks}
           </Text>
         </View>
       </View>
@@ -218,7 +219,7 @@ const ls = StyleConstants,
     Scorecard: {
       fontFamily: "WorkSans-SemiBold",
       fontSize: 24,
-      color: "#000",
+      color: "#fff",
     },
     img1: {
       width: 20,
@@ -232,7 +233,7 @@ const ls = StyleConstants,
     text2: {
       fontFamily: "WorkSans-SemiBold",
       fontSize: 16,
-      color: "#000",
+      color: "#fff",
     },
     mainview1: {
       flexDirection: "row",
@@ -384,11 +385,10 @@ const ls = StyleConstants,
         fonttext:{
           fontSize: 16, 
           fontFamily: "WorkSans-Medium",
-      color: "#000",
-
+          color: "#000",
         },
         View17Q:{
-          flex: 0.5,
+          // flex: 0.5,
           borderRightWidth: 1,
           borderRightColor: "#CFCFCF",
           alignItems: "center",

@@ -107,6 +107,36 @@ const styles = StyleSheet.create({
       paddingHorizontal: 0,
       marginBottom: 10,
     },
+    ActiveView: {
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    TextCat: {
+      fontSize: 20,
+      fontFamily: "WorkSans-SemiBold",
+      textAlign: "center",
+    },
+    TextActive: {
+      fontSize: 16,
+      fontFamily: "WorkSans-Regular",
+      textAlign: "center",
+      color: ColorsConstant.GrayyColor,
+    },
+    ExamView: {
+      flex: 1,
+      flexDirection: "row",
+      paddingVertical: 5,
+    },
+    TouchExam: {
+      width: 160,
+      padding: 8,
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: "#F5F5F5",
+      marginRight: 20,
+      backgroundColor: ColorsConstant.White,
+    },
     bgPic: {
       width: '100%',
       height: 100,

@@ -14,7 +14,7 @@ import SearchBar from './src/screens/Home/SearchBar';
 import Splash from './src/screens/Login/Splash';
 import SingUp from './src/screens/Login/Signup';
 import Otp from './src/screens/Login/Otp';
-import VideoPlayer from './src/screens/Courses/VideoPlayer';
+import VideoPlayer from './src/screens/courses/VideoPlayer';
 import SignupName from './src/screens/Login/SignupName';
 import SignupGender from './src/screens/Login/SignupGender';
 import SignUpExam from './src/screens/Login/SignupExam';
@@ -24,9 +24,9 @@ import StudyExam from './src/screens/Study/StudyExam';
 import FreePdf from './src/screens/Study/FreePdf';
 import OnlineClasses from './src/screens/Study/OnlineClasses';
 import StudyMaterials from './src/screens/Study/StudyMaterials';
-import Courses from './src/screens/Courses/Courses';
+import Courses from './src/screens/courses/Courses';
 import onAppBootstrap from './src/config/FirebaseConfig';
-import PaidCourses from './src/screens/Courses/PaidCourses';
+import PaidCourses from './src/screens/courses/PaidCourses';
 import QuestionPapers from './src/screens/Study/QuestionPapers';
 import MyEarning from './src/screens/Wallet/MyEarning';
 import Deposit from './src/screens/Wallet/Deposit';
@@ -73,10 +73,9 @@ import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
 import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
 import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
 import Share from './src/screens/Wallet/Share';
-import Notification from './src/screens/Home/Notification';
+import QuizCard from './src/components/QuizCard';
 
 
-import IdReducer from './src/context/IdReducer';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -124,7 +123,7 @@ function MyStack() {
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
       <Stack.Screen name="deposit" component={Deposit} />
-      <Stack.Screen name="dailyupdates" component={DailyUpdates} />
+      <Stack.Screen name='dailyupdates' component={DailyUpdates} />
       <Stack.Screen name="transactionDetails" component={TransctionDetails} />
       <Stack.Screen name="withdrawMoney" component={WithdrawMoney} />
       <Stack.Screen name="AccountDeatils" component={AccoountDeatils} />
@@ -134,12 +133,9 @@ function MyStack() {
       <Stack.Screen name="Challenges" component={Challenges} />
       <Stack.Screen name="FreeTrivia" component={FreeTrivia} />
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
-      <Stack.Screen name="paymentpopup" component={PaymentPopup} />
+      <Stack.Screen name='paymentpopup' component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
-      <Stack.Screen
-        name="RulesofParticipation"
-        component={RulesofParticipation}
-      />
+      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
@@ -147,35 +143,36 @@ function MyStack() {
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
       <Stack.Screen name="QuestionsPaper" component={QuestionsPaper} />
-      <Stack.Screen
-        name="ActiveQuizzJoinAnimation"
-        component={ActiveQuizzJoinAnimation}
-      />
+      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation} />
       <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
-      <Stack.Screen
-        name="FreeRulesParticipation"
-        component={FreeRulesParticipation}
-      />
-      <Stack.Screen
-        name="TriviaAnimationQuizz"
-        component={TriviaAnimationQuizz}
-      />
+      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation} />
+      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz} />
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
-      <Stack.Screen
-        name="TriviaQuestionPaper"
-        component={TriviaQuestionPaper}
-      />
-      <Stack.Screen
-        name="TriviaSubmitConfirmation"
-        component={TriviaSubmitConfirmation}
-      />
+      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
+      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
+      <Stack.Screen name="QuizCard" component={QuizCard} />
+
+
+
+
+
+
+
+
+
+
+
+      
+      
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
+
       <Stack.Screen name="share" component={Share} />
-      <Stack.Screen name="Notification" component={Notification} />
+
+
     </Stack.Navigator>
   );
 }
@@ -372,7 +369,7 @@ function MyTabs() {
           />
         </>
       </Tab.Navigator>
-    </SafeAreaProvider>
+    </SafeAreaProvider >
   );
 }
 
@@ -388,15 +385,15 @@ function MyDrawer() {
 
 export default function App() {
   return (
+
     <NavigationContainer>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>
-          <IdReducer>
-            <MyStack />
-          </IdReducer>
+          <MyStack />
         </WithdrawReducer>
       </AddBankReducer>
     </NavigationContainer>
+
   );
 }

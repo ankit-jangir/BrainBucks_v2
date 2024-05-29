@@ -46,13 +46,12 @@ export default function ResultRewards({ navigation, route }) {
             <View style={styles.MainVie}>
               <View style={styles.MainVie1}>
                 <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })} style={styles.touchIcon}>
-                 
-                 <Text>Home</Text>
+                 <Image source={require('../../assets/img/homedark.png')} tintColor={'#fff'} style={{width:25,height:25}}/>
                 </TouchableOpacity>
 
                 <View style={styles.pic}>
                   <View style={styles.ViewM}>
-                    <Text>TriviaResult</Text>
+                    <Text style={{fontSize:20}}>+</Text>
                   </View>
                   <View style={styles.WalletView}>
                     <Image source={require('../../assets/img/bbcoin.png')} style={styles.Coin} />
@@ -144,16 +143,15 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: '#00000070',
     borderRadius: 10,
-    width: '50%',
-    height: 40,
+    width: '35%',
     paddingHorizontal: 5,
     alignItems: 'center'
   },
   ViewM: {
     backgroundColor: '#00000080',
     borderRadius: 5,
-    padding: 2,
-    alignItems: 'flex-start'
+    padding: 10,
+    alignItems: 'flex-start',
   },
   WalletView: {
     flexDirection: 'row',
