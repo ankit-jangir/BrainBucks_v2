@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
 import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
+import { Modal } from 'react-native-paper';
+import { Button, Image } from 'react-native-elements';
 
 const PaidCourses = () => {
 
@@ -13,12 +15,43 @@ const PaidCourses = () => {
   const [videos, setVideos] = useState({})
   const [material, setMaterial] = useState({})
   const [loading2, setLoading2] = useState(false)
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [current,setCurrent]=useState();
+  const [buycourses,setbuyCourses]=useState([])
+  console.log(current,"kajaj")
   const serv = new CourseApiService()
 
   useEffect(() => {
     getPaidCourses()
   }, [])
+
+async function buyCourse(){
+  try {
+    setLoading2(true)
+    let res = await serv.buyCourse(current._id)
+    if (res.status === 1) {
+      setModalVisible(false)
+      Toast.show({
+        type: 'success',
+        text1:"course bought successfully"
+
+      })
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: res.Backend_Error
+      })
+    }
+  } catch (err) {
+    console.log("Error in fetching videos for paid courses: ", err.message);
+    Toast.show({
+      type: 'error',
+      text1: 'Something went wrong'
+    })
+  } finally {
+    setLoading2(false)
+  }
+}
 
   async function getPaidCourses() {
     try {
@@ -26,7 +59,7 @@ const PaidCourses = () => {
       setLoading2(true)
       let res = await serv.getPaidCourses()
       if (res.status === 1) {
-        // console.log(res);
+        console.log(res);
         setCourses(res.data)
       } else {
         Toast.show({
@@ -132,7 +165,7 @@ const PaidCourses = () => {
                 buttonText={"Buy Now"}
                 itemText={item.cou_name}
                 icon={{ uri: BLOBURL + item.banner }}
-                onButtonPress={() => { console.log("Buy Course") }}
+                onButtonPress={() => {setCurrent(item), setModalVisible(true)} }
               >
                 {
                   (!videos[item._id])
@@ -259,8 +292,105 @@ const PaidCourses = () => {
                 }
               </Accordion>)
       }
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setModalVisible(!modalVisible);
+      }} >
+      {
+        loading2? 
+        <ActivityIndicator   size={35}/>:
+        <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+         <View style={{height:200,width:"100%"}}>
+         <Image source={{uri:BLOBURL + current?.banner}} style={{height:200,width:"100%"}} resizeMode='contain' />
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between",paddingVertical:5}}>
+         <Text> <Text style={styles.datatext}>Duration:</Text> {current?.Duration}</Text>
+         <Text><Text style={styles.datatext}>Amount:</Text> {current?.amount}</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+         <Text><Text style={styles.datatext}>Final Amount:</Text> {current?.final_amount}</Text>
+         <Text> <Text style={styles.datatext}>Discount:</Text> {current?.discount}%</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+         <Text><Text style={styles.datatext}>Videos Count:</Text> {current?.videos_count}</Text>
+
+         <Text><Text style={styles.datatext}>Attachment:</Text> {current?.attachment_count}</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
+         <TouchableOpacity onPress={buyCourse}
+         style={[styles.button, styles.buttonClose]}
+         
+         >
+         <Text style={styles.textStyle}>Buy Course</Text>
+         </TouchableOpacity>
+         <Pressable
+         style={[styles.button, styles.buttonClose]}
+         onPress={() => setModalVisible(!modalVisible)}>
+         <Text style={styles.textStyle}>Cancel</Text>
+       </Pressable>
+         </View>
+         
+        </View>
+      </View>
+      }
+      
+    </Modal>
+     
     </>
   );
 };
 
 export default PaidCourses;
+const styles = StyleSheet.create({
+  centeredView:{
+    justifyContent: 'center',
+    alignItems: 'center',
+   
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height:400,
+    width:"100%",
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginTop:10,
+    paddingHorizontal:20
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+ datatext:{fontSize:17,fontWeight:"500",fontFamily:"Work Sans",color:"black"}
+})
