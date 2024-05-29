@@ -217,7 +217,7 @@ export default function Wallet({ navigation }) {
 
           <TouchableOpacity
             style={styles.actionItem}
-            onPress={() => navigation.navigate('history')}>
+            onPress={() => navigation.navigate('history',{data:walletData.value.transactions})}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -248,7 +248,7 @@ export default function Wallet({ navigation }) {
         <View style={styles.actionsContainer1}>
           <Text style={styles.RecentText}>Recent Transactions</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('history')}
+            onPress={() => navigation.navigate('history',{data:walletData.value.transactions})}
             style={styles.TouchableButton}>
             <Text style={styles.ViewText}>View</Text>
           </TouchableOpacity>
@@ -264,8 +264,9 @@ export default function Wallet({ navigation }) {
               <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
+                
                 <View key={res._id} style={styles.historyContainer}>
-                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails',{id:res._id}) }}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails',{res:res}) }}>
                     <View style={styles.transactionEntry}>
                       <View
                         style={[
