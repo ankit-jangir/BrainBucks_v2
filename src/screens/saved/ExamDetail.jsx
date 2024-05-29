@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {Text, TextInput} from '../../utils/Translate';
@@ -25,8 +26,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function ExamDetail({navigation, route}) {
   
   return (
-    <>
-      <View style={StyleConstants.safeArView}>
+      <SafeAreaView style={[StyleConstants.safeArView,]}>
         <View style={styles.Hview}>
           <View style={styles.Hview1}>
             <TouchableOpacity
@@ -45,8 +45,8 @@ export default function ExamDetail({navigation, route}) {
         </View>
            
 
-      <View style={styles.RView} >
-      <Tab.Navigator style={{}} screenOptions={{
+      <View style={[styles.RView,]} >
+      <Tab.Navigator screenOptions={{
         tabBarActiveTintColor: '#000000',
         tabBarLabelStyle: { fontSize: 12, textTransform: "none", },
         tabBarStyle: { width: "100%", },
@@ -59,8 +59,8 @@ export default function ExamDetail({navigation, route}) {
       </Tab.Navigator>
     </View>
 
-      </View>
-    </>
+      </SafeAreaView>
+
   );
 }
 
