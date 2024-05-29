@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
@@ -6,6 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import WalletApiService from '../../services/api/WalletApiService';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import NoDataFound from '../../components/NoDataFound';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 const MyEarningSpent = () => {
  
@@ -47,6 +49,11 @@ const MyEarningSpent = () => {
     <ScrollView>
     <View style={styles.wrapper}>
       {
+        loading ? 
+        <ActivityIndicator color={ColorsConstant.Theme} size={35} />:
+        Spent.length===0 ? 
+        <NoDataFound action={getSpentData} actionText={"Reaload"} message={"No Data Found"} />  :
+
         Spent.map((res)=>{
             return(
                 <View style={styles.card}>
