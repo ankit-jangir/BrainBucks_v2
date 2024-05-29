@@ -17,6 +17,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {BLOBURL} from '../../config/urls';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import QuizCard from '../../components/QuizCard';
 
 const FreeTrivia = () => {
   const saved = new SavedApiService();
@@ -35,7 +36,6 @@ const FreeTrivia = () => {
     try {
       let res = await saved.getTriviaQuizzes(idState.id);
       if (res.status === 1) {
-        console.log(res);
         setTrivia(res.trivia_quizes);
       } else {
         Toast.show({
@@ -70,8 +70,10 @@ const FreeTrivia = () => {
     },
   ];
   return (
-    <>
-      <Toast />
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <View>
+        <Toast />
+      </View>
       <ScrollView>
         <View style={{flex: 1, backgroundColor: 'white', padding: 10}}>
           {loading ? (
@@ -85,72 +87,26 @@ const FreeTrivia = () => {
           ) : (
             trivia.map(res => {
               return (
-                <View style={styles.container}>
-                  <View style={styles.row}>
-                    <View>
-                      <Image
-                        source={{uri: BLOBURL + res.banner}}
-                        style={styles.bannerImage}
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.title}>{res.quiz_name}</Text>
-                    </View>
-                  </View>
-
-                  <View style={[styles.row, styles.feeAndDateRow]}>
-                    <View style={styles.row}>
-                      <Text style={styles.feeLabel}>Prize</Text>
-                      <View style={styles.feeAmountContainer}>
-                        <Image
-                          source={require('../../assets/img/bbcoin.png')}
-                          resizeMode="contain"
-                          style={styles.coinImage}
-                        />
-                        <Text style={styles.feeAmount}>{res.reward}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.row}>
-                      <Image
-                        source={require('../../assets/img/time2.png')}
-                        resizeMode="contain"
-                        tintColor={'rgba(138, 138, 138, 1)'}
-                        style={styles.iconImage}
-                      />
-                      <Text style={styles.date}>{res.sch_time}</Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.PerView}>
-                    <Image
-                      source={require('../../assets/img/cup.png')}
-                      resizeMode="contain"
-                      style={styles.cupPic}
-                    />
-                    <View style={styles.PerView1}>
-                      <Text style={styles.textPer}>99 %</Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.progressBarContainer}>
-                    <View style={styles.progressBar}>
-                      <LinearGradient
-                        start={{x: 0.0, y: 0.25}}
-                        end={{x: 0.5, y: 1.0}}
-                        colors={['#DD74EE', '#A715BE']}
-                        style={{borderRadius: 8, height: 10}}></LinearGradient>
-                    </View>
-                  </View>
-                  <TouchableOpacity onPress={() => {}} style={styles.touchPar}>
-                    <Text style={styles.textPar}>Participate Now</Text>
-                  </TouchableOpacity>
-                </View>
+                <>
+                  <QuizCard
+                    key={res._id}
+                    title={res.quiz_name}
+                    image={{uri: BLOBURL + res.banner}}
+                    prize={res.reward}
+                    date={res.sch_time}
+                    time={res.sch_time}
+                    totalslots={res.slots}
+                    alotedslots={res.slot_aloted}
+                    type={'trivia'}
+                    onPress={() => {}}
+                  />
+                </>
               );
             })
           )}
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import FreePdf from './FreePdf';
 import OnlineClasses from './OnlineClasses';
@@ -7,10 +7,9 @@ import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/Studymaterials.styles';
 
 
-
 export default function StudyMaterials({ navigation }) {
   const [selected, setSelected] = useState('FreePdf');
-
+ 
   return (
     <View style={StyleConstants.safeArView}>
      
@@ -21,7 +20,7 @@ export default function StudyMaterials({ navigation }) {
             styles.button1,
             selected === 'FreePdf' ? styles.selectedButton : styles.deselectedButton
           ]}
-          onPress={() => setSelected('FreePdf')}
+           onPress={() => setSelected('FreePdf')}
         >
           <Text style={[
             styles.text,

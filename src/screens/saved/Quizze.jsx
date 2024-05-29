@@ -16,6 +16,7 @@ import Toast from 'react-native-toast-message';
 import {BLOBURL} from '../../config/urls';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import QuizCard from '../../components/QuizCard';
 
 const Quizze = () => {
   const navigation = useNavigation();
@@ -51,12 +52,13 @@ const Quizze = () => {
   }
 
   return (
-    <>
-      <Toast />
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <View>
+        <Toast />
+      </View>
       <ScrollView>
         <View style={{padding: 10, backgroundColor: 'white', flex: 1}}>
-          {
-            loading ? (
+          {loading ? (
             <ActivityIndicator color={ColorsConstant.Theme} size={35} />
           ) : Quizes.length === 0 ? (
             <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -69,116 +71,27 @@ const Quizze = () => {
           ) : (
             Quizes.map(res => {
               return (
-                <View key={res._id} style={styles.container}>
-                  <View style={styles.row}>
-                    <View>
-                      <Image
-                        source={{uri: BLOBURL + res.banner}}
-                        style={styles.bannerImage}
-                      />
-                    </View>
-                    <View>
-                      <Text style={styles.title}>{res.quiz_name}</Text>
-                    </View>
-                  </View>
-
-                  <View style={[styles.row, styles.feeAndDateRow]}>
-                    <View style={styles.row}>
-                      <Text style={styles.feeLabel}>Fees</Text>
-                      <View style={styles.feeAmountContainer}>
-                        <Image
-                          source={require('../../assets/img/bbcoin.png')}
-                          resizeMode="contain"
-                          style={styles.coinImage}
-                        />
-                        <Text style={styles.feeAmount}>{res.entryFees}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.row}>
-                      <Image
-                        source={require('../../assets/img/time2.png')}
-                        resizeMode="contain"
-                        tintColor={'rgba(138, 138, 138, 1)'}
-                        style={styles.iconImage}
-                      />
-                      <Text style={styles.date}>{res.sch_time}</Text>
-                    </View>
-                  </View>
-
-                  <View style={[styles.row, styles.prizeAndDateRow]}>
-                    <View style={styles.row}>
-                      <Text style={styles.prizeLabel}>Prize</Text>
-                      <View style={styles.prizeAmountContainer}>
-                        <Image
-                          source={require('../../assets/img/bbcoin.png')}
-                          resizeMode="contain"
-                          style={styles.coinImage}
-                        />
-                        <Text style={styles.prizeAmount}>{res.prize}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.row}>
-                      <Image
-                        source={require('../../assets/img/calendar.png')}
-                        resizeMode="contain"
-                        tintColor={'rgba(138, 138, 138, 1)'}
-                        style={styles.iconImageSmall}
-                      />
-                      <Text style={styles.date}>{res.sch_time}</Text>
-                    </View>
-                  </View>
-
-                  <View style={[styles.row, styles.earningContainer]}>
-                    <Image
-                      source={require('../../assets/img/dollar.png')}
-                      resizeMode="contain"
-                      style={styles.dollarImage}
-                    />
-                    <View style={styles.earningAmountContainer}>
-                      <Text style={styles.earningAmountBlue}>
-                        {res.slot_aloted} /
-                      </Text>
-                      <Text style={styles.earningAmount}>{res.slots}</Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.progressBarContainer}>
-                    <View style={styles.progressBar}>
-                      <LinearGradient
-                        start={{x: 0.0, y: 0.25}}
-                        end={{x: 0.5, y: 1.0}}
-                        colors={['#54ACFD', '#2289E7']}
-                        style={{borderRadius: 8, height: 10}}></LinearGradient>
-                    </View>
-                  </View>
-                  <TouchableOpacity onPress={() => {}} style={{width: '100%'}}>
-                    <LinearGradient
-                      start={{x: 0.0, y: 0.25}}
-                      end={{x: 0.6, y: 2.0}}
-                      colors={['#54ACFD', '#2289E7']}
-                      style={{
-                        height: 45,
-                        borderRadius: 5,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#ffffff',
-                          fontSize: 14,
-                          fontFamily: 'WorkSans-Medium',
-                        }}>
-                        Register Now
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                </View>
+                <>
+                  <QuizCard
+                    key={res._id}
+                    title={res.quiz_name}
+                    image={{uri: BLOBURL + res.banner}}
+                    fees={res.entryFees}
+                    prize={res.prize}
+                    date={res.sch_time}
+                    time={res.sch_time}
+                    totalslots={res.slots}
+                    alotedslots={res.slot_aloted}
+                    type={'active'}
+                    onPress={() => {}}
+                  />
+                </>
               );
             })
           )}
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
