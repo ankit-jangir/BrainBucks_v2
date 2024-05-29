@@ -3,9 +3,9 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Text } from '../utils/Translate';
 
-const NoDataFound = ({message, action, actionText}) => {
+const NoDataFound = ({message, scale,  action, actionText}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, scale&&{transform:`scale(${scale})`}]}>
       <View style={styles.animationContainer}>
         <LottieView
           source={require('../assets/img/NoData.json')}

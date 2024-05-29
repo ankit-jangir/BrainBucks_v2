@@ -5,7 +5,7 @@ import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/Login.style';
 import { ScrollView } from 'react-native-gesture-handler';
-export default function SignupName({ navigation ,route}) {
+export default function SignupName({ navigation, route}) {
   const [name, setName] = useState();
   const [errorMessage, setErrorMessage] = useState()
 
@@ -26,7 +26,8 @@ export default function SignupName({ navigation ,route}) {
   return (
     <SafeAreaView style={StyleConstants.safeArView}>
       <StatusBar barStyle='white-content' translucent={false} backgroundColor={ColorsConstant.Theme} />
-      <ScrollView style={{flex:1}}>
+      <ScrollView>
+      <View style={{flex:1}}>
       <View style={styles.mainView}>
         <View style={styles.mainView1}>
           <View style={styles.mainView2}>
@@ -72,6 +73,7 @@ export default function SignupName({ navigation ,route}) {
             <Text style={[StyleConstants.BtnText, { color: ColorsConstant.White }]}>Next</Text>
           </TouchableOpacity>
         </View>
+      </View>
       </View>
       </ScrollView>
     </SafeAreaView>

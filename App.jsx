@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
-import {Text, Image, View, StatusBar} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer, useIsFocused} from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { Text, Image, View, StatusBar } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Sidebar from './src/screens/Home/Sidebar';
 import Wallet from './src/screens/Wallet/Wallet';
 import Study from './src/screens/Study/Study';
@@ -73,6 +73,9 @@ import PrivacyPolicy from './src/screens/Sidebar/PrivacyPolicy';
 import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
 import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
 import Share from './src/screens/Wallet/Share';
+import Notification from './src/screens/Home/Notification';
+
+
 import IdReducer from './src/context/IdReducer';
 
 const Drawer = createDrawerNavigator();
@@ -168,12 +171,11 @@ function MyStack() {
       />
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
-
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
-
       <Stack.Screen name="share" component={Share} />
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 }
@@ -183,8 +185,8 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: {fontSize: 13, paddingBottom: 5},
-          tabBarStyle: {height: 60, backgroundColor: 'white'},
+          tabBarLabelStyle: { fontSize: 13, paddingBottom: 5 },
+          tabBarStyle: { height: 60, backgroundColor: 'white' },
           tabBarShowLabel: true,
           headerShown: false,
           tabBarActiveTintColor: '#000',
@@ -195,19 +197,19 @@ function MyTabs() {
             component={Home}
             options={{
               tabBarLabel: 'Home',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/homedark.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/homenormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -219,19 +221,19 @@ function MyTabs() {
             component={Study}
             options={{
               tabBarLabel: 'Study',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/bookmarkblack.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/bookmark.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -253,13 +255,13 @@ function MyTabs() {
           ))}}/> */}
 
           <Tab.Screen
-            style={{position: 'relative '}}
+            style={{ position: 'relative ' }}
             name="Courses"
             component={Courses}
             options={{
-              tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
+              tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
               tabBarLabel: 'Courses',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View
                   style={{
                     position: 'absolute',
@@ -286,13 +288,13 @@ function MyTabs() {
                       <Image
                         source={require('./src/assets/img/roomimgwhite.png')}
                         resizeMode="contain"
-                        style={{width: 30, height: 30}}
+                        style={{ width: 30, height: 30 }}
                       />
                     ) : (
                       <Image
                         source={require('./src/assets/img/roomimg.png')}
                         resizeMode="contain"
-                        style={{width: 35, height: 35}}
+                        style={{ width: 35, height: 35 }}
                       />
                     )}
                   </View>
@@ -325,19 +327,19 @@ function MyTabs() {
             component={Saved}
             options={{
               tabBarLabel: 'Saved',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/heart.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/heartnormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -349,19 +351,19 @@ function MyTabs() {
             component={Wallet}
             options={{
               tabBarLabel: 'Wallet',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/walletblack.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/walletnormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -377,7 +379,7 @@ function MyTabs() {
 function MyDrawer() {
   return (
     <Drawer.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       drawerContent={props => <Sidebar {...props} />}>
       <Drawer.Screen name="Home" component={MyTabs} />
     </Drawer.Navigator>

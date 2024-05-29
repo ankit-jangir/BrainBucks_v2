@@ -7,8 +7,15 @@ import {
 } from 'react-native';
 import React from 'react';
 import {Text} from '../../utils/Translate';
+import WalletApiService from '../../services/api/WalletApiService';
 
 const TransctionDetails = ({navigation}) => {
+
+  const wallet = new WalletApiService()
+
+
+
+
   return (
     <>
       <StatusBar backgroundColor={'#D92828'}></StatusBar>

@@ -9,6 +9,7 @@ import Toast from "react-native-toast-message";
 import { Button } from '../../utils/Translate';
 import { OtpInput } from "react-native-otp-entry";
 import basic from "../../services/BasicServices";
+import { StackActions } from "@react-navigation/native";
 
 
 export default function Otp({ navigation, route }) {
@@ -65,9 +66,11 @@ export default function Otp({ navigation, route }) {
                 navigation.reset({ index: 0, routes: [{ name: "Home" }] });
             }else if(response.status===2){
                 setErrorMessage(null)
-                navigation.replace("SignupName",{
+                navigation.dispatch(
+                    StackActions.replace("SignupName",{
                     phone:phone
                 })
+            )
             }
             else{
                 setErrorMessage("*"+response.Custom_Error)
