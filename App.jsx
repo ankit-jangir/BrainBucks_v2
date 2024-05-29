@@ -74,6 +74,8 @@ import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
 import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
 import Share from './src/screens/Wallet/Share';
 import QuizCard from './src/components/QuizCard';
+import IdReducer from './src/context/IdReducer';
+import ViewPdf from './src/screens/Courses/ViewPdf';
 
 
 
@@ -153,25 +155,14 @@ function MyStack() {
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
-
-
-
-
-
-
-
-
-
-
-
-      
-      
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
+      <Stack.Screen name="viewpdf" component={ViewPdf} />
+
+
 
       <Stack.Screen name="share" component={Share} />
-
 
     </Stack.Navigator>
   );
@@ -390,7 +381,9 @@ export default function App() {
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>
-          <MyStack />
+          <IdReducer>
+            <MyStack />
+          </IdReducer>
         </WithdrawReducer>
       </AddBankReducer>
     </NavigationContainer>

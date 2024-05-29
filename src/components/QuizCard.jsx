@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Text} from '../utils/Translate';
 import styles from '../styles/Home.styles';
 import {LinearProgress} from '@rneui/themed';
+
 const QuizCard = ({
   onPress,
   image,
@@ -357,7 +358,7 @@ const QuizCard = ({
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        ) : null}
+        ) : <></>}
       </View>
     </>
   );

@@ -4,9 +4,6 @@ import Toast from 'react-native-toast-message';
 import Video, { DRMType } from 'react-native-video'
 import CourseApiService from '../../services/api/CourseApiService';
 import { ActivityIndicator } from 'react-native';
-import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
-
-
 
 //todo: add styles to the video player
 export default function VideoPlayer({navigation, route}) {

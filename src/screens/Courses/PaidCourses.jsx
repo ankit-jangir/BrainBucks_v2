@@ -155,6 +155,7 @@ const PaidCourses = () => {
                         :
                         videos[item._id].map((video, index) =>
                           <Accordion
+                          key={video._id}
                             containerStyle={{
                               backgroundColor: '#fff',
                               flexDirection: 'row',
@@ -175,7 +176,7 @@ const PaidCourses = () => {
                             itemText={video.title}
                             icon={require('../../assets/img/play-button.png')}
                             onButtonPress={() => { Toast.show({
-                              type:'error',
+                              type:'info',
                               text1:"Buy the course to watch the video"
                             }) }}
                             onExpand={() => { getMaterialForParticularVideo(item._id, video._id) }}
@@ -202,8 +203,8 @@ const PaidCourses = () => {
                                       data={material[video._id]}
                                       renderItem={({ item, index }) => {
                                         return (
-                                          <Pressable>
-                                            <View key={item._id} style={{
+                                          <Pressable key={item._id}>
+                                            <View style={{
                                               backgroundColor: '#fff',
                                               flexDirection: 'row',
                                               justifyContent: 'space-between',
@@ -225,7 +226,12 @@ const PaidCourses = () => {
                                               </View>
                                               <View style={{ flexDirection: 'row' }}>
                                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                                  <TouchableOpacity >
+                                                  <TouchableOpacity onPress={()=>{
+                                                    Toast.show({
+                                                      type:'info',
+                                                      text1:"Buy the course to see the material"
+                                                    })
+                                                  }}>
                                                     <Text
                                                       style={{
                                                         padding: 5,

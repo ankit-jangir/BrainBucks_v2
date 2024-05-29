@@ -161,6 +161,7 @@ const FreeCourses = ({ navigation, data }) => {
                         :
                         videos[item._id].map((video, index) =>
                           <Accordion
+                            key={video._id}
                             containerStyle={{
                               backgroundColor: '#fff',
                               flexDirection: 'row',
@@ -204,8 +205,8 @@ const FreeCourses = ({ navigation, data }) => {
                                       data={material[video._id]}
                                       renderItem={({ item, index }) => {
                                         return (
-                                          <Pressable>
-                                          <View key={item._id} style={{ 
+                                          <Pressable key={item._id}>
+                                          <View style={{ 
                                                 backgroundColor: '#fff',
                                                 flexDirection: 'row',
                                                 justifyContent: 'space-between',
@@ -227,7 +228,7 @@ const FreeCourses = ({ navigation, data }) => {
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
                                               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                                <TouchableOpacity >
+                                                <TouchableOpacity onPress={()=>{navigation.navigate('viewpdf',{pdf: item})}}>
                                                   <Text
                                                     style={{
                                                       padding: 5,
