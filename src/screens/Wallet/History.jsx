@@ -3,6 +3,7 @@ import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {Text} from '../../utils/Translate';
 import {ScrollView} from 'react-native-gesture-handler';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import NoDataFound from '../../components/NoDataFound';
 
 const History = ({navigation,route}) => {
   const datahistory = route.params.data
@@ -46,7 +47,12 @@ const History = ({navigation,route}) => {
         <Text style={styles.headerText}>Transaction History</Text>
       </View>
       <ScrollView>
-        {datahistory.map((res, index) => (
+        {
+          datahistory.length===0
+          ?
+          <NoDataFound scale={0.8} message={"No Transaction History Yet.."} actionText={"Go back"} action={()=>{navigation.goBack()}}/>
+          :
+        datahistory.map((res, index) => (
           <View key={index} style={styles.historyContainer}>
             <TouchableOpacity
               onPress={() => {
