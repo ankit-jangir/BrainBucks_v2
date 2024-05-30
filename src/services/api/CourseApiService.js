@@ -133,6 +133,19 @@ class CourseApiService {
     const response = await axios(options);
     return response.data
   }
+async CoursePlanHistorys(){
+  let token = await basic.getBearerToken();
+  let url = `${PRERECMICRO}/participant/buycourseplan/history`;
+  let headers = {"content-type": "application/json", authorization: token};
+  let options ={
+    method: "get",
+    headers: headers,
+    url,
+  };
+  const response = await axios (options)
+  return response.data
+}
+
 }
 
 export default CourseApiService;

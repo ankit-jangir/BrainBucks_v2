@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   totalView: {
     width: '100%',
     paddingHorizontal: 10,
+    marginBottom:10
   },
   bgImg: {
     width: "100%",
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 60,
     paddingHorizontal: 10,
-    marginBottom: 15
+    marginBottom: 15,
   },
   touchH: {
     flex: 1,
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   logoutView: {
-    height: 300,
+    height: 170,
     width: 300,
     alignItems: "center",
     justifyContent: "center",
@@ -354,7 +355,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logoutyesbutton: {
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    borderRadius:10
+
   },
   logoutText: {
     color: ColorsConstant.Error,
@@ -428,8 +431,12 @@ const styles = StyleSheet.create({
     height:45
   },
   welcomeText:{
-    color:'#000',
-    fontSize:20
+    color: ColorsConstant.Black,
+    fontSize: 21,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    fontWeight:"600"
   }
 
 })

@@ -15,52 +15,66 @@ const Tab = createMaterialTopTabNavigator();
 import {ActivityIndicator} from 'react-native-paper';
 import {Image} from 'react-native';
 import {Text} from '../../utils/Translate';
+import CourseApiService from '../../services/api/CourseApiService';
+import Toast from 'react-native-toast-message';
+import NoDataFound from '../../components/NoDataFound';
 
 export default function CoursePlanHistory({navigation}) {
-  useEffect(() => {
-    CoursePlanHistory();
-  }, []);
-
   const [livequiz, setLivequiz] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [load, setLoad] = useState(false);
   const [isData, setData] = useState(false);
+  const course = new CourseApiService();
   const onRefresh = () => {
     setRefresh(true);
     setTimeout(() => setRefresh(false), 3000);
   };
 
-  const CoursePlanHistory = async () => {
+  useEffect(() => {
+    CoursePlanHistorys();
+  }, []);
+
+  async function CoursePlanHistorys() {
     setLoad(true);
-    const myHeaders = new Headers();
-    const token = await AsyncStorage.getItem('token');
-    myHeaders.append('Authorization', `Bearer ${token}`);
+    try {
+      let res = await course.CoursePlanHistorys();
+      if (res.status === 1) {
+        setLivequiz(res.transactions);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error,
+        });
+      }
+    } catch (err) {
+      console.log(
+        'Error in fetching study material for a paln history course: ',
+        err.message,
+      );
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    } finally {
+      setLoad(false);
+    }
+  }
 
-    const requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
-    fetch(
-      'https://prerec.brainbucks.in/participant/buycourseplan/history',
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(result => {
-        console.log('Response All Api>>>>>>>>>>', result);
-        if (result.status == 1) {
-          setLivequiz(result.transactions);
-          setLoad(false);
-        } else {
-          setData(true);
-        }
-      })
-      .catch(error => console.error(error));
-  };
+  // const livequiz = [
+  //   {
+  //     course_name:"gfg",
+  //     registor_time:"345567",
+  //     expire_time:"37274 47r37",
+  //     amount:"3464",
+  //     instructor_name:"kajal"
+  //   }
+  // ]
 
   return (
     <>
+      <View>
+        <Toast />
+      </View>
       <View
         style={{
           backgroundColor: 'white',
@@ -104,13 +118,19 @@ export default function CoursePlanHistory({navigation}) {
       </View>
       {load ? (
         <ActivityIndicator size={24} color={'#2188E7'} />
+      ) : livequiz.length === 0 ? (
+        <NoDataFound
+          message={'No Data Found '}
+          action={CoursePlanHistorys}
+          actionText={'Reload'}
+        />
       ) : (
-        <ScrollView 
+        <ScrollView
           refreshControl={
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
           }
           showsVerticalScrollIndicator={false}
-          style={{flex: 1,backgroundColor:"white"}}>
+          style={{flex: 1, backgroundColor: 'white'}}>
           {livequiz.map(res => {
             // const momentDate = moment(parseInt(res.payment_datetime));
             // const formattedDate = momentDate.format('DD-MM-YYYY HH:mm:ss');
@@ -125,7 +145,7 @@ export default function CoursePlanHistory({navigation}) {
                     borderRadius: 10,
                     elevation: 10,
                     padding: 5,
-                    backgroundColor:'white',
+                    backgroundColor: 'white',
                   }}>
                   <View
                     style={{alignItems: 'center', justifyContent: 'center'}}>

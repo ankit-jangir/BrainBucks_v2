@@ -155,7 +155,7 @@ export default function Wallet({ navigation }) {
             </View>
 
             <View style={styles.investedContainer}>
-              <Text style={styles.investedText + "invested"}>Invested</Text>
+              <Text style={styles.investedText}>Invested</Text>
               <Text key={walletData.value.investmoney} style={styles.investedAmount}>₹ {walletData.value.investmoney}</Text>
             </View>
           </View>
@@ -258,7 +258,7 @@ export default function Wallet({ navigation }) {
             <ActivityIndicator />
             :
             walletData.value.transactions.length === 0 ?
-              <NoDataFound scale={0.8} message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
+              <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
                 
@@ -280,7 +280,7 @@ export default function Wallet({ navigation }) {
                         />
                       </View>
                       <View>
-                        <Text style={styles.transactionAmount}> {res.amount}</Text>
+                        <Text style={styles.transactionAmount}>₹ {res.amount}</Text>
                         <Text style={styles.timestamp}>{res.order_datetime}</Text>
                       </View>
                       <View style={styles.statusContainer}>

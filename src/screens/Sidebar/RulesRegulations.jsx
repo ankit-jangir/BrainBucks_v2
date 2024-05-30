@@ -17,50 +17,13 @@ import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '../../utils/Translate';
 
 export default function RulesRegulations() {
-  const [isChecked, setChecked] = useState(true);
-  const [isLoad, setLoad] = useState(false);
-  const [Rules, setRules] = useState([]);
+ 
   const navigation = useNavigation();
-  const showToast = () => {
-    ToastAndroid.show(
-      'Please check the agreement to continue',
-      ToastAndroid.SHORT,
-    );
-  };
+ 
 
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    getUpdate();
-  }, [isFocused]);
+ 
 
-  const getUpdate = async () => {
-    setLoad(true);
-    const token = await AsyncStorage.getItem('token');
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    var raw = JSON.stringify({
-      token: token,
-    });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow',
-    };
-
-    fetch('https://brainbucks.co.in/api/user/get-roles-policy', requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result.status == '001') {
-          setRules(result.data[0].rules.split('#'));
-        }
-      })
-      .catch(error => console.log('error', error))
-      .finally(() => setLoad(false));
-  };
+  
   return (
     <>
       <SafeAreaView style={styles.safeArView}>
@@ -118,7 +81,7 @@ export default function RulesRegulations() {
                   <Text>{index+1}.</Text>
                 </View>*/}
               <View style={{flex: 1}}>
-                <Text>
+                <Text style={{color:"black",fontWeight:"600",fontSize:17}}>
                   Rules to know before participating in any quiz in Brain Bucks
                   App
                 </Text>
@@ -323,6 +286,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     paddingTop: 10,
+    color:"black"
   },
   checkV: {
     alignItems: 'center',
@@ -335,7 +299,7 @@ const styles = StyleSheet.create({
   textHer: {
     fontSize: 16,
     fontFamily: 'WorkSans-Medium',
-    color: 'Black',
+    color: 'black',
     textAlign: 'justify',
     paddingLeft: 15,
   },
