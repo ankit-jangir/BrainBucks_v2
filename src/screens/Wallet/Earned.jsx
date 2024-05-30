@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
@@ -6,6 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import WalletApiService from '../../services/api/WalletApiService';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import NoDataFound from '../../components/NoDataFound';
 
 const Earned = () => {
  
@@ -45,7 +47,12 @@ const Earned = () => {
       <Toast />
       <ScrollView>
         <View style={styles.wrapper}>
-          {
+          { 
+            loading ? 
+            <ActivityIndicator color={ColorsConstant.Theme} size={35} />:
+            Earned.length===0 ?
+            <NoDataFound message={"No data Found"} action={getEarnedData} actionText={"Reload"} />:
+            
             Earned.map((res) => {
               return (
                 <View style={styles.card}>

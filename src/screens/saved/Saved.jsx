@@ -68,7 +68,6 @@ export default function Saved({navigation}) {
       let res = await study.getOtherExams();
       if (res.status === 1) {
         setOtherExams(res.exams);
-        console.log(res,"<<<<<<")
       } else {
         Toast.show({
           type: 'error',
@@ -128,7 +127,7 @@ export default function Saved({navigation}) {
   return (
     <>
       <Toast />
-      <View style={{flex: 1}}>
+      <View style={{flex: 1,backgroundColor:"white"}}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -273,8 +272,15 @@ export default function Saved({navigation}) {
               </View>
             </View>
           </View>
-          <ScrollView>
-            {SavedExam.map(res => {
+          <ScrollView >
+          
+            {
+              loading ?
+            <ActivityIndicator color={ColorsConstant.Theme} size={35} />:
+            SavedExam.length===0?
+            <NoDataFound message={"No Data Found"} action={getSavedExams} actionText={"Reload"} />:
+              
+              SavedExam.map(res => {
               return (
                 <View key={res.exam_id} style={{flex: 1, alignItems: 'center'}}>
                   <View style={styles.liveVIew}>

@@ -5,6 +5,7 @@ import WalletApiService from '../../services/api/WalletApiService'
 import Toast from 'react-native-toast-message'
 import NoDataFound from '../../components/NoDataFound'
 import { Overlay } from '@rneui/themed'
+import { useIsFocused } from '@react-navigation/native'
 
 const AddBanks = ({ navigation }) => {
 
@@ -12,6 +13,7 @@ const AddBanks = ({ navigation }) => {
   const [banks, setBanks] = useState([])
   const [visible, setVisible] = useState(false)
   const [delId, setDelId] = useState('')
+  const isFocused = useIsFocused()
 
   const wallService = new WalletApiService()
 
@@ -40,7 +42,7 @@ const AddBanks = ({ navigation }) => {
 
   useEffect(() => {
     getBanks()
-  }, [])
+  }, [isFocused])
 
   async function getBanks() {
     try {

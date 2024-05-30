@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
-import StudyApiService from '../../services/api/StudyApiService';
 import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import { Modal } from 'react-native-paper';
+import { Button, Image } from 'react-native-elements';
 
 const PaidCourses = () => {
 
@@ -15,12 +15,43 @@ const PaidCourses = () => {
   const [videos, setVideos] = useState({})
   const [material, setMaterial] = useState({})
   const [loading2, setLoading2] = useState(false)
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [current,setCurrent]=useState();
+  const [buycourses,setbuyCourses]=useState([])
+  console.log(current,"kajaj")
   const serv = new CourseApiService()
 
   useEffect(() => {
     getPaidCourses()
   }, [])
+
+async function buyCourse(){
+  try {
+    setLoading2(true)
+    let res = await serv.buyCourse(current._id)
+    if (res.status === 1) {
+      setModalVisible(false)
+      Toast.show({
+        type: 'success',
+        text1:"course bought successfully"
+
+      })
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: res.Backend_Error
+      })
+    }
+  } catch (err) {
+    console.log("Error in fetching videos for paid courses: ", err.message);
+    Toast.show({
+      type: 'error',
+      text1: 'Something went wrong'
+    })
+  } finally {
+    setLoading2(false)
+  }
+}
 
   async function getPaidCourses() {
     try {
@@ -28,7 +59,7 @@ const PaidCourses = () => {
       setLoading2(true)
       let res = await serv.getPaidCourses()
       if (res.status === 1) {
-        // console.log(res);
+        console.log(res);
         setCourses(res.data)
       } else {
         Toast.show({
@@ -79,8 +110,9 @@ const PaidCourses = () => {
       setLoading2(true)
       let res = await serv.getStudyMaterial(course_id, video_id)
       if (res.status === 1) {
-        console.log(res);
-        // setCourses(res.data)
+        setMaterial(old => {
+          return { ...old, [video_id]: res.study_materials }
+        })
       } else {
         Toast.show({
           type: 'error',
@@ -133,7 +165,7 @@ const PaidCourses = () => {
                 buttonText={"Buy Now"}
                 itemText={item.cou_name}
                 icon={{ uri: BLOBURL + item.banner }}
-                onButtonPress={() => { console.log("Buy Course") }}
+                onButtonPress={() => {setCurrent(item), setModalVisible(true)} }
               >
                 {
                   (!videos[item._id])
@@ -142,20 +174,21 @@ const PaidCourses = () => {
                       loading2
                         ?
                         <ActivityIndicator size={40} />
-                        :<View style={{height:200}}>
-                        <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
-                      </View>
-                      )
+                        : <View style={{ height: 200 }}>
+                          <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
+                        </View>
+                    )
                     :
                     (
                       (videos[item._id].length === 0)
                         ?
-                        <View style={{height:200}}>
-                        <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
-                      </View>
-                      :
+                        <View style={{ height: 200 }}>
+                          <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
+                        </View>
+                        :
                         videos[item._id].map((video, index) =>
                           <Accordion
+                          key={video._id}
                             containerStyle={{
                               backgroundColor: '#fff',
                               flexDirection: 'row',
@@ -175,49 +208,189 @@ const PaidCourses = () => {
                             buttonText={"Play Now"}
                             itemText={video.title}
                             icon={require('../../assets/img/play-button.png')}
-                            onButtonPress={() => { console.log("Video Play"); }}
+                            onButtonPress={() => { Toast.show({
+                              type:'info',
+                              text1:"Buy the course to watch the video"
+                            }) }}
+                            onExpand={() => { getMaterialForParticularVideo(item._id, video._id) }}
                           >
-                            <FlatList
-                              data={material[video._id]}
-                              renderItem={({ item }) => {
-                                return (
-                                  <View style={{ backgroundColor: '#fff', elevation: 1, marginTop: 2, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginHorizontal: 7, padding: 10 }}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                      }}>
-                                      <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>
-                                        1.
-                                      </Text>
-                                      <Text style={{ color: '#000' }}>{item.title}</Text>
+                            {
+                              (!material[video._id])
+                                ?
+                                (
+                                  loading2
+                                    ?
+                                    <ActivityIndicator size={40} />
+                                    : <View style={{ height: 200 }}>
+                                      <NoDataFound scale={0.5} message={"No Study Material Found for this Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        <TouchableOpacity >
-                                          <Text
-                                            style={{
-                                              backgroundColor: 'rgba(112, 29, 219, 1)',
-                                              padding: 5,
-                                              borderRadius: 5,
-                                              color: '#fff',
-                                            }}>
-                                            View Pdf
-                                          </Text>
-                                        </TouchableOpacity>
-                                      </View>
-                                    </View>
-                                  </View>
                                 )
-                              }}>
-                            </FlatList>
+                                : (
+                                  material[video._id].length === 0
+                                    ?
+                                    <View style={{ height: 200 }}>
+                                      <NoDataFound scale={0.5} message={"No Study Material For This Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
+                                    </View>
+                                    :
+                                    <FlatList
+                                      data={material[video._id]}
+                                      renderItem={({ item, index }) => {
+                                        return (
+                                          <Pressable key={item._id}>
+                                            <View style={{
+                                              backgroundColor: '#fff',
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              paddingHorizontal: 10,
+                                              paddingVertical: 8,
+                                              marginHorizontal: 10,
+                                              marginBottom: 4,
+                                              elevation: 4,
+                                              borderRadius: 5,
+                                              marginTop: index === 0 ? 5 : 0,
+                                            }}>
+                                              <View
+                                                style={{
+                                                  flexDirection: 'row',
+                                                  flex: 1,
+                                                  alignItems: 'center'
+                                                }}>
+                                                <Text style={{ color: '#000', flex: 1 }}>{item.title}</Text>
+                                              </View>
+                                              <View style={{ flexDirection: 'row' }}>
+                                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                                  <TouchableOpacity onPress={()=>{
+                                                    Toast.show({
+                                                      type:'info',
+                                                      text1:"Buy the course to see the material"
+                                                    })
+                                                  }}>
+                                                    <Text
+                                                      style={{
+                                                        padding: 5,
+                                                        borderRadius: 5,
+                                                        backgroundColor: '#eee3fc',
+                                                        color: '#701DDB',
+                                                        fontSize: 12,
+                                                        fontWeight: 400
+                                                      }}>
+                                                      View Pdf
+                                                    </Text>
+                                                  </TouchableOpacity>
+                                                </View>
+                                              </View>
+                                            </View>
+                                          </Pressable>
+                                        )
+                                      }}>
+                                    </FlatList>
+                                )
+                            }
                           </Accordion>
                         )
                     )
                 }
               </Accordion>)
       }
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setModalVisible(!modalVisible);
+      }} >
+      {
+        loading2? 
+        <ActivityIndicator   size={35}/>:
+        <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+         <View style={{height:200,width:"100%"}}>
+         <Image source={{uri:BLOBURL + current?.banner}} style={{height:200,width:"100%"}} resizeMode='contain' />
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between",paddingVertical:5}}>
+         <Text> <Text style={styles.datatext}>Duration:</Text> {current?.Duration}</Text>
+         <Text><Text style={styles.datatext}>Amount:</Text> {current?.amount}</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+         <Text><Text style={styles.datatext}>Final Amount:</Text> {current?.final_amount}</Text>
+         <Text> <Text style={styles.datatext}>Discount:</Text> {current?.discount}%</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+         <Text><Text style={styles.datatext}>Videos Count:</Text> {current?.videos_count}</Text>
+
+         <Text><Text style={styles.datatext}>Attachment:</Text> {current?.attachment_count}</Text>
+
+         </View>
+         <View style={{flexDirection:"row",justifyContent:"space-evenly"}}>
+         <TouchableOpacity onPress={buyCourse}
+         style={[styles.button, styles.buttonClose]}
+         
+         >
+         <Text style={styles.textStyle}>Buy Course</Text>
+         </TouchableOpacity>
+         <Pressable
+         style={[styles.button, styles.buttonClose]}
+         onPress={() => setModalVisible(!modalVisible)}>
+         <Text style={styles.textStyle}>Cancel</Text>
+       </Pressable>
+         </View>
+         
+        </View>
+      </View>
+      }
+      
+    </Modal>
+     
     </>
   );
 };
 
 export default PaidCourses;
+const styles = StyleSheet.create({
+  centeredView:{
+    justifyContent: 'center',
+    alignItems: 'center',
+   
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height:400,
+    width:"100%",
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginTop:10,
+    paddingHorizontal:20
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+ datatext:{fontSize:17,fontWeight:"500",fontFamily:"Work Sans",color:"black"}
+})

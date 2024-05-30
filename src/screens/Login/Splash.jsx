@@ -9,6 +9,7 @@ import styles from '../../styles/Login.style';
 import { getSavedLanguage, setSavedLanguage } from '../../utils/Translate';
 import basic from '../../services/BasicServices';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import Toast from 'react-native-toast-message';
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
@@ -33,6 +34,10 @@ export default function Splash({ navigation }) {
           } catch (err) {
             console.log("ERROR IN GETTING PROFILE", err.message)
             setCheckLang(null)
+            Toast.show({
+              type:'error',
+              text1:"Check your network or login again"
+            })
           }
           if (res && res.status === 1) {
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
@@ -46,7 +51,10 @@ export default function Splash({ navigation }) {
     }
     try {
       getLang()
-    } catch (er) { console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) }
+    } catch (er) {
+      console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) 
+
+    }
   }, [])
 
   const GetReferCode = async () => {
@@ -89,6 +97,9 @@ export default function Splash({ navigation }) {
 
   return (
     <>
+    <View style={{zIndex:100}}>
+      <Toast/>
+    </View>
       <StatusBar barStyle='white-content' translucent={false} backgroundColor={ColorsConstant.Theme} />
       <SafeAreaView style={styles.safe}>
         <Animated.View style={styles.aniView}>

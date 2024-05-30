@@ -70,22 +70,28 @@ export default function SignUpExam({ navigation, route }) {
 
   async function reloadExams() {
     setRefresh(true)
-    auth.getExams(search).then((res) => {
-      console.log(res);
-      if (res.status === 1) {
+    setDisabled(true)
+    try{
+      let res = await auth.getExams(search)
+      if(res.status===1){
         setExams(res.categories)
-      } else {
+      }else{
         Toast.show({
           type: "error",
           text1: res.Backend_Error
         })
       }
-    }).catch(err => {
+    }catch(err){
+      console.log("Error in getting categories in signup: ",err.message);
       Toast.show({
         type: "error",
         text1: "Something Went Wrong"
       })
-    }).finally(() => { setRefresh(false) })
+    }
+    finally{ 
+      setRefresh(false),
+      setDisabled(false)
+     }
   }
 
   useEffect(() => { reloadExams() }, [search])
