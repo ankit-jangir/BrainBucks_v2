@@ -182,7 +182,7 @@ const Privacy = () => {
           </Text>
 
           <Text
-            style={styles.text1}>
+            style={{fontSize: 15, textAlign: 'justify', paddingVertical: 5,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited operates the portal in
             India, which offers live competitive exam preparation and fantasy
             quiz through the portal Brainbucks.in and mobile application(s)
@@ -192,14 +192,14 @@ const Privacy = () => {
           </Text>
 
           <Text
-            style={styles.text1}>
+            style={{fontSize: 15, textAlign: 'justify', paddingVertical: 5,color:"black"}}>
             Any person utilizing the Portal ("User" or "you" or "your") or any
             of its features including participation in the various contests,
             Quiz shall be bound by this Privacy Policy.
           </Text>
 
           <Text
-            style={styles.text1}>
+            style={{fontSize: 15, textAlign: 'justify', paddingVertical: 5,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited respects the privacy of
             its Users and is committed to protect it in all respects. With a
             view to offer an enriching and holistic internet experience to its
@@ -216,7 +216,7 @@ const Privacy = () => {
           </Text>
 
           <Text
-            style={styles.text1}>
+            style={{fontSize: 15, textAlign: 'justify', paddingVertical: 5,color:"black"}}>
             Before you submit any information to the Portal, please read this
             Privacy Policy for an explanation of how we will treat your personal
             information. By using any part of the Portal, you consent to the
@@ -244,34 +244,34 @@ const Privacy = () => {
         </View>
 
         <View style={{paddingVertical: 10}}>
-          <Text style={{fontSize: 25, fontWeight: 'bold', marginTop: 20,color:'#000'}}>
+          <Text style={{fontSize: 25, fontWeight: 'bold', marginTop: 20,color:"black"}}>
             Purpose and Usage:
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 10,color:'#000'}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 10,color:"black"}}>
             To avail certain Services on the Portal, Users would be required to
             provide certain information for the registration process namely:
           </Text>
 
           <View style={{paddingHorizontal: 15}}>
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               1. Username
             </Text>
 
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               2. Password
             </Text>
 
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               3. Email address
             </Text>
 
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               4. Date of birth
             </Text>
           </View>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             In the course of providing you with access to the Services, and in
             order to provide you access to the features offered through the
             Portal and to verify your identity, secure your account details, you
@@ -291,7 +291,7 @@ const Privacy = () => {
             expeditiously.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Except for any financial information that you choose to provide
             while making payment for any Services on the Portal, Tech Brain
             Bucks Infosoft Private Limited does not collect any other SPI in the
@@ -305,7 +305,7 @@ const Privacy = () => {
             on the Portal.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             In the course of providing the Services, Users may invite other
             existing Users or other users ("Invited Users") to participate in
             any of the Services by providing the email address or Facebook
@@ -322,7 +322,7 @@ const Privacy = () => {
             Infosoft Private Limited.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             All required information is specific and based on the kind of Quiz /
             Services the User wishes to participate in or access, and will be
             utilized for the purpose of providing services, including but not
@@ -331,7 +331,7 @@ const Privacy = () => {
             you the most user-friendly game experience.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop:15 ,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited may also share such
             information with affiliates and third parties in limited
             circumstances, including for the purpose of providing services
@@ -355,12 +355,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Disclosure/Sharing:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited may also share information
             as provided by you and data concerning usage of the Services and
             participation in the Games with third party service providers
@@ -370,7 +370,7 @@ const Privacy = () => {
             Infosoft Private Limited serve you better.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Where we propose to use your personal information (that is,
             information that that may be used to identify the User and that is
             not otherwise publicly available) for any other uses we will ensure
@@ -379,7 +379,7 @@ const Privacy = () => {
             above.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             By using the Portal, you hereby expressly agree and grant consent to
             the collection, use and storage of this information by Tech Brain
             Bucks Infosoft Private Limited. Tech Brain Bucks Infosoft Private
@@ -416,12 +416,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Use of Cookies:
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 25,color:'#000'}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 25,color:"black"}}>
             To improve the effectiveness and usability of the Portal for our
             Users, we use "cookies", or such similar electronic tools to collect
             information to assign each visitor a unique random number as a User
@@ -434,7 +434,7 @@ const Privacy = () => {
             the User. A cookie cannot read data off the User's hard drive.
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 25,color:'#000'}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 25,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited's web servers
             automatically collect limited information about User's computer's
             connection to the Internet, including User's IP address, when the
@@ -463,12 +463,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Links:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited does not includes links to
             other websites.
           </Text>
@@ -488,12 +488,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Security Procedures:
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:'#000',fontFamily: 'WorkSans-Medium',}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:"black"}}>
             All information gathered on Tech Brain Bucks Infosoft Private
             Limited is securely stored within Tech Brain Bucks Infosoft Private
             Limited- controlled database. The database is stored on servers
@@ -510,7 +510,7 @@ const Privacy = () => {
             India.
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:'#000',fontFamily: 'WorkSans-Medium',}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:"black"}}>
             Tech Brain Bucks Infosoft Private Limited also believes that the
             internet is an ever-evolving medium. We may periodically review from
             time to time and change our privacy policy to incorporate such
@@ -527,6 +527,7 @@ const Privacy = () => {
               borderBottomWidth: 1,
               borderColor: 'lightgrey',
               paddingVertical: 10,
+              color:"black"
             }}></View>
         </View>
 
@@ -537,19 +538,19 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Payment:
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:'#000',fontFamily: 'WorkSans-Medium',}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:"black"}}>
             We use Razorpay for processing payments. We/Razorpay do not store
             your card data on their servers. The data is encrypted through the
             Payment Card Industry Data Security Standard (PCI-DSS) when
             processing payment.
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:'#000',fontFamily: 'WorkSans-Medium',}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 20,color:"black"}}>
             Your purchase transaction data is only used as long as is necessary
             to complete your purchase transaction. After that is complete, your
             purchase transaction information is not saved. Our payment gateway
@@ -576,15 +577,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000',
-              fontFamily: 'WorkSans-Medium',
+              color:"black"
             }}>
             Advertising:
           </Text>
 
-          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,
-      fontFamily: 'WorkSans-Medium',
-          color:'#000',}}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             When Tech Brain Bucks Infosoft Private Limited presents information
             to it's online advertisers -- to help them understand our audience
             and confirm the value of advertising on the Portal -- it is usually
@@ -594,7 +592,7 @@ const Privacy = () => {
             your content to provide features which we believe may benefit you.
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Several deceptive emails, websites, blogs etc. claiming to be from
             or associated with Tech Brain Bucks Infosoft Private Limited may or
             are circulating on the Internet. These emails, websites, blogs etc.
@@ -629,12 +627,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Conditions of Use:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             TECH BRAIN BUCKS INFOSOFT PRIVATE LIMITED DOES NOT WARRANT THAT THIS
             PORTAL, IT’S SERVERS, OR EMAIL SENT BY US OR ON OUR BEHALF ARE VIRUS
             FREE. TECH BRAIN BUCKS INFOSOFT PRIVATE LIMITED WILL NOT BE LIABLE
@@ -661,12 +659,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Retention of Data:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Your personal information may be retained and may continue to be
             used until: (i) the relevant purposes for the use of your
             information described in this Privacy Policy are no longer
@@ -691,53 +689,53 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             User Account and Data Deletion:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Users are entitled to request Tech Brain Bucks Infosoft Private
             Limited to delete their User accounts and their personal information
             by sending an email with their written request to help@brainbucks.in
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             We will do our best to respond promptly and in any event within one
             month of the{' '}
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             following:
           </Text>
 
           <View style={{paddingHorizontal: 15}}>
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               • Our receipt of your written request; or
             </Text>
 
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               • Our receipt of any further information we may ask you to provide
               to enable us to comply with your request, whichever is later.
             </Text>
           </View>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             As an alternative to account deletion, by writing to
             help@brainbucks.in, you also have the option to request either:
           </Text>
 
           <View style={{paddingHorizontal: 15}}>
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               • (i) the suspension of your account, after which you will not be
               able to play paid contests on your User account but will continue
               to have access to other parts of the Portal; or
             </Text>
 
-            <Text style={styles.text2}>
+            <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
               • (ii) temporary deactivation of your account, where you will no
               longer be able to log into the Portal but which allows you to
               request reactivation of your account with all your account data.
             </Text>
           </View>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             If you proceed with permanent deactivation of your account, you will
             lose access to the Portal and the Services, including any User data
             and personal information associated with your account. Users may
@@ -767,12 +765,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Applicable Law and Jurisdiction:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             By visiting this Portal, you agree that the laws of the Republic of
             India without regard to its conflict of laws principles, govern this
             Privacy Policy and any dispute arising in respect hereof shall be
@@ -795,12 +793,12 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Updating Information:
           </Text>
 
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             You will promptly notify Brain Bucks if there are any changes,
             updates or modifications to your information. Further, you may also
             review, update or modify your information and user preferences by
@@ -815,26 +813,26 @@ const Privacy = () => {
               fontWeight: 'bold',
               marginTop: 20,
               paddingVertical: 5,
-              color:'#000'
+              color:"black"
             }}>
             Contact Us:
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Any questions or clarifications with respect to this Policy or any
             complaints, comments, concerns or feedback can be sent to Tech Brain
             Bucks Infosoft Private Limited at: help@brainbucks.in or by
             normal/physical mail addressed to:
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Attn: Brainbucks Team{' '}
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Techno Brain Bucks infosoft Private Limited
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             101-103, Chanda Tower, opp. Grand Utsav Marriage Garden,
           </Text>
-          <Text style={styles.text2}>
+          <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 15,color:"black"}}>
             Vaishali nagar,
           </Text>
           <Text style={{fontSize: 15, textAlign: 'justify', marginTop: 2,color:"#000"}}>

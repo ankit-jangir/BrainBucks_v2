@@ -242,30 +242,25 @@ export default function Study({ navigation }) {
         <View style={styles.stdView}>
           <View style={styles.stdView1}>
             <View style={styles.stdView2}>
-              <TouchableOpacity
-                onPress={() => navigation.openDrawer()}
-                style={{
-                  flex: 0.15,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 4,
-                  borderWidth: 1,
-                  borderRadius: 100,
-                  width: 50,
-                  height: 50,
-                  borderColor: '#F5F5F5',
-                }}>
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
-                  <Image
-                    source={require('../../assets/img/drawerr.png')}
-                    style={{ height: 25, width: 25 }}></Image>
-                </View>
-              </TouchableOpacity>
-
-              <View style={styles.stdView3}>
-                <Text style={styles.textStudy}>Study Materials</Text>
-              </View>
+            <TouchableOpacity
+            onPress={() => navigation.openDrawer()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginHorizontal: 4,
+              borderWidth: 1,
+              borderRadius: 100,
+              width: 50,
+              height: 50,
+              borderColor: '#F5F5F5',
+            }}>
+            <Image
+              source={require('../../assets/img/drawerr.png')}
+              style={{height: 25, width: 25}}></Image>
+          </TouchableOpacity>
+          <View style={styles.examView}>
+            <Text style={styles.textMy}>Study Materials</Text>
+          </View>
             </View>
           </View>
 

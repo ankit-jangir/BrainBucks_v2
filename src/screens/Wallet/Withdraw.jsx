@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
     padding: 5,
     marginTop: 5,
     fontSize: 17,
-    fontFamily:"Work Sans"
-
+    fontFamily:"Work Sans",
+color:"black"
   },
   bankDetailsContainer: {
     marginTop: 5,

@@ -21,6 +21,7 @@ import NoDataFound from '../../components/NoDataFound';
 import { useSignal } from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
 import { useWithdraw } from '../../context/WithdrawReducer';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 
 export default function Wallet({ navigation }) {
@@ -93,33 +94,29 @@ export default function Wallet({ navigation }) {
       <View style={{zIndex:100}}>
       <Toast />
       </View>
-      <View
+      <View style={styles.stdView1}>
+      <View style={styles. stdView2}
+        >
+        <TouchableOpacity
+        onPress={() => navigation.openDrawer()}
         style={{
-          backgroundColor: 'white',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 15,
-          marginBottom: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: 4,
+          borderWidth: 1,
+          borderRadius: 100,
+          width: 50,
+          height: 50,
+          borderColor: '#F5F5F5',
         }}>
-        <View>
-          <Image
-            source={require('../../assets/img/menu.png')}
-            tintColor={'black'}
-            style={{height: 25, width: 25}}
-            onPress={() => navigation.openDrawer()}
-          />
-        </View>
-        <View>
-          <Text style={styles.heading}>My Wallet</Text>
-        </View>
-        <View>
-          <Image
-            source={require('../../assets/img/homedark.png')}
-            tintColor={'balck'}
-            style={{height: 25, width: 25}}
-            onPress={() => navigation.navigate('Home')}
-          />
-        </View>
+        <Image
+          source={require('../../assets/img/drawerr.png')}
+          style={{height: 25, width: 25}}></Image>
+      </TouchableOpacity>
+        <View style={styles.examView}>
+            <Text style={styles.textMy}>My Wallet</Text>
+          </View>
+      </View>
       </View>
       <View style={styles.container1}>
         <LinearGradient
@@ -158,7 +155,7 @@ export default function Wallet({ navigation }) {
             </View>
 
             <View style={styles.investedContainer}>
-              <Text style={styles.investedText + "invested"}>Invested</Text>
+              <Text style={styles.investedText}>Invested</Text>
               <Text key={walletData.value.investmoney} style={styles.investedAmount}>₹ {walletData.value.investmoney}</Text>
             </View>
           </View>
@@ -261,7 +258,7 @@ export default function Wallet({ navigation }) {
             <ActivityIndicator />
             :
             walletData.value.transactions.length === 0 ?
-              <NoDataFound scale={0.8} message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
+              <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
                 
@@ -524,6 +521,32 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     alignSelf: 'center',
+  },
+  examView: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textMy: {
+    fontSize: 18,
+    fontFamily: 'WorkSans-SemiBold',
+    color:"#000",
+    textAlign:'center'
+  },
+  stdView1: {
+    width: '100%',
+    height: 70,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+    marginBottom:5
+  },
+  stdView2: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   transactionAmount: {
     color: 'black',

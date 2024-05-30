@@ -109,6 +109,7 @@ export default function Saved({navigation}) {
         let nextOtherArr = otherExams.filter(item=>!selectedExams.has(item._id))
         setOtherExams(nextOtherArr)
         setSelectedExams(new Set([]))
+        getSavedExams()
       }else{
         Toast.show({
           type: "info",
@@ -126,7 +127,7 @@ export default function Saved({navigation}) {
   }
   return (
     <>
-      <Toast />
+      <Toast/>
       <View style={{flex: 1,backgroundColor:"white"}}>
         <Modal
           animationType="slide"
@@ -282,7 +283,7 @@ export default function Saved({navigation}) {
               
               SavedExam.map(res => {
               return (
-                <View key={res.exam_id} style={{flex: 1, alignItems: 'center'}}>
+                <View key={res.exam_id} style={{flex: 1,padding:15}}>
                   <View style={styles.liveVIew}>
                     <View style={styles.liveVIew1}>
                       <View style={styles.liveVIew2}>

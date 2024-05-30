@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import Toast from 'react-native-toast-message';
 const FreePdf = () => {
   const navigation = useNavigation()
   const saved = new StudyApiService();
@@ -43,7 +44,9 @@ const FreePdf = () => {
     }
   }
   return (
+
     <View style={styles.container}>
+    <Toast/>
     <ScrollView>
     { 
       loading
