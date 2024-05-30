@@ -105,7 +105,7 @@ export default function Otp({ navigation, route }) {
                                 </View>
                                 <View style={{ flex: 0.1 }}>
                                     <Image
-                                        source={require('../../assets/img/rightarrow.png')}
+                                        source={require('../../assets/img/arrowtoright.png')}
                                         resizeMode="contain"
                                         style={styles.RightArrow}
                                     />

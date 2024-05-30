@@ -27,7 +27,7 @@ export default function Wallet({ navigation }) {
 
   const getArrowImage = (type) => {
     return type === 'debit'
-      ? require('../../assets/img/downarrow.png')
+      ? require('../../assets/img/arrowdown.png')
       : require('../../assets/img/uparrowss.png');
   };
 
@@ -193,7 +193,7 @@ export default function Wallet({ navigation }) {
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
-                source={require('../../assets/img/downarrow.png')}
+                source={require('../../assets/img/arrowdown.png')}
                 style={styles.actionIcon}
                 resizeMode="contain"
               />

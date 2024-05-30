@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
 
-const MyCourses = () => {
+const MyCourses = ({navigation}) => {
   const [loading, setLoading] = useState(false)
   const [courses, setCourses] = useState([])
   const [videos, setVideos] = useState({})
@@ -102,6 +102,10 @@ const MyCourses = () => {
     }
   }
 
+  async function playVideo(course_id, video_id){
+    navigation.navigate('videoplayer',{course_id:course_id, video_id:video_id})
+  }
+
   return (
     <>
       <View style={{ zIndex: 100 }}>
@@ -175,7 +179,7 @@ const MyCourses = () => {
                             buttonText={"Play Now"}
                             itemText={video.title}
                             icon={require('../../assets/img/play-button.png')}
-                            onButtonPress={() => { console.log("Video Play"); }}
+                            onButtonPress={() => { playVideo(item._id, video._id) }}
                             onExpand={()=>{getMaterialForParticularVideo(item._id, video._id)}}
                           >
                             {

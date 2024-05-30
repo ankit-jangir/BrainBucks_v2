@@ -76,6 +76,7 @@ import Share from './src/screens/Wallet/Share';
 import QuizCard from './src/components/QuizCard';
 import IdReducer from './src/context/IdReducer';
 import ViewPdf from './src/screens/Courses/ViewPdf';
+import QuizPlayReducer from './src/context/QuizPlayReducer';
 
 
 
@@ -394,7 +395,9 @@ export default function App() {
       <AddBankReducer>
         <WithdrawReducer>
           <IdReducer>
-            <MyStack />
+            <QuizPlayReducer>
+              <MyStack />
+            </QuizPlayReducer>
           </IdReducer>
         </WithdrawReducer>
       </AddBankReducer>

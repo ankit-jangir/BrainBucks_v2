@@ -17,7 +17,6 @@ const PaidCourses = () => {
   const [loading2, setLoading2] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [current,setCurrent]=useState();
-  const [buycourses,setbuyCourses]=useState([])
   console.log(current,"kajaj")
   const serv = new CourseApiService()
 
@@ -34,8 +33,8 @@ async function buyCourse(){
       Toast.show({
         type: 'success',
         text1:"course bought successfully"
-
       })
+      getPaidCourses()
     } else {
       Toast.show({
         type: 'error',
@@ -59,7 +58,6 @@ async function buyCourse(){
       setLoading2(true)
       let res = await serv.getPaidCourses()
       if (res.status === 1) {
-        console.log(res);
         setCourses(res.data)
       } else {
         Toast.show({
@@ -297,7 +295,6 @@ async function buyCourse(){
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
         setModalVisible(!modalVisible);
       }} >
       {
@@ -314,7 +311,7 @@ async function buyCourse(){
 
          </View>
          <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-         <Text><Text style={styles.datatext}>Final Amount:</Text> {current?.final_amount}</Text>
+         <Text style={styles.datatext}>Final Amount: {current?.final_amount}</Text>
          <Text> <Text style={styles.datatext}>Discount:</Text> {current?.discount}%</Text>
 
          </View>

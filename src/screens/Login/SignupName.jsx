@@ -33,7 +33,7 @@ export default function SignupName({ navigation, route}) {
           <View style={styles.mainView2}>
             <View style={styles.mainView3}>
               <Text style={styles.WelcomeText}>Welcome</Text>
-              <Image source={require('../../assets/img/rightarrow.png')} resizeMode='contain' style={styles.ArrowPic} />
+              <Image source={require('../../assets/img/arrowtoright.png')} resizeMode='contain' style={styles.ArrowPic} />
             </View>
             <View style={styles.mainView22}>
               <Text style={styles.WelcomeText}>Buddy</Text>

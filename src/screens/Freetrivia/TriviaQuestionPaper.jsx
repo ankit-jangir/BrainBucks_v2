@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal,StatusBar} from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
+import { useCurrentId } from '../../context/IdReducer';
+import { getQuestion, getTriviaQuestion } from '../../controllers/FreeTriviaController';
+import Toast from 'react-native-toast-message';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 const ColorsConstant = {
   White: '#FFFFFF',
@@ -11,28 +15,26 @@ const ColorsConstant = {
 export default function TriviaQuestionPaper ({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
-  
     const [timerCount, setTimerCount] = useState(30);
     const [minute, setMinute] = useState(6);
-    const [lan, setLan] = useState(false);
-    const [lanLoad, setLanLoad] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // State for the current question index
-      const [qState, setQState] = useState(0);
-    const data = [
-      {
-        question: "Which of the following football players went crying out of the field in FIFA 2022 Quarter Finals?",
-        options: [
-          "Christiano Ronaldo",
-          "M Bappe",
-          "Lionell Andress Messi",
-          "Neymar Junior"
-        ],
-        is_translate: 1,
-        lan: "en",
-        ans: -1
-      }
-    ];
-  
+    const [question, setQuestion] = useState({})
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
+    const [selectedOption, setSelectedOption] = useState(0)
+    const {quizState, dispatch} = useQuiz()
+
+
+    //todo: do something here
+    useEffect(()=>{
+      getCurrentQuestion(currentQuestionIndex).then(()=>{
+        setCurrentQuestionIndex(quizState?.question)
+        setSelectedOption(quizState?.ans)
+      })
+    },[currentQuestionIndex])
+
+    async function getCurrentQuestion(page){
+      await getTriviaQuestion(quizState.id, page, Toast, dispatch)
+    }
+
     useEffect(() => {
       const interval = setInterval(() => {
         if (timerCount > 0) {
@@ -57,6 +59,9 @@ export default function TriviaQuestionPaper ({ navigation }) {
 
   return (
     <>
+    <View style={{zIndex:200}}>
+      <Toast/>
+    </View>
     <View style={styles.container}>
       <StatusBar
         barStyle={"white-content"}
@@ -76,7 +81,7 @@ export default function TriviaQuestionPaper ({ navigation }) {
           backgroundColor:"#2E2E2E" ,
         }}>
           {/* Placeholder for score */}
-          <Text style={{color:"#fff",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>Score 00</Text>
+          <Text style={{color:"#fff",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>Question {currentQuestionIndex}</Text>
         </View>
 
         <View style={styles.Daview}>
@@ -93,7 +98,7 @@ export default function TriviaQuestionPaper ({ navigation }) {
         </View>
         <View style={{ }}>
           {/* Placeholder for score */}
-          <Text style={{color:"#000",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>10/19</Text>
+          <Text style={{color:"#000",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>{currentQuestionIndex}/{quizState.total}</Text>
         </View>
 
         <View style={styles.Daview}>
@@ -104,16 +109,16 @@ export default function TriviaQuestionPaper ({ navigation }) {
 
       
       <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>
-          {data[qState].question}
+        <Text key={question.question} style={styles.questionText}>
+          {question?.question}
         </Text>
-        {data[qState].options.map((option, index) => (
+        {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
           <TouchableOpacity
-            key={index}
-            style={[styles.optionButton, qState === index && styles.selectedOption]}
+            key={option}
+            style={[styles.optionButton, selectedOption === index+1 && styles.selectedOption]}
             onPress={() => handleOptionPress(index)}
           >
-            <Text style={styles.optionText}>{String.fromCharCode(97 + index)}) {option}</Text>
+            <Text style={styles.optionText}>{String.fromCharCode(97 + index)} {option}</Text>
           </TouchableOpacity>
         ))}
       </View>

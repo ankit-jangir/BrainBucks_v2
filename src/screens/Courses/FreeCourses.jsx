@@ -104,7 +104,6 @@ const FreeCourses = ({ navigation, data }) => {
 
   async function playVideo(course_id, video_id){
     navigation.navigate('videoplayer',{course_id:course_id, video_id:video_id})
-
   }
 
 

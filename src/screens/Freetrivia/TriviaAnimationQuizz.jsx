@@ -3,6 +3,7 @@ import { View, Text, SafeAreaView, Animated, Easing, Image, ImageBackground,Styl
 import LinearGradient from 'react-native-linear-gradient';
 import { ColorsConstant } from "../../constants/Colors.constant";
 import { StyleConstants } from "../../constants/Style.constant";
+import { StackActions } from '@react-navigation/native';
 
 export default function TriviaAnimationQuizz({navigation,}) {
     const [state, setState] = useState(0);
@@ -14,8 +15,8 @@ export default function TriviaAnimationQuizz({navigation,}) {
             }, 1500);
         }
 
-        if(state == 2){
-            navigation.navigate('TriviaQuestionPaper',)
+        if(state == 3){
+            navigation.dispatch(StackActions.replace('TriviaQuestionPaper'))
         }
 
     useEffect(() =>{

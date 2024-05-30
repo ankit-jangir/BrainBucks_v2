@@ -87,7 +87,7 @@ export default function Signup({ navigation, route }) {
             </View>
             <View style={{ flex: 0.3 }}>
               <Image
-                source={require('../../assets/img/rightarrow.png')}
+                source={require('../../assets/img/arrowtoright.png')}
                 resizeMode="contain"
                 style={styles.rightarraow}
               />

@@ -9,8 +9,8 @@ const History = ({navigation,route}) => {
   const datahistory = route.params.data
 
   const getArrowImage = type => {
-    return type === 'credit'
-      ? require('../../assets/img/downarrow.png')
+    return type === 'debit'
+      ? require('../../assets/img/arrowdown.png')
       : require('../../assets/img/uparrowss.png');
   };
 

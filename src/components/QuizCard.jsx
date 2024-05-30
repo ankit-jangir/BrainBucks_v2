@@ -12,10 +12,10 @@ const QuizCard = ({
   fees,
   prize,
   date,
-  time,
   totalslots,
   alotedslots,
   type,
+  minper
 }) => {
   // type - enum{'trivia','active','enrolled'}
   return (
@@ -107,7 +107,7 @@ const QuizCard = ({
                       fontWeight: '600',
                       paddingLeft: 5,
                     }}>
-                    {date}
+                    {date?.substr(0,10)}
                   </Text>
                 </View>
               </View>
@@ -170,13 +170,12 @@ const QuizCard = ({
                       fontWeight: '600',
                       paddingLeft: 5,
                     }}>
-                    {date}
+                    {date?.substr(11,8)}
                   </Text>
                 </View>
               </View>
             </View>
           </>
-        {type !== 'trivia' && (
           <>
             <View
               style={{
@@ -186,7 +185,7 @@ const QuizCard = ({
                 marginTop: 10,
               }}>
               <Image
-                source={require('../assets/img/dollar.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
+                source={type!=='trivia'?require('../assets/img/dollar.png'):require('../assets/img/cup.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
                 resizeMode="contain"
                 tintColor={type === 'trivia' ? '#C922E4' : '#333333'}
                 style={{width: 25, height: 25}}
@@ -198,13 +197,23 @@ const QuizCard = ({
                   justifyContent: 'center',
                   paddingLeft: 10,
                 }}>
-                <Text
+                {
+                  type==='trivia'?
+                  <Text
+                  style={{
+                    color: type === 'trivia' ? '#C922E4' : '#2188E7',
+                    fontFamily: 'WorkSans-SemiBold',
+                    fontSize: 18,
+                  }}>{minper}%</Text>
+                  :
+                  <>
+                  <Text
                   style={{
                     color: type === 'trivia' ? '#C922E4' : '#2188E7',
                     fontFamily: 'WorkSans-SemiBold',
                     fontSize: 18,
                   }}>
-                  {totalslots}/
+                  {alotedslots}/
                 </Text>
                 <Text
                   style={{
@@ -213,8 +222,10 @@ const QuizCard = ({
                     fontFamily: 'WorkSans-SemiBold',
                     fontSize: 18,
                   }}>
-                  {alotedslots}
+                  {totalslots}
                 </Text>
+                </>
+                }
               </View>
             </View>
 
@@ -222,14 +233,13 @@ const QuizCard = ({
               <View style={styles.LiniView1}>
                 <LinearProgress
                   style={{marginVertical: 10, height: 8, borderRadius: 10}}
-                  value={0.4}
+                  value={minper?minper/100:alotedslots/totalslots}
                   variant="determinate"
                   color={type === 'trivia' ? '#C922E4' : '#54ACFD'}
                 />
               </View>
             </View>
           </>
-        )}
 
         {type === 'active' ? (
           <TouchableOpacity

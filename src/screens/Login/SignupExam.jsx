@@ -111,7 +111,7 @@ export default function SignUpExam({ navigation, route }) {
           <View style={styles.FinalView1}>
             <View style={styles.StepView}>
               <Text style={styles.TextFinal}>Final Step</Text>
-              <Image source={require('../../assets/img/rightarrow.png')} resizeMode='contain' style={styles.ArrowPic} />
+              <Image source={require('../../assets/img/arrowtoright.png')} resizeMode='contain' style={styles.ArrowPic} />
             </View>
           </View>
           <View style={styles.flowerView}>

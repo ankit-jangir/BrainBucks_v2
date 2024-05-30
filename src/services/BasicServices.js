@@ -17,6 +17,34 @@ async function getLocalObject() {
     }
 }
 
+async function apiTryCatch(func, toast, beforeAll, afterAll){
+    try{
+        if(beforeAll)
+        beforeAll()
+        let res = await func()
+        if(res.status===1){
+            return res;
+        }
+        else{
+            toast.show({
+                type:'error',
+                text1:res.Backend_Error
+            })
+            return false;
+        }
+    }catch(err){
+        console.log("Error in try catch: ", err);
+        toast.show({
+            type:'error',
+            text1:"Something went wrong"
+        })
+        return false;
+    }finally{
+        if(afterAll)
+        afterAll()
+    }
+}
+
 async function getBearerToken() {
     try {
         let obj = await getLocalObject();
@@ -191,5 +219,5 @@ class BrainBucksObject {
 }
 
 export default{
-    BrainBucksObject, setNumber, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject
+    BrainBucksObject, setNumber, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
 }

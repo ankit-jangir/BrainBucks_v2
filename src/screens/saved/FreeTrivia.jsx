@@ -1,18 +1,11 @@
 import {
-  StyleSheet,
   View,
-  Image,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Text} from '../../utils/Translate';
-import LinearGradient from 'react-native-linear-gradient';
-import styles from '../../styles/Saved.styles';
 import SavedApiService from '../../services/api/SavedApiService';
 import {useCurrentId} from '../../context/IdReducer';
 import Toast from 'react-native-toast-message';
-import Saved from './Saved';
 import {ScrollView} from 'react-native-gesture-handler';
 import {BLOBURL} from '../../config/urls';
 import {ColorsConstant} from '../../constants/Colors.constant';
@@ -22,7 +15,7 @@ import QuizCard from '../../components/QuizCard';
 const FreeTrivia = () => {
   const saved = new SavedApiService();
 
-  const {idState, context} = useCurrentId();
+  const {idState, dispatch} = useCurrentId();
   const [loading, setloading] = useState();
   const [trivia, setTrivia] = useState([]);
 
