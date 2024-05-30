@@ -74,6 +74,10 @@ import RulesRegulations from './src/screens/Sidebar/RulesRegulations';
 import CoursePlanHistory from './src/screens/Sidebar/CoursePlanHistory';
 import Share from './src/screens/Wallet/Share';
 import QuizCard from './src/components/QuizCard';
+import MyExams from './src/screens/Exams/MyExams';
+import MyExamQuizzes from './src/screens/Exams/MyExamQuizzes';
+import FreeSeeAll from './src/screens/Freetrivia/FreeSeeAll';
+import EnrolledQuizesSeelAll from './src/screens/Quizzes/EnrolledQuizesSeeAll';
 
 
 
@@ -153,6 +157,14 @@ function MyStack() {
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
+      <Stack.Screen name="MyExams" component={MyExams} />
+      <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
+      <Stack.Screen name="FreeSeeAll" component={FreeSeeAll} />
+      <Stack.Screen name="EnrolledQuizesSeelAll" component={EnrolledQuizesSeelAll} />
+
+
+
+
 
 
 
@@ -166,7 +178,7 @@ function MyStack() {
 
       
       
-      <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
 

@@ -87,7 +87,8 @@ export default function Home({navigation}) {
         <View>
           <SearchBar />
         </View>
-        <ScrollView>
+<View style={{margin:10}}>
+<ScrollView>
           <View style={{marginBottom: 240}}>
             <View style={styles.carouselContainer}>
               <Carousel
@@ -182,13 +183,13 @@ export default function Home({navigation}) {
                 <View style={styles.LiveView2}>
                   <Text style={styles.LiveText}>Free Trivia</Text>
                   <View style={styles.lotiView}>
-                    <Text>yh</Text>
+                    <Text>{""}</Text>
                   </View>
                 </View>
               </View>
               <View style={styles.SeeView}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  onPress={() => navigation.navigate('FreeSeeAll')}
                   style={styles.TouchAll}>
                   <Text style={styles.SeeAll}>See All</Text>
                 </TouchableOpacity>
@@ -235,13 +236,13 @@ export default function Home({navigation}) {
                 <View style={styles.LiveView2}>
                   <Text style={styles.LiveText}>Exams</Text>
                   <View style={styles.lotiView}>
-                    <Text>yh</Text>
+                    <Text>{""}</Text>
                   </View>
                 </View>
               </View>
               <View style={styles.SeeView}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  onPress={() => navigation.navigate('MyExams')}
                   style={styles.TouchAll}>
                   <Text style={styles.SeeAll}>See All</Text>
                 </TouchableOpacity>
@@ -255,7 +256,7 @@ export default function Home({navigation}) {
                 <>
                   <View style={styles.ExamView}>
                     <TouchableOpacity
-                      onPress={() => props.navigation.navigate('MyExamQuizzes')}
+                      onPress={() =>navigation.navigate('MyExamQuizzes')}
                       style={styles.TouchExam}>
                       <View style={styles.ActiveView}>
                         <Image source={require('../../assets/img/image.png')} style={{ width: 40, height: 40, borderRadius: 100 }} />
@@ -292,13 +293,13 @@ export default function Home({navigation}) {
                 <View style={styles.LiveView2}>
                   <Text style={styles.LiveText}>Enrolled Quizes</Text>
                   <View style={styles.lotiView}>
-                    <Text>yh</Text>
+                    <Text>{""}</Text>
                   </View>
                 </View>
               </View>
               <View style={styles.SeeView}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('AllLiveQuizzes')}
+                  onPress={() => navigation.navigate('EnrolledQuizesSeelAll')}
                   style={styles.TouchAll}>
                   <Text style={styles.SeeAll}>See All</Text>
                 </TouchableOpacity>
@@ -342,6 +343,7 @@ export default function Home({navigation}) {
             </View>
           </View>
         </ScrollView>
+</View>
       </SafeAreaView>
     </>
   );

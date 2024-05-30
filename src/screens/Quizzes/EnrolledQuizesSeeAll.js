@@ -12,10 +12,15 @@ import {Text} from '../../utils/Translate';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/AllLiveQuizzes.styles';
 
-export default function MyExamQuizzes({navigation,route}) {
-  console.log('====================================');
-  console.log(route);
-  console.log('====================================');
+export default function EnrolledQuizesSeelAll({navigation}) {
+  const [live, setLive] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  const onRefresh = () => {
+    setRefresh(true);
+    setTimeout(() => setRefresh(false), 3000);
+  };
+
   const DATA = [
     {
       id: '1',
@@ -54,6 +59,39 @@ export default function MyExamQuizzes({navigation,route}) {
 
   return (
     <>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}>
+              <Image
+                source={require('../../assets/img/arrows.png')}
+                resizeMode="contain"
+                style={styles.backButtonImage}
+              />
+            </TouchableOpacity>
+            <View style={styles.headerTitleContainer}>
+              <Text style={styles.headerTitle}>Enrolled Quizzes</Text>
+            </View>
+          </View>
+        </View>
+
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+          }>
+          {DATA.map(item => (
+            <LiveQuizz key={item.id} item={item} navigation={navigation} />
+          ))}
+        </ScrollView>
+      </View>
+    </>
+  );
+}
+
+const LiveQuizz = (props) => {
+  return (
     <View style={styles.quizContainer}>
       <View style={styles.quizHeader}>
         <Image
@@ -134,18 +172,16 @@ export default function MyExamQuizzes({navigation,route}) {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-            navigation.navigate('RulesofParticipation');
+            props.navigation.navigate('StartExam');
         }}>
         <LinearGradient
           start={{x: 0.0, y: 0.25}}
           end={{x: 0.6, y: 2.0}}
           colors={['#54ACFD', '#2289E7']}
           style={styles.registerButton}>
-          <Text style={styles.registerButtonText}>Register Now</Text>
+          <Text style={styles.registerButtonText}>JOIN NOW</Text>
         </LinearGradient>
       </TouchableOpacity>
     </View>
-    </>
   );
-}
-
+};

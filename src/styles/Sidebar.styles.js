@@ -64,16 +64,16 @@ const styles = StyleSheet.create({
       paddingVertical: 15,
     },
     menuItemIcon: {
-      width: 50,
-      height: 50,
+      width: 30,
+      height: 30,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: 'whitesmoke',
       borderRadius: 25,
     },
     menuItemImage: {
-      width: 25,
-      height: 25,
+      width: 15,
+      height: 15,
     },
     menuItemText: {
       marginLeft: 15,

@@ -74,13 +74,16 @@ const Win = () => {
             style={styles.vectorIcon}
             resizeMode="contain"
           />
-          <Text style={styles.scoreText}>2425/2425</Text>
+          <Text style={styles.scoreText}>2425/</Text>
+          <Text style={styles.scoreText1}>242</Text>
+
         </View>
         <LinearProgress
-          style={styles.progress}
-          value={progress}
-          variant="determinate"
-        />
+              style={{marginVertical: 10, height: 8, borderRadius: 10}}
+              value={0.4}
+              variant="determinate"
+              color={'#54ACFD'}
+            />
         <Button
         title="View Result"
         buttonStyle={styles.button}
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
   textTitle: {
     marginLeft: screenWidth * 0.03,
     fontSize:17,
-    fontWeight: '600',
+    fontWeight: 'bold',
     fontFamily:"Inter",
     color:"#2E2E2E"
 
@@ -162,7 +165,9 @@ const styles = StyleSheet.create({
   },
   dateText: {
     paddingLeft: 8,
-    fontFamily:"Inter"
+    fontFamily:"Inter",
+    color:'lightgray',
+    fontWeight:'600'
 
   },
   scoreContainer: {
@@ -176,8 +181,21 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     paddingLeft: 5,
-    fontFamily:"Inter"
+    fontFamily:"Inter",
+    color:'#2188E7'
 
+  },
+  scoreText: {
+    paddingLeft: 5,
+    fontFamily:"Inter",
+    color:'#2188E7',
+    fontWeight:'700'
+  },
+  scoreText1: {
+    paddingLeft: 5,
+    fontFamily:"Inter",
+    color:'#000',
+    fontWeight:'700'
   },
   progress: {
     marginVertical: 10,
@@ -187,12 +205,12 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 5,
-    borderColor: "#367CFF",
+    borderColor: "#54ACFD",
     borderWidth: 1,
     backgroundColor: "white",  
   },
   buttonTitle: {
-    color: "#367CFF",
+    color: "#54ACFD",
     fontFamily:"Inter"
 
   },

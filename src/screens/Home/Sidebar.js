@@ -112,12 +112,13 @@ const Sidebar = ({ navigation }) => {
           text="Rules & Regulations"
         />
         <MenuItem
-        action={()=>{navigation.navigate("privacypolice")}}
+        action={()=>{navigation.navigate("PrivacyPolicy")}}
 
           image={require('../../assets/img/privacypolicy.png')}
           text="Privacy Policy"
         />
         <MenuItem
+        action={()=>{navigation.navigate("MyExams")}}
           image={require('../../assets/img/myexamimg.png')}
           text="My Exams"
           imageStyle={{ width: 25, height: 25 }}

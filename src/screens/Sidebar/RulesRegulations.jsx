@@ -118,7 +118,7 @@ export default function RulesRegulations() {
                   <Text>{index+1}.</Text>
                 </View>*/}
               <View style={{flex: 1}}>
-                <Text>
+                <Text style={styles.textValue1}>
                   Rules to know before participating in any quiz in Brain Bucks
                   App
                 </Text>
@@ -323,6 +323,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     paddingTop: 10,
+    color:'#000',
+    fontFamily: 'WorkSans-Medium',
+
   },
   checkV: {
     alignItems: 'center',
@@ -335,7 +338,7 @@ const styles = StyleSheet.create({
   textHer: {
     fontSize: 16,
     fontFamily: 'WorkSans-Medium',
-    color: 'Black',
+    color: '#000',
     textAlign: 'justify',
     paddingLeft: 15,
   },

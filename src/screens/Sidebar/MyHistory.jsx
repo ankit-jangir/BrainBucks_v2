@@ -50,7 +50,7 @@ const MyHistory = ({navigation}) => {
         tabBarStyle: { width: "100%", },
         tabBarIndicatorStyle: { backgroundColor: "#000000", },
       }} >
-        <Tab.Screen style={{fontSize:17}} name="All">{(props) => <All/>}</Tab.Screen>
+        <Tab.Screen style={{fontSize:17,fontFamily: 'WorkSans-Medium',}} name="All">{(props) => <All/>}</Tab.Screen>
         <Tab.Screen name="Win">{(props) => <Win/>}</Tab.Screen>
         <Tab.Screen name="Lost">{(props) => <Lost/>}</Tab.Screen>
         <Tab.Screen name="Free">{(props) => <Free/>}</Tab.Screen>
@@ -68,8 +68,8 @@ export default MyHistory;
 const styles = StyleSheet.create({
   heading: {
     color: 'black',
-    fontSize: 22,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: 'bold',
     fontFamily:"Work Sans"
 
   },
