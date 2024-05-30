@@ -11,11 +11,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Text} from '../../utils/Translate';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/AllLiveQuizzes.styles';
+import Header from '../Home/Header';
+export default function MyExamQuizzes({navigation}) {
+  const [live, setLive] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
-export default function MyExamQuizzes({navigation,route}) {
-  console.log('====================================');
-  console.log(route);
-  console.log('====================================');
+  const onRefresh = () => {
+    setRefresh(true);
+    setTimeout(() => setRefresh(false), 3000);
+  };
+
   const DATA = [
     {
       id: '1',
@@ -54,6 +59,38 @@ export default function MyExamQuizzes({navigation,route}) {
 
   return (
     <>
+      <View style={styles.container}>
+      <Header
+          title="My Exam Quizzes"
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/arrow-left.png'), // provide the image source
+            onPress: () => {
+              handleBackPress()
+            },
+          }}
+        />
+
+        <View style={{flexDirection:'row',justifyContent:'center',alignItems:"center"}}>
+        <Image source={require('../../assets/img/image.png')} style={{width:35,height:35}}/>
+          <Text style={{color:'#000', fontFamily: 'WorkSans-SemiBold',marginLeft:10,fontSize:20}}>name</Text>
+        </View>
+         
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+          }>
+          {DATA.map(item => (
+            <ExamDetail key={item.id} item={item} navigation={navigation} />
+          ))}
+        </ScrollView>
+      </View>
+    </>
+  );
+}
+
+const ExamDetail = (props) => {
+  return (
     <View style={styles.quizContainer}>
       <View style={styles.quizHeader}>
         <Image
@@ -134,7 +171,7 @@ export default function MyExamQuizzes({navigation,route}) {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-            navigation.navigate('RulesofParticipation');
+            props.navigation.navigate('RulesofParticipation');
         }}>
         <LinearGradient
           start={{x: 0.0, y: 0.25}}
@@ -145,7 +182,5 @@ export default function MyExamQuizzes({navigation,route}) {
         </LinearGradient>
       </TouchableOpacity>
     </View>
-    </>
   );
-}
-
+};

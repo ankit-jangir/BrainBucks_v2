@@ -74,7 +74,7 @@ export default function StartExam({navigation, route}) {
         <ImageBackground
           source={require('../../assets/img/banner.png')}
           style={{flex: 1}}>
-          <TouchableOpacity
+          <TouchableOpacity onPress={()=>navigation.goBack()}
             style={styles.InsufficientTouchable1}>
             <Image
               source={require('../../assets/img/arrows.png')}
