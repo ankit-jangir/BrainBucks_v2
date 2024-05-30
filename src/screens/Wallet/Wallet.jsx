@@ -258,7 +258,7 @@ export default function Wallet({ navigation }) {
             <ActivityIndicator />
             :
             walletData.value.transactions.length === 0 ?
-              <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
+              <NoDataFound scale={0.8} message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
                 

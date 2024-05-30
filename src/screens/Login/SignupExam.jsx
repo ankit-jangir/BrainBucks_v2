@@ -70,6 +70,7 @@ export default function SignUpExam({ navigation, route }) {
 
   async function reloadExams() {
     setRefresh(true)
+    setDisabled(true)
     try{
       let res = await auth.getExams(search)
       if(res.status===1){
@@ -87,7 +88,10 @@ export default function SignUpExam({ navigation, route }) {
         text1: "Something Went Wrong"
       })
     }
-    finally{ setRefresh(false) }
+    finally{ 
+      setRefresh(false),
+      setDisabled(false)
+     }
   }
 
   useEffect(() => { reloadExams() }, [search])

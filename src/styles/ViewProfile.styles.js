@@ -426,6 +426,10 @@ const styles = StyleSheet.create({
   galleryicon:{
     width:45,
     height:45
+  },
+  welcomeText:{
+    color:'#000',
+    fontSize:20
   }
 
 })

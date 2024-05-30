@@ -14,7 +14,7 @@ const FreePdf = () => {
 
   const [loading,setloading]=useState();
   const [freePdf,setFreepdf]=useState([])
-  const {idState, context} = useCurrentId();
+  const {idState, dispatch} = useCurrentId();
   useEffect(()=>{
   listpdf()
   },[])
