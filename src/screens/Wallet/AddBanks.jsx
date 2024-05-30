@@ -6,6 +6,8 @@ import Toast from 'react-native-toast-message'
 import NoDataFound from '../../components/NoDataFound'
 import { Overlay } from '@rneui/themed'
 import { useIsFocused } from '@react-navigation/native'
+import { ColorsConstant } from '../../constants/Colors.constant'
+import { color } from '@rneui/base'
 
 const AddBanks = ({ navigation }) => {
 
@@ -125,15 +127,17 @@ const AddBanks = ({ navigation }) => {
               })}
       </ScrollView>
 
-      <Overlay isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
+      <Overlay   isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
         <View style={styles.logoutView}>
           <Text style={styles.deletebanktext}>
-            Press Delete to Confirm Deletion
+            Press Delete to Confirm 
           </Text>
           <View style={styles.logoutbuttons}>
             <Button
               title="Delete"
-              color={"secondary"}
+              color={"#eb1313"}
+            titleStyle={{color:"white",fontSize:15,padding:15,}}
+
               buttonStyle={styles.logoutyesbutton}
               onPress={() => {
                 removeAccount()
@@ -143,9 +147,13 @@ const AddBanks = ({ navigation }) => {
               }
             />
             <Button
-              color={"primary"}
+            titleStyle={{color:"black",fontSize:15,padding:15,}}
+              color={"#e6e3e8"}
               title="Cancel"
+              buttonStyle={styles.logoutyesbutton}
+
               onPress={() => { setVisible(!visible) }} />
+              
           </View>
         </View>
       </Overlay>
@@ -256,11 +264,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   logoutView: {
-    height: 250,
-    width: 250,
-    alignItems: "center",
-    justifyContent: "center",
+    height: 170,
+    width: 300,
+    borderRadius:5,
     gap: 40,
+    alignItems:"center",
+    justifyContent:"center",
+    
   },
   logoutbuttons: {
     gap: 20,
@@ -269,14 +279,15 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   logoutyesbutton: {
-    paddingHorizontal: 20
+    borderRadius:10
   },
   deletebanktext: {
-    color: "gray",
-    fontSize: 20,
+    color: ColorsConstant.Black,
+    fontSize: 21,
     textAlign: 'center',
     borderWidth: 1,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
+    fontWeight:"600"
   },
   verified:{
     color:'#367CFF',

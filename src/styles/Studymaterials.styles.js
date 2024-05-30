@@ -532,10 +532,9 @@ const styles = StyleSheet.create({
   PView: {
     flex: 1,
     marginBottom: 20,
-    alignItems: 'center'
+    justifyContent:"space-between"
   },
   Ptouch: {
-    width: 340,
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,

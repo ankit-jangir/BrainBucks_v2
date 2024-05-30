@@ -21,8 +21,11 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
       fontFamily: "WorkSans-SemiBold",
-      fontSize: 20,
-      color: '#888'
+      color: ColorsConstant.Black,
+      fontSize: 21,
+      borderWidth: 1,
+      borderColor: 'transparent',
+      fontWeight:"600",
     },
     closeButton: {
       width: 30,
@@ -82,21 +85,21 @@ const styles = StyleSheet.create({
       color: 'gray'
     },
     logoutView:{
-      height:250,
-      width:250,
+      height:170,
+      width:300,
       alignItems:"center",
       justifyContent:"center",
       gap:40,
     },
-    logoutbuttons:{
-      gap:20,
-      flexDirection:"row",
-      alignItems:"center",
-      justifyContent:"center"
+    logoutbuttons: {
+      gap: 20,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center"
     },
-    logoutyesbutton:{
-      paddingHorizontal:20
-    },
+      logoutyesbutton: {
+        borderRadius:10
+      },
   });
 
 

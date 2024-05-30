@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { Button, Text, TextInput } from '../../utils/Translate';
 import WalletApiService from '../../services/api/WalletApiService';
 import { useAddBank } from '../../context/AddBankReducer';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 const AddBankAccount = ({ navigation }) => {
 
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   formContainer: {
     marginTop: 20,
     paddingHorizontal: 10,
-    marginBottom: 60
+    marginBottom: 80
   },
   inputContainer: {
     marginTop: 30,
@@ -185,7 +186,8 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 10,
     fontSize: 17,
-    fontFamily:"Work Sans"
+    fontFamily:"Work Sans",
+    color:ColorsConstant.Black
 
   },
   addButtonContainer: {

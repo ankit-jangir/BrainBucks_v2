@@ -101,6 +101,18 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: ColorsConstant.White,
     },
+    examView: {
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    textMy: {
+      fontSize: 18,
+      fontFamily: 'WorkSans-SemiBold',
+      color:"#000",
+      textAlign:'center'
+    },
     stdView1: {
       width: '100%',
       height: 70,

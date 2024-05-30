@@ -139,10 +139,10 @@ const styles = StyleSheet.create({
     },
     liveVIew: {
       flex: 1,
-      paddingTop: 20,
+      // paddingTop: 20,
     },
     liveVIew1: {
-      width: 340,
+      // width: 340,
       padding: 10,
       borderRadius: 5,
       borderWidth: 1,
@@ -278,15 +278,14 @@ const styles = StyleSheet.create({
       fontFamily: 'WorkSans-Medium',
     },
     EListss: {
-      width: '100%',
       height: 70,
       borderWidth: 1,
       borderColor: '#EFEFEF',
       borderRadius: 10,
+      flex:1
     },
     EListss1: {
       flexDirection: 'row',
-      alignItems: 'center',
       flex: 1,
     },
     ItmView: {

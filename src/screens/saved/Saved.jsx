@@ -282,7 +282,7 @@ export default function Saved({navigation}) {
               
               SavedExam.map(res => {
               return (
-                <View key={res.exam_id} style={{flex: 1, alignItems: 'center'}}>
+                <View key={res.exam_id} style={{flex: 1,padding:15}}>
                   <View style={styles.liveVIew}>
                     <View style={styles.liveVIew1}>
                       <View style={styles.liveVIew2}>

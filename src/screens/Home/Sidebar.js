@@ -154,13 +154,22 @@ const Sidebar = ({ navigation }) => {
           <View style={styles.logoutbuttons}>
             <Button
               title="Yes"
-              color={"secondary"}
-              buttonStyle={styles.logoutyesbutton}
+              color={"#eb1313"}
+      titleStyle={{color:"white",fontSize:15,padding:15, 
+      paddingHorizontal:30,
+
+       }}
+  
+                buttonStyle={styles.logoutyesbutton}
               onPress={() => { logOut().then(toggleOverlay) }}
             />
             <Button
-              color={"primary"}
+            color={"#e6e3e8"}
+
               title="Cancel"
+              buttonStyle={styles.logoutyesbutton}
+              titleStyle={{color:"black",fontSize:15,padding:15,}}
+
               onPress={toggleOverlay} />
           </View>
         </View>

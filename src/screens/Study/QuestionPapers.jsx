@@ -109,7 +109,7 @@ export default function QuestionPaperList({navigation, route}) {
                     <TouchableOpacity style={styles.Ptouch}>
                       <View style={styles.downView}>
                         <View>
-                          <Text style={styles.textQue}>{res.display_name}</Text>
+                          <Text style={styles.textQue}>{res.display_name}edkjwe</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
                           <TouchableOpacity style={{paddingRight: 15}}>
