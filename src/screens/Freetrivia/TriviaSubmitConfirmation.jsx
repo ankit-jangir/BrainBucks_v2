@@ -4,9 +4,12 @@ import LottieView from 'lottie-react-native';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import { getResultOfTriviaQuiz } from '../../controllers/TriviaQuizController';
 
 export default function TriviaSubmitConfirmation({ navigation, route }) {
-    const [timerCount, setTimer] = useState(3)
+
+
+  const [timerCount, setTimer] = useState(3)
   const [minute, setMinute] = useState(0)
   var interval;
   useEffect(() => {

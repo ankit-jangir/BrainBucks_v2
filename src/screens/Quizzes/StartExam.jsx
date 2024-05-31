@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Particpants from './Particpants';
 import Rewards from './Rewards';
 import Rules from './Rules';
@@ -16,204 +16,188 @@ import {
   BackHandler,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {Text} from '../../utils/Translate';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Text } from '../../utils/Translate';
 import styles from '../../styles/StartExam.styles';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import { getactiveDetails } from '../../controllers/ActiveQuizController';
+import Toast from 'react-native-toast-message';
+import { BLOBURL } from '../../config/urls';
+import { LinearProgress } from '@rneui/themed';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function StartExam({navigation, route}) {
+export default function StartExam({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const { quizState, dispatch } = useQuiz()
+  const [data, setData] = useState([])
+  const [rewards, setRewards] = useState([])
+  const [participants, setParticipants] = useState([])
+  const [rulesList, setRulesList] = useState([])
+  let id = route.params.id
 
-  const rewards = [
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-  ];
-  const particpants = [
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-  ];
-  const rulesList = [
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-    {
-      name: 'ocjbb',
-    },
-  ];
+
+  useEffect(() => {
+    getactiveDetails(id, Toast, setData, setLoading, dispatch)
+  }, [])
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <View style={{width: '100%', height: 150}}>
-        <ImageBackground
-          source={require('../../assets/img/banner.png')}
-          style={{flex: 1}}>
-          <TouchableOpacity onPress={()=>navigation.goBack()}
-            style={styles.InsufficientTouchable1}>
-            <Image
-              source={require('../../assets/img/arrows.png')}
-              tintColor={'#fff'}
-              style={styles.EnteryImg}
-            />
-          </TouchableOpacity>
-        </ImageBackground>
-      </View>
-      <View style={styles.InsufficientV3}>
-        <View style={styles.InsufficientV4}>
-          <View style={styles.InsufficientV5}>
-            <Image
-              source={require('../../assets/img/banner.png')}
-              resizeMode="contain"
-              style={styles.categoryImage}
-            />
-          </View>
-          <View style={styles.categoryView}>
-            <Text
-              style={[styles.categoryText, {marginTop: 10, color: '#8A8A8A'}]}>
-              category_name
-            </Text>
-          </View>
-        </View>
-        <View style={styles.EnteryV}>
-          <View style={styles.EnteryV1}>
-            <View style={{flex: 6}}>
-              <View style={styles.EnteryFeesVi}>
-                <Text style={styles.EnteryFeesText}>Fees</Text>
-                <View style={styles.EnteryV2}>
+    <>
+    <View style={{zIndex:20}}><Toast/></View>
+      {
+        loading
+          ?
+          <ActivityIndicator size={40} style={{ flex: 1 }} />
+          :
+          <View key={JSON.stringify(data)} style={{ flex: 1, backgroundColor: '#fff' }}>
+            <View style={{ width: '100%', height: 150 }}>
+              <ImageBackground
+                source={{ uri: BLOBURL + data?.image }}
+                style={{ flex: 1 }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}
+                  style={styles.InsufficientTouchable1}>
                   <Image
-                    source={require('../../assets/img/bbcoin.png')}
+                    source={require('../../assets/img/arrows.png')}
+                    tintColor={'#fff'}
                     style={styles.EnteryImg}
                   />
-                  <Text style={styles.EnteryFeesBText}>8765</Text>
-                </View>
-              </View>
-              <View style={styles.EnteryV3}>
-                <Text style={styles.EnteryFeesText}>Prize</Text>
-                <View style={styles.EnteryV2}>
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View style={styles.InsufficientV3}>
+              <View style={styles.InsufficientV4}>
+                <View style={styles.InsufficientV5}>
                   <Image
-                    source={require('../../assets/img/bbcoin.png')}
-                    style={styles.EnteryImg}
+                    source={{ uri: BLOBURL + data?.image }}
+                    resizeMode="contain"
+                    style={styles.categoryImage}
                   />
-                  <Text style={styles.EnteryFeesBText}>656</Text>
                 </View>
-              </View> 
-            </View>
-            <View style={styles.DateV}>
-              <View style={styles.DateV1}>
-                <Image
-                  source={require('../../assets/img/time2.png')}
-                  tintColor={'#8A8A8A'}
-                  style={styles.EnteryImg}
-                />
-                <Text style={styles.DateText}>12.22.222</Text>
+                <View style={styles.categoryView}>
+                  <Text
+                    style={[styles.categoryText, { marginTop: 10, color: '#8A8A8A' }]}>
+                    category_name
+                  </Text>
+                </View>
               </View>
-              <View style={styles.DateV1}>
-                <Image
-                  source={require('../../assets/img/calendar.png')}
-                  tintColor={'#8A8A8A'}
-                  style={styles.EnteryImg}
-                />
-                <Text style={styles.DateText}>12.2.22.22</Text>
+              <View style={styles.EnteryV}>
+                <View style={styles.EnteryV1}>
+                  <View style={{ flex: 6 }}>
+                    <View style={styles.EnteryFeesVi}>
+                      <Text style={styles.EnteryFeesText}>Fees</Text>
+                      <View style={styles.EnteryV2}>
+                        <Image
+                          source={require('../../assets/img/bbcoin.png')}
+                          style={styles.EnteryImg}
+                        />
+                        <Text style={styles.EnteryFeesBText}>{data?.entryFees}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.EnteryV3}>
+                      <Text style={[styles.EnteryFeesText]}>First Prize</Text>
+                      <View style={styles.EnteryV2}>
+                        <Image
+                          source={require('../../assets/img/bbcoin.png')}
+                          style={styles.EnteryImg}
+                        />
+                        <Text style={styles.EnteryFeesBText}>dothis</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.DateV}>
+                    <View style={styles.DateV1}>
+                      <Image
+                        source={require('../../assets/img/time2.png')}
+                        tintColor={'#8A8A8A'}
+                        style={styles.EnteryImg}
+                      />
+                      <Text style={styles.DateText}>{data?.sch_time?.substr(0, 10)}</Text>
+                    </View>
+                    <View style={styles.DateV1}>
+                      <Image
+                        source={require('../../assets/img/calendar.png')}
+                        tintColor={'#8A8A8A'}
+                        style={styles.EnteryImg}
+                      />
+                      <Text style={styles.DateText}>{data?.sch_time?.substr(11, 8)}</Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
-        </View>
-        <View style={styles.TotalSlotsVi}>
-          <Image
-            source={require('../../assets/img/dollar.png')}
-            resizeMode="contain"
-            style={styles.DateImg}
-          />
-          <View style={styles.TotalSlotsVi1}>
-            <Text style={styles.TotalSlotsBtext}>98/</Text>
-            <Text style={[styles.TotalSlotsBtext, {color: '#333333'}]}>
-              987
-            </Text>
-          </View>
-        </View>
-        <View style={styles.TotalSlotsVi2}>
-          <View style={styles.TotalSlotsVi3}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.5, y: 1.0}}
-              colors={['#54ACFD', '#2289E7']}
-              style={{borderRadius: 8, height: 10}}></LinearGradient>
-          </View>
-        </View>
-        <View style={styles.StartExamV}>
-          <TouchableOpacity  onPress={() => {
+              <View style={styles.TotalSlotsVi}>
+                <Image
+                  source={require('../../assets/img/dollar.png')}
+                  resizeMode="contain"
+                  style={styles.DateImg}
+                />
+                <View style={styles.TotalSlotsVi1}>
+                  <Text style={styles.TotalSlotsBtext}>{data?.slot_aloted}/</Text>
+                  <Text style={[styles.TotalSlotsBtext, { color: '#333333' }]}>
+                    {data?.slots}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.TotalSlotsVi2}>
+                <View style={styles.TotalSlotsVi3}>
+                  <LinearProgress
+                    style={{ marginVertical: 10, height: 8, borderRadius: 10 }}
+                    value={data.slots ? data.slot_aloted / data.slots : 0}
+                    variant="determinate"
+                    color={'#54ACFD'}
+                  />
+                </View>
+              </View>
+              <View style={styles.StartExamV}>
+                <TouchableOpacity onPress={() => {
                   navigation.navigate('InsideLobby')
-                }} style={{width: '80%'}}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.6, y: 2.0}}
-              colors={['#54ACFD', '#2289E7']}
-              style={styles.StartExamLiner}>
-              <Text style={styles.LobbtText}>Join Now</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: '15%',
-              height: 45,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#51C386',
-              borderRadius: 5,
-            }}>
-            <Image
-              source={require('../../assets/img/whatsapp.png')}
-              style={{width: 30, height: 30}}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+                }} style={{ width: '80%' }}>
+                  <LinearGradient
+                    start={{ x: 0.0, y: 0.25 }}
+                    end={{ x: 0.6, y: 2.0 }}
+                    colors={['#54ACFD', '#2289E7']}
+                    style={styles.StartExamLiner}>
+                    <Text style={styles.LobbtText}>Join Now</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    width: '15%',
+                    height: 45,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#51C386',
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../../assets/img/whatsapp.png')}
+                    style={{ width: 30, height: 30 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-      <View style={{flex: 1}}>
-        <Roomsrules
-          rulesList={rulesList}
-          particpants={particpants}
-          rewards={rewards}
-        />
-      </View>
-    </View>
+            <View style={{ flex: 1 }}>
+              <Roomsrules
+                rulesList={data.rules ? data?.rules : []}
+                particpants={participants}
+                rewards={rewards}
+              />
+            </View>
+          </View>
+      }
+    </>
   );
 }
 
-const Roomsrules = ({particpants, rewards, rulesList}) => {
+const Roomsrules = ({ particpants, rewards, rulesList }) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Tab.Navigator
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         screenOptions={{
           tabBarActiveTintColor: '#000000',
-          tabBarLabelStyle: {fontSize: 16, textTransform: 'none'},
+          tabBarLabelStyle: { fontSize: 16, textTransform: 'none' },
           tabBarStyle: {
             width: '100%',
             elevation: 0,
@@ -221,15 +205,15 @@ const Roomsrules = ({particpants, rewards, rulesList}) => {
             borderTopWidth: 1,
             borderColor: '#E2E2E2',
           },
-          tabBarIndicatorStyle: {backgroundColor: '#000000'},
+          tabBarIndicatorStyle: { backgroundColor: '#000000' },
         }}>
         <Tab.Screen name="Participants">
           {props => (
-            <Particpants {...props} particpants={particpants}></Particpants>
+            <Particpants {...props}></Particpants>
           )}
         </Tab.Screen>
         <Tab.Screen name="Rewards">
-          {props => <Rewards {...props} rewards={rewards}></Rewards>}
+          {props => <Rewards {...props} ></Rewards>}
         </Tab.Screen>
         <Tab.Screen name="Rules">
           {props => <Rules {...props} rulesList={rulesList}></Rules>}

@@ -262,9 +262,10 @@ const PaidCourses = () => {
                   ) : (
                     <FlatList
                       data={material[video._id]}
+                      keyExtractor={item=>item._id}
                       renderItem={({item, index}) => {
                         return (
-                          <Pressable key={item._id}>
+                          <Pressable>
                             <View
                               style={{
                                 backgroundColor: '#fff',

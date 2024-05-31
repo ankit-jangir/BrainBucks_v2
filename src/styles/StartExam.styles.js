@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
       fontFamily: "WorkSans-Regular",
       fontSize: 13,
       color: ColorsConstant.GrayyColor,
-      flex: 0.30
+      flex: 0.40
     },
     EnteryV2:
     {

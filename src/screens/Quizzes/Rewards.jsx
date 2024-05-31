@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
+import { useIsFocused } from '@react-navigation/native';
+import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import Toast from 'react-native-toast-message';
 
 const ParticipantsData = ({ item, index }) => {
+
     return (
         <View style={styles.RewardsV}>
             <View style={styles.RewardsV1}>
                 <View style={styles.RewardsV2}>
                     <Image source={require('../../assets/img/crown.png')} style={styles.RewardImg} />
-                    <Text style={styles.Btext}>{index + 1}.</Text>
+                    <Text style={styles.Btext}>{item.Rank}.</Text>
                 </View>
                 <View style={styles.RewardsV3}>
                     <View style={styles.RewardsV4}>
                         <Image source={require('../../assets/img/bbcoin.png')} style={styles.RewardImg} />
-                        <Text style={styles.Btext}>{item.name}</Text>
+                        <Text style={styles.Btext}>{item.reward}</Text>
                     </View>
                 </View>
             </View>
@@ -23,7 +28,25 @@ const ParticipantsData = ({ item, index }) => {
     );
 };
 
-export default function Rewards({ navigation, quizzes, rewards }) {
+export default function Rewards({ rewards }) {
+
+    const focus = useIsFocused()
+    const quizServ = new ActiveQuizApiService()
+    const { quizState, dispatch } = useQuiz()
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        quizServ.getActiveQuizRewards(quizState.id).then(res => {
+            if (res) {
+                console.log(res);
+                setData(res.send_rewards)
+            }
+        }).catch((err) => {
+            console.log("Error in fetching participants: ", err);
+            Toast.show({ type: "error", text1: "Something went wrong" })
+        })
+    }, [focus])
+
     return (
         <>
             <View style={StyleConstants.safeArView}>
@@ -39,9 +62,9 @@ export default function Rewards({ navigation, quizzes, rewards }) {
                 </View>
                 <View style={styles.RankV4}>
                     <FlatList
-                        data={rewards}
+                        data={data}
                         renderItem={({ item, index }) => <ParticipantsData item={item} index={index} />}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => index}
                         showsVerticalScrollIndicator={false}
                     />
                 </View>

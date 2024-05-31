@@ -9,25 +9,99 @@ import {
 } from "react-native";
 import { StyleConstants } from "../../constants/Style.constant";
 import { Text } from "../../utils/Translate";
+import { viewScoreCardOfTriviaQuiz } from "../../controllers/TriviaQuizController";
+import { useQuiz } from "../../context/QuizPlayReducer";
+import Toast from "react-native-toast-message";
+import ReactNativeBlobUtil from "react-native-blob-util";
 
 export default function TriviaScoreCard({ navigation, route }) {
   const [isLoad, setLoad] = useState(false);
+  const { quizState, dispatch } = useQuiz()
+  const [data, setData] = useState([])
+  const fs = ReactNativeBlobUtil.fs
+  const dirs = ReactNativeBlobUtil.fs.dirs
 
-  const data =[
+  useEffect(() => {
+    viewScoreCardOfTriviaQuiz(quizState.id, Toast).then(res => {
+      if (res) {
+        setData(res.answer_sheet)
+      }
+    })
+  }, [])
 
-    {
-        id:1,
-        marks:'11',
-        correct_answer:'11',
-        my_answer:'2',
-        question_no:'1',
 
-        
-    }
-  ]
+  //todo: download pdf
+  async function createPDF(answers) {
+    let fileName = dirs.DownloadDir + "/" + "bbscorecardcache.pdf"
+    fs.exists(fileName).then(cond => {
+      let str = "Q. No.\t" + "My Answer\t" + "Correct Answer\t" + "Marks\n"
+
+      answers.forEach(element => {
+        str = str + (element.question_no + "\t")
+        str = str + (element.my_answer + "\t")
+        str = str + (element.correct_answer + "\t")
+        str = str + (element.marks + "\n")
+      });
+
+      if (cond) {
+        fs.writeFile(fileName, str, 'utf8')
+      }
+      else {
+        fs.createFile(fileName, '', 'utf8').then(res => {
+          fs.writeFile(fileName, str, 'utf8').catch(console.log)
+        }).catch(console.log)
+      }
+
+    }).then(
+      downloadPDF(fileName)
+    ).catch(console.log)
+
+  }
+
+  const downloadPDF = (source) => {
+    // Toast.show({
+    //   type:'info',
+    //   text1:"Downloading..."
+    // })
+
+    // ReactNativeBlobUtil.MediaCollection.writeToMediafile(`content://${source}`,`${dirs.DocumentDir}/scoreboard.pdf`).then(console.log).catch(console.log)
+    // ReactNativeBlobUtil.config({
+    //   fileCache: true,
+    //   appendExt: 'pdf',
+    //   path: `${dirs.DocumentDir}/${'scoreboard'}`,
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true,
+    //     notification: true,
+    //     title: 'scoreboard',
+    //     description: 'Brainbucks pdf downloaded',
+    //     mime: 'application/pdf',
+    //   },
+    // })
+    // .android.addCompleteDownload
+    //   .then((res)=>{
+    //     Toast.show({
+    //       type:'success',
+    //       text1:"Download Succesful"
+    //     })
+    //   })
+    //   .catch((err) => {
+    //     console.log('Pdf Download Error -> ', err)
+    //     Toast.show({
+    //       type:'error',
+    //       text1:"Download Failed."
+    //     })
+    //   }
+    // )
+  };
+
+
+
 
   return (
     <View style={{ flex: 1 }}>
+      <View style={{ zIndex: 10 }}>
+        <Toast />
+      </View>
       <View style={[StyleConstants.safeArView, { backgroundColor: "#701DDB" }]}>
         <View style={styles.Container}>
           <View style={styles.Container_View}>
@@ -36,7 +110,7 @@ export default function TriviaScoreCard({ navigation, route }) {
                 onPress={() => navigation.goBack()}
                 style={styles.mainviewtouc}
               >
-         <Image source={require('../../assets/img/back.png')}/>
+                <Image source={require('../../assets/img/back.png')} />
               </TouchableOpacity>
             </View>
             <View style={{ alignItems: "center" }}>
@@ -65,6 +139,7 @@ export default function TriviaScoreCard({ navigation, route }) {
           </View>
           <TouchableOpacity
             style={styles.download}
+            onPress={()=>createPDF(data)}
           >
             <Text style={styles.textdow}>Download Answer Sheet</Text>
             <Image
@@ -74,54 +149,24 @@ export default function TriviaScoreCard({ navigation, route }) {
             />
           </TouchableOpacity>
         </View>
-        <View
-          style={styles.View1Q}
-        >
-          <View
-            style={styles.View2Q}
-          >
-            <View
-              style={styles.View3Q}
-            ></View>
+        <View style={styles.View1Q}>
+          <View style={styles.View2Q}>
+            <View style={styles.View3Q}></View>
           </View>
-          <Text
-            style={styles.View4Q}
-          >
-            Answer Sheet
-          </Text>
-          <View
-            style={styles.View5Q}
-          >
-            <View
-              style={styles.View6Q}
-            >
-              <View
-                style={styles.View7Q}
-              >
-                <Text style={styles.View8Q}>
-                  QNo.
-                </Text>
+          <Text style={styles.View4Q}>Answer Sheet</Text>
+          <View style={styles.View5Q}>
+            <View style={styles.View6Q}>
+              <View style={styles.View7Q}>
+                <Text style={styles.View8Q}>QNo.</Text>
               </View>
-              <View
-                style={styles.View9Q}
-              >
-                <Text style={styles.View8Q}>
-                  My Answer
-                </Text>
+              <View style={styles.View9Q}>
+                <Text style={styles.View8Q}>My Answer</Text>
               </View>
-              <View
-                style={styles.View10Q}
-              >
-                <Text style={styles.View8Q}>
-                  Correct Answer
-                </Text>
+              <View style={styles.View10Q}>
+                <Text style={styles.View8Q}>Correct Answer</Text>
               </View>
-              <View
-                style={styles.View11Q}
-              >
-                <Text style={styles.View8Q}>
-                  Marks
-                </Text>
+              <View style={styles.View11Q}>
+                <Text style={styles.View8Q}>Marks</Text>
               </View>
             </View>
             <ScrollView>
@@ -133,7 +178,7 @@ export default function TriviaScoreCard({ navigation, route }) {
                 </View>
               ) : (
                 data.map((item, index) => {
-                  return <Answerkey item={item} index={index} />;
+                  return <Answerkey key={index} item={item} index={index} />;
                 })
               )}
             </ScrollView>
@@ -144,49 +189,28 @@ export default function TriviaScoreCard({ navigation, route }) {
   );
 }
 
-function Answerkey(props) {
-  console.log(props,'dfghjkl;');
+function Answerkey({ item }) {
   return (
-    <View style={[StyleConstants.safeArView, { borderColor: "#CFCFCF" }]}>
-      <View
-        style={styles.View13Q}
-      >
-        <View
-          style={styles.View14Q}
-        >
-          <Text style={styles.fonttext}>
-           {props.item.marks}
-          </Text>
-        </View>
-        <View
-          style={styles.View15Q}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: "WorkSans-Medium",
-              color:'#000',
-            }}
-          >
-                       {props.item.marks}
-          </Text>
-        </View>
-        <View
-          style={styles.View16Q}
-        >
-          <Text style={styles.fonttext}>
-          {props.item.marks}
-          </Text>
-        </View>
-        <View
-          style={styles.View17Q}
-        >
-          <Text style={styles.fonttext}>
-           {props.item.marks}
-          </Text>
+    <ScrollView>
+      <View style={[StyleConstants.safeArView, { borderColor: "#CFCFCF" }]}>
+        <View>
+          <View style={styles.View6Q}>
+            <View style={styles.View7Q}>
+              <Text style={styles.View8Q}>{item.question_no}</Text>
+            </View>
+            <View style={styles.View9Q}>
+              <Text style={styles.View8Q}>{item.my_answer}</Text>
+            </View>
+            <View style={styles.View10Q}>
+              <Text style={styles.View8Q}>{item.correct_answer}</Text>
+            </View>
+            <View style={styles.View11Q}>
+              <Text style={styles.View8Q}>{item.marks}</Text>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -257,38 +281,38 @@ const ls = StyleConstants,
       alignItems: "center",
       borderRadius: 10,
     },
-    textdow:{
-      fontFamily:'WorkSans-Regular',
-      fontSize:16,color:"#000"
+    textdow: {
+      fontFamily: 'WorkSans-Regular',
+      fontSize: 16, color: "#000"
     },
-    View1Q:{
+    View1Q: {
       flex: 1,
       backgroundColor: "#fff",
       borderTopRightRadius: 20,
       borderTopLeftRadius: 20,
       paddingHorizontal: 0,
     },
-    View2Q:{
+    View2Q: {
       width: "100%",
       height: 40,
       justifyContent: "center",
       alignItems: "center",
     },
-    View3Q:{
-        width: 45,
-        height: 6,
-        borderRadius: 10,
-        backgroundColor: "#D9D9D9",
-      
+    View3Q: {
+      width: 45,
+      height: 6,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+
     },
-    View4Q:{
-       textAlign: "center",
-        fontFamily: "WorkSans-SemiBold",
-        fontSize: 24,
+    View4Q: {
+      textAlign: "center",
+      fontFamily: "WorkSans-SemiBold",
+      fontSize: 24,
       color: "#000",
 
     },
-    View5Q:{
+    View5Q: {
       flex: 1,
       backgroundColor: "#F1F1F1",
       borderLeftWidth: 1,
@@ -296,12 +320,12 @@ const ls = StyleConstants,
       borderColor: "#CFCFCF",
       marginTop: 20,
     },
-    View6Q:{
+    View6Q: {
       flexDirection: "row",
       justifyContent: "space-around",
       height: 50,
     },
-    View7Q:{
+    View7Q: {
       flex: 0.4,
       borderRightWidth: 1,
       borderRightColor: "#CFCFCF",
@@ -312,89 +336,89 @@ const ls = StyleConstants,
       alignItems: "center",
       justifyContent: "center",
     },
-    View8Q:{
-       fontSize: 14, 
-       fontFamily: "WorkSans-Medium" ,
+    View8Q: {
+      fontSize: 14,
+      fontFamily: "WorkSans-Medium",
       color: "#000",
 
-      },
-      View9Q:{
-        flex: 0.7,
-        borderRightWidth: 1,
-        borderRightColor: "#CFCFCF",
-        alignItems: "center",
-        justifyContent: "center",
-        borderTopWidth: 1,
-        borderTopColor: "#CFCFCF",
-        borderBottomWidth: 1,
-        borderBottomColor: "#CFCFCF",
-      },
-      View10Q: {
-          flex: 0.8,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-          borderTopWidth: 1,
-          borderTopColor: "#CFCFCF",
-          borderBottomWidth: 1,
-          borderBottomColor: "#CFCFCF",
-        },
-        View11Q:{
-          flex: 0.5,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-          borderTopWidth: 1,
-          borderTopColor: "#CFCFCF",
-          borderBottomWidth: 1,
-          borderBottomColor: "#CFCFCF",
-        },
-        View12Q:{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingVertical: 50,
-        },
-        View13Q:{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          height: 50,
-        },
-        View14Q:{
-          flex: 0.4,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        View15Q:{
-          flex: 0.7,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        View16Q:{
-          flex: 0.8,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        fonttext:{
-          fontSize: 16, 
-          fontFamily: "WorkSans-Medium",
-          color: "#000",
-        },
-        View17Q:{
-          // flex: 0.5,
-          borderRightWidth: 1,
-          borderRightColor: "#CFCFCF",
-          alignItems: "center",
-          justifyContent: "center",
-        }
-      
+    },
+    View9Q: {
+      flex: 0.7,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+      borderTopWidth: 1,
+      borderTopColor: "#CFCFCF",
+      borderBottomWidth: 1,
+      borderBottomColor: "#CFCFCF",
+    },
+    View10Q: {
+      flex: 0.8,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+      borderTopWidth: 1,
+      borderTopColor: "#CFCFCF",
+      borderBottomWidth: 1,
+      borderBottomColor: "#CFCFCF",
+    },
+    View11Q: {
+      flex: 0.5,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+      borderTopWidth: 1,
+      borderTopColor: "#CFCFCF",
+      borderBottomWidth: 1,
+      borderBottomColor: "#CFCFCF",
+    },
+    View12Q: {
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: 50,
+    },
+    View13Q: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      height: 50,
+    },
+    View14Q: {
+      flex: 0.4,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    View15Q: {
+      flex: 0.7,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    View16Q: {
+      flex: 0.8,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    fonttext: {
+      fontSize: 16,
+      fontFamily: "WorkSans-Medium",
+      color: "#000",
+    },
+    View17Q: {
+      // flex: 0.5,
+      borderRightWidth: 1,
+      borderRightColor: "#CFCFCF",
+      alignItems: "center",
+      justifyContent: "center",
+    }
+
 
   });
-  
+

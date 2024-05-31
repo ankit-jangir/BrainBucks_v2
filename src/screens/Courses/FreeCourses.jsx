@@ -202,6 +202,7 @@ const FreeCourses = ({ navigation, data }) => {
                                     :
                                     <FlatList
                                       data={material[video._id]}
+                                      keyExtractor={item=>item._id}
                                       renderItem={({ item, index }) => {
                                         return (
                                           <Pressable key={item._id}>

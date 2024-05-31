@@ -19,13 +19,14 @@ import Carousel from 'react-native-reanimated-carousel';
 import styles from '../../styles/Home.styles';
 import basic from '../../services/BasicServices';
 import QuizCard from '../../components/QuizCard';
-import { getTriviaDetails } from '../../controllers/FreeTriviaController';
+import { getTriviaDetails } from '../../controllers/TriviaQuizController';
 import Toast from 'react-native-toast-message';
 import { useSignal } from '@preact/signals-react';
 import { getHomeData } from '../../controllers/HomeController';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 export default function Home({ navigation }) {
   const [refresh, setRefresh] = useState(false);
@@ -136,7 +137,7 @@ export default function Home({ navigation }) {
                               totalslots={item.slots}
                               type={'active'}
                               onPress={() => {
-                                navigation.navigate('RulesofParticipation');
+                                navigation.navigate('RulesofParticipation', {id: item._id});
                               }}
                             />
                           </View>
@@ -309,16 +310,16 @@ export default function Home({ navigation }) {
                           margin: CARD_MARGIN,
                         }}>
                         <QuizCard
-                          prize={item.prize}
-                          fees={item.fee}
-                          title={item.title}
-                          date={item.date}
-                          image={require('../../assets/img/banner.png')}
-                          alotedslots={item.earning}
-                          totalslots={item.earning}
+                          prize={item.reward}
+                          fees={item.entryFees}
+                          title={item.quiz_name}
+                          date={item.sch_time}
+                          image={{uri: BLOBURL+item.banner}}
+                          alotedslots={item.slot_aloted}
+                          totalslots={item.slots}
                           type={'enrolled'}
                           onPress={() => {
-                            navigation.navigate('StartExam');
+                            navigation.navigate('StartExam', {id: item._id});
                           }}
                         />
                       </View>
