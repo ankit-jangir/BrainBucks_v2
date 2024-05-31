@@ -45,8 +45,13 @@ const FreePdf = () => {
   }
   return (
 
-    <View style={styles.container}>
+    <>
+    <View style={{zIndex:1,}}>
     <Toast/>
+    
+    </View>
+    <View style={styles.container}>
+   
     <ScrollView>
     { 
       loading
@@ -97,6 +102,8 @@ const FreePdf = () => {
     }
     </ScrollView>
     </View>
+    </>
+    
   );
 };
 

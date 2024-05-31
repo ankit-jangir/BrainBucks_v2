@@ -15,6 +15,7 @@ import {NavigationContainer, useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 export default function RulesRegulations() {
  
@@ -28,59 +29,34 @@ export default function RulesRegulations() {
     <>
       <SafeAreaView style={styles.safeArView}>
       
-        <View
-          style={{
-            backgroundColor: 'white',
-            borderBottomColor: '#ccc',
-            borderBottomWidth: 1,
-          }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-              marginBottom: 5,
-            }}>
-            <View style={{backgroundColor:"white"}}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home');
-                }}>
-                <Image
-                  style={{height: 35, width: 35}}
-                  source={require('../../assets/img/back.png')}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={{color: 'black', fontSize: 22, fontWeight: 'bold'}}>
-                Rules
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Image
-                  source={require('../../assets/img/homedark.png')}
-                  tintColor={'balck'}
-                  style={{height: 25, width: 25}}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+      <View style={styles.Hview}>
+      <View style={styles.Hview1}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.THead}>
+          <Image
+            source={require('../../assets/img/arrows.png')}
+            resizeMode="contain"
+            style={{width: 20, height: 20}}
+          />
+        </TouchableOpacity>
+        <View style={styles.ViewMy}>
+          <Text style={styles.TextMy}>Rules</Text>
         </View>
+      </View>
+    </View>
         <View style={styles.safeArView}>
           <View style={styles.BBview}>
             <Text style={styles.textBr}>Brainbucks Quiz Rules and Terms :</Text>
           </View>
           <ScrollView
             style={styles.viewS}
-            contentContainerStyle={{paddingVertical: 10}}>
+            >
             <View style={styles.rulesv}>
               {/*<View style={{flex:0.10}}>
                   <Text>{index+1}.</Text>
                 </View>*/}
-              <View style={{flex: 1}}>
+              <View style={{flex: 1,backgroundColor:"white"}}>
                 <Text style={{color:"black",fontWeight:"600",fontSize:17}}>
                   Rules to know before participating in any quiz in Brain Bucks
                   App
@@ -235,6 +211,7 @@ export default function RulesRegulations() {
               alignItems: 'center',
               paddingVertical: 10,
               paddingHorizontal: 20,
+              backgroundColor:"white"
             }}>
             <TouchableOpacity>
               <Image
@@ -263,6 +240,7 @@ const styles = StyleSheet.create({
   BBview: {
     paddingHorizontal: 15,
     paddingVertical: 15,
+    backgroundColor:"white"
   },
   textBr: {
     fontSize: 20,
@@ -270,13 +248,14 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   viewS: {
-    backgroundColor: 'White',
-    height: 600,
+    backgroundColor:'White',
+    flex:1
   },
   rulesv: {
-    margin: 12,
+    padding: 12,
     flex: 1,
     flexDirection: 'row',
+    backgroundColor:"white"
   },
   textValue: {
     fontSize: 15,
@@ -308,4 +287,43 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-Medium',
     color: '#367CFF',
   },
-});
+
+  Hview: {
+    width: '100%',
+    height: 65,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+    backgroundColor:"white"
+  },
+  Hview1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  THead: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  ViewMy: {
+    flex: 0.8,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  TextMy: {
+    fontSize: 20,
+    fontFamily: 'WorkSans-SemiBold',
+    color: '#000',
+  },
+}
+
+)

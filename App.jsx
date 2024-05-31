@@ -76,6 +76,7 @@ import Share from './src/screens/Wallet/Share';
 import QuizCard from './src/components/QuizCard';
 import IdReducer from './src/context/IdReducer';
 import ViewPdf from './src/screens/Courses/ViewPdf';
+import AddExamss from './src/screens/Study/AddExamss';
 
 
 
@@ -177,6 +178,8 @@ function MyStack() {
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
       <Stack.Screen name="viewpdf" component={ViewPdf} />
+      <Stack.Screen name="addExamss" component={AddExamss} />
+
     </Stack.Navigator>
   );
 }

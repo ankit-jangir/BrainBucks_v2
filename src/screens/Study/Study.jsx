@@ -18,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
+import { useCurrentId } from '../../context/IdReducer';
 export default function Study({ navigation }) {
   const [material, setMaterial] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -28,6 +29,7 @@ export default function Study({ navigation }) {
   const [loading1, setLoading1] = useState(false);
   const [enrolledExams, setEnrolledExams] = useState([])
   const [selectedExams, setSelectedExams] = useState(new Set([]))
+  const {idState,dispatch}=useCurrentId()
   const study = new StudyApiService();
 
   async function addExams() {
@@ -46,6 +48,7 @@ export default function Study({ navigation }) {
         let nextOtherArr = otherExams.filter(item=>!selectedExams.has(item._id))
         setOtherExams(nextOtherArr)
         loadEnrolledExams()
+        
         setSelectedExams(new Set([]))
       }else{
         Toast.show({
@@ -124,6 +127,9 @@ export default function Study({ navigation }) {
 
   return (
     <>
+    <View style={{zIndex:1}}>
+    <Toast/>
+    </View>
       <View style={{ flex: 1 }}>
         <Modal
           animationType="slide"
@@ -288,7 +294,10 @@ export default function Study({ navigation }) {
                   enrolledExams.map((item) =>
                     <View key={item._id} style={styles.viewStudy}>
                       <TouchableOpacity
-                        onPress={() => navigation.navigate('StudyMaterials')}
+                        onPress={() =>
+                          {dispatch({type:'change',idState:{id:item._id}}), navigation.navigate('addExamss')}
+                          
+                          }
                         style={styles.TouchData}>
                         <View style={styles.DataView}>
                           <View style={styles.cateView}>

@@ -44,7 +44,9 @@ const Earned = () => {
 
   return (
     <>
+      <View style={{zIndex:1}}>
       <Toast />
+      </View>
       <ScrollView>
         <View style={styles.wrapper}>
           { 
