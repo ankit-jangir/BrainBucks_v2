@@ -15,6 +15,7 @@ import {DrawerActions, useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HTMLRender from 'react-native-render-html';
 import {useNavigation} from '@react-navigation/native';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 export default function DailyUpdate({navigation}) {
   const isFocused = useIsFocused();
@@ -118,40 +119,22 @@ export default function DailyUpdate({navigation}) {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.mainView}>
-        <View
-          style={{
-            backgroundColor: 'white',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 10,
-            marginBottom: 1,
-          }}>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Home');
-              }}>
-              <Image
-                style={{height: 35, width: 35}}
-                source={require('../../assets/img/back.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={styles.heading}>Daily Updates</Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image
-                source={require('../../assets/img/homedark.png')}
-                tintColor={'balck'}
-                style={{height: 25, width: 25}}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
+    <View style={styles.Hview}>
+    <View style={styles.Hview1}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.THead}>
+        <Image
+          source={require('../../assets/img/arrows.png')}
+          resizeMode="contain"
+          style={{width: 20, height: 20}}
+        />
+      </TouchableOpacity>
+      <View style={styles.ViewMy}>
+        <Text style={styles.TextMy}>Daily Update</Text>
       </View>
+    </View>
+  </View>
 
       {isLoad || isLoad1 ? (
         <ActivityIndicator size={28} color={'gray'} />
@@ -253,6 +236,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
   },
+  Hview: {
+    width: '100%',
+    height: 70,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+  },
+  Hview1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  THead: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  ViewMy: {
+    flex: 0.8,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  TextMy: {
+    fontSize: 20,
+    fontFamily: 'WorkSans-SemiBold',
+    color: '#000',
+  },
+
   arrow: {
     fontSize: 24,
     color: 'black',

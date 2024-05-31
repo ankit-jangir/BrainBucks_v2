@@ -9,7 +9,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import ReactNativeBlobUtil from 'react-native-blob-util'
 
 export default function ViewPdf({navigation, route}) {
-  let url = route.params.pdf.pdf_url;
+  console.log(route)
+  let url =  route.params.pdf.pdf_url ?  route.params.pdf.pdf_url :  route.params.pdf.filename;
   let pdf = route.params.pdf
   const [loading, setLoading] = useState(false)
 

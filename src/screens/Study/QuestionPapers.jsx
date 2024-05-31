@@ -19,6 +19,8 @@ import StudyApiService from '../../services/api/StudyApiService';
 import Toast from 'react-native-toast-message';
 import {useCurrentId} from '../../context/IdReducer';
 import NoDataFound from '../../components/NoDataFound';
+import { BLOBURL } from '../../config/urls';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 export default function QuestionPaperList({navigation, route}) {
   const pdf_id = route.params.pdf_id;
   const saved = new StudyApiService();
@@ -29,6 +31,42 @@ export default function QuestionPaperList({navigation, route}) {
   useEffect(() => {
     viewPdf();
   }, []);
+
+  const downloadPDF = (url, title) => {
+    Toast.show({
+      type:'info',
+      text1:"Downloading..."
+    })
+    const source = BLOBURL+ url;
+    let dirs = ReactNativeBlobUtil.fs.dirs;
+    ReactNativeBlobUtil.config({
+      fileCache: true,
+      appendExt: 'pdf',
+      path: `${dirs.DocumentDir}/${title}`,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        title:title,
+        description: 'Brainbucks pdf downloaded',
+        mime: 'application/pdf',
+      },
+    })
+      .fetch('GET', source)
+      .then((res)=>{
+        Toast.show({
+          type:'success',
+          text1:"Download Succesful"
+        })
+      })
+      .catch((err) => {
+        console.log('Pdf Download Error -> ', err)
+        Toast.show({
+          type:'error',
+          text1:"Download Failed."
+        })
+      }
+    )
+  };
 
   async function viewPdf() {
     setloading(true);
@@ -56,7 +94,7 @@ export default function QuestionPaperList({navigation, route}) {
 
   return (
     <>
-      <View>
+      <View style={{zIndex:1}}>
         <Toast />
       </View>
       <View style={StyleConstants.safeArView}>
@@ -112,14 +150,15 @@ export default function QuestionPaperList({navigation, route}) {
                           <Text style={styles.textQue}>{res.display_name}</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                          <TouchableOpacity style={{paddingRight: 15}}>
+                       
+                          <TouchableOpacity style={{paddingRight: 15}} onPress={()=>{navigation.navigate('viewpdf',{pdf: res})}} >
                             <Image
                               source={require('../../assets/img/pdf.png')}
                               style={{height: 30, width: 30}}
                               resizeMode="contain"
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity style={{paddingRight: 8}}>
+                          <TouchableOpacity style={{paddingRight: 8}} onPress={()=>{downloadPDF(res.filename, res.display_name)}}>
                             <Image
                               source={require('../../assets/img/downloading.png')}
                               style={{height: 30, width: 30}}

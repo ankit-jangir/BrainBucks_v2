@@ -42,7 +42,9 @@ const MyEarningSpent = () => {
 
   return (
     <>
-      <Toast />
+    <View style={{zIndex:1}}>
+    <Toast />
+    </View>
       <ScrollView>
         <View style={styles.wrapper}>
           {loading ? (

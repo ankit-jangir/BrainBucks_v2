@@ -64,7 +64,7 @@ const FreeTrivia = () => {
   ];
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <View>
+      <View style={{zIndex:1}}>
         <Toast />
       </View>
       <ScrollView>
