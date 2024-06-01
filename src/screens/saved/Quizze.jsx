@@ -71,7 +71,6 @@ const Quizze = () => {
           ) : (
             Quizes.map(res => {
               return (
-                <>
                   <QuizCard
                     key={res._id}
                     title={res.quiz_name}
@@ -83,9 +82,10 @@ const Quizze = () => {
                     totalslots={res.slots}
                     alotedslots={res.slot_aloted}
                     type={'active'}
-                    onPress={() => {}}
+                    onPress={() => {
+                      navigation.navigate('RulesofParticipation', { id: res._id });
+                    }}
                   />
-                </>
               );
             })
           )}

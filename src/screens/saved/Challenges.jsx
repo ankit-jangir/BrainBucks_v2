@@ -6,8 +6,10 @@ import Toast from 'react-native-toast-message';
 import {ActivityIndicator} from 'react-native';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import { useNavigation } from '@react-navigation/native';
 
 const Challenges = () => {
+  const navigation = useNavigation()
   const saved = new SavedApiService();
   const [loading, setloading] = useState();
   const [Enrolled, setEnrollled] = useState([]);
@@ -56,7 +58,6 @@ const Challenges = () => {
         ) : (
           Enrolled.map(res => {
             return (
-              <>
                 <QuizCard
                   key={res._id}
                   title={res.quiz_name}
@@ -67,9 +68,10 @@ const Challenges = () => {
                   totalslots={res.slots}
                   alotedslots={res.slot_aloted}
                   type={'enrolled'}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.navigate('StartExam', { id: res._id });
+                  }}
                 />
-              </>
             );
           })
         )}
