@@ -50,18 +50,18 @@ export default function Home({ navigation }) {
   }
 
   const onRefresh = () => {
-    setRefresh(true);
-    setTimeout(() => setRefresh(false), 3000);
+    getHomeData(Toast, setRefresh, setHomeData)
   };
 
 
 
   return (
     <>
+      <View style={{ zIndex: 100 }}>
+        <Toast />
+      </View>
       <SafeAreaView style={StyleConstants.safeArView}>
-        <View style={{ zIndex: 100 }}>
-          <Toast />
-        </View>
+
         <View>
           <SearchBar />
         </View>
@@ -72,7 +72,7 @@ export default function Home({ navigation }) {
               <Text style={{ flex: 0.2, fontSize: 20, color: ColorsConstant.Theme, textAlign: 'center' }}>Loading...</Text>
             </View>
             :
-            <ScrollView>
+            <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />}>
               <View style={{ marginBottom: 240 }}>
                 <View style={styles.carouselContainer}>
                   <Carousel
@@ -84,7 +84,7 @@ export default function Home({ navigation }) {
                     scrollAnimationDuration={1000}
                     renderItem={({ item }) => (
                       <View style={styles.carouselItem}>
-                        <Image source={{uri: BLOBURL+item}} style={styles.carouselImage} />
+                        <Image source={{ uri: BLOBURL + item }} style={styles.carouselImage} />
                       </View>
                     )}
                   />
@@ -116,7 +116,7 @@ export default function Home({ navigation }) {
                   {
                     (homeData?.activequizes?.length === 0 || Object.keys(homeData).length === 0)
                       ?
-                      <NoDataFound scale={0.7} message={"No Active Quizes Currently"} action={loadData} actionText={"Reload"} />
+                      <NoDataFound scale={0.7} message={"No Active Quizes Currently"} action={onRefresh} actionText={"Reload"} />
                       :
                       <FlatList
                         data={homeData.activequizes}
@@ -137,7 +137,7 @@ export default function Home({ navigation }) {
                               totalslots={item.slots}
                               type={'active'}
                               onPress={() => {
-                                navigation.navigate('RulesofParticipation', {id: item._id});
+                                navigation.navigate('RulesofParticipation', { id: item._id });
                               }}
                             />
                           </View>
@@ -186,7 +186,7 @@ export default function Home({ navigation }) {
                   {
                     (homeData?.triviaquizes?.length === 0 || Object.keys(homeData).length === 0)
                       ?
-                      <NoDataFound scale={0.7} message={"No Trivia Quizes Currently"} action={loadData} actionText={"Reload"} />
+                      <NoDataFound scale={0.7} message={"No Trivia Quizes Currently"} action={onRefresh} actionText={"Reload"} />
                       :
                       <FlatList
                         data={homeData.triviaquizes}
@@ -201,14 +201,14 @@ export default function Home({ navigation }) {
                               prize={item.reward}
                               fees={item.entryFees}
                               title={item.quiz_name}
-                              image={{uri: BLOBURL+item.banner}}
+                              image={{ uri: BLOBURL + item.banner }}
                               alotedslots={item.slot_aloted}
                               totalslots={item.slots}
                               type={'trivia'}
                               date={item.sch_time}
                               minper={item.min_reward_per}
                               onPress={() => {
-                                navigation.navigate('FreeRulesParticipation',{id: item._id})
+                                navigation.navigate('FreeRulesParticipation', { id: item._id })
                               }}
                             />
                           </View>
@@ -243,39 +243,39 @@ export default function Home({ navigation }) {
                 </View>
 
                 {
-                    (homeData?.exams?.length === 0 || Object.keys(homeData).length === 0)
-                      ?
-                      <NoDataFound scale={0.7} message={"No Exam found"} action={loadData} actionText={"Reload"} />
-                      :
-                <FlatList
-                  data={homeData.exams}
-                  keyExtractor={item => item.id.toString()}
-                  renderItem={({ item }) => (
-                    <>
-                      <View style={styles.ExamView}>
-                        <TouchableOpacity
-                          onPress={() => navigation.navigate('MyExamQuizzes')}
-                          style={styles.TouchExam}>
-                          <View style={styles.ActiveView}>
-                            <Image source={{uri: BLOBURL+item.image}} style={{ width: 40, height: 40, borderRadius: 100 }} />
+                  (homeData?.exams?.length === 0 || Object.keys(homeData).length === 0)
+                    ?
+                    <NoDataFound scale={0.7} message={"No Exam found"} action={onRefresh} actionText={"Reload"} />
+                    :
+                    <FlatList
+                      data={homeData.exams}
+                      keyExtractor={item => item.id.toString()}
+                      renderItem={({ item }) => (
+                        <>
+                          <View style={styles.ExamView}>
+                            <TouchableOpacity
+                              onPress={() => navigation.navigate('MyExamQuizzes')}
+                              style={styles.TouchExam}>
+                              <View style={styles.ActiveView}>
+                                <Image source={{ uri: BLOBURL + item.image }} style={{ width: 40, height: 40, borderRadius: 100 }} />
+                              </View>
+                              <View style={styles.ActiveView}>
+                                <Text style={styles.TextActive}>{item.category_name}</Text>
+                              </View>
+                              <View style={styles.ActiveView}>
+                                <Text style={[styles.TextActive, { color: 'blue' }]}>Go to exam</Text>
+                              </View>
+                            </TouchableOpacity>
                           </View>
-                          <View style={styles.ActiveView}>
-                            <Text style={styles.TextActive}>{item.category_name}</Text>
-                          </View>
-                          <View style={styles.ActiveView}>
-                            <Text style={[styles.TextActive, {color:'blue'}]}>Go to exam</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    </>
-                  )}
-                  horizontal
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  // snapToInterval={width}
-                  snapToAlignment="center"
-                  decelerationRate="fast"
-                />
+                        </>
+                      )}
+                      horizontal
+                      pagingEnabled
+                      showsHorizontalScrollIndicator={false}
+                      // snapToInterval={width}
+                      snapToAlignment="center"
+                      decelerationRate="fast"
+                    />
                 }
                 {/* **********************************Enrolledquizes******************************* */}
                 <View style={styles.LiveView}>
@@ -295,43 +295,43 @@ export default function Home({ navigation }) {
                   </View>
                 </View>
                 <View style={{ flex: 1 }}>
-                {
+                  {
                     (homeData?.enrolledquizes?.length === 0 || Object.keys(homeData).length === 0)
                       ?
-                      <NoDataFound scale={0.7} message={"Not Enrolled in any quiz yet"} action={loadData} actionText={"Reload"} />
+                      <NoDataFound scale={0.7} message={"Not Enrolled in any quiz yet"} action={onRefresh} actionText={"Reload"} />
                       :
-                  <FlatList
-                    data={homeData.enrolledquizes}
-                    keyExtractor={item => item._id.toString()}
-                    renderItem={({ item }) => (
-                      <View
-                        style={{
-                          width: CARD_WIDTH,
-                          margin: CARD_MARGIN,
-                        }}>
-                        <QuizCard
-                          prize={item.reward}
-                          fees={item.entryFees}
-                          title={item.quiz_name}
-                          date={item.sch_time}
-                          image={{uri: BLOBURL+item.banner}}
-                          alotedslots={item.slot_aloted}
-                          totalslots={item.slots}
-                          type={'enrolled'}
-                          onPress={() => {
-                            navigation.navigate('StartExam', {id: item._id});
-                          }}
-                        />
-                      </View>
-                    )}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    // snapToInterval={width}
-                    snapToAlignment="center"
-                    decelerationRate="fast"
-                    contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
-                  />
+                      <FlatList
+                        data={homeData.enrolledquizes}
+                        keyExtractor={item => item._id.toString()}
+                        renderItem={({ item }) => (
+                          <View
+                            style={{
+                              width: CARD_WIDTH,
+                              margin: CARD_MARGIN,
+                            }}>
+                            <QuizCard
+                              prize={item.reward}
+                              fees={item.entryFees}
+                              title={item.quiz_name}
+                              date={item.sch_time}
+                              image={{ uri: BLOBURL + item.banner }}
+                              alotedslots={item.slot_aloted}
+                              totalslots={item.slots}
+                              type={'enrolled'}
+                              onPress={() => {
+                                navigation.navigate('StartExam', { id: item._id });
+                              }}
+                            />
+                          </View>
+                        )}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        // snapToInterval={width}
+                        snapToAlignment="center"
+                        decelerationRate="fast"
+                        contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
+                      />
                   }
                 </View>
               </View>

@@ -38,7 +38,6 @@ export default function Rewards({ rewards }) {
     useEffect(() => {
         quizServ.getActiveQuizRewards(quizState.id).then(res => {
             if (res) {
-                console.log(res);
                 setData(res.send_rewards)
             }
         }).catch((err) => {

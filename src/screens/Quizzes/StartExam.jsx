@@ -20,10 +20,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Text } from '../../utils/Translate';
 import styles from '../../styles/StartExam.styles';
 import { useQuiz } from '../../context/QuizPlayReducer';
-import { getactiveDetails } from '../../controllers/ActiveQuizController';
+import { getactiveDetails, joinactiveQuiz } from '../../controllers/ActiveQuizController';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { LinearProgress } from '@rneui/themed';
+import basic from '../../services/BasicServices';
+import { StackActions } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -32,19 +34,57 @@ export default function StartExam({ navigation, route }) {
   const [loading, setLoading] = useState(false)
   const { quizState, dispatch } = useQuiz()
   const [data, setData] = useState([])
-  const [rewards, setRewards] = useState([])
-  const [participants, setParticipants] = useState([])
-  const [rulesList, setRulesList] = useState([])
   let id = route.params.id
-
+  let timeoutId = useRef()
+  let remainingTime = 1000;
 
   useEffect(() => {
     getactiveDetails(id, Toast, setData, setLoading, dispatch)
   }, [])
 
+
+  async function joinQuiz() {
+    let res = await joinactiveQuiz(id, Toast, setLoading, dispatch)
+    if (res) {
+      navigation.dispatch(
+        StackActions.replace("ActiveQuizzJoinAnimation")
+      )
+    }
+  }
+
+  try {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current)
+    }
+    remainingTime = basic.getDateFromSchTime(data?.sch_time) - Date.now()
+    if (remainingTime > 0) {
+      timeoutId.current = setTimeout(() => {
+        console.log("Refreshing");
+        setLoading(true)
+        setLoading(false);
+      }, remainingTime + 200)
+    }
+  }
+  catch (err) {
+    console.log("ERROR IN DATE CONVERSION: ", err);
+  }
+
+  function next() {
+    if (remainingTime > 0) {
+      Toast.show({
+        type: "info",
+        text1: `Wait till ${data?.sch_time}`
+      })
+      return;
+    }
+
+    joinQuiz()
+
+  }
+
   return (
     <>
-    <View style={{zIndex:20}}><Toast/></View>
+      <View style={{ zIndex: 20 }}><Toast /></View>
       {
         loading
           ?
@@ -77,7 +117,7 @@ export default function StartExam({ navigation, route }) {
                 <View style={styles.categoryView}>
                   <Text
                     style={[styles.categoryText, { marginTop: 10, color: '#8A8A8A' }]}>
-                    category_name
+                    {data?.quiz_name}
                   </Text>
                 </View>
               </View>
@@ -94,7 +134,7 @@ export default function StartExam({ navigation, route }) {
                         <Text style={styles.EnteryFeesBText}>{data?.entryFees}</Text>
                       </View>
                     </View>
-                    <View style={styles.EnteryV3}>
+                    {/* <View style={styles.EnteryV3}>
                       <Text style={[styles.EnteryFeesText]}>First Prize</Text>
                       <View style={styles.EnteryV2}>
                         <Image
@@ -103,7 +143,7 @@ export default function StartExam({ navigation, route }) {
                         />
                         <Text style={styles.EnteryFeesBText}>dothis</Text>
                       </View>
-                    </View>
+                    </View> */}
                   </View>
                   <View style={styles.DateV}>
                     <View style={styles.DateV1}>
@@ -149,15 +189,13 @@ export default function StartExam({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.StartExamV}>
-                <TouchableOpacity onPress={() => {
-                  navigation.navigate('InsideLobby')
-                }} style={{ width: '80%' }}>
+                <TouchableOpacity onPress={next} style={{ width: '80%' }}>
                   <LinearGradient
                     start={{ x: 0.0, y: 0.25 }}
                     end={{ x: 0.6, y: 2.0 }}
                     colors={['#54ACFD', '#2289E7']}
                     style={styles.StartExamLiner}>
-                    <Text style={styles.LobbtText}>Join Now</Text>
+                    <Text style={styles.LobbtText}>{remainingTime > 0 ? data?.sch_time : "Join Now"}</Text>
                   </LinearGradient>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -180,8 +218,6 @@ export default function StartExam({ navigation, route }) {
             <View style={{ flex: 1 }}>
               <Roomsrules
                 rulesList={data.rules ? data?.rules : []}
-                particpants={participants}
-                rewards={rewards}
               />
             </View>
           </View>
@@ -190,7 +226,7 @@ export default function StartExam({ navigation, route }) {
   );
 }
 
-const Roomsrules = ({ particpants, rewards, rulesList }) => {
+const Roomsrules = ({ rulesList }) => {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator

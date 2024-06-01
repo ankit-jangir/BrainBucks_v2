@@ -3,6 +3,7 @@ import { View, Text, SafeAreaView, Animated, Easing, Image, ImageBackground,Styl
 import LinearGradient from 'react-native-linear-gradient';
 import { ColorsConstant } from "../../constants/Colors.constant";
 import { StyleConstants } from "../../constants/Style.constant";
+import { StackActions } from '@react-navigation/native';
 
 export default function ActiveQuizzJoinAnimation({navigation,}) {
     const [state, setState] = useState(0);
@@ -14,13 +15,15 @@ export default function ActiveQuizzJoinAnimation({navigation,}) {
             }, 1500);
         }
 
-        if(state == 2){
-            navigation.navigate('QuestionsPaper',)
+        if(state == 3){
+          navigation.dispatch(
+            StackActions.replace("QuestionsPaper")
+          )
         }
 
     useEffect(() =>{
         setClick(true);
-    },)
+    },[])
 
     const translation = useRef(
         new Animated.Value(0)

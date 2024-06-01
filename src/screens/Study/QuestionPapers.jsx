@@ -3,7 +3,6 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
-  Text as BBText,
   TextInput,
   RefreshControl,
   ActivityIndicator,

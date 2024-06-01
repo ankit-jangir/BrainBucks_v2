@@ -1,128 +1,199 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal,StatusBar} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
+import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../controllers/ActiveQuizController';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import Toast from 'react-native-toast-message';
 
 const ColorsConstant = {
   White: '#FFFFFF',
   Black: '#000000'
 };
 
-export default function QuizQuestionScreen({ navigation }) {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible1, setModalVisible1] = useState(false);
-  
-    const [timerCount, setTimerCount] = useState(30);
-    const [minute, setMinute] = useState(6);
-    const [lan, setLan] = useState(false);
-    const [lanLoad, setLanLoad] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // State for the current question index
-      const [qState, setQState] = useState(0);
-    const data = [
-      {
-        question: "Which of the following football players went crying out of the field in FIFA 2022 Quarter Finals?",
-        options: [
-          "Christiano Ronaldo",
-          "M Bappe",
-          "Lionell Andress Messi",
-          "Neymar Junior"
-        ],
-        is_translate: 1,
-        lan: "en",
-        ans: -1
+export default function QuestionsPaper({ navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
+  const [timerCount, setTimerCount] = useState(30);
+  const [minute, setMinute] = useState(6);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
+  const [selectedOption, setSelectedOption] = useState(0)
+  const { quizState, dispatch } = useQuiz()
+  const [submitData, setSubmitData] = useState({})
+
+  let question = quizState.question
+
+  useEffect(() => {
+    getCurrentQuestion(currentQuestionIndex)
+  }, [currentQuestionIndex])
+
+  async function getCurrentQuestion(page) {
+    await getactiveQuestion(quizState.id, page, Toast, dispatch, setSelectedOption)
+  }
+
+  useEffect(() => {
+    setMinute(parseInt(quizState.time / 60))
+    setTimerCount(parseInt(quizState.time % 60))
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timerCount > 0) {
+        setTimerCount(timerCount - 1);
+      } else if (minute > 0) {
+        setMinute(minute - 1);
+        setTimerCount(59);
+      } else {
+
       }
-    ];
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        if (timerCount > 0) {
-          setTimerCount(timerCount - 1);
-        } else if (minute > 0) {
-          setMinute(minute - 1);
-          setTimerCount(59);
-        }
-      }, 1000);
-  
-      return () => clearInterval(interval);
-    }, [timerCount, minute]);
-  
-    const handleOptionPress = (optionIndex) => {
-      setCurrentQuestionIndex(optionIndex);
-    };
-  
-    const handleSaveNext = () => {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    };
-  
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timerCount, minute]);
+
+  const handleOptionPress = (optionIndex) => {
+    setSelectedOption(optionIndex + 1);
+  };
+
+  const handleSaveNext = () => {
+    if (currentQuestionIndex < quizState.total) {
+      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast).then(() =>
+        setCurrentQuestionIndex(currentQuestionIndex + 1)
+      )
+    } else {
+      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast)
+      setModalVisible(true)
+    }
+  }
+
+  const handleClear = () => {
+    setSelectedOption(0)
+    updateAnswer(quizState.id, currentQuestionIndex, 0, Toast)
+  }
+
+  const handleNext = () => {
+    if (currentQuestionIndex < quizState.total) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1)
+    }
+  }
+
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 1) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1)
+    }
+  }
+
+  const handleSubmit = () => {
+    let time = parseInt(quizState.time - minute * 60 - timerCount)
+    submitactiveQuiz(quizState.id, time, Toast).then((r) => {
+      if (r) {
+        setSubmitData(r.arr)
+        setModalVisible1(true)
+        setModalVisible(false)
+      }
+    })
+  }
+
+
 
   return (
     <>
-    <View style={styles.container}>
-      <StatusBar
-        barStyle={"white-content"}
-        translucent={false}
-        backgroundColor={"#2E2E2E"}
-      />
-      <View style={styles.quitView1}>
-        <View style={styles.quitView2}>
-          <TouchableOpacity
-            onPress={() => setModalVisible(!modalVisible)}
-            style={styles.quitView3}
-          >
-            <Text style={styles.textQuite}>X  Quit</Text>
+      <View style={styles.container}>
+        <View style={{ zIndex: 200 }}><Toast /></View>
+        <StatusBar
+          barStyle={"white-content"}
+          translucent={false}
+          backgroundColor={"#2E2E2E"}
+        />
+        <View style={styles.quitView1}>
+          <View style={styles.quitView2}>
+            <TouchableOpacity
+              onPress={() => setModalVisible(!modalVisible)}
+              style={styles.quitView3}
+            >
+              <Text style={styles.textQuite}>X  Quit</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#2E2E2E",
+          }}>
+            {/* Placeholder for score */}
+            <Text style={{ color: "#fff", fontFamily: "Work Sans", fontSize: 14, fontWeight: '500' }}>Question {currentQuestionIndex}</Text>
+          </View>
+
+          <View style={styles.Daview}>
+            <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
+          </View>
+        </View>
+
+        <View style={styles.quitView}>
+          <TouchableOpacity onPress={handlePrevious}>
+            <View style={styles.quitView2}>
+              <View style={styles.Daview}>
+                <Image source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+                <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, 1 !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Previous</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <View style={{}}>
+            {/* Placeholder for score */}
+            <Text style={{ color: "#000", fontFamily: "Work Sans", fontSize: 14, fontWeight: '500' }}>{currentQuestionIndex}/{quizState.total}</Text>
+          </View>
+          <TouchableOpacity onPress={handleNext}>
+            <View style={styles.Daview}>
+              <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, quizState.total !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Next</Text>
+              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+            </View>
           </TouchableOpacity>
         </View>
-        <View style={{
-          backgroundColor:"#2E2E2E" ,
-        }}>
-          {/* Placeholder for score */}
-          <Text style={{color:"#fff",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>Score 00</Text>
-        </View>
 
-        <View style={styles.Daview}>
-          <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
+
+
+        <ScrollView>
+        <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
+          {
+            question.is_ques_img
+              ?
+              <>
+              <Text key={question.question} style={styles.questionText}>
+                  {question?.question}
+              </Text>
+
+                <View style={{width:"100%", height:180}}>
+                <Image style={{width:"100%", height:150, objectFit:'contain'}} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
+                </View>
+              </>
+              :
+              <Text key={question.question} style={styles.questionText}>
+                {question?.question}
+              </Text>
+          }
+          {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
+            <TouchableOpacity
+              key={option + "" + index}
+              style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
+              onPress={() => handleOptionPress(index)}
+            >
+              {
+                question.is_opt_img
+                  ?
+                  <>
+                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
+                    <Image style={{width:'100%', objectFit:'contain', height:150}} resizeMode='contain' source={{ uri: BLOBURL + option }} />
+                  </>
+                  :
+                  <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
+              }
+            </TouchableOpacity>
+          ))}
         </View>
+        </ScrollView>
+
+
       </View>
-
-      <View style={styles.quitView}>
-        <View style={styles.quitView2}>
-        <View style={styles.Daview}>
-        <Image source={require('../../assets/img/backcopy.png')} style={{width:20,height:20,}}/>
-        <Text style={{color:'#000',fontFamily:'inter',fontWeight:"bold",fontSize:14}}>Previous</Text>
-        </View>
-        </View>
-        <View style={{ }}>
-          {/* Placeholder for score */}
-          <Text style={{color:"#000",fontFamily:"Work Sans",fontSize:14,fontWeight:'500'}}>10/19</Text>
-        </View>
-
-        <View style={styles.Daview}>
-        <Text style={{color:'#000',fontFamily:'inter',fontWeight:"bold"}}>Next</Text>
-        <Image source={require('../../assets/img/right-arr.png')} style={{width:20,height:20,}}/>
-        </View>
-      </View>
-
-      
-      <View style={styles.questionContainer}>
-        <Text style={styles.questionText}>
-          {data[qState].question}
-        </Text>
-        {data[qState].options.map((option, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.optionButton, qState === index && styles.selectedOption]}
-            onPress={() => handleOptionPress(index)}
-          >
-            <Text style={styles.optionText}>{String.fromCharCode(97 + index)}) {option}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      
-    </View>
-    <View style={styles.navigationContainer}>
-        <TouchableOpacity style={styles.navButton}>
-          <Text style={styles.navButtonText}>Skip</Text>
+      <View style={styles.navigationContainer}>
+        <TouchableOpacity onPress={handleClear} style={styles.navButton}>
+          <Text style={styles.navButtonText}>Clear Response</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navButton} onPress={handleSaveNext}>
           <Text style={styles.navButtonText}>Save & Next</Text>
@@ -144,7 +215,7 @@ export default function QuizQuestionScreen({ navigation }) {
         >
           <View style={styles.mView}>
             <Image
-              source={require("../../assets/img/sademoji.png")}
+              source={require("../../assets/img/file.png")}
               style={styles.emoji}
             />
             <View style={styles.viewQ}>
@@ -154,7 +225,7 @@ export default function QuizQuestionScreen({ navigation }) {
             <View style={styles.yesView}>
               <View style={styles.yesView1}>
                 <TouchableOpacity
-                  onPress={() =>   {setModalVisible1(true),setModalVisible(false)}}
+                  onPress={handleSubmit}
                   style={styles.yesView2}
                 >
                   <Text style={styles.textYes}>Yes</Text>
@@ -182,33 +253,33 @@ export default function QuizQuestionScreen({ navigation }) {
 
 
       <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible1}
-                >
-                <TouchableOpacity style={styles.RulesTouchable2}>
-                    <View style={styles.RulesPV2} >
-                        <View style={styles.RulesPV3}>
-                            <Text style={styles.RulesText} >Congratulations !!</Text>
-                            <LottieView
-                                autoPlay
-                                style={styles.RulesLott}
-                                source={require('../../assets/img/upvote.json')}
-                            />
-                            <Text style={styles.RegisteredT} >Quizze Successfully Submit ! </Text>
-                            <View style={styles.RegisteredV} >
-                                <View style={styles.RulesName}>
-                                {/* {console.log(message,"MESSAGE")} */}
-                                    <Text style={{color:'#000',fontFamily:'inter',textAlign:'center',}}>message</Text>
-                                </View>
-                            </View>
-                            <TouchableOpacity onPress={() => { navigation.navigate('Home'),setModalVisible1(false)}} style={styles.continueTouchable} >
-                                <Text style={styles.continueText}>Back To Home</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            </Modal>
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+      >
+        <TouchableOpacity style={styles.RulesTouchable2}>
+          <View style={styles.RulesPV2} >
+            <View style={styles.RulesPV3}>
+              <Text style={styles.RulesText} >Congratulations !!</Text>
+              <LottieView
+                autoPlay
+                style={styles.RulesLott}
+                source={require('../../assets/img/upvote.json')}
+              />
+              <Text style={styles.RegisteredT} >Quizze Successfully Submitted ! </Text>
+              <View style={styles.RegisteredV} >
+                <View style={styles.RulesName}>
+                  {/* {console.log(message,"MESSAGE")} */}
+                  <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at "+submitData.msg : "soon"}</Text>
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => { navigation.navigate('Home'), setModalVisible1(false) }} style={styles.continueTouchable} >
+                <Text style={styles.continueText}>Back To Home</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </>
   );
 }
@@ -216,40 +287,40 @@ export default function QuizQuestionScreen({ navigation }) {
 const styles = StyleSheet.create({
   continueText:
   {
-      fontFamily: 'WorkSans-Medium',
-      fontSize: 20,
-      color: "#2188E7"
+    fontFamily: 'WorkSans-Medium',
+    fontSize: 20,
+    color: "#2188E7"
   },
   continueText1:
   {
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 14,
-      color: "#DC1111",
-      paddingTop: 8
+    fontFamily: 'WorkSans-Regular',
+    fontSize: 14,
+    color: "#DC1111",
+    paddingTop: 8
   },
   continueText1:
   {
-      fontFamily: 'WorkSans-Regular',
-      fontSize: 14,
-      color: "#DC1111",
-      paddingTop: 8
+    fontFamily: 'WorkSans-Regular',
+    fontSize: 14,
+    color: "#DC1111",
+    paddingTop: 8
   },
   continueTouchable:
   {
-      width: '100%',
-      height: 60,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#EFF5FF",
-      borderRadius: 10,
-      marginTop: 30
+    width: '100%',
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EFF5FF",
+    borderRadius: 10,
+    marginTop: 30
   },
   NameText:
   {
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 18,
-      textAlign:'center'
+    fontFamily: 'WorkSans-SemiBold',
+    fontSize: 18,
+    textAlign: 'center'
   },
   modalTouh: {
     flex: 1,
@@ -282,7 +353,7 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans-Regular",
     fontSize: 20,
     textAlign: "center",
-    color:'#000'
+    color: '#000'
   },
   yesView: {
     width: "100%",
@@ -375,95 +446,95 @@ const styles = StyleSheet.create({
   },
   RulesTouchable:
   {
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 0,
-      borderWidth: 1,
-      borderRadius: 100,
-      width: 50,
-      height: 50,
-      borderColor: ColorsConstant.LightGray
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 0,
+    borderWidth: 1,
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightGray
   },
   RulesTouchable1:
   {
-      justifyContent: 'center',
-      alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   RulesPText:
   {
-      fontFamily: 'WorkSans-SemiBold',
-      fontSize: 22,
-      paddingLeft: 10
+    fontFamily: 'WorkSans-SemiBold',
+    fontSize: 22,
+    paddingLeft: 10
   },
   RulesTouchable2:
   {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 0,
-      backgroundColor: 'rgba(0,0,0,0.2)',
-      paddingHorizontal: 20
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 0,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    paddingHorizontal: 20
   },
   RulesPV2:
   {
-      width: "100%",
-      height: 400,
-      margin: 20,
-      borderRadius: 10,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: ColorsConstant.Black,
-      backgroundColor: "#fff",
-      paddingHorizontal: 20
+    width: "100%",
+    height: 400,
+    margin: 20,
+    borderRadius: 10,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: ColorsConstant.Black,
+    backgroundColor: "#fff",
+    paddingHorizontal: 20
   },
   RulesPV3:
   {
-      width: "100%",
-      flex: 1,
-      alignItems: "center"
+    width: "100%",
+    flex: 1,
+    alignItems: "center"
   },
   RulesText:
   {
-      fontFamily: "WorkSans-SemiBold",
-      fontSize: 24,
-      color:'#000'
+    fontFamily: "WorkSans-SemiBold",
+    fontSize: 24,
+    color: '#000'
   },
   RulesLott:
   {
-      width: 150,
-      height: 150,
-      backgroundColor: 'transparent',
+    width: 150,
+    height: 150,
+    backgroundColor: 'transparent',
   },
   RegisteredT:
   {
-      fontFamily: "WorkSans-Medium",
-      fontSize: 16,
-      color:'#000'
+    fontFamily: "WorkSans-Medium",
+    fontSize: 16,
+    color: '#000'
   },
   RegisteredV:
   {
-      flexDirection: "row",
-      justifyContent: 'space-around',
-      alignItems: "center",
+    flexDirection: "row",
+    justifyContent: 'space-around',
+    alignItems: "center",
   },
   RegisteredV1:
   {
-      width: 50,
-      height: 50,
-      alignItems: 'center',
-      justifyContent: "center",
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: "center",
   },
   RegisteredImg:
   {
-      width: 35,
-      height: 35
+    width: 35,
+    height: 35
   },
   RulesName:
   {
-      width: "100%",
-      // height:80,
-      // margin:"auto",
-      // marginRight:25
+    width: "100%",
+    // height:80,
+    // margin:"auto",
+    // marginRight:25
   },
   container: {
     flex: 1,
@@ -473,17 +544,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor:'#2E2E2E',
-    paddingHorizontal:20
+    backgroundColor: '#2E2E2E',
+    paddingHorizontal: 20
 
   },
   quitView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor:'rgba(243, 243, 243, 1)',
-    paddingHorizontal:20,
-    paddingVertical:15
+    backgroundColor: 'rgba(243, 243, 243, 1)',
+    paddingHorizontal: 20,
+    paddingVertical: 15
 
   },
   quitView2: {
@@ -506,7 +577,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,
-    color:"#fff"
+    color: "#fff"
 
   },
   translateButton: {
@@ -528,14 +599,14 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     marginBottom: 20,
-    marginHorizontal:20,
-    marginTop:25
+    marginHorizontal: 20,
+    marginTop: 25
   },
   questionText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
-    color:"#000"
+    color: "#000"
 
   },
   optionButton: {
@@ -550,13 +621,13 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color:"#000"
+    color: "#000"
 
   },
   navigationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom:10
+    marginBottom: 10
   },
   navButton: {
     flex: 1,

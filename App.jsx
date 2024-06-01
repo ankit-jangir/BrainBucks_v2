@@ -56,7 +56,6 @@ import Rewards from './src/screens/Quizzes/Rewards';
 import Particpants from './src/screens/Quizzes/Particpants';
 import MyHistory from './src/screens/Sidebar/MyHistory';
 import InsideLobby from './src/screens/Quizzes/InsideLobby';
-import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
 import ActiveQuizzJoinAnimation from './src/screens/Quizzes/ActiveQuizzJoinAnimation';
 import FreeTriviaStarExam from './src/screens/Freetrivia/FreeTriviaStarExam';
 import FreeRulesParticipation from './src/screens/Freetrivia/FreeRulesParticipation';
@@ -82,6 +81,7 @@ import IdReducer from './src/context/IdReducer';
 import ViewPdf from './src/screens/Courses/ViewPdf';
 import QuizPlayReducer from './src/context/QuizPlayReducer';
 import AddExamss from './src/screens/Study/AddExamss';
+import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
 
 
 
@@ -143,6 +143,7 @@ function MyStack() {
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
       <Stack.Screen name="paymentpopup" component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
+      <Stack.Screen name='QuestionsPaper' component={QuestionsPaper}/>
       <Stack.Screen
         name="RulesofParticipation"
         component={RulesofParticipation}
@@ -153,7 +154,6 @@ function MyStack() {
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
-      <Stack.Screen name="QuestionsPaper" component={QuestionsPaper} />
       <Stack.Screen
         name="ActiveQuizzJoinAnimation"
         component={ActiveQuizzJoinAnimation}
