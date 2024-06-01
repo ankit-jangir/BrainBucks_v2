@@ -43,18 +43,63 @@ function triviaGetQuestionHelper(id, page) {
         return res
     }
 }
-export async function getTriviaQuestion(id, page, toast, dispatch) {
+export async function getTriviaQuestion(id, page, toast, dispatch, setSelectedOption) {
     let res = await BasicServices.apiTryCatch(triviaGetQuestionHelper(id, page), toast)
-    if (res) {
+    if (res && res.question) {
         dispatch({
             type:'change',
             state:{
             question:res.question,
             ans:res.selected_ans
         }})
+
+        setSelectedOption(res.selected_ans)
+        
     }
 }
 
-export async function submitTriviaQuiz() { }
-export async function getResultOfTriviaQuiz() { }
-export async function viewScoreCardOfTriviaQuiz() { }
+function triviaUpdateAnswerHelper(id, page, ans){
+    return async ()=>{
+        let res = await triviaServ.updateAnswer(id, page, ans)
+        return res
+    }
+}
+
+export async function updateAnswer(id, page, ans, toast){
+    let res = await BasicServices.apiTryCatch(triviaUpdateAnswerHelper(id, page, ans), toast)
+    return res
+}
+
+function triviaSubmitHelper(id, time){
+    return async ()=>{
+        let res = await triviaServ.submitTriviaQuiz(id, time)
+        return res
+    }
+}
+export async function submitTriviaQuiz(id, time, toast) { 
+    let res = await BasicServices.apiTryCatch(triviaSubmitHelper(id, time), toast)
+    return res
+}
+
+function triviaResultHelper(id){
+    return async () =>{
+        let res = await triviaServ.resultTriviaQuiz(id)
+        return res;
+    }
+}
+export async function getResultOfTriviaQuiz(id, toast) {
+    let res = await BasicServices.apiTryCatch(triviaResultHelper(id),toast)
+    return res;
+ }
+
+
+ function triviaScoreboardHelper(id){
+    return async () =>{
+        let res = await triviaServ.scoreboardTriviaQuiz(id)
+        return res;
+    }
+}
+export async function viewScoreCardOfTriviaQuiz(id, toast) {
+    let res = await BasicServices.apiTryCatch(triviaScoreboardHelper(id), toast )
+    return res
+}

@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
+import { useIsFocused } from '@react-navigation/native';
+import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import Toast from 'react-native-toast-message';
 
 export default function Participants({ participants }) {
-    const data = [
-        {
-            name: 'vads',
-        },
-        {
-            name: 'Yogesh ',
-        },
-        {
-            name: 'kaju',
-        },
-        {
-            name: 'sonu',
-        },
-    ]
+  const focus = useIsFocused()
+  const quizServ = new ActiveQuizApiService()
+  const {quizState, dispatch} = useQuiz()
+  const [data, setData] = useState([])
+
+  useEffect(()=>{
+    quizServ.getActiveQuizParticipants(quizState.id).then(res=>{
+      if(res){
+        setData(res.participantNames)
+      }
+    }).catch((err)=>{
+      console.log("Error in fetching participants: ",err);
+      Toast.show({type:"error", text1:"Something went wrong"})
+    })
+  },[focus])
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -34,7 +40,7 @@ export default function Participants({ participants }) {
 const ParticipantItem = ({ data, index }) => {
   return (
     <View style={styles.participantContainer}>
-      <Text style={styles.participantText}>{index + 1}. {data.name}</Text>
+      <Text style={styles.participantText}>{index + 1}. {data}</Text>
     </View>
   );
 };

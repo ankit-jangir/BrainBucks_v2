@@ -81,6 +81,7 @@ import EnrolledQuizesSeelAll from './src/screens/Quizzes/EnrolledQuizesSeeAll';
 import IdReducer from './src/context/IdReducer';
 import ViewPdf from './src/screens/Courses/ViewPdf';
 import QuizPlayReducer from './src/context/QuizPlayReducer';
+import AddExamss from './src/screens/Study/AddExamss';
 
 
 
@@ -182,6 +183,8 @@ function MyStack() {
       <Stack.Screen name="RulesRegulations" component={RulesRegulations} />
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
       <Stack.Screen name="viewpdf" component={ViewPdf} />
+      <Stack.Screen name="addExamss" component={AddExamss} />
+
     </Stack.Navigator>
   );
 }

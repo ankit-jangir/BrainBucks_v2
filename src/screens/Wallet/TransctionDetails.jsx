@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 
 const TransctionDetails = ({ navigation, route }) => {
   const data = route.params.res;
-  console.log(data);
+  // console.log(data);
   const [history, setHistory] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -50,10 +50,7 @@ const TransctionDetails = ({ navigation, route }) => {
             <Text style={styles.headerText}>Transaction History</Text>
           </View>
           <View style={styles.amountContainer}>
-            <Image
-              source={require('../../assets/img/bb.png')}
-              style={styles.tickImage}
-            />
+           <Text style={styles.amountText}>₹</Text>
             <Text style={styles.amountText}>{data.amount}</Text>
           </View>
           {
@@ -98,7 +95,7 @@ const TransctionDetails = ({ navigation, route }) => {
             <Text style={styles.transactionLabel}>Transaction ID</Text>
             <Text style={styles.transactionId}>{data.order_id}</Text>
             <View>
-              <Text style={styles.paymentText}>Payment Method</Text>
+              <Text style={styles.paymentText}>Payment Type</Text>
               <View style={styles.ImageContiner}>
                 <Image
                   source={require('../../assets/img/GroupB.png')}

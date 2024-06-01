@@ -30,6 +30,7 @@ export default function Saved({navigation}) {
   const [SavedExam, setExamData] = useState([]);
   const [otherExams, setOtherExams] = useState([]);
   const [selectedExams, setSelectedExams] = useState(new Set([]))
+  const {idState,dispatch}=useCurrentId()
 
   const saved = new SavedApiService();
   const study = new StudyApiService();
@@ -38,7 +39,6 @@ export default function Saved({navigation}) {
     loadOtherExams()
   }, []);
 
-  const {idState,dispatch}=useCurrentId()
   async function getSavedExams() {
     setloading(true);
     try {
@@ -127,7 +127,10 @@ export default function Saved({navigation}) {
   }
   return (
     <>
-      <Toast/>
+    <View style={{zIndex:1}}>
+    <Toast/>
+    
+    </View>
       <View style={{flex: 1,backgroundColor:"white"}}>
         <Modal
           animationType="slide"

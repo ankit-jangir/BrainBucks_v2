@@ -32,11 +32,11 @@ class FreeQuizApiService {
     return response.data
   }
 
-  async submitTriviaQuiz(submit_time_period, stu_ans, subtrivia_id) {
+  async submitTriviaQuiz(subtrivia_id, submit_time_period,) {
     let token = await basic.getBearerToken()
     let url = `${QUIZMICRO}/participants/submit/in/trivia/quiz`;
     let headers = { "content-type": "application/json", authorization: token };
-    let data = JSON.stringify({ subtrivia_id: subtrivia_id, stu_ans: stu_ans, submit_time_period: submit_time_period })
+    let data = JSON.stringify({ subtrivia_id: subtrivia_id, submit_time_period: submit_time_period })
     let options = {
       method: "post",
       headers: headers,
@@ -92,6 +92,20 @@ class FreeQuizApiService {
     return response.data
   }
 
+  async updateAnswer(id, page, ans){
+    let token = await basic.getBearerToken()
+    let url = `${QUIZMICRO}/participants/update/question/bypage/in/trivia/quiz`;
+    let headers = { "content-type": "application/json", authorization: token };
+    let data = JSON.stringify({ subtrivia_id: id, page: page, ans: ans })
+    let options = {
+      method: "post",
+      headers: headers,
+      data: data,
+      url,
+    };
+    const response = await axios(options);
+    return response.data
+  }
 
 }
 export default FreeQuizApiService

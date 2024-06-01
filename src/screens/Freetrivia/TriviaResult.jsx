@@ -6,19 +6,31 @@ import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { set } from 'react-native-reanimated';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import { getResultOfTriviaQuiz } from '../../controllers/TriviaQuizController';
+import Toast from 'react-native-toast-message';
 
 export default function ResultRewards({ navigation, route }) {
   const [isLoad, setLoad] = useState(false);
-  const [data, setData] = useState([]);
   const [reward, setReward] = useState(0);
   const [image, setImage] = useState("https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png");
   const [name, setName] = useState('');
-  const [wish, setWish] = useState('Congratulations');
-  const [time, setTime] = useState('00:00');
   const [score, setScore] = useState('0/00');
-  const [wallet, setWallet] = useState('00.00');
   const [per, setPer] = useState('00');
 
+  const { quizState, dispatch } = useQuiz()
+
+  useEffect(()=>{
+    setLoad(true)
+    getResultOfTriviaQuiz(quizState.id, Toast).then((res)=>{
+      if(res){
+        setReward(res.reward)
+        setPer(res.obtain_persentage)
+        setName(res.self_name)
+        setScore(res.obtain_marks+"/"+res.tot_marks)
+      }
+    }).finally(()=>{setLoad(false)})
+  },[])
 
   const goBack = () => {
     navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
@@ -26,6 +38,7 @@ export default function ResultRewards({ navigation, route }) {
 
   useEffect(() => {
     const backAction = () => {
+      dispatch({type:'empty'})
       goBack();
       return true;
     };
@@ -37,6 +50,9 @@ export default function ResultRewards({ navigation, route }) {
     <>
       <StatusBar barStyle={'white-content'} translucent={false} backgroundColor={'#701DDB'} />
       <SafeAreaView style={styles.ViewSafe}>
+        <View style={{zIndex:12}}>
+          <Toast/>
+        </View>
         {
           isLoad ?
             <View style={styles.LoaderView}>
@@ -45,23 +61,13 @@ export default function ResultRewards({ navigation, route }) {
             :
             <View style={styles.MainVie}>
               <View style={styles.MainVie1}>
-                <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })} style={styles.touchIcon}>
+              <Text style={styles.TextWish}>Result</Text>
+                <TouchableOpacity onPress={() =>{dispatch({type:"empty"}), navigation.reset({ index: 0, routes: [{ name: 'Home' }] })}} style={styles.touchIcon}>
                  <Image source={require('../../assets/img/homedark.png')} tintColor={'#fff'} style={{width:25,height:25}}/>
                 </TouchableOpacity>
-
-                <View style={styles.pic}>
-                  <View style={styles.ViewM}>
-                    <Text style={{fontSize:20}}>+</Text>
-                  </View>
-                  <View style={styles.WalletView}>
-                    <Image source={require('../../assets/img/bbcoin.png')} style={styles.Coin} />
-                    <Text style={styles.TextWallet}>{wallet}</Text>
-                  </View>
-                </View>
               </View>
 
               <View style={styles.WishView} >
-                <Text style={styles.TextWish}>{wish}</Text>
                 <Text style={styles.TextName}>{name}</Text>
 
               </View>
@@ -91,13 +97,13 @@ export default function ResultRewards({ navigation, route }) {
                   </View>
                 </View>
 
-                <View style={styles.tymView} >
+                {/* <View style={styles.tymView} >
                   <Text style={styles.TextTym}>Time</Text>
                   <View style={styles.tymView1}>
                     <Text style={styles.textMIN} > 0 Sec  </Text>
                   </View>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate('TriviaScoreCard',)} style={styles.TRecord} >
+                </View> */}
+                <TouchableOpacity onPress={() => navigation.navigate('TriviaScoreCard')} style={styles.TRecord} >
                   <Text style={styles.textView} >View Scorecard</Text>
                 </TouchableOpacity>
               </View>
@@ -127,7 +133,8 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-between',
     height: 70,
-    alignItems: "center"
+    padding:20,
+    alignItems: "center",
   },
   touchIcon: {
     flex: 0.20,
@@ -235,7 +242,8 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     backgroundColor: ColorsConstant.LightPink,
     paddingTop: 20,
     borderWidth: 1,
-    marginTop: 20
+    marginTop: 20,
+    justifyContent:'space-between'
   },
   PerView1: {
     flexDirection: 'row',
@@ -288,7 +296,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: "center",
     borderBottomEndRadius: 5,
-    borderBottomStartRadius: 5
+    borderBottomStartRadius: 5,
   },
   textView: {
     color: '#2E2E2E',

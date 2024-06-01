@@ -262,9 +262,10 @@ const PaidCourses = () => {
                   ) : (
                     <FlatList
                       data={material[video._id]}
+                      keyExtractor={item=>item._id}
                       renderItem={({item, index}) => {
                         return (
-                          <Pressable key={item._id}>
+                          <Pressable>
                             <View
                               style={{
                                 backgroundColor: '#fff',
@@ -275,6 +276,7 @@ const PaidCourses = () => {
                                 marginHorizontal: 10,
                                 marginBottom: 4,
                                 elevation: 4,
+                                marginLeft:18,
                                 borderRadius: 5,
                                 marginTop: index === 0 ? 5 : 0,
                               }}>
@@ -284,6 +286,11 @@ const PaidCourses = () => {
                                   flex: 1,
                                   alignItems: 'center',
                                 }}>
+                                <Image
+                              source={require('../../assets/img/pdf.png')}
+                              style={{height: 20, width: 20,marginRight:4}}
+                              resizeMode="contain"
+                            />
                                 <Text style={{color: '#000', flex: 1}}>
                                   {item.title}
                                 </Text>

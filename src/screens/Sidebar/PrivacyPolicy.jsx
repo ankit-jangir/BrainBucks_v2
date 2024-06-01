@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NavigationContainer, useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Text} from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 export default function PrivacyPolicy() {
   const navigation = useNavigation();
@@ -64,47 +65,22 @@ export default function PrivacyPolicy() {
   return (
     <>
       <View style={{backgroundColor: '#fff', height: '100%'}}>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            borderBottomColor: '#ccc',
-            borderBottomWidth: 1,
-          }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-              marginBottom: 5,
-            }}>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home');
-                }}>
-                <Image
-                  style={{height: 35, width: 35}}
-                  source={require('../../assets/img/back.png')}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={{color: 'black', fontSize: 22, fontWeight: 'bold'}}>
-                Privacy Policy
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Image
-                  source={require('../../assets/img/homedark.png')}
-                  tintColor={'balck'}
-                  style={{height: 25, width: 25}}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+      <View style={styles.Hview}>
+      <View style={styles.Hview1}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.THead}>
+          <Image
+            source={require('../../assets/img/arrows.png')}
+            resizeMode="contain"
+            style={{width: 20, height: 20}}
+          />
+        </TouchableOpacity>
+        <View style={styles.ViewMy}>
+          <Text style={styles.TextMy}>Privacy Policy</Text>
         </View>
+      </View>
+    </View>
 
         <View
           style={{
@@ -175,7 +151,7 @@ const Privacy = () => {
   return (
     <>
       <View style={{backgroundColor:"white"}}>
-        <View style={{paddingVertical:10,backgroundColor:"white"
+        <View style={{backgroundColor:"white"
     }}>
           <Text style={{fontSize: 25, fontWeight: 'bold', paddingVertical: 10,color:'#000',fontFamily: 'WorkSans-Medium',}}>
             Privacy Policy
@@ -847,23 +823,43 @@ const Privacy = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
-  text1:{
-    fontSize: 15,
-     textAlign: 'justify',
-      paddingVertical: 5,
-      color:'#000',
-      fontFamily: 'WorkSans-Medium'
+  Hview: {
+    width: '100%',
+    height: 65,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+    backgroundColor:"white"
   },
-  text2:{
-    fontSize: 15, 
-    textAlign: 'justify',
-     marginTop: 15,
-     color:'#000',
-     fontFamily: 'WorkSans-Medium'
-
+  Hview1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  THead: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  ViewMy: {
+    flex: 0.8,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  TextMy: {
+    fontSize: 20,
+    fontFamily: 'WorkSans-SemiBold',
+    color: '#000',
+  },
+}
 
-})
-
+)

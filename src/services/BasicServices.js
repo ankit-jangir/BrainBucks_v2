@@ -151,6 +151,15 @@ async function setNumber(number) {
     catch (err) {
         console.log("Error in setting Mobile Number: ", err.message)
     }
+
+
+    async function getDateFromSchTime(sch){
+        let time = sch.substr(11,8)
+        let date = sch.substr(0, 2)
+        let month = sch.subtr(3, 2)
+        let year = sch.substr(6,4)
+        
+    }
 }
 
 

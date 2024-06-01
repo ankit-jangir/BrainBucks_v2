@@ -11,8 +11,16 @@ import LottieView from "lottie-react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Text } from "../../utils/Translate";
 import { StyleConstants } from "../../constants/Style.constant";
+import { useQuiz } from "../../context/QuizPlayReducer";
 
 export default function TriviaSubmit({ navigation, route }) {
+  let arr = route.params.result.arr;
+  let minutes = parseInt(arr.submit_time_period/60)
+  let seconds = parseInt(arr.submit_time_period%60)
+  if(minutes<10){minutes = "0"+minutes}
+  if(seconds<10){seconds = "0"+seconds}
+
+  const {quizState, dispatch} = useQuiz()
   return (
     <View style={[StyleConstants.safeArView, { paddingHorizontal: 0 }]}>
       <ScrollView>
@@ -25,27 +33,27 @@ export default function TriviaSubmit({ navigation, route }) {
               <View style={{ flex: 2 }}>
                 <Text style={styles.View5}>Total Questions</Text>
                 <Text style={[styles.View6, { color: "#2E2E2E" }]}>
-                  88
+                  {quizState.total}
                 </Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.View5}>Correct</Text>
                 <Text style={[styles.View6, { color: "#0CBC8B" }]}>
-                  99
+                  {arr.correct}
                 </Text>
               </View>
             </View>
             <View style={styles.View4}>
               <View style={{ flex: 2 }}>
-                <Text style={styles.View5}>Unattempts</Text>
+                <Text style={styles.View5}>Unattempted</Text>
                 <Text style={[styles.View6, { color: "#7E7E7E" }]}>
-                 88
+                 {arr.unattempt}
                 </Text>
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.View5}>Incorrect</Text>
                 <Text style={[styles.View6, { color: "#DC1111" }]}>
-                  777
+                  {arr.incorrect}
                 </Text>
               </View>
             </View>
@@ -56,8 +64,7 @@ export default function TriviaSubmit({ navigation, route }) {
                     index: 0,
                     routes: [
                       {
-                        name: "TriviaSubmitConfirmation",
-                       
+                        name: "TriviaResult",
                       },
                     ],
                   })
@@ -70,7 +77,7 @@ export default function TriviaSubmit({ navigation, route }) {
                   colors={["#54ACFD", "#2289E7"]}
                   style={styles.View9}
                 >
-                  <Text style={styles.View8}>Submit</Text>
+                  <Text style={styles.View8}>View Result</Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -93,14 +100,14 @@ export default function TriviaSubmit({ navigation, route }) {
           <View style={styles.View16}>
             <View style={{ flexDirection: "row" }}>
               <View style={{ flex: 1, alignItems: "flex-end" }}>
-                <Text style={styles.View17}>1</Text>
+                <Text style={styles.View17}>{minutes}</Text>
                 <Text style={styles.View5}>Mins</Text>
               </View>
               <View style={styles.View21}>
                 <Text style={styles.View18}>:</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={styles.View17}>1</Text>
+                <Text style={styles.View17}>{seconds}</Text>
                 <Text style={styles.View19}>Sec</Text>
               </View>
             </View>

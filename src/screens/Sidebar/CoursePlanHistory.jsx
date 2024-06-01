@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {createElement, useEffect, useState} from 'react';
 import {
   ScrollView,
   View,
   RefreshControl,
   Text as BBText,
   TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -18,6 +19,7 @@ import {Text} from '../../utils/Translate';
 import CourseApiService from '../../services/api/CourseApiService';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 export default function CoursePlanHistory({navigation}) {
   const [livequiz, setLivequiz] = useState([]);
@@ -72,50 +74,25 @@ export default function CoursePlanHistory({navigation}) {
 
   return (
     <>
-      <View>
+      <View style={{zIndex:1}}>
         <Toast />
       </View>
-      <View
-        style={{
-          backgroundColor: 'white',
-          borderBottomColor: '#ccc',
-          borderBottomWidth: 1,
-        }}>
-        <View
-          style={{
-            backgroundColor: 'white',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 10,
-            marginBottom: 5,
-          }}>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Home');
-              }}>
-              <Image
-                style={{height: 35, width: 35}}
-                source={require('../../assets/img/back.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={{color: 'black', fontSize: 22, fontWeight: 'bold'}}>
-              Rules
-            </Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image
-                source={require('../../assets/img/homedark.png')}
-                tintColor={'balck'}
-                style={{height: 25, width: 25}}
-              />
-            </TouchableOpacity>
-          </View>
+      <View style={styles.Hview}>
+      <View style={styles.Hview1}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.THead}>
+          <Image
+            source={require('../../assets/img/arrows.png')}
+            resizeMode="contain"
+            style={{width: 20, height: 20}}
+          />
+        </TouchableOpacity>
+        <View style={styles.ViewMy}>
+          <Text style={styles.TextMy}>Study Materials</Text>
         </View>
       </View>
+    </View>
       {load ? (
         <ActivityIndicator size={24} color={'#2188E7'} />
       ) : livequiz.length === 0 ? (
@@ -232,3 +209,44 @@ export default function CoursePlanHistory({navigation}) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  Hview: {
+    width: '100%',
+    height: 65,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+    backgroundColor:"white"
+  },
+  Hview1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  THead: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  ViewMy: {
+    flex: 0.8,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  TextMy: {
+    fontSize: 20,
+    fontFamily: 'WorkSans-SemiBold',
+    color: '#000',
+  },
+}
+
+)

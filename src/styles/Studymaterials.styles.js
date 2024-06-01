@@ -611,7 +611,42 @@ paddingTop:10
     fontSize: 13,
     fontFamily: 'WorkSans-Regular',
     color: ColorsConstant.White,
-  }
+  },
+  Hview: {
+    width: '100%',
+    height: 65,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: ColorsConstant.LightGray,
+  },
+  Hview1: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  THead: {
+    flex: 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 4,
+    width: 50,
+    height: 50,
+    borderColor: ColorsConstant.LightWhite,
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  ViewMy: {
+    flex: 0.8,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  TextMy: {
+    fontSize: 20,
+    fontFamily: 'WorkSans-SemiBold',
+    color: '#000',
+  },
   });
 
   export default  styles

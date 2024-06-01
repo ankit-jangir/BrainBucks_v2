@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Text } from '../../utils/Translate';
 import styles from '../../styles/AllLiveQuizzes.styles';
 import LottieView from 'lottie-react-native';
-import { getTriviaDetails, joinTriviaQuiz } from '../../controllers/FreeTriviaController';
+import { getTriviaDetails, joinTriviaQuiz } from '../../controllers/TriviaQuizController';
 import Toast from 'react-native-toast-message';
 import { ActivityIndicator } from 'react-native';
 import { BLOBURL } from '../../config/urls';
@@ -22,7 +22,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 export default function FreeRulesParticipation({ navigation, route }) {
 
   const [data, setData] = useState({})
-  const {idState, dispatch} = useQuiz()
+  const {quizState, dispatch} = useQuiz()
   useEffect(
     () => {
       getTriviaDetails(route.params.id, Toast, setData, setRefresh)
@@ -157,7 +157,7 @@ export default function FreeRulesParticipation({ navigation, route }) {
                     marginTop: 10,
                     fontFamily: 'WorkSans-SemiBold',
                   }}>
-                  Entry Fees
+                  Reward
                 </Text>
                 <View
                   style={{
