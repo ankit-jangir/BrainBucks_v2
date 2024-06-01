@@ -20,7 +20,7 @@ const AddBankAccount = ({ navigation }) => {
   console.log(addBankState);
 
   const wallServ = new WalletApiService()
-  let inputstyle = [styles.inputs, errMsg && { borderWidth: 1, borderColor: "#ff0000" }]
+  let inputstyle = [styles.inputs, errMsg && { borderWidth: 1, borderColor: "#ff0000",}]
 
   function addIfsc(text) {
     if (text.length <= 11) {
@@ -82,7 +82,7 @@ const AddBankAccount = ({ navigation }) => {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Beneficiary Name</Text>
-          <TextInput
+          <TextInput 
             placeholder="Name of Account Holder"
             style={inputstyle}
             value={addBankState.holderName}
