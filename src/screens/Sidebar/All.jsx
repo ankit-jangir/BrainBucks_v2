@@ -1,11 +1,48 @@
 import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
 import React,{useEffect,useState} from 'react';
 import {LinearProgress, Button} from '@rneui/themed';
-
+import HistoryApiService from '../../services/api/HistoryApiService';
+import Toast from 'react-native-toast-message';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 const All = () => {
   const [progress, setProgress] = React.useState(0);
+  const [allwin, setAllWin] = React.useState();
+  const [loading, setLoading] = useState(false)
+
+
+  const history = new HistoryApiService()
+  
+
+
+  async function getWalletData() {
+    try {
+      let res = await history.getFullHistory();
+      if (res.status === 1) {
+        allwin.value = res;
+        console.log(res,'sonu');
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error,
+        });
+      }
+    } catch (err) {
+      console.log('Error while getting earned data', err.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+useEffect(() => {
+  getWalletData()
+}, [])
+
+
 
   React.useEffect(() => {
     let subs = true;
@@ -23,6 +60,9 @@ const All = () => {
 
   return (
     <View style={styles.mainContainer}>
+         <View style={{zIndex:100}}>
+      <Toast />
+      </View>
       <View style={styles.container}>
         <View style={styles.containerImg}>
           <Image

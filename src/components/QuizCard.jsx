@@ -17,7 +17,7 @@ const QuizCard = ({
   type,
   minper
 }) => {
-  // type - enum{'trivia','active','enrolled'}
+
   return (
     <>
       <View

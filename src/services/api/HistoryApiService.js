@@ -15,7 +15,7 @@ class HistoryApiService {
         };
         const response = await axios(options);
         return response.data
-    }
+    }       
 
     async getFreeQuizzes(order,page) {
         let token = await basic.getBearerToken()
