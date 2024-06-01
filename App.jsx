@@ -144,38 +144,20 @@ function MyStack() {
       <Stack.Screen name="paymentpopup" component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
       <Stack.Screen name='QuestionsPaper' component={QuestionsPaper}/>
-      <Stack.Screen
-        name="RulesofParticipation"
-        component={RulesofParticipation}
-      />
+      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation}/>
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
-      <Stack.Screen
-        name="ActiveQuizzJoinAnimation"
-        component={ActiveQuizzJoinAnimation}
-      />
+      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation}/>
       <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
-      <Stack.Screen
-        name="FreeRulesParticipation"
-        component={FreeRulesParticipation}
-      />
-      <Stack.Screen
-        name="TriviaAnimationQuizz"
-        component={TriviaAnimationQuizz}
-      />
+      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation}/>
+      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz}/>
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
-      <Stack.Screen
-        name="TriviaQuestionPaper"
-        component={TriviaQuestionPaper}
-      />
-      <Stack.Screen
-        name="TriviaSubmitConfirmation"
-        component={TriviaSubmitConfirmation}
-      />
+      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper}/>
+      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation}/>
       <Stack.Screen name="TriviaResult" component={TriviaResult} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
@@ -184,6 +166,7 @@ function MyStack() {
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
       <Stack.Screen name="viewpdf" component={ViewPdf} />
       <Stack.Screen name="addExamss" component={AddExamss} />
+      <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
 
     </Stack.Navigator>
   );

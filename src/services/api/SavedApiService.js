@@ -32,9 +32,9 @@ export default class SavedApiService{
         return response.data
 
     } 
-    async getActiveQuizzes(id){
+    async getActiveQuizzes(id, page){
         let token =await basic.getBearerToken()
-        let url = `${QUIZMICRO}/participants/particular/exam/active/quiz?category_id=${id}&page=1`
+        let url = `${QUIZMICRO}/participants/particular/exam/active/quiz?category_id=${id}&page=${page}`
         let headers = {"content-type":"application/json", authorization:token}
         let options = {
             method: 'get',

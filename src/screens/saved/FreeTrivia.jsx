@@ -65,7 +65,6 @@ const FreeTrivia = () => {
           ) : (
             trivia.map(res => {
               return (
-                <>
                   <QuizCard
                     key={res._id}
                     title={res.quiz_name}
@@ -79,7 +78,6 @@ const FreeTrivia = () => {
                     type={'trivia'}
                     onPress={() => {}}
                   />
-                </>
               );
             })
           )}
