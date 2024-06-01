@@ -50,10 +50,10 @@ const MyHistory = ({navigation}) => {
         tabBarStyle: { width: "100%", },
         tabBarIndicatorStyle: { backgroundColor: "#000000", },
       }} >
-        <Tab.Screen style={{fontSize:17,fontFamily: 'WorkSans-Medium',}} name="All">{(props) => <All/>}</Tab.Screen>
-        <Tab.Screen name="Win">{(props) => <Win/>}</Tab.Screen>
-        <Tab.Screen name="Lost">{(props) => <Lost/>}</Tab.Screen>
-        <Tab.Screen name="Free">{(props) => <Free/>}</Tab.Screen>
+        <Tab.Screen style={{fontSize:17,fontFamily: 'WorkSans-Medium',}} name="All">{(props) => <All {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Win">{(props) => <Win {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Lost">{(props) => <Lost {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Free">{(props) => <Free {...props}/>}</Tab.Screen>
 
       </Tab.Navigator>
 

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, Image, ScrollView, StatusBar, SafeAreaView, ActivityIndicator, BackHandler, StyleSheet } from 'react-native';
-import LottieView from 'lottie-react-native';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -10,7 +8,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import { getResultOfTriviaQuiz } from '../../controllers/TriviaQuizController';
 import Toast from 'react-native-toast-message';
 
-export default function ResultRewards({ navigation, route }) {
+export default function TriviaResult({ navigation, route }) {
   const [isLoad, setLoad] = useState(false);
   const [reward, setReward] = useState(0);
   const [image, setImage] = useState("https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png");

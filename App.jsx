@@ -82,6 +82,9 @@ import IdReducer from './src/context/IdReducer';
 import ViewPdf from './src/screens/Courses/ViewPdf';
 import QuizPlayReducer from './src/context/QuizPlayReducer';
 import AddExamss from './src/screens/Study/AddExamss';
+import QuizzesResult from './src/screens/Quizzes/QuizzesResult';
+import WinnerBoardLive from './src/screens/Quizzes/WinnerBoardLive';
+import ScoreCard from './src/screens/Quizzes/ScoreCard';
 
 
 
@@ -184,6 +187,12 @@ function MyStack() {
       <Stack.Screen name="coursesplanhistory" component={CoursePlanHistory} />
       <Stack.Screen name="viewpdf" component={ViewPdf} />
       <Stack.Screen name="addExamss" component={AddExamss} />
+      <Stack.Screen name="QuizzesResult" component={QuizzesResult} />
+      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive} />
+      <Stack.Screen name="ScoreCard" component={ScoreCard} />
+
+
+
 
     </Stack.Navigator>
   );
