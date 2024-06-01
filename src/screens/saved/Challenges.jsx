@@ -8,8 +8,10 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
+import { useNavigation } from '@react-navigation/native';
 
 const Challenges = () => {
+  const navigation = useNavigation()
   const saved = new SavedApiService();
   const [loading, setloading] = useState();
   const [Enrolled, setEnrollled] = useState([]);
@@ -68,7 +70,9 @@ const Challenges = () => {
                   totalslots={res.slots}
                   alotedslots={res.slot_aloted}
                   type={'enrolled'}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.navigate('StartExam', { id: res._id });
+                  }}
                 />
             );
           })

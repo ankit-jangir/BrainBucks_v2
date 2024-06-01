@@ -27,6 +27,7 @@ const Quizze = () => {
   const [Quizes, setQuizze] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
+  const navigation = useNavigation()
 
   useEffect(() => {
     getActiveQuizzes();
@@ -106,7 +107,7 @@ const Quizze = () => {
                   totalslots={item.slots}
                   alotedslots={item.slot_aloted}
                   type={'active'}
-                  onPress={() => { }}
+                  onPress={() => { navigation.navigate('RulesofParticipation', { id: item._id }); }}
                 />
               )
             }}

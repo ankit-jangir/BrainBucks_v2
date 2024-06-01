@@ -11,8 +11,10 @@ import {BLOBURL} from '../../config/urls';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
+import { useNavigation } from '@react-navigation/native';
 
 const FreeTrivia = () => {
+  const navigation = useNavigation()
   const saved = new SavedApiService();
 
   const {idState, dispatch} = useCurrentId();
@@ -25,7 +27,6 @@ const FreeTrivia = () => {
 
   async function getTriviaQuizzes() {
     setloading(true);
-
     try {
       let res = await saved.getTriviaQuizzes(idState.id);
       if (res.status === 1) {
@@ -46,22 +47,7 @@ const FreeTrivia = () => {
       setloading(false);
     }
   }
-  const triviadata = [
-    {
-      exam: 'SBI-PO Current Affairs',
-      fees: 0,
-      prize: 500,
-      width: 45,
-      image: require('../../assets/img/sbi.png'),
-    },
-    {
-      exam: 'SBI-PO Current Affairs',
-      fees: 0,
-      prize: 500,
-      width: 45,
-      image: require('../../assets/img/sbi.png'),
-    },
-  ];
+
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={{zIndex:1}}>
@@ -89,8 +75,11 @@ const FreeTrivia = () => {
                     time={res.sch_time}
                     totalslots={res.slots}
                     alotedslots={res.slot_aloted}
+                    minper={res.min_reward_per}
                     type={'trivia'}
-                    onPress={() => {}}
+                    onPress={() => {
+                      navigation.navigate('FreeRulesParticipation', { id: res._id })
+                    }}
                   />
               );
             })
