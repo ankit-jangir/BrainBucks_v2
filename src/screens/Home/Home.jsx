@@ -106,7 +106,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes')}
+                      onPress={() => navigation.navigate('AllLiveQuizzes',  {type: 'active'})}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -176,7 +176,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes')}
+                      onPress={() => navigation.navigate('AllLiveQuizzes',  {type: 'trivia'})}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -251,10 +251,9 @@ export default function Home({ navigation }) {
                       data={homeData.exams}
                       keyExtractor={item => item.id.toString()}
                       renderItem={({ item }) => (
-                        <>
                           <View style={styles.ExamView}>
                             <TouchableOpacity
-                              onPress={() => navigation.navigate('MyExamQuizzes')}
+                              onPress={() => navigation.navigate('MyExamQuizzes', {id: item.id, imgurl: item.image, title:item.category_name})}
                               style={styles.TouchExam}>
                               <View style={styles.ActiveView}>
                                 <Image source={{ uri: BLOBURL + item.image }} style={{ width: 40, height: 40, borderRadius: 100 }} />
@@ -267,7 +266,6 @@ export default function Home({ navigation }) {
                               </View>
                             </TouchableOpacity>
                           </View>
-                        </>
                       )}
                       horizontal
                       pagingEnabled
@@ -288,7 +286,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes')}
+                      onPress={() => navigation.navigate('AllLiveQuizzes', {type: 'enrolled'})}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>

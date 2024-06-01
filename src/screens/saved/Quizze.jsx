@@ -5,35 +5,55 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Text} from '../../utils/Translate';
+import React, { useEffect, useState } from 'react';
+import { Text } from '../../utils/Translate';
 import LinearGradient from 'react-native-linear-gradient';
 import SavedApiService from '../../services/api/SavedApiService';
-import {useCurrentId} from '../../context/IdReducer';
-import {useNavigation} from '@react-navigation/native';
+import { useCurrentId } from '../../context/IdReducer';
+import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {BLOBURL} from '../../config/urls';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { BLOBURL } from '../../config/urls';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 
 const Quizze = () => {
-  const navigation = useNavigation();
   const saved = new SavedApiService();
-  const [loading, setloading] = useState();
-  const {idState, context} = useCurrentId();
+  const [loading, setLoading] = useState();
+  const [loadingMore, setLoadingMore] = useState();
+  const { idState, dispatch } = useCurrentId();
   const [Quizes, setQuizze] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
+
   useEffect(() => {
     getActiveQuizzes();
   }, []);
 
-  async function getActiveQuizzes() {
-    setloading(true);
+  async function getActiveQuizzes(page) {
+    if (!page) {
+      page = 1
+    }
+
+    if (page >= totalPages) {
+      return;
+    }
+
+    if (page === 1) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true)
+    }
+
     try {
-      let res = await saved.getActiveQuizzes(idState.id);
+      let res = await saved.getActiveQuizzes(idState.id, page);
       if (res.status === 1) {
-        setQuizze(res.active_quizes);
+        setTotalPages(res.totalpages)
+        if (page === 1) { setQuizze(res.active_quizes) }
+        else { setQuizze([...Quizes, ...res.active_quizes ]) }
+        setCurrentPage(page)
       } else {
         Toast.show({
           type: 'error',
@@ -47,50 +67,53 @@ const Quizze = () => {
         text1: 'Something went wrong',
       });
     } finally {
-      setloading(false);
+      setLoadingMore(false)
+      setLoading(false)
     }
   }
 
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
-      <View style={{zIndex:1}}>
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
+      <View style={{ zIndex: 1 }}>
         <Toast />
       </View>
-      <ScrollView>
-        <View style={{padding: 10, backgroundColor: 'white', flex: 1}}>
-          {loading ? (
-            <ActivityIndicator color={ColorsConstant.Theme} size={35} />
-          ) : Quizes.length === 0 ? (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
-              <NoDataFound
-                message={'No Data Found'}
-                action={getActiveQuizzes}
-                actionText={'Reload'}
-              />
-            </View>
-          ) : (
-            Quizes.map(res => {
+      <View style={{ padding: 10, backgroundColor: 'white', flex: 1 }}>
+        {loading ? (
+          <ActivityIndicator color={ColorsConstant.Theme} size={35} />
+        ) : Quizes.length === 0 ? (
+          <View style={{ flex: 1, backgroundColor: 'white' }}>
+            <NoDataFound
+              message={'No Data Found'}
+              action={getActiveQuizzes}
+              actionText={'Reload'}
+            />
+          </View>
+        ) : (
+          <FlatList
+            data={Quizes}
+            onEndReached={()=>{getActiveQuizzes(currentPage+1)}}
+            onEndReachedThreshold={0.6}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => {
               return (
-                <>
-                  <QuizCard
-                    key={res._id}
-                    title={res.quiz_name}
-                    image={{uri: BLOBURL + res.banner}}
-                    fees={res.entryFees}
-                    prize={res.prize}
-                    date={res.sch_time}
-                    time={res.sch_time}
-                    totalslots={res.slots}
-                    alotedslots={res.slot_aloted}
-                    type={'active'}
-                    onPress={() => {}}
-                  />
-                </>
-              );
-            })
-          )}
-        </View>
-      </ScrollView>
+                <QuizCard
+                  title={item.quiz_name}
+                  image={{ uri: BLOBURL + item.banner }}
+                  fees={item.entryFees}
+                  prize={item.prize}
+                  date={item.sch_time}
+                  time={item.sch_time}
+                  totalslots={item.slots}
+                  alotedslots={item.slot_aloted}
+                  type={'active'}
+                  onPress={() => { }}
+                />
+              )
+            }}
+          />
+        )}
+        {loadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
+      </View>
     </View>
   );
 };

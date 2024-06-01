@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
   View,
@@ -6,20 +6,48 @@ import {
   Image,
   RefreshControl,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Text} from '../../utils/Translate';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { Text } from '../../utils/Translate';
 import styles from '../../styles/AllLiveQuizzes.styles';
 import Header from '../Home/Header';
-export default function MyExamQuizzes({navigation}) {
+import SavedApiService from '../../services/api/SavedApiService';
+import basic from '../../services/BasicServices';
+import Toast from 'react-native-toast-message';
+import QuizCard from '../../components/QuizCard';
+import { BLOBURL } from '../../config/urls';
+export default function MyExamQuizzes({ navigation, route }) {
   const [live, setLive] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const id = route.params.id
+  const image = route.params.imgurl
+  const title = route.params.title
+  const serv = new SavedApiService()
+  const [loading, setLoading] = useState(false)
 
   const onRefresh = () => {
     setRefresh(true);
     setTimeout(() => setRefresh(false), 3000);
   };
+
+
+  useEffect(() => {
+    getExamQuizzes()
+  }, [])
+
+  function getExamQuizHelper(id) {
+    return async () => {
+      let res = await serv.getActiveQuizzes(id)
+      return res
+    }
+  }
+  async function getExamQuizzes() {
+    let res = await basic.apiTryCatch(getExamQuizHelper(id), Toast, ()=>{setLoading(true)}, ()=>{setLoading(false)})
+    if (res) {
+      setLive(res.active_quizes)
+    }
+  }
 
   const DATA = [
     {
@@ -59,30 +87,48 @@ export default function MyExamQuizzes({navigation}) {
 
   return (
     <>
+      <View style={{ zIndex: 200 }}><Toast /></View>
       <View style={styles.container}>
-      <Header
+        <Header
           title="My Exam Quizzes"
           leftIcon={{
             type: 'image',
             source: require('../../assets/img/arrow-left.png'), // provide the image source
             onPress: () => {
-              handleBackPress()
+              navigation.goBack()
             },
           }}
         />
 
-        <View style={{flexDirection:'row',justifyContent:'center',alignItems:"center"}}>
-        <Image source={require('../../assets/img/image.png')} style={{width:35,height:35}}/>
-          <Text style={{color:'#000', fontFamily: 'WorkSans-SemiBold',marginLeft:10,fontSize:20}}>name</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center" }}>
+          <Image source={{ uri: BLOBURL + image }} style={{ width: 35, height: 35 }} />
+          <Text style={{ color: '#000', fontFamily: 'WorkSans-SemiBold', marginLeft: 10, fontSize: 20 }}>{title}</Text>
         </View>
-         
+
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
           }>
-          {DATA.map(item => (
-            <ExamDetail key={item.id} item={item} navigation={navigation} />
-          ))}
+          {
+            loading ?
+              <ActivityIndicator size={40} style={{ flex: 1 }} />
+              :
+              live.map(item => (
+                <QuizCard
+                  key={item._id}
+                  image={{ uri: BLOBURL + item.banner }}
+                  title={item.quiz_name}
+                  fees={item.entryFees}
+                  prize={item.prize}
+                  date={item.sch_time}
+                  totalslots={item.slots}
+                  alotedslots={item.slot_aloted}
+                  type={'active'}
+                  onPress={() => {
+                    navigation.navigate('RulesofParticipation', { id: item._id });
+                  }}
+                />
+              ))}
         </ScrollView>
       </View>
     </>
@@ -161,8 +207,8 @@ const ExamDetail = (props) => {
       <View style={styles.progressContainer}>
         <View style={styles.progressBarBackground}>
           <LinearGradient
-            start={{x: 0.0, y: 0.25}}
-            end={{x: 0.5, y: 10}}
+            start={{ x: 0.0, y: 0.25 }}
+            end={{ x: 0.5, y: 10 }}
             colors={['#54ACFD', '#2289E7']}
             style={styles.progressBar}
           />
@@ -171,11 +217,11 @@ const ExamDetail = (props) => {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-            props.navigation.navigate('RulesofParticipation');
+          props.navigation.navigate('RulesofParticipation');
         }}>
         <LinearGradient
-          start={{x: 0.0, y: 0.25}}
-          end={{x: 0.6, y: 2.0}}
+          start={{ x: 0.0, y: 0.25 }}
+          end={{ x: 0.6, y: 2.0 }}
           colors={['#54ACFD', '#2289E7']}
           style={styles.registerButton}>
           <Text style={styles.registerButtonText}>Register Now</Text>

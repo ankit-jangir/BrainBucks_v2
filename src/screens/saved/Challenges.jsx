@@ -6,6 +6,8 @@ import Toast from 'react-native-toast-message';
 import {ActivityIndicator} from 'react-native';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import QuizCard from '../../components/QuizCard';
+import { BLOBURL } from '../../config/urls';
 
 const Challenges = () => {
   const saved = new SavedApiService();
@@ -56,7 +58,6 @@ const Challenges = () => {
         ) : (
           Enrolled.map(res => {
             return (
-              <>
                 <QuizCard
                   key={res._id}
                   title={res.quiz_name}
@@ -69,7 +70,6 @@ const Challenges = () => {
                   type={'enrolled'}
                   onPress={() => {}}
                 />
-              </>
             );
           })
         )}
