@@ -7,6 +7,7 @@ import {
   RefreshControl,
   StyleSheet,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text } from '../../utils/Translate';
@@ -25,6 +26,9 @@ export default function MyExamQuizzes({ navigation, route }) {
   const title = route.params.title
   const serv = new SavedApiService()
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageCount, setPageCount] = useState(2)
+  const [loading2, setLoading2] = useState(false)
 
   const onRefresh = () => {
     setRefresh(true);
@@ -36,54 +40,34 @@ export default function MyExamQuizzes({ navigation, route }) {
     getExamQuizzes()
   }, [])
 
-  function getExamQuizHelper(id) {
+  function getExamQuizHelper(id, page) {
     return async () => {
-      let res = await serv.getActiveQuizzes(id)
+      let res = await serv.getActiveQuizzes(id, page)
       return res
     }
   }
-  async function getExamQuizzes() {
-    let res = await basic.apiTryCatch(getExamQuizHelper(id), Toast, ()=>{setLoading(true)}, ()=>{setLoading(false)})
+  async function getExamQuizzes(page) {
+    if (!page) {
+      page = 1
+    }
+
+    if (page > pageCount) {
+      return;
+    }
+
+    let func = setLoading2
+    if(page===1){
+      func = setLoading
+    }
+
+    let res = await basic.apiTryCatch(getExamQuizHelper(id, page), Toast, () => { func(true) }, () => { func(false) })
     if (res) {
-      setLive(res.active_quizes)
+      setPageCount(res.totalpages)
+      page===1?setLive(res.active_quizes):setLive([...live, ...res.active_quizes])
+      setCurrentPage(page)
     }
   }
 
-  const DATA = [
-    {
-      id: '1',
-      title: 'SBI-PO Current Affairs',
-      fee: '99',
-      date: '12/10/2002',
-      prize: '99',
-      earning: '988/88',
-    },
-    {
-      id: '2',
-      title: 'SBI-PO Current Affairs',
-      fee: '99',
-      date: '12/10/2002',
-      prize: '99',
-      earning: '988/88',
-    },
-    {
-      id: '3',
-      title: 'SBI-PO Current Affairs',
-      fee: '99',
-      date: '12/10/2002',
-      prize: '99',
-      earning: '988/88',
-    },
-    {
-      id: '4',
-      title: 'SBI-PO Current Affairs',
-      fee: '99',
-      date: '12/10/2002',
-      prize: '99',
-      earning: '988/88',
-    },
-    // Add more items as needed
-  ];
 
   return (
     <>
@@ -105,31 +89,41 @@ export default function MyExamQuizzes({ navigation, route }) {
           <Text style={{ color: '#000', fontFamily: 'WorkSans-SemiBold', marginLeft: 10, fontSize: 20 }}>{title}</Text>
         </View>
 
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
-          }>
-          {
-            loading ?
-              <ActivityIndicator size={40} style={{ flex: 1 }} />
-              :
-              live.map(item => (
-                <QuizCard
-                  key={item._id}
-                  image={{ uri: BLOBURL + item.banner }}
-                  title={item.quiz_name}
-                  fees={item.entryFees}
-                  prize={item.prize}
-                  date={item.sch_time}
-                  totalslots={item.slots}
-                  alotedslots={item.slot_aloted}
-                  type={'active'}
-                  onPress={() => {
-                    navigation.navigate('RulesofParticipation', { id: item._id });
-                  }}
-                />
-              ))}
-        </ScrollView>
+
+        {
+          loading ?
+            <ActivityIndicator size={40} style={{ flex: 1 }} />
+            :
+            <FlatList
+              onEndReached={()=>getExamQuizzes(currentPage + 1)}
+              onEndReachedThreshold={0.6}
+              data={live}
+              refreshControl={
+                <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+              }
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => <QuizCard
+                key={item._id}
+                image={{ uri: BLOBURL + item.banner }}
+                title={item.quiz_name}
+                fees={item.entryFees}
+                prize={item.prize}
+                date={item.sch_time}
+                totalslots={item.slots}
+                alotedslots={item.slot_aloted}
+                type={'active'}
+                onPress={() => {
+                  navigation.navigate('RulesofParticipation', { id: item._id });
+                }}
+              />
+              }
+            />
+
+        }
+        {
+          loading2 && <ActivityIndicator size={30} style={{height:40}}/>
+        }
+
       </View>
     </>
   );

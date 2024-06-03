@@ -198,7 +198,7 @@ export default function Saved({navigation}) {
                 ) : (
                  otherExams.map((item)=>{
                   return(
-                    <View style={styles.EListss}>
+                    <View key={item._id} style={styles.EListss}>
                     <View style={styles.EListss1}>
                       <View style={styles.ItmView}>
                         <Image

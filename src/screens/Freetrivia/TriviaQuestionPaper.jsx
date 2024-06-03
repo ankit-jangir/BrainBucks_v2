@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, BackHandler } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 import { useCurrentId } from '../../context/IdReducer';
@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
 import { screenWidth } from '../../constants/Sizes.constant';
+import { StackActions } from '@react-navigation/native';
 
 const ColorsConstant = {
   White: '#FFFFFF',
@@ -22,11 +23,11 @@ export default function TriviaQuestionPaper({ navigation }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [selectedOption, setSelectedOption] = useState(0)
   const { quizState, dispatch } = useQuiz()
+  const backRef = useRef()
 
   let question = quizState.question
 
 
-  //todo: do something here
   useEffect(() => {
     getCurrentQuestion(currentQuestionIndex)
   }, [currentQuestionIndex])
@@ -38,6 +39,11 @@ export default function TriviaQuestionPaper({ navigation }) {
   useEffect(() => {
     setMinute(parseInt(quizState.time / 60))
     setTimerCount(parseInt(quizState.time % 60))
+    backRef.current = navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+    })
+
+    return () => { backRef.current() }
   }, [])
 
   useEffect(() => {
@@ -48,7 +54,9 @@ export default function TriviaQuestionPaper({ navigation }) {
         setMinute(minute - 1);
         setTimerCount(59);
       } else {
-
+        clearInterval(interval)
+        Toast.show({ type: "info", text1: "Time's up. Submitting..." })
+        handleSubmit()
       }
     }, 1000);
 
@@ -91,9 +99,11 @@ export default function TriviaQuestionPaper({ navigation }) {
     let time = parseInt(quizState.time - minute * 60 - timerCount)
     submitTriviaQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
-        navigation.navigate('TriviaSubmit', {
+        backRef.current()
+        navigation.dispatch(
+          StackActions.replace('TriviaSubmit', {
           result: r
-        })
+        }))
         setModalVisible(false)
       }
     })
@@ -156,43 +166,43 @@ export default function TriviaQuestionPaper({ navigation }) {
 
 
         <ScrollView>
-        <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
-          {
-            question.is_ques_img
-              ?
-              <>
-              <Text key={question.question} style={styles.questionText}>
-                  {question?.question}
-              </Text>
+          <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
+            {
+              question.is_ques_img
+                ?
+                <>
+                  <Text key={question.question} style={styles.questionText}>
+                    {question?.question}
+                  </Text>
 
-                <View style={{width:"100%", height:180}}>
-                <Image style={{width:"100%", height:150, objectFit:'contain'}} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
-                </View>
-              </>
-              :
-              <Text key={question.question} style={styles.questionText}>
-                {question?.question}
-              </Text>
-          }
-          {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
-            <TouchableOpacity
-              key={option + "" + index}
-              style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
-              onPress={() => handleOptionPress(index)}
-            >
-              {
-                question.is_opt_img
-                  ?
-                  <>
-                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
-                    <Image style={{width:'100%', objectFit:'contain', height:150}} resizeMode='contain' source={{ uri: BLOBURL + option }} />
-                  </>
-                  :
-                  <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
-              }
-            </TouchableOpacity>
-          ))}
-        </View>
+                  <View style={{ width: "100%", height: 180 }}>
+                    <Image style={{ width: "100%", height: 150, objectFit: 'contain' }} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
+                  </View>
+                </>
+                :
+                <Text key={question.question} style={styles.questionText}>
+                  {question?.question}
+                </Text>
+            }
+            {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
+              <TouchableOpacity
+                key={option + "" + index}
+                style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
+                onPress={() => handleOptionPress(index)}
+              >
+                {
+                  question.is_opt_img
+                    ?
+                    <>
+                      <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
+                      <Image style={{ width: '100%', objectFit: 'contain', height: 150 }} resizeMode='contain' source={{ uri: BLOBURL + option }} />
+                    </>
+                    :
+                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
+                }
+              </TouchableOpacity>
+            ))}
+          </View>
         </ScrollView>
 
 
@@ -279,7 +289,10 @@ export default function TriviaQuestionPaper({ navigation }) {
                   <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>message</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => { navigation.navigate('Home'), setModalVisible1(false) }} style={styles.continueTouchable} >
+              <TouchableOpacity onPress={() => {
+                backRef.current();
+                navigation.navigate('Home'), setModalVisible1(false)
+              }} style={styles.continueTouchable} >
                 <Text style={styles.continueText}>Back To Home</Text>
               </TouchableOpacity>
             </View>

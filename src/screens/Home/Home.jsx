@@ -235,7 +235,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes')}
+                      onPress={() => navigation.navigate('myexams', {exams: homeData?.exams})}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>

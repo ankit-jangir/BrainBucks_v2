@@ -167,7 +167,7 @@ function MyStack() {
       <Stack.Screen name="viewpdf" component={ViewPdf} />
       <Stack.Screen name="addExamss" component={AddExamss} />
       <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
-
+      <Stack.Screen name='myexams' component={MyExams}/>
     </Stack.Navigator>
   );
 }
