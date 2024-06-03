@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, AppState } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../controllers/ActiveQuizController';
@@ -10,6 +10,7 @@ const ColorsConstant = {
   White: '#FFFFFF',
   Black: '#000000'
 };
+
 
 export default function QuestionsPaper({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,6 +24,12 @@ export default function QuestionsPaper({ navigation }) {
   const backRef = useRef()
 
   let question = quizState.question
+
+
+  const appState = useRef(AppState.currentState)
+
+  useEffect(() => {
+  }, [])
 
   useEffect(() => {
     getCurrentQuestion(currentQuestionIndex)
@@ -105,8 +112,8 @@ export default function QuestionsPaper({ navigation }) {
 
   return (
     <>
+      <View style={{ zIndex: 200 }}><Toast /></View>
       <View style={styles.container}>
-        <View style={{ zIndex: 200 }}><Toast /></View>
         <StatusBar
           barStyle={"white-content"}
           translucent={false}
@@ -157,43 +164,43 @@ export default function QuestionsPaper({ navigation }) {
 
 
         <ScrollView>
-        <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
-          {
-            question.is_ques_img
-              ?
-              <>
-              <Text key={question.question} style={styles.questionText}>
-                  {question?.question}
-              </Text>
+          <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
+            {
+              question.is_ques_img
+                ?
+                <>
+                  <Text key={question.question} style={styles.questionText}>
+                    {question?.question}
+                  </Text>
 
-                <View style={{width:"100%", height:180}}>
-                <Image style={{width:"100%", height:150, objectFit:'contain'}} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
-                </View>
-              </>
-              :
-              <Text key={question.question} style={styles.questionText}>
-                {question?.question}
-              </Text>
-          }
-          {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
-            <TouchableOpacity
-              key={option + "" + index}
-              style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
-              onPress={() => handleOptionPress(index)}
-            >
-              {
-                question.is_opt_img
-                  ?
-                  <>
-                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
-                    <Image style={{width:'100%', objectFit:'contain', height:150}} resizeMode='contain' source={{ uri: BLOBURL + option }} />
-                  </>
-                  :
-                  <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
-              }
-            </TouchableOpacity>
-          ))}
-        </View>
+                  <View style={{ width: "100%", height: 180 }}>
+                    <Image style={{ width: "100%", height: 150, objectFit: 'contain' }} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
+                  </View>
+                </>
+                :
+                <Text key={question.question} style={styles.questionText}>
+                  {question?.question}
+                </Text>
+            }
+            {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
+              <TouchableOpacity
+                key={option + "" + index}
+                style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
+                onPress={() => handleOptionPress(index)}
+              >
+                {
+                  question.is_opt_img
+                    ?
+                    <>
+                      <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
+                      <Image style={{ width: '100%', objectFit: 'contain', height: 150 }} resizeMode='contain' source={{ uri: BLOBURL + option }} />
+                    </>
+                    :
+                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
+                }
+              </TouchableOpacity>
+            ))}
+          </View>
         </ScrollView>
 
 
@@ -277,12 +284,13 @@ export default function QuestionsPaper({ navigation }) {
               <View style={styles.RegisteredV} >
                 <View style={styles.RulesName}>
                   {/* {console.log(message,"MESSAGE")} */}
-                  <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at "+submitData.msg : "soon"}</Text>
+                  <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at " + submitData.msg : "soon"}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => { 
+              <TouchableOpacity onPress={() => {
                 backRef.current();
-                navigation.navigate('Home'), setModalVisible1(false) }} style={styles.continueTouchable} >
+                navigation.navigate('Home'), setModalVisible1(false)
+              }} style={styles.continueTouchable} >
                 <Text style={styles.continueText}>Back To Home</Text>
               </TouchableOpacity>
             </View>

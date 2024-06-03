@@ -103,9 +103,11 @@ const styles = StyleSheet.create({
       backgroundColor: 'transparent',
     },
     ReferCard: {
-      width: '100%',
+      width: '95%',
       paddingHorizontal: 0,
       marginBottom: 10,
+      alignItems:'center',
+      margin:'auto'
     },
     ActiveView: {
       width: "100%",
@@ -140,12 +142,13 @@ const styles = StyleSheet.create({
     },
     bgPic: {
       width: '100%',
+      margin:"auto",
       height: 100,
       alignItems: 'flex-start',
     },
     ReferView: {
       width: '100%',
-      paddingLeft: 10,
+      paddingLeft: 20,
       paddingVertical: 13,
     },
     TextEarn: {

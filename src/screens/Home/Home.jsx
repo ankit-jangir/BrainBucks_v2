@@ -27,6 +27,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import { useQuiz } from '../../context/QuizPlayReducer';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Home({ navigation }) {
   const [refresh, setRefresh] = useState(false);
@@ -36,6 +37,8 @@ export default function Home({ navigation }) {
   const [loading, setLoading] = useState(true)
   const [homeData, setHomeData] = useState({})
 
+  const isFocused = useIsFocused()
+
   useEffect(() => {
     loadData()
     basic.getBearerToken().then(res => {
@@ -43,6 +46,9 @@ export default function Home({ navigation }) {
     });
   }, []);
 
+  useEffect(()=>{
+    getHomeData(Toast, setRefresh, setHomeData)
+  },[isFocused])
   // console.log("HOME DATA: ", homeData);
 
   function loadData() {

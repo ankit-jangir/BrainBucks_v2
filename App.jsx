@@ -213,7 +213,7 @@ function MyTabs() {
             }}
           />
           <Tab.Screen
-            name="study"
+            name="Study"
             component={Study}
             options={{
               tabBarLabel: 'Study',

@@ -77,7 +77,7 @@ const Deposit = ({navigation}) => {
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text style={{fontSize: 14, fontFamily: 'Work Sans'}}>
+          <Text style={{fontSize: 14, fontFamily: 'Work Sans', color:'gray'}}>
             In my Brain Bucks Wallet
           </Text>
         </View>
