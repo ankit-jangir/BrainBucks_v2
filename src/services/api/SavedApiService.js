@@ -19,9 +19,9 @@ export default class SavedApiService{
 
      
 
-    async getTriviaQuizzes(id){
+    async getTriviaQuizzes(id,page){
     let token = await basic.getBearerToken()
-        let url = `${QUIZMICRO}/participants/particular/exam/trivia/quizes?category_id=${id}&page=1`
+        let url = `${QUIZMICRO}/participants/particular/exam/trivia/quizes?category_id=${id}&page=${page}`
         let headers = {"content-type":"application/json", authorization:token}
         let options = {
             method: 'get',
@@ -44,9 +44,9 @@ export default class SavedApiService{
         const response = await axios(options)
         return response.data  
     } 
-    async getEnrolledQuizzes(id){
+    async getEnrolledQuizzes(id,page){
         let token = await basic.getBearerToken()
-        let url = `${QUIZMICRO}/participants/particular/exam/enrolled/quizes?category_id=${id}&page=1`
+        let url = `${QUIZMICRO}/participants/particular/exam/enrolled/quizes?category_id=${id}&page=${page}`
         let headers = {"content-type":"application/json", authorization:token}
         let options = {
             method: 'get',

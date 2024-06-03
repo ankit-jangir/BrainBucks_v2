@@ -112,7 +112,8 @@ const Quizze = () => {
               )
             }}
           />
-        )}
+        )
+      }
         {loadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
       </View>
     </View>
