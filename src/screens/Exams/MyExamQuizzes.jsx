@@ -18,6 +18,7 @@ import basic from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
+import NoDataFound from '../../components/NoDataFound';
 export default function MyExamQuizzes({ navigation, route }) {
   const [live, setLive] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -93,6 +94,10 @@ export default function MyExamQuizzes({ navigation, route }) {
         {
           loading ?
             <ActivityIndicator size={40} style={{ flex: 1 }} />
+            :
+            live.length===0
+            ?
+            <NoDataFound message={"No Quizzes Found for This Exam"} action={getExamQuizzes} actionText={"Reload"}/>
             :
             <FlatList
               onEndReached={()=>getExamQuizzes(currentPage + 1)}

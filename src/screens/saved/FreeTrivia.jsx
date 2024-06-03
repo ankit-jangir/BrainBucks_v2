@@ -73,7 +73,6 @@ const FreeTrivia = () => {
       <View style={{zIndex:1}}>
         <Toast />
       </View>
-      <View>
         <View style={{ backgroundColor: 'white', padding: 10}}>
           {loading ? (
             <ActivityIndicator color={ColorsConstant.Theme} size={35} />
@@ -112,7 +111,6 @@ const FreeTrivia = () => {
         {LoadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
 
         </View>
-      </View>
     </View>
   );
 };

@@ -4,6 +4,7 @@ import {
   FlatList,
   ActivityIndicator,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import {Text} from '../../utils/Translate';
 import React, {useEffect, useState} from 'react';
@@ -107,7 +108,7 @@ const MyCourses = ({navigation}) => {
   }
 
   return (
-    <>
+    <ScrollView>
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
@@ -255,7 +256,7 @@ const MyCourses = ({navigation}) => {
                 }
               </Accordion>)
       }
-    </>
+    </ScrollView>
   );
 };
 
