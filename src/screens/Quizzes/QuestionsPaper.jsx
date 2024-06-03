@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
@@ -20,6 +20,7 @@ export default function QuestionsPaper({ navigation }) {
   const [selectedOption, setSelectedOption] = useState(0)
   const { quizState, dispatch } = useQuiz()
   const [submitData, setSubmitData] = useState({})
+  const backRef = useRef()
 
   let question = quizState.question
 
@@ -34,6 +35,11 @@ export default function QuestionsPaper({ navigation }) {
   useEffect(() => {
     setMinute(parseInt(quizState.time / 60))
     setTimerCount(parseInt(quizState.time % 60))
+    backRef.current = navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+    })
+
+    return () => { backRef.current() }
   }, [])
 
   useEffect(() => {
@@ -44,7 +50,7 @@ export default function QuestionsPaper({ navigation }) {
         setMinute(minute - 1);
         setTimerCount(59);
       } else {
-
+        handleSubmit()
       }
     }, 1000);
 
@@ -87,6 +93,7 @@ export default function QuestionsPaper({ navigation }) {
     let time = parseInt(quizState.time - minute * 60 - timerCount)
     submitactiveQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
+        backRef.current()
         setSubmitData(r.arr)
         setModalVisible1(true)
         setModalVisible(false)
@@ -273,7 +280,9 @@ export default function QuestionsPaper({ navigation }) {
                   <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at "+submitData.msg : "soon"}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => { navigation.navigate('Home'), setModalVisible1(false) }} style={styles.continueTouchable} >
+              <TouchableOpacity onPress={() => { 
+                backRef.current();
+                navigation.navigate('Home'), setModalVisible1(false) }} style={styles.continueTouchable} >
                 <Text style={styles.continueText}>Back To Home</Text>
               </TouchableOpacity>
             </View>
