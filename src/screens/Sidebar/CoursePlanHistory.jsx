@@ -110,8 +110,9 @@ export default function CoursePlanHistory({navigation}) {
             // const formattedDate = momentDate.format('DD-MM-YYYY HH:mm:ss');
 
             return (
-              <>
+              
                 <View
+                key={res._id}
                   style={{
                     borderWidth: 0.3,
                     borderColor: '#d9d5ca',
@@ -198,7 +199,6 @@ export default function CoursePlanHistory({navigation}) {
                     </View>
                   </View>
                 </View>
-              </>
             );
           })}
         </ScrollView>

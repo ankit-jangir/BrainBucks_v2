@@ -178,6 +178,7 @@ export default function Saved({navigation}) {
                     //   setSearch(value);
                     //   updateResult(value);
                     // }}
+                    onChangeText={setSearch}
                     value={search}
                     style={styles.SerchIn}
                     placeholder="Search for Exams"
@@ -197,6 +198,7 @@ export default function Saved({navigation}) {
                   />
                 ) : (
                  otherExams.map((item)=>{
+                  if(item.category_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
                   return(
                     <View key={item._id} style={styles.EListss}>
                     <View style={styles.EListss1}>

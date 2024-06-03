@@ -101,7 +101,7 @@ const AddBanks = ({ navigation }) => {
                         <View style={styles.bankDetailsHeader}>
                           <View style={styles.bankIconContainer}>
                             <Image
-                              source={require('../../assets/img/bb.png')}
+                              source={require('../../assets/img/bank.png')}
                               resizeMode="contain"
                               style={styles.bankIcon}
                             />

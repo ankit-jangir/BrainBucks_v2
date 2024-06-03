@@ -16,7 +16,7 @@ const Challenges = () => {
   const [loading, setLoading] = useState();
   const [loadingMore, setLoadingMore] = useState();
 
-  const [Enrolled, setEnrollled] = useState([]);
+  const [Enrolled, setEnrolled] = useState([]);
   const {idState, context} = useCurrentId();
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
@@ -29,7 +29,7 @@ const Challenges = () => {
       page = 1
     }
 
-    if (page >= totalPages) {
+    if (page > totalPages) {
       return;
     }
 
@@ -39,11 +39,12 @@ const Challenges = () => {
       setLoadingMore(true)
     }
     try {
+      
       let res = await saved.getEnrolledQuizzes(idState.id,page);
       if (res.status === 1) {
         setTotalPages(res.totalpages)
-        if (page === 1) { setEnrollled(res.active_quizes) }
-        else { setEnrollled([...Quizes, ...res.active_quizes ]) }
+        if (page === 1) { setEnrolled(res.enrolled_quizes) }
+        else { setEnrolled([...Enrolled, ...res.enrolled_quizes ]) }
         setCurrentPage(page)
       } else {
         Toast.show({
@@ -67,15 +68,17 @@ const Challenges = () => {
       <View style={{zIndex:1}}>
         <Toast />
       </View>
-      <View>
-        {loading ? (
+        {
+        loading ? (
           <ActivityIndicator color={ColorsConstant.Theme} size={35} />
         ) : Enrolled.length === 0 ? (
+         <View style={{flex:1}}>
           <NoDataFound
-            message={'No Data Found'}
-            action={getEnrolledQuizzes}
-            actionText={'Reload'}
+            message={'Enroll in a quiz to see here'}
+            action={()=>{navigation.goBack()}}
+            actionText={'Go Back'}
           />
+          </View>
         ) : (
           <FlatList
             data={Enrolled}
@@ -102,10 +105,8 @@ const Challenges = () => {
             }}
           />
         )
-          })
+          }
         {loadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
-
-      </View>
     </View>
   );
 };

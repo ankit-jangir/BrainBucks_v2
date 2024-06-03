@@ -63,7 +63,7 @@ import TriviaAnimationQuizz from './src/screens/Freetrivia/TriviaAnimationQuizz'
 import TriviaQuestionPaper from './src/screens/Freetrivia/TriviaQuestionPaper';
 import TriviaSubmit from './src/screens/Freetrivia/TriviaSubmit';
 import TriviaSubmitConfirmation from './src/screens/Freetrivia/TriviaSubmitConfirmation';
-import TriviaResult from './src/screens/Freetrivia/TriviaResult';
+import ResultRewards from './src/screens/Freetrivia/ResultRewards';
 import TriviaScoreCard from './src/screens/Freetrivia/TriviaScoreCard';
 
 import AddBankReducer from './src/context/AddBankReducer';
@@ -82,6 +82,8 @@ import ViewPdf from './src/screens/Courses/ViewPdf';
 import QuizPlayReducer from './src/context/QuizPlayReducer';
 import AddExamss from './src/screens/Study/AddExamss';
 import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
+import Search from './src/screens/Home/Search';
+import Notification from './src/screens/Home/Notification';
 
 
 
@@ -158,7 +160,7 @@ function MyStack() {
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
       <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper}/>
       <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation}/>
-      <Stack.Screen name="TriviaResult" component={TriviaResult} />
+      <Stack.Screen name="resultreward" component={ResultRewards} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
       <Stack.Screen name="privacypolice" component={PrivacyPolicy} />
@@ -168,6 +170,8 @@ function MyStack() {
       <Stack.Screen name="addExamss" component={AddExamss} />
       <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
       <Stack.Screen name='myexams' component={MyExams}/>
+      <Stack.Screen name='search' component={Search}/>
+      <Stack.Screen name="Notification" component={Notification}/>
     </Stack.Navigator>
   );
 }

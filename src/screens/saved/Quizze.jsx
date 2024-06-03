@@ -38,7 +38,7 @@ const Quizze = () => {
       page = 1
     }
 
-    if (page >= totalPages) {
+    if (page > totalPages) {
       return;
     }
 

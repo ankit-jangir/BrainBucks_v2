@@ -1,26 +1,46 @@
-import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
-import React,{useEffect,useState} from 'react';
-import {LinearProgress, Button} from '@rneui/themed';
+import { StyleSheet, View, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import HistoryApiService from '../../services/api/HistoryApiService';
 import Toast from 'react-native-toast-message';
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+import NoDataFound from '../../components/NoDataFound';
+import QuizCard from '../../components/QuizCard';
+import { BLOBURL } from '../../config/urls';
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const All = () => {
-  const [progress, setProgress] = React.useState(0);
-  const [allwin, setAllWin] = React.useState();
+const All = ({ navigation, order }) => {
+  const [allwin, setAllWin] = React.useState([]);
   const [loading, setLoading] = useState(false)
-
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
 
   const history = new HistoryApiService()
-  
+
+  async function getAllHistory(page) {
+    let total = totalPages;
+    if (!page) {
+      page = 1
+      setTotalPages(2)
+      total = 2
+    }
+
+    if (page > total) {
+      return
+    }
 
 
-  async function getWalletData() {
     try {
-      let res = await history.getFullHistory();
+      if (page === 1) {
+        setLoading(true)
+      }
+      else {
+        setLoadingMore(true)
+      }
+      let res = await history.getFullHistory(order, page);
       if (res.status === 1) {
-        allwin.value = res;
-        console.log(res,'sonu');
+        setAllWin(res.properquizes)
+        setTotalPages(res.totalpages)
+        setCurrentPage(page)
       } else {
         Toast.show({
           type: 'error',
@@ -35,98 +55,53 @@ const All = () => {
       });
     } finally {
       setLoading(false);
+      setLoadingMore(false)
     }
   }
 
-useEffect(() => {
-  getWalletData()
-}, [])
+  useEffect(() => {
+    getAllHistory()
+  }, [order])
 
-
-
-  React.useEffect(() => {
-    let subs = true;
-    if (progress < 1 && progress !== 0) {
-      setTimeout(() => {
-        if (subs) {
-          setProgress(progress + 0.1);
-        }
-      }, 100);
-    }
-    return () => {
-      subs = false;
-    };
-  }, [progress]);
 
   return (
     <View style={styles.mainContainer}>
-         <View style={{zIndex:100}}>
-      <Toast />
+      <View style={{ zIndex: 100 }}>
+        <Toast />
       </View>
-      <View style={styles.container}>
-        <View style={styles.containerImg}>
-          <Image
-            source={require('../../assets/img/Rectangle.png')}
-            resizeMode="contain"
-            style={styles.mainImage}
-          />
-          <Text style={styles.textTitle}>SBI-PO Current Affairs</Text>
-        </View>
-        <View style={styles.containerImg12}>
-          <View style={styles.containerImg122}>
-            <Text style={styles.subText}>Fees</Text>
-            <Image
-              source={require('../../assets/img/bb.png')}
-              style={styles.icon}
+      {
+        loading ?
+          <ActivityIndicator size={40} />
+          :
+          allwin.length === 0 ?
+            <NoDataFound message={"No Quiz Played Yet"} />
+            :
+            <FlatList
+              onEndReached={() => { getAllHistory(currentPage + 1) }}
+              onEndReachedThreshold={0.6}
+              data={allwin}
+              keyExtractor={(item) => item._id.toString()}
+              renderItem={({ item }) => {
+                return (
+                  <QuizCard
+                    title={item.quiz_name}
+                    prize={item.is_active ? item.prize : item.reward}
+                    type={item.is_active ? 'active' : 'trivia'}
+                    minper={item.min_reward_per}
+                    totalslots={item.slots}
+                    alotedslots={item.slot_aloted}
+                    image={{ uri: BLOBURL + item.banner }}
+                    fees={item.entryFees}
+                    date={item.sch_time}
+                    onPress={() => {
+                      item.is_active ? navigation.navigate("resultreward") : navigation.navigate("resultreward")
+                    }}
+                    btntxt={"View Result"}
+                  />)
+              }}
             />
-            <Text style={styles.highlightedText}>2024</Text>
-          </View>
-          <View style={styles.containerImg1222}>
-            <Image
-              source={require('../../assets/img/Timer.png')}
-              resizeMode="contain"
-              style={styles.smallIcon}
-            />
-            <Text style={styles.dateText}>2/4/2024</Text>
-          </View>
-        </View>
-        <View style={styles.containerImg12}>
-          <View style={styles.containerImg122}>
-            <Text style={styles.subText}>Prize</Text>
-            <Image
-              source={require('../../assets/img/bb.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.highlightedText}>2024</Text>
-          </View>
-          <View style={styles.containerImg1222}>
-            <Image
-              source={require('../../assets/img/Clock.png')}
-              resizeMode="contain"
-              style={styles.smallIcon}
-            />
-            <Text style={styles.dateText}>2/4/2024</Text>
-          </View>
-        </View>
-        <View style={styles.scoreContainer}>
-          <Image
-            source={require('../../assets/img/Vector.png')}
-            style={styles.vectorIcon}
-            resizeMode="contain"
-          />
-          <Text style={styles.scoreText}>2425/2425</Text>
-        </View>
-        <LinearProgress
-          style={styles.progress}
-          value={progress}
-          variant="determinate"
-        />
-        <Button
-        title="View Result"
-        buttonStyle={styles.button}
-        titleStyle={styles.buttonTitle}
-      />
-      </View>
+      }
+      {loadingMore && <ActivityIndicator size={25} style={{ height: 30 }} />}
     </View>
   );
 };
@@ -136,7 +111,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor:"white"
+    backgroundColor: "white"
   },
   container: {
     width: '100%',
@@ -156,10 +131,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     marginLeft: screenWidth * 0.03,
-    fontSize:17,
+    fontSize: 17,
     fontWeight: '600',
-    fontFamily:"Inter",
-    color:"#2E2E2E"
+    fontFamily: "Inter",
+    color: "#2E2E2E"
 
   },
   containerImg12: {
@@ -176,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'lightgray',
-    fontFamily:"Inter"
+    fontFamily: "Inter"
   },
   icon: {
     width: 20,
@@ -184,11 +159,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   highlightedText: {
-    fontSize:16 ,
+    fontSize: 16,
     fontWeight: '600',
     paddingLeft: screenWidth * 0.02,
     color: '#F5B807',
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   containerImg1222: {
@@ -201,7 +176,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     paddingLeft: 8,
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   scoreContainer: {
@@ -215,7 +190,7 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     paddingLeft: 5,
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   progress: {
@@ -228,11 +203,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#367CFF",
     borderWidth: 1,
-    backgroundColor: "white",  
+    backgroundColor: "white",
   },
   buttonTitle: {
     color: "#367CFF",
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
 });

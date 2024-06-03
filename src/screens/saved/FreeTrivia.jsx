@@ -33,7 +33,7 @@ const FreeTrivia = () => {
     if (!page) {
       page = 1
     }
-    if (page >= totalPages) {
+    if (page > totalPages) {
       return;
     }
 
@@ -74,7 +74,7 @@ const FreeTrivia = () => {
         <Toast />
       </View>
       <View>
-        <View style={{flex: 1, backgroundColor: 'white', padding: 10}}>
+        <View style={{ backgroundColor: 'white', padding: 10}}>
           {loading ? (
             <ActivityIndicator color={ColorsConstant.Theme} size={35} />
           ) : trivia.length === 0 ? (

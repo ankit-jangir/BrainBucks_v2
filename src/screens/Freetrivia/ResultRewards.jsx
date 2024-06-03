@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, Image, ScrollView, StatusBar, SafeAreaView, ActivityIndicator, BackHandler, StyleSheet } from 'react-native';
-import LottieView from 'lottie-react-native';
 import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';

@@ -15,7 +15,8 @@ const QuizCard = ({
   totalslots,
   alotedslots,
   type,
-  minper
+  minper,
+  btntxt
 }) => {
 
   return (
@@ -251,7 +252,7 @@ const QuizCard = ({
               style={{borderRadius:10}}>
               <Text
                 style={{textAlign: 'center', padding: 15, borderRadius: 10,color:"white"}}>
-                Register NOW
+                {btntxt? btntxt :"Register NOW"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -274,7 +275,7 @@ const QuizCard = ({
                 fontSize: 14,
                 fontFamily: 'WorkSans-Medium',
               }}>
-              Participate Now
+              {btntxt? btntxt :"Participate Now"}
             </Text>
           </TouchableOpacity>
         ) : type === 'enrolled' ? (
@@ -288,7 +289,7 @@ const QuizCard = ({
               tyle={{borderRadius: 10}}>
               <Text
                 style={{textAlign: 'center', padding: 15, borderRadius: 10,color:"white"}}>
-                JOIN NOW
+                {btntxt? btntxt :"JOIN NOW"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>

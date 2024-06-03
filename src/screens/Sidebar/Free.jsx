@@ -1,92 +1,105 @@
-import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
-import React,{useEffect,useState} from 'react';
-import {LinearProgress, Button} from '@rneui/themed';
+import { Image, StyleSheet, Text, View, Dimensions, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { LinearProgress, Button } from '@rneui/themed';
+import HistoryApiService from '../../services/api/HistoryApiService';
+import BasicServices from '../../services/BasicServices';
+import Toast from 'react-native-toast-message';
+import NoDataFound from '../../components/NoDataFound';
+import QuizCard from '../../components/QuizCard';
+import { FlatList } from 'react-native';
+import { BLOBURL } from '../../config/urls';
 
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-const Free = () => {
-  const [progress, setProgress] = React.useState(0);
+const Free = ({ navigation, order }) => {
+  const [free, setFree] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
 
-  React.useEffect(() => {
-    let subs = true;
-    if (progress < 1 && progress !== 0) {
-      setTimeout(() => {
-        if (subs) {
-          setProgress(progress + 0.1);
-        }
-      }, 100);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
+
+  const history = new HistoryApiService()
+
+  useEffect(() => {
+    getFreeQuizzes()
+  }, [order])
+
+  function helper(page) {
+    return async () => {
+      let res = await history.getFreeQuizzes(order, page)
+      return res
     }
-    return () => {
-      subs = false;
-    };
-  }, [progress]);
+  }
+
+  async function getFreeQuizzes(page) {
+    let total = totalPages;
+    if (!page) {
+      page = 1
+      setTotalPages(2)
+      total = 2
+    }
+
+    if (page > total) {
+      return
+    }
+
+    let func = setLoadingMore
+    if (page === 1) {
+      func = setLoading
+    }
+    let res = await BasicServices.apiTryCatch(helper(page), Toast, () => { func(true) }, () => { func(false) })
+    if (res) {
+      setFree(res.triviaquizes)
+      setTotalPages(res.totalpages)
+      setCurrentPage(page)
+    }
+  }
+
+
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.container}>
-        <View style={styles.containerImg}>
-          <Image
-            source={require('../../assets/img/Rectangle.png')}
-            resizeMode="contain"
-            style={styles.mainImage}
-          />
-          <Text style={styles.textTitle}>SBI-PO Current Affairs</Text>
-        </View>
-        <View style={styles.containerImg12}>
-          <View style={styles.containerImg122}>
-            <Text style={styles.subText}>Fees</Text>
-            <Image
-              source={require('../../assets/img/bb.png')}
-              style={styles.icon}
+      <View style={{ zIndex: 200 }}><Toast /></View>
+      {
+        loading
+          ?
+          <ActivityIndicator size={40} />
+          :
+          free.length === 0
+            ?
+            <NoDataFound message={"No Data Found"} action={getFreeQuizzes} actionText={"Refresh"} />
+            :
+            <FlatList
+              onEndReached={() => { getFreeQuizzes(currentPage + 1) }}
+              onEndReachedThreshold={0.6}
+              data={free}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => {
+                return (
+                  <QuizCard
+                    title={item.quiz_name}
+                    prize={item.reward}
+                    type={'trivia'}
+                    minper={item.min_reward_per}
+                    totalslots={item.slots}
+                    alotedslots={item.slot_aloted}
+                    image={{ uri: BLOBURL + item.banner }}
+                    fees={item.entryFees}
+                    date={item.sch_time}
+                    onPress={() => {
+                      navigation.navigate("resultreward")
+                    }
+                    }
+                    btntxt={"View Result"}
+
+                  />)
+              }
+              }
             />
-            <Text style={styles.highlightedText}>2024</Text>
-          </View>
-          <View style={styles.containerImg1222}>
-            <Image
-              source={require('../../assets/img/Timer.png')}
-              resizeMode="contain"
-              style={styles.smallIcon}
-            />
-            <Text style={styles.dateText}>2/4/2024</Text>
-          </View>
-        </View>
-        <View style={styles.containerImg12}>
-          <View style={styles.containerImg122}>
-            <Text style={styles.subText}>Prize</Text>
-            <Image
-              source={require('../../assets/img/bb.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.highlightedText}>2024</Text>
-          </View>
-          <View style={styles.containerImg1222}>
-            <Image
-              source={require('../../assets/img/Clock.png')}
-              resizeMode="contain"
-              style={styles.smallIcon}
-            />
-            <Text style={styles.dateText}>2/4/2024</Text>
-          </View>
-        </View>
-        <View style={styles.scoreContainer}>
-          <Image
-            source={require('../../assets/img/Vector.png')}
-            style={styles.vectorIcon}
-            resizeMode="contain"
-          />
-          <Text style={styles.scoreText}>2425/2425</Text>
-        </View>
-        <LinearProgress
-          style={styles.progress}
-          value={progress}
-          variant="determinate"
-        />
-        <Button
-        title="View Result"
-        buttonStyle={styles.button}
-        titleStyle={styles.buttonTitle}
-      />
-      </View>
+      }
+      {loadingMore && <ActivityIndicator size={25} style={{ height: 30 }} />}
+
     </View>
   );
 };
@@ -97,7 +110,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor:"white"
+    backgroundColor: "white"
   },
   container: {
     width: '100%',
@@ -117,10 +130,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     marginLeft: screenWidth * 0.03,
-    fontSize:17,
+    fontSize: 17,
     fontWeight: '600',
-    fontFamily:"Inter",
-    color:"#2E2E2E"
+    fontFamily: "Inter",
+    color: "#2E2E2E"
 
   },
   containerImg12: {
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'lightgray',
-    fontFamily:"Inter"
+    fontFamily: "Inter"
   },
   icon: {
     width: 20,
@@ -145,11 +158,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   highlightedText: {
-    fontSize:16 ,
+    fontSize: 16,
     fontWeight: '600',
     paddingLeft: screenWidth * 0.02,
     color: '#F5B807',
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   containerImg1222: {
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     paddingLeft: 8,
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   scoreContainer: {
@@ -176,7 +189,7 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     paddingLeft: 5,
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
   progress: {
@@ -189,11 +202,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#367CFF",
     borderWidth: 1,
-    backgroundColor: "white",  
+    backgroundColor: "white",
   },
   buttonTitle: {
     color: "#367CFF",
-    fontFamily:"Inter"
+    fontFamily: "Inter"
 
   },
 });

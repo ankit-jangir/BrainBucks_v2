@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
       fontSize: 13,
       flex: 0.8,
       fontFamily: 'WorkSans-Regular',
+      color:ColorsConstant.Black
     },
     touchSearch: {
       flex: 0.1,

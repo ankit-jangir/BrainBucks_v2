@@ -59,7 +59,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
     if (!page) {
       page = 1
     }
-    if (page < totalPages) {
+    if (page <= totalPages) {
       setCurrentPage(page)
       let func = setLoadingMore
       if (page===1){
