@@ -43,19 +43,18 @@ function activeJoinHelper(id) {
         return res
     }
 }
-export async function joinactiveQuiz(id, toast, setRefresh, dispatch, setModalVisible) {
+export async function joinactiveQuiz(id, toast, setRefresh, dispatch) {
     let res = await BasicServices.apiTryCatch(activeJoinHelper(id), toast, () => { setRefresh(true) }, () => { setRefresh(false) })
-    console.log(res);
     if (res) {
         dispatch({
             type: "change", state: {
                 id: id,
-                total: res.total_questions,
+                total: res.total_question,
                 time: res.timeperiod
             }
         })
-        setModalVisible(true)
     }
+    return res;
 }
 
 function activeGetQuestionHelper(id, page) {
@@ -66,6 +65,7 @@ function activeGetQuestionHelper(id, page) {
 }
 export async function getactiveQuestion(id, page, toast, dispatch, setSelectedOption) {
     let res = await BasicServices.apiTryCatch(activeGetQuestionHelper(id, page), toast)
+    console.log(res);
     if (res && res.question) {
         dispatch({
             type:'change',
@@ -77,6 +77,7 @@ export async function getactiveQuestion(id, page, toast, dispatch, setSelectedOp
         setSelectedOption(res.selected_ans)
         
     }
+    return res;
 }
 
 function activeUpdateAnswerHelper(id, page, ans){

@@ -11,25 +11,45 @@ import {BLOBURL} from '../../config/urls';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
+import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native';
 
 const FreeTrivia = () => {
+  const navigation = useNavigation()
   const saved = new SavedApiService();
 
   const {idState, dispatch} = useCurrentId();
-  const [loading, setloading] = useState();
+  const [loading, setLoading] = useState();
+  const [LoadingMore, setLoadingMore] = useState();
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
   const [trivia, setTrivia] = useState([]);
 
   useEffect(() => {
     getTriviaQuizzes();
   }, []);
 
-  async function getTriviaQuizzes() {
-    setloading(true);
+  async function getTriviaQuizzes(page) {
+    if (!page) {
+      page = 1
+    }
+    if (page > totalPages) {
+      return;
+    }
 
+    if (page === 1) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true)
+    }
     try {
-      let res = await saved.getTriviaQuizzes(idState.id);
+      let res = await saved.getTriviaQuizzes(idState.id,page);
       if (res.status === 1) {
-        setTrivia(res.trivia_quizes);
+        setTotalPages(res.totalpages)
+        if (page === 1) { setTrivia(res.trivia_quizes) }
+        else { setTrivia([...trivia, ...res.trivia_quizes ]) }
+        setCurrentPage(page)
+
       } else {
         Toast.show({
           type: 'error',
@@ -43,32 +63,17 @@ const FreeTrivia = () => {
         text1: 'Something went wrong',
       });
     } finally {
-      setloading(false);
+      setLoadingMore(false)
+      setLoading(false)
     }
   }
-  const triviadata = [
-    {
-      exam: 'SBI-PO Current Affairs',
-      fees: 0,
-      prize: 500,
-      width: 45,
-      image: require('../../assets/img/sbi.png'),
-    },
-    {
-      exam: 'SBI-PO Current Affairs',
-      fees: 0,
-      prize: 500,
-      width: 45,
-      image: require('../../assets/img/sbi.png'),
-    },
-  ];
+
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <View style={{zIndex:1}}>
         <Toast />
       </View>
-      <ScrollView>
-        <View style={{flex: 1, backgroundColor: 'white', padding: 10}}>
+        <View style={{ backgroundColor: 'white', padding: 10}}>
           {loading ? (
             <ActivityIndicator color={ColorsConstant.Theme} size={35} />
           ) : trivia.length === 0 ? (
@@ -78,27 +83,34 @@ const FreeTrivia = () => {
               actionText={'Reload'}
             />
           ) : (
-            trivia.map(res => {
-              return (
-                <>
+            <FlatList
+              data={trivia}
+              onEndReached={()=>{getTriviaQuizzes(currentPage+1)}}
+              onEndReachedThreshold={0.6}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => {
+                return (
                   <QuizCard
-                    key={res._id}
-                    title={res.quiz_name}
-                    image={{uri: BLOBURL + res.banner}}
-                    prize={res.reward}
-                    date={res.sch_time}
-                    time={res.sch_time}
-                    totalslots={res.slots}
-                    alotedslots={res.slot_aloted}
-                    type={'trivia'}
-                    onPress={() => {}}
+                  title={item.quiz_name}
+                  image={{uri: BLOBURL + item.banner}}
+                  prize={item.reward}
+                  date={item.sch_time}
+                  time={item.sch_time}
+                  totalslots={item.slots}
+                  alotedslots={item.slot_aloted}
+                  minper={item.min_reward_per}
+                  type={'trivia'}
+                  onPress={() => {
+                    navigation.navigate('FreeRulesParticipation', { id: item._id })
+                  }}
                   />
-                </>
-              );
-            })
+                )
+              }}
+            />
           )}
+        {LoadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
+
         </View>
-      </ScrollView>
     </View>
   );
 };

@@ -16,8 +16,7 @@ const QuizCard = ({
   alotedslots,
   type,
   minper,
-  buttontext,
-  reward
+  btntxt
 }) => {
 
   return (
@@ -101,13 +100,13 @@ const QuizCard = ({
                     style={{width: 20, height: 20}}
                   />
                 </View>
-                <View style={{flexDirection: 'row', paddingLeft: 10}}>
+                <View style={{flexDirection: 'row', paddingLeft:0}}>
                   <Text
                     style={{
                       color: 'rgba(138, 138, 138, 1)',
                       fontSize: 14,
                       fontWeight: '600',
-                      paddingLeft: 5,
+                      paddingLeft:5,
                     }}>
                     {date?.substr(0,10)}
                   </Text>
@@ -118,7 +117,7 @@ const QuizCard = ({
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginTop: 10,
+                marginTop: 8,
                 justifyContent: 'space-between',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -156,8 +155,8 @@ const QuizCard = ({
                   </Text>
                 </View>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View>
+              <View style={{flexDirection: 'row', alignItems: 'center',paddingRight:17}}>
+                <View style={{}}>
                   <Image
                     source={require('../assets/img/calendar.png')}
                     resizeMode="contain"
@@ -165,20 +164,19 @@ const QuizCard = ({
                     style={{width: 17, height: 17}}
                   />
                 </View>
-                <View style={{flexDirection: 'row', paddingLeft: 10}}>
+                      <View style={{paddingLeft:4}}>
                   <Text
                     style={{
                       color: 'rgba(138, 138, 138, 1)',
                       fontSize: 14,
                       fontWeight: '600',
-                      paddingLeft: 5,
                     }}>
                     {date?.substr(11,8)}
                   </Text>
                 </View>
               </View>
             </View>
-          </>
+          </> 
           <>
             <View
               style={{
@@ -252,11 +250,10 @@ const QuizCard = ({
               start={{x: 0.0, y: 0.25}}
               end={{x: 0.6, y: 2.0}}
               colors={['#54ACFD', '#2289E7']}
-              tyle={{borderRadius: 10}}>
+              style={{borderRadius:10}}>
               <Text
-                style={{textAlign: 'center', padding: 15, borderRadius: 10}}>
-             {buttontext === "viewresult"?'View Result':'Register NOW'}
-
+                style={{textAlign: 'center', padding: 15, borderRadius: 10,color:"white"}}>
+                {btntxt? btntxt :"Register NOW"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -279,8 +276,7 @@ const QuizCard = ({
                 fontSize: 14,
                 fontFamily: 'WorkSans-Medium',
               }}>
-              {buttontext === "viewresult"?'View Result':'Participate NOW'}
-
+              {btntxt? btntxt :"Participate Now"}
             </Text>
           </TouchableOpacity>
         ) : type === 'enrolled' ? (
@@ -293,8 +289,8 @@ const QuizCard = ({
               colors={['#54ACFD', '#2289E7']}
               tyle={{borderRadius: 10}}>
               <Text
-                style={{textAlign: 'center', padding: 15, borderRadius: 10}}>
-                JOIN NOW
+                style={{textAlign: 'center', padding: 15, borderRadius: 10,color:"white"}}>
+                {btntxt? btntxt :"JOIN NOW"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>

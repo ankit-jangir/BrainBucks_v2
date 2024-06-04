@@ -16,38 +16,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import HTMLRender from 'react-native-render-html';
 import {useNavigation} from '@react-navigation/native';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import BasicServices from '../../services/BasicServices';
+import Toast from 'react-native-toast-message';
+import { screenWidth } from '../../constants/Sizes.constant';
 
 export default function DailyUpdate({navigation}) {
   const isFocused = useIsFocused();
-
-  const [isData, setData] = useState(false);
   const [isLoad, setLoad] = useState(false);
-  const [isLoad1, setLoad1] = useState(true);
   const [blog, setBlog] = useState([]);
-  const [blogCount, setBlogCount] = useState(0);
-  const [index, setIndex] = useState(0);
+  const [blogCount, setBlogCount] = useState(2);
+  const [index, setIndex] = useState(1);
   const [Name, setName] = useState('');
 
   useEffect(() => {
     GetName();
     getUpdate();
-  }, [isFocused]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoad1(false);
-    }, 2000);
-  }, []);
+  }, [isFocused, index]);
 
   const GetName = async () => {
-    let name = await AsyncStorage.getItem('userName');
-    setName(name);
+    try{let name = await BasicServices.getLocalObject()
+    // console.log(name.name);
+    setName(name.name);}catch(err){console.log("ERROR IN GETTING LOCAL OBJ",err)}
   };
 
   const getUpdate = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await BasicServices.getBearerToken()
     const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
+    myHeaders.append('Authorization', token);
 
     const requestOptions = {
       method: 'GET',
@@ -55,70 +50,44 @@ export default function DailyUpdate({navigation}) {
       redirect: 'follow',
     };
 
+    setLoad(true)
+
     fetch(
-      `https://quiz.brainbucks.in/participants/get/daily/updates?page=1`,
+      `https://quiz.brainbucks.in/participants/get/daily/updates?page=${index}`,
       requestOptions,
     )
       .then(response => response.json())
       .then(result => {
         if (result.status === 1) {
+          console.log(result);
           setBlog(result.data);
           setBlogCount(result.totalPages);
-          setLoad(false);
         } else {
-          setData(true);
+          Toast.show({
+            type:'error',
+            text1:result.Backend_Error
+          })
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => {console.error(error), Toast.show({type:"error", text1:"Something went wrong."}) }).finally(()=>setLoad(false))
+    
   };
 
   const onNextButtonClick = () => {
-    setIndex(prevIndex => (prevIndex + 1) % blogCount);
+    setIndex(prevIndex => (prevIndex + 1) );
   };
 
   const onPreButtonClick = () => {
-    setIndex(prevIndex => (prevIndex - 1 + blogCount) % blogCount);
+    setIndex(prevIndex => (prevIndex-1));
   };
 
-  const Url = async () => {
-    let buo = await branch.createBranchUniversalObject('Invite', {
-      title: `${Name} Invited you to join brainbucks`,
-      contentDescription: 'Join now and play Room quizzes',
-      contentMetadata: {
-        customMetadata: {key1: 'value2'},
-      },
-    });
 
-    try {
-      const linkProperties = {
-        feature: 'sharing',
-        channel: 'facebook',
-        campaign: 'content',
-      };
-      const controlParams = {
-        $desktop_url: 'https://brainbucks.co.in',
-        $navigate_to: 'DailyUpdate',
-      };
 
-      let url = await buo.generateShortUrl(linkProperties, controlParams);
-      onShare(url.url);
-    } catch (error) {
-      console.log('Error generating short URL:', error);
-    }
-  };
-
-  const onShare = async id => {
-    try {
-      await Share.share({message: id});
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const currentItem = blog[index];
+  const currentItem = blog[0];
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <View style={{zIndex:200}}><Toast/></View>
     <View style={styles.Hview}>
     <View style={styles.Hview1}>
       <TouchableOpacity
@@ -136,29 +105,30 @@ export default function DailyUpdate({navigation}) {
     </View>
   </View>
 
-      {isLoad || isLoad1 ? (
+      {isLoad ? (
         <ActivityIndicator size={28} color={'gray'} />
-      ) : isData ? (
+      ) : blog.length===0 ? (
         <Text style={styles.textNo}>No Update Today</Text>
       ) : (
         <>
+        {console.log(blog, "yogesh")}
           <View style={styles.indexView}>
             <View style={styles.indexViewInner}>
               <TouchableOpacity
                 onPress={onPreButtonClick}
-                disabled={index === 0}>
+                disabled={index === 1}>
                 <Image
                   source={require('../../assets/img/arrow-left.png')}
                   style={{height: 20, width: 20}}
                 />
               </TouchableOpacity>
               <View style={styles.counterView}>
-                <Text style={styles.textIndex}>{index + 1}</Text>
+                <Text style={styles.textIndex}>{index }</Text>
                 <Text style={styles.textCount}>/{blogCount}</Text>
               </View>
               <TouchableOpacity
                 onPress={onNextButtonClick}
-                disabled={index === blogCount - 1}>
+                disabled={index === blogCount}>
                 <Image
                   source={require('../../assets/img/next.png')}
                   style={{height: 20, width: 20}}
@@ -181,7 +151,7 @@ export default function DailyUpdate({navigation}) {
                 <Text style={styles.textTime}>
                   {currentItem?.scheduled_time}
                 </Text>
-                <TouchableOpacity onPress={Url} style={styles.shareButton}>
+                <TouchableOpacity style={styles.shareButton}>
                   <Text style={styles.textShare}>Share</Text>
                   <Image
                     source={require('../../assets/img/share.png')}
@@ -192,8 +162,11 @@ export default function DailyUpdate({navigation}) {
               <Text style={styles.textDetails}>{currentItem?.headline}</Text>
               <View style={styles.detailsContainer}>
                 <HTMLRender
-                  style={[styles.texthtml, {color: 'red'}]}
+                key={index+currentItem?.headline}
+                contentWidth={screenWidth}
+                  style={styles.texthtml}
                   source={{html: currentItem?.details}}
+                  baseStyle={{color:'gray'}}
                 />
               </View>
             </View>
@@ -225,6 +198,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '600',
+    color:ColorsConstant.Black
   },
   indexView: {
     height: 50,
@@ -332,14 +306,16 @@ const styles = StyleSheet.create({
   textDetails: {
     fontSize: 24,
     textAlign: 'justify',
-    paddingLeft: 10,
+    paddingHorizontal: 10,
+    color:ColorsConstant.Black
   },
   detailsContainer: {
     paddingHorizontal: 8,
+    color:"black"
   },
   texthtml: {
     fontSize: 12,
-    color: 'red',
+    color: 'black',
   },
   textDescription: {
     fontSize: 16,

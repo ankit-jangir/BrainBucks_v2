@@ -58,7 +58,7 @@ class ActiveQuizApiService {
     let token = await basic.getBearerToken()
     let url = `${this.quizmicro}/participants/submit/in/active/quiz`;
     let headers = { "content-type": "application/json", authorization: token };
-    let data = JSON.stringify({subactivequiz_id:subactivequiz_id,submit_time_period:submit_time_period})
+    let data = JSON.stringify({subactive_id:subactivequiz_id,submit_time_period:submit_time_period})
     let options = {
       method: "post",
       headers: headers,
@@ -136,7 +136,7 @@ class ActiveQuizApiService {
     let token = await basic.getBearerToken()
     let url = `${QUIZMICRO}/participants/update/question/bypage/in/active/quiz`;
     let headers = { "content-type": "application/json", authorization: token };
-    let data = JSON.stringify({ subtrivia_id: id, page: page, ans: ans })
+    let data = JSON.stringify({ subactivequiz_id: id, page: page, ans: ans })
     let options = {
       method: "post",
       headers: headers,
@@ -151,7 +151,7 @@ class ActiveQuizApiService {
     let token = await basic.getBearerToken()
     let url = `${QUIZMICRO}/participants/get/question/bypage/in/active/quiz`;
     let headers = { "content-type": "application/json", authorization: token };
-    let data = JSON.stringify({ subtrivia_id: id, page: page })
+    let data = JSON.stringify({ subactivequiz_id: id, page: page })
     let options = {
       method: "post",
       headers: headers,

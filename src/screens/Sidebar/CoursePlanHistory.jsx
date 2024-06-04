@@ -10,8 +10,6 @@ import {
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const Tab = createMaterialTopTabNavigator();
 import {ActivityIndicator} from 'react-native-paper';
 import {Image} from 'react-native';
@@ -28,8 +26,7 @@ export default function CoursePlanHistory({navigation}) {
   const [isData, setData] = useState(false);
   const course = new CourseApiService();
   const onRefresh = () => {
-    setRefresh(true);
-    setTimeout(() => setRefresh(false), 3000);
+    CoursePlanHistorys()
   };
 
   useEffect(() => {
@@ -89,7 +86,7 @@ export default function CoursePlanHistory({navigation}) {
           />
         </TouchableOpacity>
         <View style={styles.ViewMy}>
-          <Text style={styles.TextMy}>Study Materials</Text>
+          <Text style={styles.TextMy}>Course Plan History</Text>
         </View>
       </View>
     </View>
@@ -113,8 +110,9 @@ export default function CoursePlanHistory({navigation}) {
             // const formattedDate = momentDate.format('DD-MM-YYYY HH:mm:ss');
 
             return (
-              <>
+              
                 <View
+                key={res._id}
                   style={{
                     borderWidth: 0.3,
                     borderColor: '#d9d5ca',
@@ -201,7 +199,6 @@ export default function CoursePlanHistory({navigation}) {
                     </View>
                   </View>
                 </View>
-              </>
             );
           })}
         </ScrollView>

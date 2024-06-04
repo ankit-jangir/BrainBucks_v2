@@ -89,7 +89,7 @@ const Sidebar = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Toast />
+        {/* <Toast /> */}
         <View style={styles.headerContent}>
           <Text style={styles.welcomeText}>Welcome</Text>
           <TouchableOpacity
@@ -142,7 +142,7 @@ const Sidebar = ({navigation}) => {
         />
         <MenuItem
         action={() => {
-          navigation.navigate('study');
+          navigation.navigate('Study');
         }}
           image={require('../../assets/img/myexamimg.png')}
           text="My Exams"

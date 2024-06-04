@@ -103,9 +103,11 @@ const styles = StyleSheet.create({
       backgroundColor: 'transparent',
     },
     ReferCard: {
-      width: '100%',
+      width: '95%',
       paddingHorizontal: 0,
       marginBottom: 10,
+      alignItems:'center',
+      margin:'auto'
     },
     ActiveView: {
       width: "100%",
@@ -140,12 +142,13 @@ const styles = StyleSheet.create({
     },
     bgPic: {
       width: '100%',
+      margin:"auto",
       height: 100,
       alignItems: 'flex-start',
     },
     ReferView: {
       width: '100%',
-      paddingLeft: 10,
+      paddingLeft: 20,
       paddingVertical: 13,
     },
     TextEarn: {
@@ -159,7 +162,74 @@ const styles = StyleSheet.create({
       color: ColorsConstant.White,
     },
       
-
+    header: {
+      backgroundColor: 'white',
+      flexDirection: 'row',
+      padding: 15,
+      alignItems: 'center',
+      marginBottom: 20,
+      elevation:1
+    },
+    backImage: {
+      height: 30,
+      width: 45,
+      marginRight: 8,
+    },
+    headerText: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: 'black',
+      fontFamily: 'Work Sans',
+      textAlign:'center'
+    },
+    DataView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    TextNo: {
+      fontSize: 18,
+      fontWeight: '500'
+    },
+    LoadView: {
+      flex: 1,
+      flexWrap: "wrap",
+      flexDirection: "row",
+      height:1000
+    },
+    LoaderVIew: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+    },
+    examView: {
+      width: 160,
+      padding: 10,
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: '#F5F5F5',
+      backgroundColor: "#fff",
+      marginTop: 10,
+      marginHorizontal: 10,
+      marginBottom: 10
+      
+    },
+    CateView: {
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    CateImage: {
+      width: 40,
+      height: 40,
+      borderRadius: 100
+    },
+    TextEdit: {
+      fontSize: 20,
+      fontFamily: 'WorkSans-SemiBold',
+      textAlign: 'center'
+    }
+  
 
 });
 

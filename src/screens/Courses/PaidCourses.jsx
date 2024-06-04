@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Pressable,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
@@ -137,7 +138,7 @@ const PaidCourses = () => {
   }
 
   return (
-    <>
+    <ScrollView>
       <View style={{zIndex: 100}}>
         <Toast />
       </View>
@@ -456,7 +457,7 @@ const PaidCourses = () => {
           </View>
         )}
       </Modal>
-    </>
+    </ScrollView>
   );
 };
 

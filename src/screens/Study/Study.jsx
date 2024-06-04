@@ -20,8 +20,6 @@ import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import { useCurrentId } from '../../context/IdReducer';
 export default function Study({ navigation }) {
-  const [material, setMaterial] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherExams, setOtherExams] = useState([]);
   const [search, setSearch] = useState('');
@@ -29,7 +27,7 @@ export default function Study({ navigation }) {
   const [loading1, setLoading1] = useState(false);
   const [enrolledExams, setEnrolledExams] = useState([])
   const [selectedExams, setSelectedExams] = useState(new Set([]))
-  const {idState,dispatch}=useCurrentId()
+  const { idState, dispatch } = useCurrentId()
   const study = new StudyApiService();
 
   async function addExams() {
@@ -44,13 +42,13 @@ export default function Study({ navigation }) {
     try {
       let arr = Array.from(selectedExams)
       let response = await study.enrollInExam(arr)
-      if(response.status===1){
-        let nextOtherArr = otherExams.filter(item=>!selectedExams.has(item._id))
+      if (response.status === 1) {
+        let nextOtherArr = otherExams.filter(item => !selectedExams.has(item._id))
         setOtherExams(nextOtherArr)
         loadEnrolledExams()
-        
+
         setSelectedExams(new Set([]))
-      }else{
+      } else {
         Toast.show({
           type: "info",
           text1: response.Backend_Error
@@ -127,9 +125,9 @@ export default function Study({ navigation }) {
 
   return (
     <>
-    <View style={{zIndex:1}}>
-    <Toast/>
-    </View>
+      <View style={{ zIndex: 1 }}>
+        <Toast />
+      </View>
       <View style={{ flex: 1 }}>
         <Modal
           animationType="slide"
@@ -174,10 +172,12 @@ export default function Study({ navigation }) {
                 <View style={styles.inputView1}>
                   <TextInput
                     value={search}
+                    onChangeText={setSearch}
                     style={styles.inputText}
                     placeholder="Search for Exams"
-                    placeholderTextColor={'#7E7E7E'}>
-                    </TextInput>
+                    placeholderTextColor={'#7E7E7E'}
+                  >
+                  </TextInput>
                   <TouchableOpacity style={styles.touchSearch}>
                     <Image
                       source={require('../../assets/img/search.png')}
@@ -199,45 +199,49 @@ export default function Study({ navigation }) {
                       ?
                       <NoDataFound message={"No Data Found"} action={loadOtherExams} actionText={"Reload"} />
                       :
-                      otherExams.map((item) =>
-                        <View key={item._id} style={styles.plusView}>
-                          <View style={styles.plusView1}>
-                            <View style={styles.cateView}>
-                              <Image
-                                source={{ uri: BLOBURL + item.image }}
-                                style={{
-                                  width: 40,
-                                  height: 40,
-                                  backgroundColor: 'red',
-                                  borderRadius: 100,
-                                }}
-                              />
-                            </View>
-                            <View style={styles.NameView}>
-                              <Text style={styles.Textname}>{item.category_name}</Text>
-                            </View>
-                            <View style={styles.RightVe}>
-                              <TouchableOpacity
-                                onPress={() => { selectExam(item._id) }}
-                                style={{
-                                  width: 45,
-                                  height: 45,
-                                  backgroundColor: selectedExams.has(item._id) ? ColorsConstant.Theme : "#EFEFEF",
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  borderRadius: 50,
-                                }}>
-                                {
-                                  selectedExams.has(item._id)
-                                    ?
-                                    <Text key={"selected"} style={{ color: '#fff', fontSize: 15 }}>✓</Text>
-                                    :
-                                    <Text key={"nonselected"} style={{ color: '#000', fontSize: 15 }}>+</Text>
-                                }
-                              </TouchableOpacity>
+                      otherExams.map((item) => {
+                        if(item.category_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                        return (
+                          <View key={item._id} style={styles.plusView}>
+                            <View style={styles.plusView1}>
+                              <View style={styles.cateView}>
+                                <Image
+                                  source={{ uri: BLOBURL + item.image }}
+                                  style={{
+                                    width: 40,
+                                    height: 40,
+                                    backgroundColor: 'red',
+                                    borderRadius: 100,
+                                  }}
+                                />
+                              </View>
+                              <View style={styles.NameView}>
+                                <Text style={styles.Textname}>{item.category_name}</Text>
+                              </View>
+                              <View style={styles.RightVe}>
+                                <TouchableOpacity
+                                  onPress={() => { selectExam(item._id) }}
+                                  style={{
+                                    width: 45,
+                                    height: 45,
+                                    backgroundColor: selectedExams.has(item._id) ? ColorsConstant.Theme : "#EFEFEF",
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 50,
+                                  }}>
+                                  {
+                                    selectedExams.has(item._id)
+                                      ?
+                                      <Text key={"selected"} style={{ color: '#fff', fontSize: 15 }}>✓</Text>
+                                      :
+                                      <Text key={"nonselected"} style={{ color: '#000', fontSize: 15 }}>+</Text>
+                                  }
+                                </TouchableOpacity>
+                              </View>
                             </View>
                           </View>
-                        </View>
+                        )
+                      }
                       )
                 }
               </ScrollView>
@@ -248,25 +252,25 @@ export default function Study({ navigation }) {
         <View style={styles.stdView}>
           <View style={styles.stdView1}>
             <View style={styles.stdView2}>
-            <TouchableOpacity
-            onPress={() => navigation.openDrawer()}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginHorizontal: 4,
-              borderWidth: 1,
-              borderRadius: 100,
-              width: 50,
-              height: 50,
-              borderColor: '#F5F5F5',
-            }}>
-            <Image
-              source={require('../../assets/img/drawerr.png')}
-              style={{height: 25, width: 25}}></Image>
-          </TouchableOpacity>
-          <View style={styles.examView}>
-            <Text style={styles.textMy}>Study Materials</Text>
-          </View>
+              <TouchableOpacity
+                onPress={() => navigation.openDrawer()}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: 4,
+                  borderWidth: 1,
+                  borderRadius: 100,
+                  width: 50,
+                  height: 50,
+                  borderColor: '#F5F5F5',
+                }}>
+                <Image
+                  source={require('../../assets/img/drawerr.png')}
+                  style={{ height: 25, width: 25 }}></Image>
+              </TouchableOpacity>
+              <View style={styles.examView}>
+                <Text style={styles.textMy}>Study Materials</Text>
+              </View>
             </View>
           </View>
 
@@ -294,10 +298,9 @@ export default function Study({ navigation }) {
                   enrolledExams.map((item) =>
                     <View key={item._id} style={styles.viewStudy}>
                       <TouchableOpacity
-                        onPress={() =>
-                          {dispatch({type:'change',idState:{id:item._id}}), navigation.navigate('addExamss')}
-                          
-                          }
+                        onPress={() => { dispatch({ type: 'change', idState: { id: item._id } }), navigation.navigate('addExamss') }
+
+                        }
                         style={styles.TouchData}>
                         <View style={styles.DataView}>
                           <View style={styles.cateView}>

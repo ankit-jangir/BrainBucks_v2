@@ -52,10 +52,10 @@ export default function ExamDetail({navigation, route}) {
         tabBarStyle: { width: "100%", },
         tabBarIndicatorStyle: { backgroundColor: "#000000", },
       }} >
-        <Tab.Screen name="Quizze">{(props) => <Quizze/>}</Tab.Screen>
-        <Tab.Screen name="Free Trivia">{(props) => <FreeTrivia/>}</Tab.Screen>
-        <Tab.Screen name="MyQuizzes">{(props) => <Challenges/>}</Tab.Screen>
-        <Tab.Screen name="Study">{(props) => <StudyMaterials/>}</Tab.Screen>
+        <Tab.Screen name="Quizze">{(props) => <Quizze {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Free Trivia">{(props) => <FreeTrivia {...props}/>}</Tab.Screen>
+        <Tab.Screen name="MyQuizzes">{(props) => <Challenges {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Study">{(props) => <StudyMaterials {...props}/>}</Tab.Screen>
       </Tab.Navigator>
     </View>
 

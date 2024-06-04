@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
     },
     profileInfo: {
       marginLeft: 15,
+      maxWidth:170
+      
     },
     profileName: {
       fontFamily: "WorkSans-SemiBold",

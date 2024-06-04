@@ -18,17 +18,25 @@ import { ActivityIndicator } from 'react-native';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { useQuiz } from '../../context/QuizPlayReducer';
+import { StackActions } from '@react-navigation/native';
 
 export default function FreeRulesParticipation({ navigation, route }) {
 
   const [data, setData] = useState({})
-  const {quizState, dispatch} = useQuiz()
+  const { quizState, dispatch } = useQuiz()
   useEffect(
     () => {
       getTriviaDetails(route.params.id, Toast, setData, setRefresh)
     }, [])
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  async function next() {
+    let res = await joinTriviaQuiz(route.params.id, Toast, setRefresh, dispatch)
+    if(res){
+      navigation.dispatch(StackActions.replace('TriviaAnimationQuizz'))
+    }
+  }
 
   return (
     <>
@@ -170,7 +178,7 @@ export default function FreeRulesParticipation({ navigation, route }) {
                     style={{ width: 25, height: 25 }}
                   />
                   <Text
-                  key={data.reward}
+                    key={data.reward}
                     style={{
                       color: 'rgba(138, 138, 138, 1)',
                       fontSize: 14,
@@ -184,7 +192,7 @@ export default function FreeRulesParticipation({ navigation, route }) {
 
                 <View>
                   <Text
-                  key={data.total_num_of_quest}
+                    key={data.total_num_of_quest}
                     style={{
                       fontSize: 18,
                       color: 'rgba(46, 46, 46, 1)',
@@ -195,7 +203,7 @@ export default function FreeRulesParticipation({ navigation, route }) {
                     Number of Questions : {data?.total_num_of_quest}
                   </Text>
                   <Text
-                  key={data.time_per_question}
+                    key={data.time_per_question}
                     style={{
                       fontSize: 18,
                       color: 'rgba(46, 46, 46, 1)',
@@ -258,7 +266,7 @@ export default function FreeRulesParticipation({ navigation, route }) {
           <TouchableOpacity
             onPress={() => {
               if (!refresh)
-                joinTriviaQuiz(route.params.id, Toast, navigation, 'TriviaAnimationQuizz', setRefresh, dispatch)
+                next()
             }}
             style={{ width: '100%' }}>
             <LinearGradient

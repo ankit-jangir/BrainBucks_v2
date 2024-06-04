@@ -18,6 +18,7 @@ import { getactiveDetails, registerActiveQuiz } from '../../controllers/ActiveQu
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { useQuiz } from '../../context/QuizPlayReducer';
+import { StackActions } from '@react-navigation/native';
 
 export default function AllLiveQuizzes({ navigation, route }) {
 
@@ -311,7 +312,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('StartExam', {id: route.params.id}), setModalVisible(false);
+                  navigation.dispatch(StackActions.replace('StartExam', {id: route.params.id})), setModalVisible(false);
                 }}
                 style={styles.continueTouchable}>
                 <Text style={styles.continueText}>Continue</Text>

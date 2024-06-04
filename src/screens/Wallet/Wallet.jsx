@@ -151,7 +151,7 @@ export default function Wallet({ navigation }) {
 
           <View style={styles.containerImg1}>
             <View style={styles.growthContainer}>
-              <Text style={styles.growthText}>+121.56%</Text>
+              <Text style={styles.growthText}>Balance</Text>
             </View>
 
             <View style={styles.investedContainer}>

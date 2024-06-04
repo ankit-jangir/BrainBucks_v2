@@ -58,7 +58,7 @@ const MyEarningSpent = () => {
           ) : (
             Spent.map(res => {
               return (
-                <View style={styles.card}>
+                <View key={res._id} style={styles.card}>
                   <View style={styles.row}>
                     <View>
                       <View style={{flexDirection: 'row'}}>
@@ -67,7 +67,7 @@ const MyEarningSpent = () => {
                           style={styles.icon}
                         />
                         <View style={styles.info}>
-                          <Text style={styles.amount}>{res.amount}</Text>
+                          <Text style={styles.amount}>- {res.amount}</Text>
                           <Text style={styles.date}>{res.date}</Text>
                         </View>
                       </View>

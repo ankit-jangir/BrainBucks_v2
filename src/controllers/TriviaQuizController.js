@@ -1,3 +1,4 @@
+import { StackActions } from "@react-navigation/native";
 import BasicServices from "../services/BasicServices";
 import FreeQuizApiService from "../services/api/FreeQuizApiService";
 
@@ -23,7 +24,7 @@ function triviaJoinHelper(id) {
         return res
     }
 }
-export async function joinTriviaQuiz(id, toast, navigation, routename, setRefresh, dispatch) {
+export async function joinTriviaQuiz(id, toast, setRefresh, dispatch) {
     let res = await BasicServices.apiTryCatch(triviaJoinHelper(id), toast, () => { setRefresh(true) }, () => { setRefresh(false) })
     if (res) {
         dispatch({
@@ -33,8 +34,8 @@ export async function joinTriviaQuiz(id, toast, navigation, routename, setRefres
                 time: res.timeperiod
             }
         })
-        navigation.navigate(routename)
     }
+    return res;
 }
 
 function triviaGetQuestionHelper(id, page) {

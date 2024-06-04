@@ -113,7 +113,7 @@ const FreeCourses = ({ navigation, data }) => {
   }
 
   return (
-    <>
+    <ScrollView>
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
@@ -301,7 +301,7 @@ const FreeCourses = ({ navigation, data }) => {
           </Accordion>
         ))
       )}
-    </>
+    </ScrollView>
   );
 };
 

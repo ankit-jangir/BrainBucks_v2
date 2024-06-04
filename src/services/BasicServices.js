@@ -8,7 +8,7 @@ async function setLocalObject(brainBucksObject) {
 }
 
 async function getLocalObject() {
-    try { 
+    try {
         let t = await AsyncStorage.getItem("brainbucksobject")
         return JSON.parse(t)
     }
@@ -17,31 +17,31 @@ async function getLocalObject() {
     }
 }
 
-async function apiTryCatch(func, toast, beforeAll, afterAll){
-    try{
-        if(beforeAll)
-        beforeAll()
+async function apiTryCatch(func, toast, beforeAll, afterAll) {
+    try {
+        if (beforeAll)
+            beforeAll()
         let res = await func()
-        if(res.status===1){
+        if (res.status === 1) {
             return res;
         }
-        else{
+        else {
             toast.show({
-                type:'error',
-                text1:res.Backend_Error
+                type: 'error',
+                text1: res.Backend_Error
             })
             return false;
         }
-    }catch(err){
+    } catch (err) {
         console.log("Error in try catch: ", err);
         toast.show({
-            type:'error',
-            text1:"Something went wrong"
+            type: 'error',
+            text1: "Something went wrong"
         })
         return false;
-    }finally{
-        if(afterAll)
-        afterAll()
+    } finally {
+        if (afterAll)
+            afterAll()
     }
 }
 
@@ -151,15 +151,16 @@ async function setNumber(number) {
     catch (err) {
         console.log("Error in setting Mobile Number: ", err.message)
     }
+}
 
 
-    async function getDateFromSchTime(sch){
-        let time = sch.substr(11,8)
-        let date = sch.substr(0, 2)
-        let month = sch.subtr(3, 2)
-        let year = sch.substr(6,4)
-        
-    }
+function getDateFromSchTime(sch) {
+    let time = sch.substr(11, 8)
+    let date = sch.substr(0, 2)
+    let month = sch.substr(3, 2)
+    let year = sch.substr(6, 4)
+    let d = Date.parse(year + "-" + month + "-" + date + "T" + time)
+    return d;
 }
 
 
@@ -227,6 +228,6 @@ class BrainBucksObject {
 
 }
 
-export default{
-    BrainBucksObject, setNumber, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
+export default {
+    BrainBucksObject, getDateFromSchTime, setNumber, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
 }

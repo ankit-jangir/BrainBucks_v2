@@ -26,9 +26,7 @@ export default function SearchBar() {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => {
-         
-        }}
+        onPress={() => {navigation.navigate('search')}} 
         style={styles.SearchBar}>
         <TouchableOpacity style={{flex: 0.20,paddingHorizontal:5}}>
           <Image source={require('../../assets/img/search.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />

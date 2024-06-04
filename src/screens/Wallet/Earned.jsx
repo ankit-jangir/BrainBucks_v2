@@ -57,14 +57,14 @@ const Earned = () => {
             
             Earned.map((res) => {
               return (
-                <View style={styles.card}>
+                <View key={res._id} style={styles.card}>
                   <View style={styles.row}>
                     <Image
                       source={require('../../assets/img/bb.png')}
                       style={styles.icon}
                     />
                     <View style={styles.info}>
-                      <Text style={styles.amount}>{res.amount}</Text>
+                      <Text style={styles.amount}>+ {res.amount}</Text>
                       <Text style={styles.date}>{res.date}</Text>
                     </View>
                     <View style={styles.titleWrapper}>

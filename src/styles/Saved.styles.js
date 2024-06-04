@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
       fontSize: 15,
       flex: 0.8,
       fontFamily: 'WorkSans-Regular',
+      color:ColorsConstant.Black
     },
     Loaderview: {
       justifyContent: 'center',
