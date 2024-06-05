@@ -94,17 +94,17 @@ export default function AboutBb({ navigation }) {
               <Text style={styles.AboutTextF5}>a. Managing software Technicalities</Text>
               <Text style={styles.AboutTextF5}>b. Business Process Automation</Text>
             </View>
-            <Text style={styles.AboutTextF3}>3. Pooja Saxena - Vice President Human Resources</Text>
+            <Text style={styles.AboutTextF3}>3. Ghanshyam Malhotra - Human Resources</Text>
             <View style={styles.AboutTextF4} >
               <Text style={styles.AboutTextF5}>a. Setting up new team</Text>
               <Text style={styles.AboutTextF5}>b. Content Management</Text>
               <Text style={styles.AboutTextF5}>c. Internal Business process handling</Text>
               <Text style={styles.AboutTextF5}>d. Corporate Relations</Text>
             </View>
-            <Text style={styles.AboutTextF3}>4. Rahul Sharma - Full-Stack Developer</Text>
+            <Text style={styles.AboutTextF3}>4. Dharamveer singh nathawat -  Back-End Developer & DevOPS Engineer</Text>
             <Text style={styles.AboutTextF3}>5. Pradeep Yadav - Back-End Developer & QA Engineer</Text>
-            <Text style={styles.AboutTextF7}>6. Chetan Jangid - Front-End Developer</Text>
-            <Text style={styles.AboutTextF3}></Text>
+            <Text style={styles.AboutTextF7}>6. Sonu Yadav - Front-End Developer</Text>
+            <Text style={styles.AboutTextF3}>7. Ayushi Sharma - Full-Stack Developer </Text>
           </View>
         </ScrollView>
         <View style={styles.followV1}>
