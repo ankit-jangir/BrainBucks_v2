@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "740301889787",
-    "project_id": "brainbucks-6700b",
-    "storage_bucket": "brainbucks-6700b.appspot.com"
+    "project_number": "730661590456",
+    "project_id": "intellix-c1f9c",
+    "storage_bucket": "intellix-c1f9c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:740301889787:android:64c5e6b034ce29a2bf505e",
+        "mobilesdk_app_id": "1:730661590456:android:ca851a265da77e60b1ab4d",
         "android_client_info": {
-          "package_name": "com.brainbucks.app"
+          "package_name": "com.brainbucks.android"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBZoiC6_wSYSBtV60_gTHTWH3DT-usPrqU"
+          "current_key": "AIzaSyAAg7692WDtlYhJC-R1C2xbKKoNtv0_mSc"
         }
       ],
       "services": {

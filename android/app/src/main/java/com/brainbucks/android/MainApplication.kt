@@ -1,4 +1,4 @@
-package com.brainbucks.app
+package com.brainbucks.android
 
 import android.app.Application
 import com.facebook.react.PackageList

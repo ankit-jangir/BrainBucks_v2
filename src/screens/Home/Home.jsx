@@ -39,7 +39,9 @@ export default function Home({ navigation }) {
 
   const isFocused = useIsFocused()
 
+
   useEffect(() => {
+
     loadData()
     basic.getBearerToken().then(res => {
       console.log(res, 'token');

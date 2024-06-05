@@ -10,6 +10,7 @@ import { getSavedLanguage, setSavedLanguage } from '../../utils/Translate';
 import basic from '../../services/BasicServices';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import Toast from 'react-native-toast-message';
+import ChatSockService from '../../services/api/ChatSockService';
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
@@ -40,6 +41,7 @@ export default function Splash({ navigation }) {
             })
           }
           if (res && res.status === 1) {
+            ChatSockService.connect()
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
           } else {
             setCheckLang(null)

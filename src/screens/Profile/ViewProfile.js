@@ -20,6 +20,7 @@ import {Overlay} from '@rneui/themed';
 import {Button} from '../../utils/Translate';
 import basic from '../../services/BasicServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChatSockService from '../../services/api/ChatSockService';
 
 export default function ViewProfile({navigation, route}) {
   const [image1, setImage1] = useState(
@@ -181,6 +182,7 @@ export default function ViewProfile({navigation, route}) {
             <TouchableOpacity
               onPress={() => {
                 /*navigation.navigate('CustomerSupport')*/
+                navigation.navigate('support')
               }}
               style={styles.touchH}>
               <View style={styles.CkrView}>
@@ -265,7 +267,7 @@ export default function ViewProfile({navigation, route}) {
               titleStyle={{color: 'white', fontSize: 15, padding: 15}}
               buttonStyle={styles.logoutyesbutton}
               onPress={() => {
-                logOut().then(toggleOverlay);
+                logOut().then(toggleOverlay).then(ChatSockService.disconnect);
               }}
             />
             <Button

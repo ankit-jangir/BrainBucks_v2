@@ -10,6 +10,7 @@ import { Button } from '../../utils/Translate';
 import { OtpInput } from "react-native-otp-entry";
 import basic from "../../services/BasicServices";
 import { StackActions } from "@react-navigation/native";
+import ChatSockService from "../../services/api/ChatSockService";
 
 
 export default function Otp({ navigation, route }) {
@@ -62,7 +63,10 @@ export default function Otp({ navigation, route }) {
             if(response.status===1){
                 setErrorMessage(null)
                 await basic.setJwt(response.token)
+                await basic.setId(response.user_id)
                 console.log("JWT Token: ",response.token);
+                console.log("User id: ",response.user_id);
+                ChatSockService.connect()
                 navigation.reset({ index: 0, routes: [{ name: "Home" }] });
             }else if(response.status===2){
                 setErrorMessage(null)
@@ -73,7 +77,7 @@ export default function Otp({ navigation, route }) {
             )
             }
             else{
-                setErrorMessage("*"+response.Custom_Error)
+                setErrorMessage("*"+response.msg)
             }
 
         }catch(err){

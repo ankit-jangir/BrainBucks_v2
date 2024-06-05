@@ -84,6 +84,8 @@ import AddExamss from './src/screens/Study/AddExamss';
 import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
 import Search from './src/screens/Home/Search';
 import Notification from './src/screens/Home/Notification';
+import Chat from './src/screens/Support/Chat';
+import Support from './src/screens/Support/Support';
 
 
 
@@ -172,6 +174,8 @@ function MyStack() {
       <Stack.Screen name='myexams' component={MyExams}/>
       <Stack.Screen name='search' component={Search}/>
       <Stack.Screen name="Notification" component={Notification}/>
+      <Stack.Screen name='chat' component={Chat}/>
+      <Stack.Screen name='support' component={Support}/>
     </Stack.Navigator>
   );
 }

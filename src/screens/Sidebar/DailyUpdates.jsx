@@ -59,7 +59,6 @@ export default function DailyUpdate({navigation}) {
       .then(response => response.json())
       .then(result => {
         if (result.status === 1) {
-          console.log(result);
           setBlog(result.data);
           setBlogCount(result.totalPages);
         } else {
@@ -111,7 +110,6 @@ export default function DailyUpdate({navigation}) {
         <Text style={styles.textNo}>No Update Today</Text>
       ) : (
         <>
-        {console.log(blog, "yogesh")}
           <View style={styles.indexView}>
             <View style={styles.indexViewInner}>
               <TouchableOpacity

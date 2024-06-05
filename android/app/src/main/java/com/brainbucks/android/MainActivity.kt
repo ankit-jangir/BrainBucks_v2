@@ -1,4 +1,4 @@
-package com.brainbucks.app
+package com.brainbucks.android
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

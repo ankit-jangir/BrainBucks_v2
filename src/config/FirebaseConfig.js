@@ -1,18 +1,40 @@
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native'
 import basic from '../services/BasicServices';
+import ChatSockService from '../services/api/ChatSockService';
 
 /**
  * this message shows the notification on the device when recieved it from any external source
  * @param {*} message the message recieved from firebase or any other service
  */
-function onMessageReceived(message) {
-    notifee.displayNotification(JSON.parse(message.data.notifee));
-    console.log("NOTIFICATION RECIEVED", message);
+export async function onMessageReceived(message) {
+
+    const channel = await notifee.createChannel(
+        {
+            id: 'default',
+            name: 'Default Channel',
+        }
+    )
+    
+
+    let item = message
+
+    if(typeof message !== 'object')
+    item = JSON.parse(message)
+
+    let msg = item.notification;
+
+    await notifee.displayNotification({
+        ...msg,
+        android:{
+            channelId:channel,
+            pressAction: {
+                id: 'default',
+              }
+        }
+      });
 }
 
-messaging().onMessage(onMessageReceived);
-messaging().setBackgroundMessageHandler(onMessageReceived);
 
 /**
  * this message creates a fcm token for the device and returns the token
@@ -26,9 +48,12 @@ export default async function onAppBootstrap() {
         await messaging().registerDeviceForRemoteMessages();
         // Get the token
         const token = await messaging().getToken();
+        messaging().onMessage(onMessageReceived);
+        messaging().setBackgroundMessageHandler(onMessageReceived);
+
         // Save the token
         basic.setFcm(token)
-        console.log("Fcm Token",token);
+        console.log("Fcm Token", token);
     }
     catch (err) {
         console.log("Error in Fetching Fcm from firebase: ", err.message)

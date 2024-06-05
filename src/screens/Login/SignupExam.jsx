@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
 import BasicServices from '../../services/BasicServices';
+import ChatSockService from '../../services/api/ChatSockService';
 
 export default function SignUpExam({ navigation, route }) {
   const [refresh, setRefresh] = useState(false)
@@ -34,8 +35,11 @@ export default function SignUpExam({ navigation, route }) {
     try {
       let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams))
       if (res.status === 1) {
-        console.log("JWT TOKEN", res.token);
+        console.log("User id: ", res.user_id);
+        console.log("JWT TOKEN: ", res.token);
         BasicServices.setJwt(res.token).then(() => {
+          BasicServices.setId(res.user_id)
+          ChatSockService.connect()
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         })
       } else {

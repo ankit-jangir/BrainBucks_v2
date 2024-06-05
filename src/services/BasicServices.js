@@ -153,6 +153,25 @@ async function setNumber(number) {
     }
 }
 
+async function setId(id){
+    try {
+        let localObj = await getLocalObject()
+        let objectToSave = new BrainBucksObject()
+        if (localObj) {
+            localObj.id = id + '';
+            objectToSave.setObject(localObj)
+        }
+        else {
+            objectToSave.setId(id)
+        }
+        await setLocalObject(objectToSave.getObject());
+
+    }
+    catch (err) {
+        console.log("Error in setting Mobile Number: ", err.message)
+    }
+}
+
 
 function getDateFromSchTime(sch) {
     let time = sch.substr(11, 8)
@@ -165,12 +184,13 @@ function getDateFromSchTime(sch) {
 
 
 class BrainBucksObject {
-    constructor(fcm, jwt, number, name, gender) {
+    constructor(fcm, jwt, number, name, gender, id) {
         this.fcm = fcm;
         this.jwt = jwt;
         this.number = number;
         this.name = name;
         this.gender = gender;
+        this.id = id;
     }
 
     setObject(obj) {
@@ -179,6 +199,7 @@ class BrainBucksObject {
         this.number = obj.number;
         this.name = obj.name;
         this.gender = obj.gender;
+        this.id = obj.id
     }
 
     getObject() {
@@ -187,7 +208,8 @@ class BrainBucksObject {
             jwt: this.jwt,
             number: this.number,
             name: this.name,
-            gender: this.gender
+            gender: this.gender,
+            id: this.id
         }
     }
 
@@ -225,9 +247,15 @@ class BrainBucksObject {
     getName() {
         return this.name
     }
+    setId(id){
+        this.id = id
+    }
+    getId(){
+        return this.id
+    }
 
 }
 
 export default {
-    BrainBucksObject, getDateFromSchTime, setNumber, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
+    BrainBucksObject, getDateFromSchTime, setNumber, setId, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
 }

@@ -18,6 +18,7 @@ import {Button} from '../../utils/Translate';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useDrawerStatus} from '@react-navigation/drawer';
 import {BLOBURL} from '../../config/urls';
+import ChatSockService from '../../services/api/ChatSockService';
 
 const Sidebar = ({navigation}) => {
   const auth = new AuthenticationApiService();
@@ -190,7 +191,7 @@ const Sidebar = ({navigation}) => {
               }}
               buttonStyle={styles.logoutyesbutton}
               onPress={() => {
-                logOut().then(toggleOverlay);
+                logOut().then(toggleOverlay).then(ChatSockService.disconnect);
               }}
             />
             <Button
