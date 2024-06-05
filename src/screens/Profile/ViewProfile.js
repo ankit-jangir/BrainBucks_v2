@@ -180,7 +180,7 @@ export default function ViewProfile({navigation, route}) {
           <View style={styles.HelpView}>
             <TouchableOpacity
               onPress={() => {
-                /*navigation.navigate('CustomerSupport')*/
+              navigation.navigate('CustomerSupport')
               }}
               style={styles.touchH}>
               <View style={styles.CkrView}>
@@ -199,7 +199,7 @@ export default function ViewProfile({navigation, route}) {
           <View style={styles.HelpView}>
             <TouchableOpacity
               onPress={() => {
-                /*navigation.navigate('PrivacyPolicy')*/
+                navigation.navigate('privacypolice')
               }}
               style={styles.touchH}>
               <View style={styles.CkrView}>
@@ -218,7 +218,7 @@ export default function ViewProfile({navigation, route}) {
           <View style={styles.HelpView}>
             <TouchableOpacity
               onPress={() => {
-                /*navigation.navigate("BbRules")*/
+                navigation.navigate("RulesRegulations")
               }}
               style={styles.touchH}>
               <View style={styles.CkrView}>
@@ -237,7 +237,7 @@ export default function ViewProfile({navigation, route}) {
           <View style={styles.HelpView}>
             <TouchableOpacity
               onPress={() => {
-                /*navigation.navigate('AboutBB')*/
+                navigation.navigate('AboutBB')
               }}
               style={styles.touchH}>
               <View style={styles.CkrView}>
