@@ -6,6 +6,7 @@ import BasicServices from '../../services/BasicServices';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -15,7 +16,7 @@ const Win = ({ navigation, order }) => {
   const [loadingMore, setLoadingMore] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
-
+const {quizState,dispatch} = useQuiz();
   const history = new HistoryApiService()
 
   useEffect(() => {
@@ -89,7 +90,8 @@ const Win = ({ navigation, order }) => {
                       fees={item.entryFees}
                       date={item.sch_time}
                       onPress={() => {
-                        navigation.navigate("resultreward")
+                        dispatch({type:'change',state:{id:item._id}})
+                      navigation.navigate("QuizzesResult")
                       }
                       }
                       btntxt={"View Result"}

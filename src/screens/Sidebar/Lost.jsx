@@ -7,6 +7,7 @@ import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -17,6 +18,8 @@ const Lost = ({ navigation, order }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
+  const {quizState,dispatch} = useQuiz();
+
 
   const history = new HistoryApiService()
 
@@ -87,7 +90,8 @@ const Lost = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      navigation.navigate("resultreward")
+                      dispatch({type:'change',state:{id:item._id}})
+                      navigation.navigate("QuizzesResult")
                     }
                     }
                     btntxt={"View Result"}

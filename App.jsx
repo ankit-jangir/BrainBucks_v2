@@ -84,6 +84,10 @@ import AddExamss from './src/screens/Study/AddExamss';
 import QuestionsPaper from './src/screens/Quizzes/QuestionsPaper';
 import Search from './src/screens/Home/Search';
 import Notification from './src/screens/Home/Notification';
+import ScoreCard from './src/screens/Quizzes/ScoreCard';
+import WinnerBoardLive from './src/screens/Quizzes/WinnerBoardLive';
+import QuizzesResult from './src/screens/Quizzes/QuizzesResult';
+import QuizzesResultRewards from './src/screens/Quizzes/QuizzesResultRewards';
 
 
 
@@ -172,6 +176,14 @@ function MyStack() {
       <Stack.Screen name='myexams' component={MyExams}/>
       <Stack.Screen name='search' component={Search}/>
       <Stack.Screen name="Notification" component={Notification}/>
+      <Stack.Screen name="ScoreCard" component={ScoreCard}/>
+      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive}/>
+      <Stack.Screen name="QuizzesResult" component={QuizzesResult}/>
+      <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards}/>
+
+
+
+
     </Stack.Navigator>
   );
 }

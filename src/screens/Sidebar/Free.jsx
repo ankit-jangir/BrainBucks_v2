@@ -8,6 +8,7 @@ import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { FlatList } from 'react-native';
 import { BLOBURL } from '../../config/urls';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ const Free = ({ navigation, order }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
+  const {quizState,dispatch} = useQuiz();
 
   const history = new HistoryApiService()
 
@@ -88,6 +90,7 @@ const Free = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
+                      dispatch({type:'change',state:{id:item._id}})
                       navigation.navigate("resultreward")
                     }
                     }
