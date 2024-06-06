@@ -26,8 +26,10 @@ export default function Chat({ navigation, route }) {
     //todo: handle back press
     useEffect(() => {
         getMessages()
-        backRef.current = BackHandler.addEventListener('hardwareBackPress', ()=>{ChatSockService.keepOnlyOneListener})
-        return () => { backRef.current.remove() }
+        backRef.current = navigation.addListener('beforeRemove', (e) => {
+            ChatSockService.keepOnlyOneListener()
+          })
+        return () => { backRef.current() }
     }, [])
 
 
@@ -91,7 +93,7 @@ export default function Chat({ navigation, route }) {
                 >
                     <TouchableOpacity
                         onPress={() => {
-                            backRef.current.remove()
+                            backRef.current()
                             navigation.goBack()
                         }}
                         style={{
