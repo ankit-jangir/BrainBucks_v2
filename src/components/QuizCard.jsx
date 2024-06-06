@@ -87,7 +87,7 @@ const QuizCard = ({
                       fontWeight: '700',
                       paddingLeft: 5,
                     }}>
-                    {type==='trivia'?'0':fees}
+                    {type==='trivia' || type == 0?'0':fees}
                   </Text>
                 </View>
               </View>
@@ -151,6 +151,7 @@ const QuizCard = ({
                       paddingLeft: 5,
                     }}>
                     {prize}
+                    {type == 'trivia'||type ==0?reward:prize}
                   </Text>
                 </View>
               </View>
@@ -185,9 +186,9 @@ const QuizCard = ({
                 marginTop: 10,
               }}>
               <Image
-                source={type!=='trivia'?require('../assets/img/dollar.png'):require('../assets/img/cup.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
+                source={type==='trivia'||type==0?require('../assets/img/cup.png'):require('../assets/img/dollar.png')} // <QuizCard image={{uri:'as;dfl'}} image={require('')}/>>
                 resizeMode="contain"
-                tintColor={type === 'trivia' ? '#C922E4' : '#333333'}
+                tintColor={type === 'trivia'|| type ==0  ? '#C922E4' : '#333333'}
                 style={{width: 25, height: 25}}
               />
               <View
@@ -198,10 +199,10 @@ const QuizCard = ({
                   paddingLeft: 10,
                 }}>
                 {
-                  type==='trivia'?
+                  type==='trivia' || type ==0?
                   <Text
                   style={{
-                    color: type === 'trivia' ? '#C922E4' : '#2188E7',
+                    color: type === 'trivia'|| type ==0 ? '#C922E4' : '#2188E7',
                     fontFamily: 'WorkSans-SemiBold',
                     fontSize: 18,
                   }}>{minper}%</Text>
@@ -209,7 +210,7 @@ const QuizCard = ({
                   <>
                   <Text
                   style={{
-                    color: type === 'trivia' ? '#C922E4' : '#2188E7',
+                    color: type === 'trivia' || type ==0 ? '#C922E4' : '#2188E7',
                     fontFamily: 'WorkSans-SemiBold',
                     fontSize: 18,
                   }}>
@@ -217,7 +218,7 @@ const QuizCard = ({
                 </Text>
                 <Text
                   style={{
-                    color: type === 'trivia' ? '#C922E4' : '#333333',
+                    color: type === 'trivia'|| type ==0  ? '#C922E4' : '#333333',
 
                     fontFamily: 'WorkSans-SemiBold',
                     fontSize: 18,
@@ -235,13 +236,13 @@ const QuizCard = ({
                   style={{marginVertical: 10, height: 8, borderRadius: 10}}
                   value={minper?minper/100:alotedslots/totalslots}
                   variant="determinate"
-                  color={type === 'trivia' ? '#C922E4' : '#54ACFD'}
+                  color={type === 'trivia'|| type ==0  ? '#C922E4' : '#54ACFD'}
                 />
               </View>
             </View>
           </>
 
-        {type === 'active' ? (
+        {type === 'active'|| type == 1 ? (
           <TouchableOpacity
             style={{width: '100%', marginTop: 1}}
             onPress={onPress}>
@@ -256,7 +257,7 @@ const QuizCard = ({
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        ) : type === 'trivia' ? (
+        ) : type === 'trivia'|| type ==0  ? (
           <TouchableOpacity
             onPress={onPress}
             style={{

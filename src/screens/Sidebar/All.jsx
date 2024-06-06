@@ -28,6 +28,7 @@ const All = ({ navigation, order }) => {
       return
     }
 
+  const history = new HistoryApiService();
 
     try {
       if (page === 1) {
@@ -136,11 +137,6 @@ const styles = StyleSheet.create({
     fontFamily: "Inter",
     color: "#2E2E2E"
 
-  },
-  containerImg12: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 2,
 
   },
   containerImg122: {

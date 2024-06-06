@@ -105,7 +105,6 @@ const Win = ({ navigation, order }) => {
   );
 };
 
-export default Win;
 
 const styles = StyleSheet.create({
   mainContainer: {

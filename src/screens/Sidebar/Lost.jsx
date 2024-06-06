@@ -103,7 +103,6 @@ const Lost = ({ navigation, order }) => {
   );
 };
 
-export default Lost;
 
 const styles = StyleSheet.create({
   mainContainer: {
