@@ -91,6 +91,10 @@ import Chat from './src/screens/Support/Chat';
 import Support from './src/screens/Support/Support';
 import AboutBb from './src/screens/Sidebar/AboutBb';
 import CustomerSupport from './src/screens/Profile/CustomerSupport';
+import ScoreCard from './src/screens/Quizzes/ScoreCard';
+import WinnerBoardLive from './src/screens/Quizzes/WinnerBoardLive';
+import QuizzesResult from './src/screens/Quizzes/QuizzesResult';
+import QuizzesResultRewards from './src/screens/Quizzes/QuizzesResultRewards';
 
 
 
@@ -186,6 +190,13 @@ function MyStack() {
       <Stack.Screen name='support' component={Support}/>
       <Stack.Screen name="AboutBB" component={AboutBb}/>
       <Stack.Screen name="CustomerSupport" component={CustomerSupport}/>
+      <Stack.Screen name="ScoreCard" component={ScoreCard}/>
+      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive}/>
+      <Stack.Screen name="QuizzesResult" component={QuizzesResult}/>
+      <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards}/>
+
+
+
 
     </Stack.Navigator>
   );

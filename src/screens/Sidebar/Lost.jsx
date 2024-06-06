@@ -8,6 +8,7 @@ import QuizCard from '../../components/QuizCard';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
+import { useQuiz } from '../../context/QuizPlayReducer';
 
 
 const Lost = ({ navigation, order }) => {
@@ -17,6 +18,8 @@ const Lost = ({ navigation, order }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
+  const {quizState,dispatch} = useQuiz();
+
 
   const history = new HistoryApiService()
 
@@ -87,6 +90,7 @@ const Lost = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
+                      dispatch({type:'change',state:{id:item._id}})
                       navigation.navigate("QuizzesResult")
                     }
                     }

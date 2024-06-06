@@ -1,33 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WinnerBoardLive from './WinnerBoardLive';
-import { View,  TouchableOpacity, Image, ScrollView, StatusBar, Animated, Easing, BackHandler, ActivityIndicator, ToastAndroid, StyleSheet } from 'react-native';
+import { View,  TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, BackHandler, ActivityIndicator, ToastAndroid, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
-// import BottomSheet from 'reanimated-bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { useMemo } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
+import Toast from 'react-native-toast-message';
+import { useQuiz } from '../../context/QuizPlayReducer';
+import { BLOBURL } from '../../config/urls';
 
 export default function QuizzesResult({ navigation, }) {
   const [isLoad, setLoad] = useState(false)
   const [isLoad2, setLoad2] = useState(true)
   const [mydata, setMydata] = useState([])
+  const [topRank, setTopRank] = useState({})
+  const [score, setScore] = useState([])
+
   const [length, setLength] = useState()
 
-  const modelData=[
-    {
-        name:"sonu",
-        h:'2'
-    },
-    {
-        name:"sonu",
-        h:'2'
-    },
-    {
-        name:"sonu",
-        h:'2'
+  const {quizState,dispatch} = useQuiz()
+  const quiz_id = quizState.id
+
+  const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);  
+
+  const serv = new ActiveQuizApiService()
+
+  async function getActiveQuizResult() {
+    try {
+      setLoad(true);
+      let res = await serv.getActiveQuizResult(quiz_id);
+      if (res.status === 1) {
+        setMydata(res.topRank)
+        setTopRank(res)
+        setScore(res.scoreboard)
+        console.log('====================================');
+        console.log(res.scoreboard,'s99999');
+        console.log('====================================');
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res.Backend_Error,
+        });
+      }
+    } catch (err) {
+      console.log('Error while getting earned data', err.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    } finally {
+      setLoad(false);
     }
-  ]
+  }
+
+
+  useEffect(() => {
+    getActiveQuizResult()
+  }, [])
+  
+
+
+
+
+
+
 
 
   const translationY = useRef(
@@ -78,23 +117,6 @@ export default function QuizzesResult({ navigation, }) {
     }).start();
   }, []);
 
-  const renderContent = () => (
-    <>
-      <View style={styles.WinnerBoardLiveView}>
-        <View style={styles.WinnerBoardLiveView2}></View>
-        <View style={{ alignSelf: 'center' }}>
-          <Text style={styles.WinnerBoardLiveText}>Winner’s Leaderboard</Text>
-        </View>
-        {
-          isLoad ?
-            <ActivityIndicator color={'#701DDB'} size={21} />
-            :
-            <WinnerBoardLive modelData={modelData} />
-        }
-      </View>
-    </>
-  );
-
   const sheetRef = React.useRef(null);
   useEffect(() => {
     setTimeout(() => {
@@ -105,8 +127,10 @@ export default function QuizzesResult({ navigation, }) {
   return (
     <>
       {
-        isLoad || isLoad2 ?
-          <ActivityIndicator color={ColorsConstant.Theme} size={21} />
+        isLoad || isLoad2?
+        <>
+        <ActivityIndicator color={ColorsConstant.Theme} size={40} style={{marginTop:'80%'}} />
+        </>
           : <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar barStyle={'white-content'} translucent={false} backgroundColor={ColorsConstant.Theme} />
             <View style={styles.HeaderView}>
@@ -128,29 +152,27 @@ export default function QuizzesResult({ navigation, }) {
                   <View style={styles.MyDataView2} >
                     <Text style={styles.MyDataText}>Rank</Text>
                     <View style={{ flexDirection: "row", }}>
-                      <Text style={styles.MyDataTextB} >5/ </Text>
-                      <Text style={styles.MyDataTextBb} >3</Text>
+                    {console.log(score.rank)}
+                      <Text style={styles.MyDataTextB} >{topRank.rank}/ </Text>
+                      <Text style={styles.MyDataTextBb} >{topRank.totalRanks}</Text>
                     </View>
                   </View>
                   <View style={styles.MyDataView3} >
                     <Text style={styles.MyDataText}>Score</Text>
                     <View style={{ flexDirection: "row", }}>
-                      <Text style={styles.MyDataTextB} >0 / </Text>
-                      <Text style={styles.MyDataTextBb} >4</Text>
+                      <Text style={styles.MyDataTextB} >{topRank.obtainMarks} / </Text>
+                      <Text style={styles.MyDataTextBb} >{topRank.totMarks}</Text>
                     </View>
                   </View>
                 </View>
-                <View style={styles.MySubmitView} >
-                  <Text style={styles.TimeText}>Time : </Text>
-                  <View style={styles.TimeView}>
-                    <Text style={styles.TimeTextB} >4 Seconds </Text>
-                    {<Text style={styles.TimeTextB} >12 Sec</Text>}
-                  </View>
-                </View>
-                <TouchableOpacity  style={styles.Touchable} >
+                <TouchableOpacity onPress={() => {
+                      navigation.navigate("ScoreCard")
+                    }}  style={styles.Touchable} >
                   <Text style={styles.Scorecard} >View Scorecard</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.TouchableReward} >
+                <TouchableOpacity  onPress={() => {
+                      navigation.navigate("QuizzesResultRewards")
+                    }}  style={styles.TouchableReward} >
                   <Image source={require('../../assets/img/giftbox.png')} style={{ width: 30, height: 30, }} />
                   <Text style={styles.Scorecard} >View Rewards</Text>
                 </TouchableOpacity>
@@ -166,17 +188,19 @@ export default function QuizzesResult({ navigation, }) {
                     length == 1 ?
                       (<>
                         <View style={styles.MainView} >
+                        {console.log(mydata.stu_name,'jhgfdxcvg')}
+
                         </View>
                         <View style={styles.ModelView} >
                           <View style={styles.modelViewData} >
                             {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
                           </View>
                           <View style={{ width: '100%' }} >
-                            <Text numberOfLines={1} style={styles.DatatextN} >{modelData[0].name}</Text>
+                            <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0].stu_name}</Text>
                           </View>
                           <View style={styles.modelV} >
-                            <Text style={styles.DataText}>2/</Text>
-                            <Text style={styles.DataText}>2</Text>
+                            <Text style={styles.DataText}>{mydata[0].marks}/</Text>
+                            <Text style={styles.DataText}>{topRank.totMarks}</Text>
                           </View>
                         </View>
                         <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
@@ -189,11 +213,11 @@ export default function QuizzesResult({ navigation, }) {
                               {/* <Image source={{ uri: modelData[1].image }} style={styles.modelImg} /> */}
                             </View>
                             <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >2</Text>
+                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
                             </View>
                             <View style={styles.modelV} >
-                              <Text style={styles.DataText}>2/</Text>
-                              <Text style={styles.DataText}>2</Text>
+                              <Text style={styles.DataText}>{mydata.marks}/</Text>
+                              <Text style={styles.DataText}>{mydata.rank}</Text>
                             </View>
                           </View>
                           <View style={styles.ManiDataV1} >
@@ -201,11 +225,11 @@ export default function QuizzesResult({ navigation, }) {
                               {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
                             </View>
                             <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >2</Text>
+                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0].stu_name}</Text>
                             </View>
                             <View style={styles.modelV} >
-                              <Text style={styles.DataText}>2/</Text>
-                              <Text style={styles.DataText}>2</Text>
+                              <Text style={styles.DataText}>{mydata.marks}</Text>
+                              <Text style={styles.DataText}>{mydata.rank}</Text>
                             </View>
                           </View>
                           <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
@@ -216,11 +240,11 @@ export default function QuizzesResult({ navigation, }) {
                               {/* <Image source={{ uri: modelData[1].image }} style={styles.modelImg} /> */}
                             </View>
                             <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >2</Text>
+                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
                             </View>
                             <View style={styles.modelV} >
                               <Text style={styles.DataText}></Text>
-                              <Text style={styles.DataText}>uestions</Text>
+                              <Text style={styles.DataText}>{mydata.rank}</Text>
                             </View>
                           </View>
                           <View style={styles.ManiDataV1} >
@@ -228,11 +252,11 @@ export default function QuizzesResult({ navigation, }) {
                               {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
                             </View>
                             <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >2w</Text>
+                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
                             </View>
                             <View style={styles.modelV} >
-                              <Text style={styles.DataText}>wq/</Text>
-                              <Text style={styles.DataText}>we</Text>
+                              <Text style={styles.DataText}>{mydata.rank}</Text>
+                              <Text style={styles.DataText}>{mydata.marks}</Text>
                             </View>
                           </View>
                           <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
@@ -240,11 +264,11 @@ export default function QuizzesResult({ navigation, }) {
                               {/* <Image source={{ uri: modelData[2].image }} style={styles.modelImg} /> */}
                             </View>
                             <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >dsd</Text>
+                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
                             </View>
                             <View style={styles.modelV} >
-                              <Text style={styles.DataText}>fd/</Text>
-                              <Text style={styles.DataText}>d</Text>
+                              <Text style={styles.DataText}>{mydata.rank}/</Text>
+                              <Text style={styles.DataText}></Text>
                             </View>
                           </View>
                         </>
@@ -270,14 +294,41 @@ export default function QuizzesResult({ navigation, }) {
               </View>
             </View>
             <>
-              {/* <BottomSheet
-                ref={sheetRef}
-                snapPoints={[70, 400]}
-                borderRadius={40}
-                renderContent={renderContent}
-                enabledInnerScrolling={true}
-                enabledContentGestureInteraction={true}
-              /> */}
+            <BottomSheet index={1} snapPoints={snapPoints}>
+					<Text style={styles.containerHeadline}>Winner’s Leaderboard 🎉</Text>
+            <FlatList
+        data={score}
+        renderItem={({item,index}) => (
+          <View style={styles.contentContainer}>
+          <View style={styles.Container}>
+              <TouchableOpacity style={styles.touch}>
+                <Text style={styles.TextIn}>{index+1}</Text>
+                <View style={styles.imgView}>
+                  <Image
+                    source={{ uri: BLOBURL + item.image }}
+                    resizeMode="contain"
+                    style={styles.img}
+                  />
+                </View>
+
+                <View style={styles.TotView}>
+                  <Text style={styles.TextTo}>{item.stu_name}</Text>
+                  <View style={styles.tymView}>
+                    <Text style={styles.textTym}>
+                     {item.rank} Rank
+                    </Text>
+                    <Text style={[styles.textTym, {color: '#367CFF'}]}>
+                     {item.marks} /{topRank.totMarks}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+				</View>
+        )}
+        keyExtractor={item => item.id}
+      />
+			    </BottomSheet>
             </>
           </GestureHandlerRootView>
       }
@@ -286,6 +337,78 @@ export default function QuizzesResult({ navigation, }) {
 }
 
 const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
+  Container: {
+    width: '100%',
+    height: 80,
+    paddingHorizontal: 10,
+    marginTop: 20,
+  },
+  touch: {
+    flex: 1,
+    backgroundColor: ColorsConstant.White,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderWidth: 1,
+    borderColor: ColorsConstant.LightGray,
+    borderRadius: 10,
+  },
+  TextIn: {
+    fontFamily: 'WorkSans-SemiBold',
+    fontSize: 22,
+    color:'#000'
+  },
+  imgView: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    flex: 0.18,
+    backgroundColor:'#f5f3f2'
+  },
+  img: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+  },
+  TotView: {
+    width: 65,
+    height: 65,
+    flex: 0.65,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  TextTo: {
+    fontFamily: 'WorkSans-Medium',
+    fontSize: 20,
+    color:'#000'
+  },
+  tymView: {
+    width: '50%',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  textTym: {
+    fontFamily: 'WorkSans-Regular',
+    fontSize: 14,
+    color: ColorsConstant.GreenColor,
+  },
+  // container: {
+	// 	flex: 1,
+	// 	alignItems: 'center',
+	// 	justifyContent: 'center'
+	// },
+	contentContainer: {
+		flex: 1,
+		alignItems: 'center'
+	},
+	containerHeadline: {
+		fontSize: 24,
+		fontWeight: '600',
+		padding: 10,
+    color:'#000',
+  textAlign:'center'
+	},
   WinnerBoardLiveView:
   {
     backgroundColor: '#fff',
@@ -344,7 +467,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     width: '100%',
     borderRadius: 8,
     borderColor: '#fff',
-    height: 230,
+    height: 183,
     backgroundColor: ColorsConstant.LightPink,
     paddingTop: 20,
     borderWidth: 1,
