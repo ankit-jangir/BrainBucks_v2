@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../controllers/ActiveQuizController';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
+import { BLOBURL } from '../../config/urls';
 
 const ColorsConstant = {
   White: '#FFFFFF',

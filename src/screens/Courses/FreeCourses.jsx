@@ -4,6 +4,7 @@ import {
   FlatList,
   ActivityIndicator,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import { Text } from '../../utils/Translate';
 import React, { useEffect, useState } from 'react';

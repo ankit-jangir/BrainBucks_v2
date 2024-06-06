@@ -40,23 +40,29 @@ export default function StartExam({ navigation, route }) {
 
   useEffect(() => {
     getactiveDetails(id, Toast, setData, setLoading, dispatch)
+  }, [])
+
+  useEffect(() => {
     try {
+      let time;
       if (timeoutId.current) {
         clearTimeout(timeoutId.current)
       }
-      setRemainingTime(basic.getDateFromSchTime(data?.sch_time) - Date.now())
-      if (remainingTime > 0) {
+
+      if(data.sch_time){
+        time = basic.getDateFromSchTime(data?.sch_time)- Date.now()
+        setRemainingTime(time)
+    }
+      if (time > 0) {
         timeoutId.current = setTimeout(() => {
-          console.log("Refreshing");
-          setLoading(true)
-          setLoading(false);
-        }, remainingTime + 200)
+          setRemainingTime(basic.getDateFromSchTime(data?.sch_time) - Date.now())
+        }, time + 200)
       }
     }
     catch (err) {
       console.log("ERROR IN DATE CONVERSION: ", err);
     }
-  }, [])
+  }, [data])
 
 
   async function joinQuiz() {
@@ -190,17 +196,17 @@ export default function StartExam({ navigation, route }) {
               <View style={styles.StartExamV}>
                 <TouchableOpacity onPress={next} style={{ width: '80%' }}>
                   <LinearGradient
-                    key={remainingTime>0}
+                    key={remainingTime > 0}
                     start={{ x: 0.0, y: 0.25 }}
                     end={{ x: 0.6, y: 2.0 }}
                     colors={['#54ACFD', '#2289E7']}
                     style={styles.StartExamLiner}>
                     {
-                      remainingTime>0
-                      ?
-                      <Text key={'remaining'} style={styles.LobbtText}>{data?.sch_time}</Text>
-                      :
-                      <Text key={'joinnow'} style={styles.LobbtText}>Join Now</Text>
+                      remainingTime > 0
+                        ?
+                        <Text key={'remaining'} style={styles.LobbtText}>{data?.sch_time}</Text>
+                        :
+                        <Text key={'joinnow'} style={styles.LobbtText}>Join Now</Text>
                     }
                   </LinearGradient>
                 </TouchableOpacity>

@@ -26,7 +26,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function ExamDetail({navigation, route}) {
   
   return (
-      <SafeAreaView style={[StyleConstants.safeArView,]}>
+      <SafeAreaView style={StyleConstants.safeArView}>
         <View style={styles.Hview}>
           <View style={styles.Hview1}>
             <TouchableOpacity
@@ -45,7 +45,7 @@ export default function ExamDetail({navigation, route}) {
         </View>
            
 
-      <View style={[styles.RView,]} >
+      <View style={styles.RView} >
       <Tab.Navigator screenOptions={{
         tabBarActiveTintColor: '#000000',
         tabBarLabelStyle: { fontSize: 12, textTransform: "none", },

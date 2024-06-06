@@ -151,7 +151,6 @@ const QuizCard = ({
                       paddingLeft: 5,
                     }}>
                     {prize}
-                    {type == 'trivia'||type ==0?reward:prize}
                   </Text>
                 </View>
               </View>

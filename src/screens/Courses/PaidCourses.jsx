@@ -138,6 +138,7 @@ const PaidCourses = () => {
   }
 
   return (
+    <>
     <ScrollView>
       <View style={{zIndex: 100}}>
         <Toast />
@@ -335,6 +336,8 @@ const PaidCourses = () => {
           </Accordion>
         ))
       )}
+    </ScrollView>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -457,7 +460,7 @@ const PaidCourses = () => {
           </View>
         )}
       </Modal>
-    </ScrollView>
+      </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WinnerBoardLive from './WinnerBoardLive';
-import { View,  TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, BackHandler, ActivityIndicator, ToastAndroid, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, BackHandler, ActivityIndicator, ToastAndroid, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
@@ -21,10 +21,10 @@ export default function QuizzesResult({ navigation, }) {
 
   const [length, setLength] = useState()
 
-  const {quizState,dispatch} = useQuiz()
+  const { quizState, dispatch } = useQuiz()
   const quiz_id = quizState.id
 
-  const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);  
+  const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);
 
   const serv = new ActiveQuizApiService()
 
@@ -37,7 +37,7 @@ export default function QuizzesResult({ navigation, }) {
         setTopRank(res)
         setScore(res.scoreboard)
         console.log('====================================');
-        console.log(res.scoreboard,'s99999');
+        console.log(res.scoreboard, 's99999');
         console.log('====================================');
       } else {
         Toast.show({
@@ -60,7 +60,7 @@ export default function QuizzesResult({ navigation, }) {
   useEffect(() => {
     getActiveQuizResult()
   }, [])
-  
+
 
 
 
@@ -72,50 +72,45 @@ export default function QuizzesResult({ navigation, }) {
   const translationY = useRef(
     new Animated.Value(0)
   ).current;
-  useEffect(() => {
-    Animated.timing(translationY, {
-      toValue: -420,
-      duration: 1500,
-      deasing: Easing.bounce,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   const translationY1 = useRef(
     new Animated.Value(0)
   ).current;
-  useEffect(() => {
-    Animated.timing(translationY1, {
-      toValue: -420,
-      duration: 2500,
-      deasing: Easing.bounce,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   const translationY2 = useRef(
     new Animated.Value(0)
   ).current;
-  useEffect(() => {
-    Animated.timing(translationY2, {
-      toValue: -420,
-      duration: 2000,
-      deasing: Easing.bounce,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   const translationY3 = useRef(
     new Animated.Value(0)
   ).current;
+
+
   useEffect(() => {
-    Animated.timing(translationY3, {
-      toValue: -420,
-      duration: 3000,
-      deasing: Easing.bounce,
-      useNativeDriver: true,
-    }).start();
-  }, []);
+    Animated.parallel([
+      Animated.timing(translationY3, {
+        toValue: -420,
+        duration: 3000,
+        useNativeDriver: true,
+      }),
+
+      Animated.timing(translationY2, {
+        toValue: -420,
+        duration: 2000,
+        useNativeDriver: true,
+      }),
+
+      Animated.timing(translationY1, {
+        toValue: -420,
+        duration: 1500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translationY, {
+        toValue: -420,
+        duration: 1500,
+        useNativeDriver: true,
+      })
+
+
+    ]).start()
+  })
 
   const sheetRef = React.useRef(null);
   useEffect(() => {
@@ -127,32 +122,33 @@ export default function QuizzesResult({ navigation, }) {
   return (
     <>
       {
-        isLoad || isLoad2?
-        <>
-        <ActivityIndicator color={ColorsConstant.Theme} size={40} style={{marginTop:'80%'}} />
-        </>
-          : <GestureHandlerRootView style={{ flex: 1 }}>
+        isLoad ?
+          <>
+            <ActivityIndicator color={ColorsConstant.Theme} size={40} style={{ marginTop: '80%' }} />
+          </>
+          : 
+          <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar barStyle={'white-content'} translucent={false} backgroundColor={ColorsConstant.Theme} />
             <View style={styles.HeaderView}>
               <View style={styles.HeaderView1}>
                 <View style={{ flex: 0.40, }}>
                   <View style={styles.HeaderView2}>
                     <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })} style={styles.HeaderTouchable}>
-                    <Image source={require('../../assets/img/arrows.png')} resizeMode='center' tintColor={'#fff'} style={{width:25,height:25}} />
+                      <Image source={require('../../assets/img/arrows.png')} resizeMode='center' tintColor={'#fff'} style={{ width: 25, height: 25 }} />
                     </TouchableOpacity>
 
                   </View>
                 </View>
-                <View style={{ flex: 0.80, }}>
+                <View style={{ flex: 0.80 }}>
                   <Text style={styles.HeaderText} >My Result</Text>
                 </View>
               </View>
-              <View style={styles.MyDataView}>
+              <View style={[styles.MyDataView]}>
                 <View style={styles.MyDataView1}>
                   <View style={styles.MyDataView2} >
                     <Text style={styles.MyDataText}>Rank</Text>
                     <View style={{ flexDirection: "row", }}>
-                    {console.log(score.rank)}
+                      {console.log(score.rank)}
                       <Text style={styles.MyDataTextB} >{topRank.rank}/ </Text>
                       <Text style={styles.MyDataTextBb} >{topRank.totalRanks}</Text>
                     </View>
@@ -165,14 +161,25 @@ export default function QuizzesResult({ navigation, }) {
                     </View>
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => {
-                      navigation.navigate("ScoreCard")
-                    }}  style={styles.Touchable} >
+
+                <View style={{ paddingTop: 15, paddingBottom: 10, paddingHorizontal: 10 }}>
+                  <Text style={styles.MyDataText}>Time Taken</Text>
+                  <View style={{ flexDirection: "row", }}>
+                    {
+                      topRank.submit_time_period
+                      &&
+                      <>
+                        <Text style={styles.MyDataTextB} >{parseInt(topRank.submit_time_period / 60)} : </Text>
+                        <Text style={styles.MyDataTextBb} >{parseInt(topRank.totMarks % 60)}</Text>
+                      </>
+                    }
+                  </View>
+                </View>
+
+                <TouchableOpacity onPress={() => { navigation.navigate("ScoreCard") }} style={styles.Touchable} >
                   <Text style={styles.Scorecard} >View Scorecard</Text>
                 </TouchableOpacity>
-                <TouchableOpacity  onPress={() => {
-                      navigation.navigate("QuizzesResultRewards")
-                    }}  style={styles.TouchableReward} >
+                <TouchableOpacity onPress={() => { navigation.navigate("QuizzesResultRewards") }} style={styles.TouchableReward} >
                   <Image source={require('../../assets/img/giftbox.png')} style={{ width: 30, height: 30, }} />
                   <Text style={styles.Scorecard} >View Rewards</Text>
                 </TouchableOpacity>
@@ -181,107 +188,55 @@ export default function QuizzesResult({ navigation, }) {
 
               </View>
             </View>
+
             <View style={styles.RewardView}>
               <View style={styles.RewardView1} >
-                <Animated.View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", height: 200, transform: [{ translateY: translationY }] }} >
-                  {
-                    length == 1 ?
-                      (<>
-                        <View style={styles.MainView} >
-                        {console.log(mydata.stu_name,'jhgfdxcvg')}
 
-                        </View>
-                        <View style={styles.ModelView} >
-                          <View style={styles.modelViewData} >
-                            {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
-                          </View>
-                          <View style={{ width: '100%' }} >
-                            <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0].stu_name}</Text>
-                          </View>
-                          <View style={styles.modelV} >
-                            <Text style={styles.DataText}>{mydata[0].marks}/</Text>
-                            <Text style={styles.DataText}>{topRank.totMarks}</Text>
-                          </View>
-                        </View>
-                        <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
-                        </View>
-                      </>) :
-                      length == 2 ?
-                        (<>
-                          <View style={styles.MainView} >
-                            <View style={styles.modelViewData} >
-                              {/* <Image source={{ uri: modelData[1].image }} style={styles.modelImg} /> */}
-                            </View>
-                            <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
-                            </View>
-                            <View style={styles.modelV} >
-                              <Text style={styles.DataText}>{mydata.marks}/</Text>
-                              <Text style={styles.DataText}>{mydata.rank}</Text>
-                            </View>
-                          </View>
-                          <View style={styles.ManiDataV1} >
-                            <View style={styles.modelViewData} >
-                              {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
-                            </View>
-                            <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0].stu_name}</Text>
-                            </View>
-                            <View style={styles.modelV} >
-                              <Text style={styles.DataText}>{mydata.marks}</Text>
-                              <Text style={styles.DataText}>{mydata.rank}</Text>
-                            </View>
-                          </View>
-                          <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
-                          </View>
-                        </>) : <>
-                          <View style={styles.MainView} >
-                            <View style={styles.modelViewData} >
-                              {/* <Image source={{ uri: modelData[1].image }} style={styles.modelImg} /> */}
-                            </View>
-                            <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
-                            </View>
-                            <View style={styles.modelV} >
-                              <Text style={styles.DataText}></Text>
-                              <Text style={styles.DataText}>{mydata.rank}</Text>
-                            </View>
-                          </View>
-                          <View style={styles.ManiDataV1} >
-                            <View style={styles.modelViewData} >
-                              {/* <Image source={{ uri: modelData[0].image }} style={styles.modelImg} /> */}
-                            </View>
-                            <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
-                            </View>
-                            <View style={styles.modelV} >
-                              <Text style={styles.DataText}>{mydata.rank}</Text>
-                              <Text style={styles.DataText}>{mydata.marks}</Text>
-                            </View>
-                          </View>
-                          <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
-                            <View style={styles.modelViewData} >
-                              {/* <Image source={{ uri: modelData[2].image }} style={styles.modelImg} /> */}
-                            </View>
-                            <View style={{ width: '100%' }} >
-                              <Text numberOfLines={1} style={styles.DatatextN} >{mydata.stu_name}</Text>
-                            </View>
-                            <View style={styles.modelV} >
-                              <Text style={styles.DataText}>{mydata.rank}/</Text>
-                              <Text style={styles.DataText}></Text>
-                            </View>
-                          </View>
-                        </>
-                  }
+                <Animated.View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", height: 200, transform: [{ translateY: translationY }] }} >
+                  <View style={styles.MainView} >
+                    <View style={styles.modelViewData} >
+                      <Image source={{ uri: BLOBURL + mydata[1]?.image }} style={styles.modelImg} />
+                    </View>
+                    <View style={{ width: '100%' }} >
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[1]?.stu_name}</Text>
+                    </View>
+                    <View style={styles.modelV} >
+                      <Text style={styles.DataText}></Text>
+                      <Text style={styles.DataText}>{mydata[1]?.marks + "/" + topRank?.totMarks}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.ManiDataV1} >
+                    <View style={styles.modelViewData} >
+                      <Image source={{ uri: BLOBURL + mydata[0]?.image }} style={styles.modelImg} />
+                    </View>
+                    <View style={{ width: '100%' }} >
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0]?.stu_name}</Text>
+                    </View>
+                    <View style={styles.modelV} >
+                      <Text style={styles.DataText}>{mydata[0]?.marks + "/" + topRank?.totMarks}</Text>
+                    </View>
+                  </View>
+                  <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
+                    <View style={styles.modelViewData} >
+                      <Image source={{ uri: BLOBURL + mydata[2]?.image }} style={styles.modelImg} />
+                    </View>
+                    <View style={{ width: '100%' }} >
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[2]?.stu_name}</Text>
+                    </View>
+                    <View style={styles.modelV} >
+                      <Text style={styles.DataText}>{mydata[2]?.marks + "/" + topRank?.totMarks}</Text>
+                    </View>
+                  </View>
                 </Animated.View>
+
                 <View style={styles.MainDataV} >
                   <View style={styles.ManiDataV1} >
-                    <Animated.View style={{ width: '100%', transform: [{ translateY: translationY1 }] }}>
+                    <Animated.View style={{ width: '100%', transform: [{ translateY: translationY2 }] }}>
                       <Image source={require('../../assets/img/rank2img.png')} resizeMode='center' style={styles.MainImg} />
                     </Animated.View>
                   </View>
                   <View style={styles.ManiDataV1} >
-                    <Animated.View style={{ width: '100%', alignItems: "center", transform: [{ translateY: translationY2 }] }}>
+                    <Animated.View style={{ width: '100%', alignItems: "center", transform: [{ translateY: translationY1 }] }}>
                       <Image source={require('../../assets/img/rank1img.png')} resizeMode='center' style={styles.MainImg1} />
                     </Animated.View>
                   </View>
@@ -294,41 +249,41 @@ export default function QuizzesResult({ navigation, }) {
               </View>
             </View>
             <>
-            <BottomSheet index={1} snapPoints={snapPoints}>
-					<Text style={styles.containerHeadline}>Winner’s Leaderboard 🎉</Text>
-            <FlatList
-        data={score}
-        renderItem={({item,index}) => (
-          <View style={styles.contentContainer}>
-          <View style={styles.Container}>
-              <TouchableOpacity style={styles.touch}>
-                <Text style={styles.TextIn}>{index+1}</Text>
-                <View style={styles.imgView}>
-                  <Image
-                    source={{ uri: BLOBURL + item.image }}
-                    resizeMode="contain"
-                    style={styles.img}
-                  />
-                </View>
+              <BottomSheet index={0} snapPoints={snapPoints}>
+                <Text style={styles.containerHeadline}>Winner’s Leaderboard 🎉</Text>
+                <FlatList
+                  data={score}
+                  renderItem={({ item, index }) => (
+                    <View style={styles.contentContainer}>
+                      <View style={styles.Container}>
+                        <TouchableOpacity style={styles.touch}>
+                          <Text style={styles.TextIn}>{index + 1}</Text>
+                          <View style={styles.imgView}>
+                            <Image
+                              source={{ uri: BLOBURL + item.image }}
+                              resizeMode="contain"
+                              style={styles.img}
+                            />
+                          </View>
 
-                <View style={styles.TotView}>
-                  <Text style={styles.TextTo}>{item.stu_name}</Text>
-                  <View style={styles.tymView}>
-                    <Text style={styles.textTym}>
-                     {item.rank} Rank
-                    </Text>
-                    <Text style={[styles.textTym, {color: '#367CFF'}]}>
-                     {item.marks} /{topRank.totMarks}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-				</View>
-        )}
-        keyExtractor={item => item.id}
-      />
-			    </BottomSheet>
+                          <View style={styles.TotView}>
+                            <Text style={styles.TextTo}>{item.stu_name}</Text>
+                            <View style={styles.tymView}>
+                              <Text style={styles.textTym}>
+                                {item.rank} Rank
+                              </Text>
+                              <Text style={[styles.textTym, { color: '#367CFF' }]}>
+                                {item.marks} /{topRank.totMarks}
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                  keyExtractor={item => item.id}
+                />
+              </BottomSheet>
             </>
           </GestureHandlerRootView>
       }
@@ -356,14 +311,14 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
   TextIn: {
     fontFamily: 'WorkSans-SemiBold',
     fontSize: 22,
-    color:'#000'
+    color: '#000'
   },
   imgView: {
     width: 60,
     height: 60,
     borderRadius: 100,
     flex: 0.18,
-    backgroundColor:'#f5f3f2'
+    backgroundColor: '#f5f3f2'
   },
   img: {
     width: 60,
@@ -380,7 +335,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
   TextTo: {
     fontFamily: 'WorkSans-Medium',
     fontSize: 20,
-    color:'#000'
+    color: '#000'
   },
   tymView: {
     width: '50%',
@@ -394,21 +349,21 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     color: ColorsConstant.GreenColor,
   },
   // container: {
-	// 	flex: 1,
-	// 	alignItems: 'center',
-	// 	justifyContent: 'center'
-	// },
-	contentContainer: {
-		flex: 1,
-		alignItems: 'center'
-	},
-	containerHeadline: {
-		fontSize: 24,
-		fontWeight: '600',
-		padding: 10,
-    color:'#000',
-  textAlign:'center'
-	},
+  // 	flex: 1,
+  // 	alignItems: 'center',
+  // 	justifyContent: 'center'
+  // },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  containerHeadline: {
+    fontSize: 24,
+    fontWeight: '600',
+    padding: 10,
+    color: '#000',
+    textAlign: 'center'
+  },
   WinnerBoardLiveView:
   {
     backgroundColor: '#fff',
@@ -433,7 +388,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
   {
     flex: 1,
     backgroundColor: ColorsConstant.Theme,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   HeaderView1:
   {
@@ -467,7 +422,6 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     width: '100%',
     borderRadius: 8,
     borderColor: '#fff',
-    height: 183,
     backgroundColor: ColorsConstant.LightPink,
     paddingTop: 20,
     borderWidth: 1,
@@ -541,7 +495,8 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    alignItems: "center"
+    alignItems: "center",
+    zIndex:200
   },
   Scorecard:
   {

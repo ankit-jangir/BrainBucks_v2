@@ -12,6 +12,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { Text } from "../../utils/Translate";
 import { StyleConstants } from "../../constants/Style.constant";
 import { useQuiz } from "../../context/QuizPlayReducer";
+import { StackActions } from "@react-navigation/native";
 
 export default function TriviaSubmit({ navigation, route }) {
   let arr = route.params.result.arr;
@@ -60,14 +61,9 @@ export default function TriviaSubmit({ navigation, route }) {
             <View style={styles.View7}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.reset({
-                    index: 0,
-                    routes: [
-                      {
-                        name: "TriviaResult",
-                      },
-                    ],
-                  })
+                  navigation.dispatch(
+                    StackActions.replace('resultreward')
+                  )
                 }
                 style={styles.View7}
               >

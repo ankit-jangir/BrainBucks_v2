@@ -16,6 +16,7 @@ import {StyleConstants} from '../../constants/Style.constant';
 import Toast from 'react-native-toast-message';
 import {useQuiz} from '../../context/QuizPlayReducer';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
+import { BLOBURL } from '../../config/urls';
 export default function QuizzesResultRewards({navigation, route}) {
   const [Load, setLoad] = useState(false);
   const [wallet, setwallet] = useState();
@@ -32,9 +33,6 @@ export default function QuizzesResultRewards({navigation, route}) {
       let res = await serv.getActiveQuizResult(SubActive_id);
       if (res.status === 1) {
         setData(res);
-        console.log('====================================');
-        console.log(res, 'res>>>>>>>>>>>>>>>');
-        console.log('====================================');
       } else {
         Toast.show({
           type: 'error',
@@ -56,19 +54,19 @@ export default function QuizzesResultRewards({navigation, route}) {
     getActiveQuizResult();
   }, []);
 
-  const goBack = () => {
-    Alert.alert('Hold on!', 'Are you sure you want exit from quiz?', [
-      {
-        text: 'Cancel',
-        onPress: () => null,
-        style: 'cancel',
-      },
-      {
-        text: 'YES',
-        onPress: () => navigation.reset({index: 0, routes: [{name: 'Home'}]}),
-      },
-    ]);
-  };
+  // const goBack = () => {
+  //   Alert.alert('Hold on!', 'Are you sure you want exit from quiz?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => null,
+  //       style: 'cancel',
+  //     },
+  //     {
+  //       text: 'YES',
+  //       onPress: () => navigation.reset({index: 0, routes: [{name: 'Home'}]}),
+  //     },
+  //   ]);
+  // };
 
   useEffect(() => {
     const backAction = () => {
@@ -76,12 +74,12 @@ export default function QuizzesResultRewards({navigation, route}) {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+    // const backHandler = BackHandler.addEventListener(
+    //   'hardwareBackPress',
+    //   backAction,
+    // );
 
-    return () => backHandler.remove();
+    // return () => backHandler.remove();
   }, []);
 
   return (
@@ -120,7 +118,7 @@ export default function QuizzesResultRewards({navigation, route}) {
               {data.self_profile_photo ? (
 
                 <Image
-                  source={{ uri: BLOBURL + item }}
+                  source={{ uri: BLOBURL + data.self_profile_photo }}
                   style={styles.walletImg}
                 />
               ) : (
