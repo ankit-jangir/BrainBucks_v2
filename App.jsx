@@ -178,10 +178,6 @@ function MyStack() {
       <Stack.Screen name="QuizzesResult" component={QuizzesResult} />
       <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive} />
       <Stack.Screen name="ScoreCard" component={ScoreCard} />
-
-
-
-
       <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
       <Stack.Screen name='myexams' component={MyExams}/>
       <Stack.Screen name='search' component={Search}/>

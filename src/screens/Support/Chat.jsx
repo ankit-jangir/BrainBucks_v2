@@ -49,11 +49,10 @@ export default function Chat({ navigation, route }) {
                 ChatSockService.listen((msg) => {
                     msg = JSON.parse(msg)
                     setMessages(pre => [...pre, msg])
-                    scrollRef.current.scrollToEnd()
                 })
             }
             if (scrollRef.current) {
-                setTimeout(() => scrollRef.current.scrollToEnd({ Animated: false }), 100)
+                setTimeout(() => {scrollRef.current.scrollToEnd()}, 700)
             }
         }
     }
@@ -122,6 +121,7 @@ export default function Chat({ navigation, route }) {
                     <ActivityIndicator style={[styles.chats, { alignItems: 'center', justifyContent: 'center' }]} size={40} />
                     :
                     <FlatList
+                        scrollEnabled
                         ref={scrollRef}
                         style={styles.chats}
                         data={messages}

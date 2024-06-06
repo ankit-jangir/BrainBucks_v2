@@ -9,6 +9,8 @@ import ChatSockService from '../services/api/ChatSockService';
  */
 export async function onMessageReceived(message) {
 
+    // console.log(message, "HELO");
+
     const channel = await notifee.createChannel(
         {
             id: 'default',
@@ -48,9 +50,8 @@ export default async function onAppBootstrap() {
         await messaging().registerDeviceForRemoteMessages();
         // Get the token
         const token = await messaging().getToken();
-        messaging().onMessage(onMessageReceived);
+        // messaging().onMessage(onMessageReceived);
         messaging().setBackgroundMessageHandler(onMessageReceived);
-
         // Save the token
         basic.setFcm(token)
         console.log("Fcm Token", token);

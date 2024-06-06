@@ -116,7 +116,7 @@ export default function CustomerSupport({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.TalkView} >
-            <TouchableOpacity style={styles.TouchView} >
+            <TouchableOpacity style={styles.TouchView} onPress={()=>{navigation.navigate('support')}}>
               <View style={styles.IconView} >
                 <Image source={require('../../assets/img/message.png')} resizeMode='contain' style={styles.MsgPic} />
               </View>
@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
   },
   TextTalk: {
     fontSize: 18,
-    fontFamily: "WorkSans-Medium"
+    fontFamily: "WorkSans-Medium",
+    color:ColorsConstant.Black
   },
   TextAva: {
     fontSize: 12,

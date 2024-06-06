@@ -36,10 +36,26 @@ export default function StartExam({ navigation, route }) {
   const [data, setData] = useState([])
   let id = route.params.id
   let timeoutId = useRef()
-  let remainingTime = 1000;
+  const [remainingTime, setRemainingTime] = useState(1000)
 
   useEffect(() => {
     getactiveDetails(id, Toast, setData, setLoading, dispatch)
+    try {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current)
+      }
+      setRemainingTime(basic.getDateFromSchTime(data?.sch_time) - Date.now())
+      if (remainingTime > 0) {
+        timeoutId.current = setTimeout(() => {
+          console.log("Refreshing");
+          setLoading(true)
+          setLoading(false);
+        }, remainingTime + 200)
+      }
+    }
+    catch (err) {
+      console.log("ERROR IN DATE CONVERSION: ", err);
+    }
   }, [])
 
 
@@ -50,23 +66,6 @@ export default function StartExam({ navigation, route }) {
         StackActions.replace("ActiveQuizzJoinAnimation")
       )
     }
-  }
-
-  try {
-    if (timeoutId.current) {
-      clearTimeout(timeoutId.current)
-    }
-    remainingTime = basic.getDateFromSchTime(data?.sch_time) - Date.now()
-    if (remainingTime > 0) {
-      timeoutId.current = setTimeout(() => {
-        console.log("Refreshing");
-        setLoading(true)
-        setLoading(false);
-      }, remainingTime + 200)
-    }
-  }
-  catch (err) {
-    console.log("ERROR IN DATE CONVERSION: ", err);
   }
 
   function next() {
@@ -191,11 +190,18 @@ export default function StartExam({ navigation, route }) {
               <View style={styles.StartExamV}>
                 <TouchableOpacity onPress={next} style={{ width: '80%' }}>
                   <LinearGradient
+                    key={remainingTime>0}
                     start={{ x: 0.0, y: 0.25 }}
                     end={{ x: 0.6, y: 2.0 }}
                     colors={['#54ACFD', '#2289E7']}
                     style={styles.StartExamLiner}>
-                    <Text style={styles.LobbtText}>{remainingTime > 0 ? data?.sch_time : "Join Now"}</Text>
+                    {
+                      remainingTime>0
+                      ?
+                      <Text key={'remaining'} style={styles.LobbtText}>{data?.sch_time}</Text>
+                      :
+                      <Text key={'joinnow'} style={styles.LobbtText}>Join Now</Text>
+                    }
                   </LinearGradient>
                 </TouchableOpacity>
                 <TouchableOpacity

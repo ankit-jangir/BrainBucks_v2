@@ -74,22 +74,23 @@ export default function Support({ navigation }) {
                     <Text style={styles.toptext2}>Help & Support</Text>
                 </View>
             </View>
-            <View style={styles.bottomview}>
+
                 <Text style={styles.bottomtext}>Your Tickets</Text>
                 {
                     loading
                         ?
                         <View>
-                            <ActivityIndicator size={40} />
+                            <ActivityIndicator size={40} color={ColorsConstant.Theme} />
                         </View>
                         :
                         tickets.length === 0
                             ?
                             <View style={{height:300, backgroundColor:'transparent'}}>
-                                <NoDataFound scale={0.6} message={"No Tickets. Create One To See Here"} actionText={"Refresh"} action={getTickets} />
+                                <NoDataFound scale={0.7} message={"No Tickets. Create One To See Here"} actionText={"Refresh"} action={getTickets} />
                             </View>
                             :
                             <FlatList
+                            style={styles.bottomview}
                                 keyExtractor={(item) => item._id}
                                 data={tickets}
                                 renderItem={({ item }) => {
@@ -109,7 +110,6 @@ export default function Support({ navigation }) {
                                 }}
                             />
                 }
-            </View>
             <Overlay isVisible={visible} overlayStyle={{ elevation: 3, paddingHorizontal: 10, gap: 10, width: '80%' }} animationType='slide' onBackdropPress={() => { setVisible(false) }}>
                 <Text style={styles.overlaytext}>Enter Title</Text>
                 <TextInput value={title} onChangeText={setTitle} placeholder='Enter title...' placeholderTextColor="gray" style={styles.ticketinput} />
@@ -161,11 +161,12 @@ const styles = StyleSheet.create({
 
     bottomview: {
         padding: 10,
-        backgroundColor:ColorsConstant.White
+        backgroundColor:ColorsConstant.White,
     },
     bottomtext: {
         color: ColorsConstant.GrayyColor,
         fontSize: 25,
+        marginHorizontal:10
     },
     tickettopview:{
         padding: 10,

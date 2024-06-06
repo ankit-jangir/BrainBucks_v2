@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
 const All = ({ navigation, order }) => {
   const [allwin, setAllWin] = React.useState([]);
@@ -27,8 +27,6 @@ const All = ({ navigation, order }) => {
     if (page > total) {
       return
     }
-
-  const history = new HistoryApiService();
 
     try {
       if (page === 1) {
@@ -75,7 +73,7 @@ const All = ({ navigation, order }) => {
           <ActivityIndicator size={40} />
           :
           allwin.length === 0 ?
-            <NoDataFound message={"No Quiz Played Yet"} />
+            <NoDataFound message={"No Quiz Played Yet"} action={()=>{getAllHistory()}} actionText={"Load Again"} />
             :
             <FlatList
               onEndReached={() => { getAllHistory(currentPage + 1) }}

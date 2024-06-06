@@ -8,8 +8,8 @@ import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { FlatList } from 'react-native';
 import { BLOBURL } from '../../config/urls';
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Free = ({ navigation, order }) => {
   const [free, setFree] = useState([])
@@ -34,12 +34,11 @@ const Free = ({ navigation, order }) => {
 
   async function getFreeQuizzes(page) {
     let total = totalPages;
-    if (!page) {
+    if (!page || typeof page !='number') {
       page = 1
       setTotalPages(2)
       total = 2
     }
-
     if (page > total) {
       return
     }

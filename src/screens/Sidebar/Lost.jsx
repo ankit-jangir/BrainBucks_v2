@@ -7,8 +7,8 @@ import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const Lost = ({ navigation, order }) => {
   const [lost, setLost] = useState([])
@@ -67,7 +67,7 @@ const Lost = ({ navigation, order }) => {
           :
           lost.length === 0
             ?
-            <NoDataFound message={"No Data Found"} action={getLostQuizzes} actionText={"Refresh"} />
+            <NoDataFound message={"No Data Found"} action={()=>{getLostQuizzes()}} actionText={"Refresh"} />
             :
             <FlatList
               onEndReached={() => { getLostQuizzes(currentPage + 1) }}
@@ -87,7 +87,7 @@ const Lost = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      navigation.navigate("resultreward")
+                      navigation.navigate("QuizzesResult")
                     }
                     }
                     btntxt={"View Result"}
@@ -103,6 +103,7 @@ const Lost = ({ navigation, order }) => {
   );
 };
 
+export default Lost
 
 const styles = StyleSheet.create({
   mainContainer: {

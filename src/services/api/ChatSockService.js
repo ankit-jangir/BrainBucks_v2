@@ -82,8 +82,7 @@ class ChatSockService {
         sock.on('error',(err)=>{console.log("ERROR IN CLIENT", err)})
         sock.on('ticket_response', (res)=>{
             res = JSON.parse(res)
-            // onMessageReceived({notification:{body:res.content, title:res.title}})
-            console.log("Message recieved: ", res);
+            console.log("Message recieved (default reciever): ", res);
         })
         sock.on('connect', ()=>{console.log("Socket Connected")})
         sock.on('disconnect', ()=>{console.log("Socket Disconnected")})
@@ -95,6 +94,7 @@ class ChatSockService {
     }
 
     static async disconnect(){
+        if(this.socket && this.socket.disconnect)
         this.socket.disconnect()
     }
 

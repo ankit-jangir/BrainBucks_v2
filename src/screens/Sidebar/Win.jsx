@@ -6,8 +6,7 @@ import BasicServices from '../../services/BasicServices';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
-
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
 const Win = ({ navigation, order }) => {
   const [won, setWon] = useState([])
@@ -56,7 +55,6 @@ const Win = ({ navigation, order }) => {
     }
   }
 
-
   return (
     <>
       <View style={{ zIndex: 200 }}><Toast /></View>
@@ -69,7 +67,7 @@ const Win = ({ navigation, order }) => {
             :
             won.length === 0
               ?
-              <NoDataFound message={"No Data Found"} action={getWonQuizzes} actionText={"Refresh"} />
+              <NoDataFound message={"No Data Found"} action={()=>{getWonQuizzes()}} actionText={"Refresh"} />
               :
               <FlatList
                 onEndReached={() => { getWonQuizzes(currentPage + 1) }}
@@ -105,6 +103,7 @@ const Win = ({ navigation, order }) => {
   );
 };
 
+export default Win;
 
 const styles = StyleSheet.create({
   mainContainer: {
