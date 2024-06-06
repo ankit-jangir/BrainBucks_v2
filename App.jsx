@@ -86,6 +86,8 @@ import Search from './src/screens/Home/Search';
 import Notification from './src/screens/Home/Notification';
 import Chat from './src/screens/Support/Chat';
 import Support from './src/screens/Support/Support';
+import AboutBb from './src/screens/Sidebar/AboutBb';
+import CustomerSupport from './src/screens/Profile/CustomerSupport';
 
 
 
@@ -176,6 +178,9 @@ function MyStack() {
       <Stack.Screen name="Notification" component={Notification}/>
       <Stack.Screen name='chat' component={Chat}/>
       <Stack.Screen name='support' component={Support}/>
+      <Stack.Screen name="AboutBB" component={AboutBb}/>
+      <Stack.Screen name="CustomerSupport" component={CustomerSupport}/>
+
     </Stack.Navigator>
   );
 }
