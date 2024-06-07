@@ -49,6 +49,9 @@ export default function Chat({ navigation, route }) {
                 ChatSockService.listen((msg) => {
                     msg = JSON.parse(msg)
                     setMessages(pre => [...pre, msg])
+                    if(scrollRef.current){
+                        scrollRef.current.scrollToEnd();
+                    }
                 })
             }
             if (scrollRef.current) {

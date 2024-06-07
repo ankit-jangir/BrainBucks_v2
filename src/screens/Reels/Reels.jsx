@@ -28,7 +28,6 @@ const Reels = () => {
                     <YoutubePlayer
                         height={screenHeight}
                         width={screenWidth}
-                        forceAndroidAutoplay
                         play={true}
                         videoId={item.id}
                         onChangeState={()=>{console.log("changed");}}
