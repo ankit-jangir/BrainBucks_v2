@@ -91,8 +91,8 @@ export default function Otp({ navigation, route }) {
 
     return (
         <>
+        <View style={{zIndex:200}}><Toast /></View>
             <SafeAreaView style={styles.safeArView}>
-                <Toast />
                 <View style={StyleConstants.bbView} >
                     <Image
                         source={require("../../assets/img/bbcolorlogo.png")}

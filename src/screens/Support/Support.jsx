@@ -58,7 +58,7 @@ export default function Support({ navigation }) {
 
 
     return (
-        <View style={{flex:1, backgroundColor:'white'}}>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ zIndex: 200 }}><Toast /></View>
             <View style={styles.topview}>
                 <View style={styles.backandimgview}>
@@ -75,41 +75,41 @@ export default function Support({ navigation }) {
                 </View>
             </View>
 
-                <Text style={styles.bottomtext}>Your Tickets</Text>
-                {
-                    loading
+            <Text style={styles.bottomtext}>Your Tickets</Text>
+            {
+                loading
+                    ?
+                    <View>
+                        <ActivityIndicator size={40} color={ColorsConstant.Theme} />
+                    </View>
+                    :
+                    tickets.length === 0
                         ?
-                        <View>
-                            <ActivityIndicator size={40} color={ColorsConstant.Theme} />
+                        <View style={{ height: 300, backgroundColor: 'transparent' }}>
+                            <NoDataFound scale={0.7} message={"No Tickets. Create One To See Here"} actionText={"Refresh"} action={getTickets} />
                         </View>
                         :
-                        tickets.length === 0
-                            ?
-                            <View style={{height:300, backgroundColor:'transparent'}}>
-                                <NoDataFound scale={0.7} message={"No Tickets. Create One To See Here"} actionText={"Refresh"} action={getTickets} />
-                            </View>
-                            :
-                            <FlatList
+                        <FlatList
                             style={styles.bottomview}
-                                keyExtractor={(item) => item._id}
-                                data={tickets}
-                                renderItem={({ item }) => {
-                                    return (
-                                        <TouchableOpacity onPress={() => navigation.navigate('chat', {
-                                            chat_id: item._id,
-                                            is_active: !item.is_closed
-                                        })} style={styles.tickettopview} >
-                                            <View style={styles.ticketview}>
+                            keyExtractor={(item) => item._id}
+                            data={tickets}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableOpacity onPress={() => navigation.navigate('chat', {
+                                        chat_id: item._id,
+                                        is_active: !item.is_closed
+                                    })} style={styles.tickettopview} >
+                                        <View style={styles.ticketview}>
                                             <Text style={styles.ticketname}>{item.title}</Text>
                                             <Text style={{ color: 'black', fontSize: 15 }}>Last Updated: {new Date(item.update_on).toUTCString().replace(" GMT", "")}</Text>
                                             <Text style={{ color: !item.is_closed ? 'blue' : 'gray' }}>{!item.is_closed ? "Active" : "Closed"}</Text>
-                                            </View>
-                                            <Image style={{width:'8%', height:30}} source={require('../../assets/img/rightarrow1.png')}/>
-                                        </TouchableOpacity>
-                                    )
-                                }}
-                            />
-                }
+                                        </View>
+                                        <Image style={{ width: '8%', height: 30, objectFit:'contain' }} source={require('../../assets/img/rightarrow1.png')} />
+                                    </TouchableOpacity>
+                                )
+                            }}
+                        />
+            }
             <Overlay isVisible={visible} overlayStyle={{ elevation: 3, paddingHorizontal: 10, gap: 10, width: '80%' }} animationType='slide' onBackdropPress={() => { setVisible(false) }}>
                 <Text style={styles.overlaytext}>Enter Title</Text>
                 <TextInput value={title} onChangeText={setTitle} placeholder='Enter title...' placeholderTextColor="gray" style={styles.ticketinput} />
@@ -161,22 +161,23 @@ const styles = StyleSheet.create({
 
     bottomview: {
         padding: 10,
-        backgroundColor:ColorsConstant.White,
+        backgroundColor: ColorsConstant.White,
     },
     bottomtext: {
         color: ColorsConstant.GrayyColor,
         fontSize: 25,
-        marginHorizontal:10
+        marginHorizontal: 10
     },
-    tickettopview:{
+    tickettopview: {
         padding: 10,
         elevation: 3,
         backgroundColor: ColorsConstant.BlurWhite,
         paddingLeft: 20,
         borderRadius: 10,
         marginVertical: 19,
-        flexDirection:'row',
-        alignItems:'center'
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent:'space-between'
     },
     ticketview: {
         gap: 14,

@@ -194,7 +194,7 @@ export default function ViewProfile({navigation, route}) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Help and Support</Text>
               </View>
-              <Text style={{paddingRight: 5}}>arrowright</Text>
+              <Image style={{height:30, width:40, objectFit:'contain', marginRight:10, tintColor:'black'}} source={require('../../assets/img/arrowtoright.png')}/>
             </TouchableOpacity>
           </View>
           <View style={styles.HelpView}>
@@ -213,7 +213,7 @@ export default function ViewProfile({navigation, route}) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Privacy Policy</Text>
               </View>
-              <Text style={{paddingRight: 5}}>arrowright</Text>
+              <Image style={{height:30, width:40, objectFit:'contain', marginRight:10, tintColor:'black'}} source={require('../../assets/img/arrowtoright.png')}/>
             </TouchableOpacity>
           </View>
           <View style={styles.HelpView}>
@@ -232,7 +232,7 @@ export default function ViewProfile({navigation, route}) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Rules & Regulations</Text>
               </View>
-              <Text style={{paddingRight: 5}}>arrowright</Text>
+              <Image style={{height:30, width:40, objectFit:'contain', marginRight:10, tintColor:'black'}} source={require('../../assets/img/arrowtoright.png')}/>
             </TouchableOpacity>
           </View>
           <View style={styles.HelpView}>
@@ -251,7 +251,7 @@ export default function ViewProfile({navigation, route}) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>About Brain Bucks</Text>
               </View>
-              <Text style={{paddingRight: 5}}>arrowright</Text>
+              <Image style={{height:30, width:40, objectFit:'contain', marginRight:10, tintColor:'black'}} source={require('../../assets/img/arrowtoright.png')}/>
             </TouchableOpacity>
           </View>
         </View>

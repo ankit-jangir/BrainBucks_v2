@@ -41,8 +41,8 @@ export default function Splash({ navigation }) {
             })
           }
           if (res && res.status === 1) {
-            ChatSockService.connect()
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+            ChatSockService.connect()
           } else {
             setCheckLang(null)
           }
