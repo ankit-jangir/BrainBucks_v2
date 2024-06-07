@@ -1,4 +1,4 @@
-import React, {act, useEffect, useState} from 'react';
+import React, { act, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,14 +13,14 @@ import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Overlay} from '@rneui/themed';
-import {Button} from '../../utils/Translate';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {useDrawerStatus} from '@react-navigation/drawer';
-import {BLOBURL} from '../../config/urls';
+import { Overlay } from '@rneui/themed';
+import { Button } from '../../utils/Translate';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useDrawerStatus } from '@react-navigation/drawer';
+import { BLOBURL } from '../../config/urls';
 import ChatSockService from '../../services/api/ChatSockService';
 
-const Sidebar = ({navigation}) => {
+const Sidebar = ({ navigation }) => {
   const auth = new AuthenticationApiService();
   const [userData, setUserData] = useState({
     name: 'User Name',
@@ -48,7 +48,7 @@ const Sidebar = ({navigation}) => {
           }
           setTotalPlayed(res.totalquizplayed);
         } else {
-          Toast.show({type: 'error', text1: res.Backend_Error});
+          Toast.show({ type: 'error', text1: res.Backend_Error });
         }
       });
     } catch (err) {
@@ -67,7 +67,7 @@ const Sidebar = ({navigation}) => {
       if (response.status === 1) {
         BasicServices.setJwt('').then(() => {
           AsyncStorage.removeItem('language').then(() => {
-            navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+            navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
           });
         });
       } else {
@@ -96,12 +96,12 @@ const Sidebar = ({navigation}) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.closeButton}>
-            <Text style={{color: '#000'}}>X</Text>
+            <Text style={{ color: '#000' }}>X</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.profileSection}>
           <Image
-            source={{uri: image1}}
+            source={{ uri: image1 }}
             resizeMode="contain"
             style={styles.profileImage}
           />
@@ -142,12 +142,12 @@ const Sidebar = ({navigation}) => {
           text="Privacy Policy"
         />
         <MenuItem
-        action={() => {
-          navigation.navigate('Study');
-        }}
+          action={() => {
+            navigation.navigate('Study');
+          }}
           image={require('../../assets/img/myexamimg.png')}
           text="My Exams"
-          imageStyle={{width: 25, height: 25}}
+          imageStyle={{ width: 25, height: 25 }}
         />
         <MenuItem
           action={() => {
@@ -164,9 +164,14 @@ const Sidebar = ({navigation}) => {
           text="Course Plan History"
         />
         <MenuItem
-          action={() => {}}
+          action={() => { }}
           image={require('../../assets/img/audit.png')}
           text="Refer & Earn"
+        />
+        <MenuItem
+          action={() => { navigation.navigate('reels') }}
+          image={require('../../assets/img/audit.png')}
+          text="Reels"
         />
 
         <MenuItem
@@ -198,7 +203,7 @@ const Sidebar = ({navigation}) => {
               color={'#e6e3e8'}
               title="Cancel"
               buttonStyle={styles.logoutyesbutton}
-              titleStyle={{color: 'black', fontSize: 15, padding: 15}}
+              titleStyle={{ color: 'black', fontSize: 15, padding: 15 }}
               onPress={toggleOverlay}
             />
           </View>
@@ -217,7 +222,7 @@ const MenuItem = ({
   beingPerformmed,
 }) => {
   if (!action) {
-    action = () => {};
+    action = () => { };
   }
   return (
     <TouchableOpacity

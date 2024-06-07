@@ -9,6 +9,7 @@ import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native';
 
 const Challenges = () => {
   const navigation = useNavigation()

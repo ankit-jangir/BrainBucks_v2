@@ -92,6 +92,7 @@ import ScoreCard from './src/screens/Quizzes/ScoreCard';
 import WinnerBoardLive from './src/screens/Quizzes/WinnerBoardLive';
 import QuizzesResult from './src/screens/Quizzes/QuizzesResult';
 import QuizzesResultRewards from './src/screens/Quizzes/QuizzesResultRewards';
+import Reels from './src/screens/Reels/Reels';
 
 
 
@@ -188,9 +189,7 @@ function MyStack() {
       <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive}/>
       <Stack.Screen name="QuizzesResult" component={QuizzesResult}/>
       <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards}/>
-
-
-
+      <Stack.Screen name='reels' component={Reels}/>
 
     </Stack.Navigator>
   );
