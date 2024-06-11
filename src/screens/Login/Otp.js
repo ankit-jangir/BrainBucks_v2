@@ -22,6 +22,7 @@ export default function Otp({ navigation, route }) {
 
 
     function otpChanged(value) {
+        setErrorMessage("")
         setOtp(value + "")
     }
 
@@ -77,7 +78,7 @@ export default function Otp({ navigation, route }) {
             )
             }
             else{
-                setErrorMessage("*"+response.msg)
+                setErrorMessage("*"+response.Backend_Error)
             }
 
         }catch(err){
@@ -126,6 +127,9 @@ export default function Otp({ navigation, route }) {
                               pinCodeContainerStyle: styles.OtpBoxView,
                               pinCodeTextStyle: styles.textOtp,
                             }}
+                            textInputProps={
+                                {selectTextOnFocus:false, caretHidden:true}
+                            }
                             />
                         </View>
                         {

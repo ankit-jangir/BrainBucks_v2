@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         elevation: 5,
         gap: 10,
-        paddingBottom:14
+        paddingBottom: 14
     },
     roomNameText: {
         fontSize: 20,
@@ -84,62 +84,99 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'center',
-        borderRadius:4,
-        elevation:2
+        justifyContent: 'center',
+        borderRadius: 4,
+        elevation: 2
     },
-    exitimg:{
-        marginLeft:7,
-        width:20,
-        objectFit:'contain'
+    exitimg: {
+        marginLeft: 7,
+        width: 20,
+        objectFit: 'contain'
     },
-    enterbtn:{
+    enterbtn: {
         color: 'white',
-        fontFamily:'WorkSans-Regular',
-        fontSize:14 
+        fontFamily: 'WorkSans-Regular',
+        fontSize: 14
     },
-    enterbtncontainer:{
-        elevation:3,
-        borderRadius:4,
-        flex:1,
+    enterbtncontainer: {
+        elevation: 3,
+        borderRadius: 4,
+        flex: 1,
     },
 
 
     // Create room styling
-    backimg:{
-        width:20,
-        height:20,
-        borderRadius:50,
-        borderWidth:0.2,
-        alignItems:'center',
-        justifyContent:'center'
+    backimg: {
+        width: 20,
+        height: 20,
+        borderRadius: 50,
+        borderWidth: 0.2,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    createroomtext:{
-        color:ColorsConstant.Black,
-        fontSize:24,
-        fontFamily:'WorkSans-Regular',
-        fontWeight:"500"
+    createroomtext: {
+        color: ColorsConstant.Black,
+        fontSize: 24,
+        fontFamily: 'WorkSans-Regular',
+        fontWeight: "500"
     },
-    createroomimg:{
-        margin:'auto'
+    createroomimg: {
+        margin: 'auto'
     },
-    createRoomOptionText:{
-        color:ColorsConstant.Black,
-        fontSize:20,
-        fontFamily:'WorkSans-Regular'
+    createRoomOptionText: {
+        color: ColorsConstant.Black,
+        fontSize: 20,
+        fontFamily: 'WorkSans-Regular'
     },
-    createRoomBtn:{
-        fontFamily:"WorkSans-Regular",
-        width:'100%',
-        textAlign:'center',
-        padding:20,
+    createRoomBtn: {
+        fontFamily: "WorkSans-Regular",
+        width: '100%',
+        textAlign: 'center',
+        padding: 20,
     },
-    createRoomInput:{
-        color:ColorsConstant.Black,
-        backgroundColor:"#f0f0f0",
-        padding:10,
-        borderRadius:4
-    }
+    createRoomInput: {
+        color: ColorsConstant.Black,
+        backgroundColor: "#f0f0f0",
+        padding: 10,
+        borderRadius: 4
+    },
+
+
+    // Enter Room Style
+    enterRoomMainContainer: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: "#701DDB",
+        paddingTop: 20
+    },
+    backRoomEnterImg: {
+        height: 14,
+        width: 14,
+        marginRight: 10,
+        marginLeft: -10
+    },
+    typebtn: {
+        flex: 1,
+        paddingHorizontal: 0,
+        alignItems: 'center',
+        marginHorizontal: 0
+    },
+    firstEnter: {
+        height: '40%',
+        padding: 10,
+        paddingVertical: 20
+    },
+    backandhistory: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    roomEnterShareBtn: {
+        backgroundColor: '#8D4AE2',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 7
+    },
 })
 
 export default styles;
