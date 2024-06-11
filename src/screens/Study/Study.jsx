@@ -19,6 +19,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import { useCurrentId } from '../../context/IdReducer';
+import { useIsFocused } from '@react-navigation/native';
 export default function Study({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [otherExams, setOtherExams] = useState([]);
@@ -28,6 +29,7 @@ export default function Study({ navigation }) {
   const [enrolledExams, setEnrolledExams] = useState([])
   const [selectedExams, setSelectedExams] = useState(new Set([]))
   const { idState, dispatch } = useCurrentId()
+  const focused = useIsFocused()
   const study = new StudyApiService();
 
   async function addExams() {
@@ -121,7 +123,7 @@ export default function Study({ navigation }) {
   useEffect(() => {
     loadEnrolledExams()
     loadOtherExams()
-  }, [])
+  }, [focused])
 
   return (
     <>

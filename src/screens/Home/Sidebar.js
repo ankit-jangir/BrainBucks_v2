@@ -169,9 +169,14 @@ const Sidebar = ({ navigation }) => {
           text="Refer & Earn"
         />
         <MenuItem
-          action={() => { navigation.navigate('reels') }}
+          action={() => { navigation.navigate('reeltags') }}
           image={require('../../assets/img/audit.png')}
           text="Reels"
+        />
+        <MenuItem
+          action={() => { navigation.navigate('rooms') }}
+          image={require('../../assets/img/audit.png')}
+          text="Rooms"
         />
 
         <MenuItem

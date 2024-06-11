@@ -140,7 +140,7 @@ export default function Signup({ navigation, route }) {
                 <TouchableOpacity
                   onPress={() => {
                     Linking.openURL(
-                      'https://www.brainbucks.in/terms_and_conditions.html',
+                      'https://brainbucks.co.in/terms/condition',
                     );
                   }}>
                   <Text style={styles.textTerm}> terms & conditions </Text>
@@ -152,7 +152,7 @@ export default function Signup({ navigation, route }) {
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    Linking.openURL('https://www.brainbucks.in/privacy.html');
+                    Linking.openURL('https://brainbucks.co.in/privacy/policy');
                   }}>
                   <Text style={styles.textTerm}>Privacy policy</Text>
                 </TouchableOpacity>

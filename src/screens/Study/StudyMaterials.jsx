@@ -14,7 +14,7 @@ export default function StudyMaterials({ navigation }) {
     <View style={StyleConstants.safeArView}>
      
 
-      <View style={styles.container}>
+      {/* <View style={styles.container}>
         <TouchableOpacity
           style={[
             styles.button1,
@@ -43,7 +43,7 @@ export default function StudyMaterials({ navigation }) {
             Online Classes
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {selected === 'FreePdf' && (
         <FreePdf navigation={navigation} />

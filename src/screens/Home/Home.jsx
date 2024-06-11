@@ -81,7 +81,7 @@ export default function Home({ navigation }) {
             </View>
             :
             <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />}>
-              <View style={{ marginBottom: 240 }}>
+              <View style={{ marginBottom: 20 }}>
                 <View style={styles.carouselContainer}>
                   <Carousel
                     loop

@@ -21,6 +21,7 @@ import StudyApiService from '../../services/api/StudyApiService';
 import NoDataFound from '../../components/NoDataFound';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { useCurrentId } from '../../context/IdReducer';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Saved({navigation}) {
   const [refresh, setRefresh] = useState(false);
@@ -31,13 +32,14 @@ export default function Saved({navigation}) {
   const [otherExams, setOtherExams] = useState([]);
   const [selectedExams, setSelectedExams] = useState(new Set([]))
   const {idState,dispatch}=useCurrentId()
+  const focused = useIsFocused()
 
   const saved = new SavedApiService();
   const study = new StudyApiService();
   useEffect(() => {
     getSavedExams();
     loadOtherExams()
-  }, []);
+  }, [focused]);
 
   async function getSavedExams() {
     setloading(true);

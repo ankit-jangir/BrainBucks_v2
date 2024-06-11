@@ -22,7 +22,7 @@ export default function Splash({ navigation }) {
       let langinasync = await AsyncStorage.getItem("language")
       if (langinasync) {
         let localobj = await basic.getLocalObject()
-        if (localobj.jwt) {
+        if (localobj && localobj.jwt) {
           let res;
           try {
             res = await auth.getUserProfile();
@@ -46,6 +46,9 @@ export default function Splash({ navigation }) {
           } else {
             setCheckLang(null)
           }
+        }
+        else{
+          setCheckLang(null)
         }
       } else {
         setCheckLang(null)
