@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../styles/Rooms.styles'
 import styles2 from '../../styles/Saved.styles'
@@ -6,12 +6,13 @@ import { ActivityIndicator } from 'react-native'
 import NoDataFound from '../../components/NoDataFound'
 import { Button } from '../../utils/Translate'
 import { ColorsConstant } from '../../constants/Colors.constant'
+import { Text } from '../../utils/Translate'
 
-export default function JoinedRooms() {
+export default function JoinedRooms({ navigation }) {
     const [loading, setLoading] = useState(false)
     const [rooms, setRooms] = useState([
         {
-            _id:"sdkl",
+            _id: "sdkl",
             name: 'First Name',
             totalMember: 29,
             capacity: 70,
@@ -92,9 +93,13 @@ export default function JoinedRooms() {
                                             </View>
                                         </View>
                                         <View style={styles.roomContainerBtns}>
-                                            <Button titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
+                                            <Button
+                                                onPress={() => { navigation.navigate('roomenter',{type:'joined'}) }}
+                                                titleStyle={styles.enterbtn}
+                                                containerStyle={styles.enterbtncontainer}
+                                                title={"Enter Room"} />
                                             <TouchableOpacity style={styles.exitview}>
-                                                <Image style={styles.exitimg} source={require('../../assets/img/exit.png')}/>
+                                                <Image style={styles.exitimg} source={require('../../assets/img/exit.png')} />
                                                 <Text style={styles.exitbtn}>Leave Room</Text>
                                             </TouchableOpacity>
                                         </View>

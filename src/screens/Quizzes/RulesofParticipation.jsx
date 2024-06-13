@@ -88,7 +88,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                       padding: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    {data?.quiz_name}
+                    {data?.category_name}
                   </Text>
                 </View>
                 <Text
@@ -116,7 +116,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                     />
                     <Text
                       style={{
-                        color: 'rgba(138, 138, 138, 1)',
+                        color: 'black',
                         fontSize: 14,
                         fontWeight: '600',
                         padding: 10,
@@ -138,7 +138,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                     />
                     <Text
                       style={{
-                        color: 'rgba(138, 138, 138, 1)',
+                        color: 'black',
                         fontSize: 14,
                         fontWeight: '600',
                         padding: 10,
@@ -170,7 +170,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                   />
                   <Text
                     style={{
-                      color: 'rgba(138, 138, 138, 1)',
+                      color: 'black',
                       fontSize: 14,
                       fontWeight: '600',
                       padding: 10,
@@ -188,7 +188,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                       marginTop: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    Number of Questions : {data?.total_num_of_quest}
+                    <Text style={{color:'rgb(138,138,138)'}}>Number of Questions :</Text> {data?.total_num_of_quest}
                   </Text>
                   <Text
                     style={{
@@ -198,7 +198,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                       marginTop: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    Time for Each Question : {data?.time_per_question}
+                    <Text style={{color:'rgb(138,138,138)'}}>Time for Each Question :</Text> {data?.time_per_question}
                   </Text>
                 </View>
 
@@ -211,7 +211,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                       marginTop: 30,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    Subjects
+                    <Text style={{color:'rgb(138,138,138)'}}>Subjects</Text>
                   </Text>
 
                   <View style={styles.ul}>
@@ -233,7 +233,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                       marginTop: 30,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    General Rules of Participation
+                    <Text style={{color:'rgb(138,138,138)'}}>General Rules of Participation</Text>
                   </Text>
 
                   <View style={styles.ul}>
@@ -283,9 +283,10 @@ export default function AllLiveQuizzes({ navigation, route }) {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          navigation.goBack()
         }}>
         <TouchableOpacity
-          onPress={() => {setModalVisible(!modalVisible)}}
+          onPress={() => {setModalVisible(!modalVisible), navigation.goBack()}}
           style={styles.RulesTouchable2}>
           <View style={styles.RulesPV2}>
             <View style={styles.RulesPV3}>

@@ -10,7 +10,6 @@ import {
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-const Tab = createMaterialTopTabNavigator();
 import {ActivityIndicator} from 'react-native-paper';
 import {Image} from 'react-native';
 import {Text} from '../../utils/Translate';

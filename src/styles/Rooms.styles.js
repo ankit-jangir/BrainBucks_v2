@@ -164,19 +164,186 @@ const styles = StyleSheet.create({
     firstEnter: {
         height: '40%',
         padding: 10,
-        paddingVertical: 20
     },
     backandhistory: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        // alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
     },
     roomEnterShareBtn: {
         backgroundColor: '#8D4AE2',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 7
+        borderRadius: 7,
+        paddingHorizontal: 20,
     },
+    histImg: {
+        height: 15,
+        width: 15,
+        objectFit: 'contain',
+        marginRight: 10,
+        marginLeft: -10
+    },
+    invitePrev: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20
+    },
+    detailsContainer: {
+        gap: 11
+    },
+    secondEnter: {
+        //the second part of room
+        height: "60%",
+        backgroundColor: ColorsConstant.White,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25
+    },
+
+
+
+
+    // History starts here
+    /* Styles for top bar of history */
+    Hview: {
+        width: '100%',
+        height: 65,
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: ColorsConstant.LightGray,
+        backgroundColor: "white"
+    },
+    Hview1: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    THead: {
+        flex: 0.15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 4,
+        width: 40,
+        height: 50,
+        borderColor: ColorsConstant.LightWhite,
+        borderWidth: 1,
+        borderRadius: 100,
+    },
+    ViewMy: {
+        flex: 0.8,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingLeft: 20,
+    },
+    TextMy: {
+        fontSize: 20,
+        fontFamily: 'WorkSans-SemiBold',
+        color: '#000',
+    },
+
+
+    proceedbtn: {
+        padding: 14,
+        textAlign: 'center',
+        backgroundColor: "#fff",
+        borderRadius: 10
+    },
+    flexCenter: {
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center'
+    },
+    centerBox: {
+        borderRadius: 8,
+        backgroundColor: "#212236",
+        height: 400,
+        width: '100%',
+        padding: 20,
+        margin: 20,
+        justifyContent: "space-evenly"
+
+    },
+    createLiveText: {
+        fontSize: 20,
+        color: "#fff",
+        width: "70%",
+        textAlign: 'center'
+    },
+    //dropdown styles:
+    dropdownExam: {
+        marginBottom: 20,
+        backgroundColor: "#212236",
+
+    },
+    dropdownlabel: {
+        color: "#A1A2AD",
+        backgroundColor: "#282940",
+    },
+    ddexaminputSearchStyle: {
+        color: "#A1A2AD",
+        backgroundColor: "white",
+        fontSize: 14
+    },
+    ddexamselectedTextStyle: {
+        color: "#A1A2AD",
+        backgroundColor: "#282940",
+        padding: 7
+    },
+    ddexamplaceholderStyle: {
+        color: "#B3B3B3",
+        backgroundColor: "#282940",
+        paddingHorizontal: 12,
+        paddingVertical: 7
+    },
+    ddExamItemContainerStyle: {
+        color: "#A1A2AD",
+        borderRadius: 4,
+        borderColor: '#353651',
+        borderBottomWidth: 1,
+        marginHorizontal: 4,
+        marginVertical: 1,
+        borderRadius: 4,
+        backgroundColor: "#282940"
+    },
+    ddItemTextStyle: {
+        color: "#A1A2AD",
+        fontSize: 14,
+    },
+    ddinput: {
+        backgroundColor: '#282940',
+        color: "#A1A2AD",
+        borderRadius: 4,
+        paddingHorizontal: 10
+    },
+    TimeConatiner:
+    {
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    miniumT:
+    {
+        paddingBottom: 8,
+        textAlign: "right",
+        fontSize: 12,
+        color: "#A1A2AD",
+
+    },
+    containerb:
+    {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: '#282940',
+        borderRadius: 4,
+        paddingHorizontal: 10
+    },
+    st:
+    {
+        paddingBottom: 8,
+        color: "#A1A2AD",
+
+    }
 })
 
 export default styles;

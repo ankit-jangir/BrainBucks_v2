@@ -7,7 +7,7 @@ import { Button, Text } from '../../utils/Translate'
 import { FlatList } from 'react-native'
 import { ColorsConstant } from '../../constants/Colors.constant'
 
-export default function CreatedRooms() {
+export default function CreatedRooms({navigation}) {
   
     const [loading, setLoading] = useState(false)
     const [rooms, setRooms] = useState([
@@ -93,7 +93,7 @@ export default function CreatedRooms() {
                                             </View>
                                         </View>
                                         <View style={styles.roomContainerBtns}>
-                                            <Button titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
+                                            <Button onPress={()=>{navigation.navigate('roomenter', {type:'created'})}} titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
                                             <TouchableOpacity style={styles.exitview}>
                                                 <Image style={styles.exitimg} source={require('../../assets/img/redbin.png')}/>
                                                 <Text style={styles.exitbtn}>Delete Room</Text>

@@ -450,6 +450,8 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans-Medium",
     fontSize: 16,
     color: ColorsConstant.White,
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
   DaView: {
     flex: 1,
@@ -581,11 +583,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-  },
-  textQuite: {
-    fontWeight: 'bold',
-    marginLeft: 5,
-
   },
   Daview: {
     flexDirection: 'row',

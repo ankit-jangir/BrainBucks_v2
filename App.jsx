@@ -97,6 +97,10 @@ import ReelTags from './src/screens/Reels/ReelTags';
 import Rooms from './src/screens/Rooms/Rooms';
 import CreateRoom from './src/screens/Rooms/CreateRoom';
 import RoomCreatedSuccesfully from './src/screens/Rooms/RoomCreatedSuccesfully';
+import RoomEnter from './src/screens/Rooms/RoomEnter';
+import RoomsQuizHistory from './src/screens/Rooms/RoomsQuizHistory';
+import CreateLiveQuiz from './src/screens/Rooms/CreateLiveQuiz';
+import CreateLiveSlots from './src/screens/Rooms/CreateLiveSlots';
 
 
 
@@ -198,6 +202,11 @@ function MyStack() {
       <Stack.Screen name='rooms' component={Rooms}/>
       <Stack.Screen name='createroom' component={CreateRoom}/>
       <Stack.Screen name='roomcreatedsuccess' component={RoomCreatedSuccesfully}/>
+      <Stack.Screen name='roomenter' component={RoomEnter}/>
+      <Stack.Screen name='roomhistory' component={RoomsQuizHistory}/>
+      <Stack.Screen name='createlivequiz' component={CreateLiveQuiz}/> 
+      <Stack.Screen name='createliveslots' component={CreateLiveSlots}/> 
+
     </Stack.Navigator>
   );
 }

@@ -9,6 +9,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
 import { screenWidth } from '../../constants/Sizes.constant';
 import { StackActions } from '@react-navigation/native';
+import BackgroundTimer from 'react-native-background-timer';
 
 const ColorsConstant = {
   White: '#FFFFFF',
@@ -47,20 +48,20 @@ export default function TriviaQuestionPaper({ navigation }) {
   }, [])
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = BackgroundTimer.setInterval(() => {
       if (timerCount > 0) {
-        setTimerCount(timerCount - 1);
+        setTimerCount(t=>t - 1);
       } else if (minute > 0) {
-        setMinute(minute - 1);
+        setMinute(m=>m - 1);
         setTimerCount(59);
       } else {
-        clearInterval(interval)
+        BackgroundTimer.clearInterval(interval)
         Toast.show({ type: "info", text1: "Time's up. Submitting..." })
         handleSubmit()
       }
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => BackgroundTimer.clearInterval(interval);
   }, [timerCount, minute]);
 
   const handleOptionPress = (optionIndex) => {
@@ -451,6 +452,8 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans-Medium",
     fontSize: 16,
     color: ColorsConstant.White,
+    fontWeight: 'bold',
+    marginLeft: 5,
   },
   DaView: {
     flex: 1,
@@ -583,11 +586,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  textQuite: {
-    fontWeight: 'bold',
-    marginLeft: 5,
 
-  },
   Daview: {
     flexDirection: 'row',
     alignItems: 'center',

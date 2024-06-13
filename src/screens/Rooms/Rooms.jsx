@@ -25,7 +25,7 @@ export default function Rooms({ navigation }) {
                         paddingHorizontal: 15
                     }} />
             </View>
-            <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
+            <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} />}>
                 <Tab.Screen name="Explore" component={Explore} />
                 <Tab.Screen name="My Rooms" component={MyRooms} />
             </Tab.Navigator>
@@ -35,10 +35,10 @@ export default function Rooms({ navigation }) {
 
 
 /* top tab bar to show all screen names */
-function MyTabBar({ state, descriptors, navigation, position }) {
+export function MyTabBar({ state, descriptors, navigation, position, imgNeeded, width }) {
     return (
 
-        <View style={styles.topbar}>
+        <View style={[styles.topbar, width&&{width:width+"%"}]}>
             <View style={{ zIndex: 1 }}>
                 <Toast />
             </View>
@@ -90,7 +90,7 @@ function MyTabBar({ state, descriptors, navigation, position }) {
                         style={{ flex: 1 }}
                     >
                         <View style={[styles.tabBarLabelHolder, isFocused && { borderBottomWidth: 1 }]}>
-                            <Image style={[styles.tabBarLabelLogo, isFocused && { tintColor: "#000" }]} source={src} />
+                            {imgNeeded&&<Image style={[styles.tabBarLabelLogo, isFocused && { tintColor: "#000" }]} source={src} />}
                             <Text style={[styles.tabBarLabel, isFocused && { color: "#000" }]}>
                                 {label}
                             </Text>

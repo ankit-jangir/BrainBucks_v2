@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Image, SafeAreaView, ToastAndroid } from "react-native";
 import styles from "../../styles/Login.style";
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -11,14 +11,37 @@ import { OtpInput } from "react-native-otp-entry";
 import basic from "../../services/BasicServices";
 import { StackActions } from "@react-navigation/native";
 import ChatSockService from "../../services/api/ChatSockService";
+import BackgroundTimer from 'react-native-background-timer';
 
 
 export default function Otp({ navigation, route }) {
     const [otp, setOtp] = useState();
     const [loading, setLoading] = useState(false)
+    const [seconds, setSeconds] = useState(59);
+    const [minute, setMinute] = useState(0);
     const [errorMessage, setErrorMessage] = useState()
     const auth = new AuthenticationApiService();
     let phone = route.params.phone;
+
+
+    useEffect(() => {
+        setSeconds(59)
+        let sec = 59;
+        const interval = BackgroundTimer.setInterval(() => {
+            console.log(sec);
+            if(sec>0){
+                sec=sec-1;
+                setSeconds(p=>p - 1)
+            }
+            else{
+                setSeconds(0)
+                BackgroundTimer.clearInterval(interval)
+                setErrorMessage("OTP Expired. Please Resend")
+            }
+         }, 1000)
+        return () => { BackgroundTimer.clearInterval(interval) }
+    }, [minute])
+
 
 
     function otpChanged(value) {
@@ -36,9 +59,8 @@ export default function Otp({ navigation, route }) {
                     type: "success",
                     text1: "Otp sent succesfully"
                 })
-                if (response.otp) {
-                    ToastAndroid.show(response.otp + "", ToastAndroid.LONG)
-                }
+                setMinute(Math.random())
+
             } else {
                 setErrorMessage("*" + response.Backend_Error)
             }
@@ -51,40 +73,40 @@ export default function Otp({ navigation, route }) {
 
     }
 
-    async function next(){
-        if(otp.length!==4){
+    async function next() {
+        if (otp.length !== 4) {
             setErrorMessage("*Enter The OTP First")
             return;
         }
 
-        try{
+        try {
             setErrorMessage(null)
             setLoading(true)
-            let response = await auth.verifyOtpAndRegister(phone,otp)
-            if(response.status===1){
+            let response = await auth.verifyOtpAndRegister(phone, otp)
+            if (response.status === 1) {
                 setErrorMessage(null)
                 await basic.setJwt(response.token)
                 await basic.setId(response.user_id)
-                console.log("JWT Token: ",response.token);
-                console.log("User id: ",response.user_id);
+                console.log("JWT Token: ", response.token);
+                console.log("User id: ", response.user_id);
                 ChatSockService.connect()
                 navigation.reset({ index: 0, routes: [{ name: "Home" }] });
-            }else if(response.status===2){
+            } else if (response.status === 2) {
                 setErrorMessage(null)
                 navigation.dispatch(
-                    StackActions.replace("SignupName",{
-                    phone:phone
-                })
-            )
+                    StackActions.replace("SignupName", {
+                        phone: phone
+                    })
+                )
             }
-            else{
-                setErrorMessage("*"+response.Backend_Error)
+            else {
+                setErrorMessage("*" + response.Backend_Error)
             }
 
-        }catch(err){
+        } catch (err) {
             console.log("Error in Verifying OTP: ", err.message);
             setErrorMessage("*Something went wrong")
-        }finally{
+        } finally {
             setLoading(false)
         }
 
@@ -92,7 +114,7 @@ export default function Otp({ navigation, route }) {
 
     return (
         <>
-        <View style={{zIndex:200}}><Toast /></View>
+            <View style={{ zIndex: 200 }}><Toast /></View>
             <SafeAreaView style={styles.safeArView}>
                 <View style={StyleConstants.bbView} >
                     <Image
@@ -119,25 +141,25 @@ export default function Otp({ navigation, route }) {
                         </View>
                         <View style={styles.otpContainer}>
                             <OtpInput
-                            numberOfDigits={4}
-                            focusColor="blue"
-                            focusStickBlinkingDuration={500}
-                            onTextChange={otpChanged}
-                            theme={{
-                              pinCodeContainerStyle: styles.OtpBoxView,
-                              pinCodeTextStyle: styles.textOtp,
-                            }}
-                            textInputProps={
-                                {selectTextOnFocus:false, caretHidden:true}
-                            }
+                                numberOfDigits={4}
+                                focusColor="blue"
+                                focusStickBlinkingDuration={500}
+                                onTextChange={otpChanged}
+                                theme={{
+                                    pinCodeContainerStyle: styles.OtpBoxView,
+                                    pinCodeTextStyle: styles.textOtp,
+                                }}
+                                textInputProps={
+                                    { selectTextOnFocus: false, caretHidden: true }
+                                }
                             />
                         </View>
                         {
                             errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>
                         }
                         <View style={{ marginTop: 20 }}>
-                            <Text style={styles.textOtp}  >
-                                OTP Sent on +91 {phone}
+                            <Text key={seconds+"seconds"} style={styles.textOtp}  >
+                                OTP Sent on +91 {phone}.{"\n\n"} Valid Till: 00:{seconds>9?seconds:"0"+seconds}
                             </Text>
                         </View>
                         <TouchableOpacity
