@@ -94,8 +94,6 @@ export default function CreateLiveSlots({ navigation }) {
                     />
 
 
-
-
                 </View>
 
                 <Button
