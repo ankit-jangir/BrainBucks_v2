@@ -19,7 +19,7 @@ const Free = ({ navigation, order }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
-  const {quizState,dispatch} = useQuiz();
+  const { quizState, dispatch } = useQuiz();
 
   const history = new HistoryApiService()
 
@@ -36,7 +36,7 @@ const Free = ({ navigation, order }) => {
 
   async function getFreeQuizzes(page) {
     let total = totalPages;
-    if (!page || typeof page !='number') {
+    if (!page || typeof page != 'number') {
       page = 1
       setTotalPages(2)
       total = 2
@@ -72,6 +72,8 @@ const Free = ({ navigation, order }) => {
             <NoDataFound message={"No Data Found"} action={getFreeQuizzes} actionText={"Refresh"} />
             :
             <FlatList
+              refreshing={loading}
+              onRefresh={() => getFreeQuizzes()}
               onEndReached={() => { getFreeQuizzes(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={free}
@@ -89,7 +91,7 @@ const Free = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      dispatch({type:'change',state:{id:item._id}})
+                      dispatch({ type: 'change', state: { id: item._id } })
                       navigation.navigate("resultreward")
                     }
                     }

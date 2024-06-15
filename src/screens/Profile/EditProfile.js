@@ -77,10 +77,10 @@ export default function EditProfile({navigation, route}) {
       });
     } catch (err) {
       console.log('Error in Fetching Profile in Edit Profile', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong. Try again later',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong. Try again later',
+      // });
     }
   }, []);
 
@@ -145,10 +145,10 @@ export default function EditProfile({navigation, route}) {
       }
     } catch (err) {
       console.log('Error in updating profile', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading(false);
     }

@@ -74,8 +74,13 @@ export default function Otp({ navigation, route }) {
     }
 
     async function next() {
-        if (otp.length !== 4) {
+        if (!otp || otp.length === 0 ) {
             setErrorMessage("*Enter The OTP First")
+            return;
+        }
+        
+        if(otp.length!==4){
+            setErrorMessage("*OTP must be of 4 digits")
             return;
         }
 
@@ -154,12 +159,14 @@ export default function Otp({ navigation, route }) {
                                 }
                             />
                         </View>
+                        <Text key={seconds+"seconds"} style={[styles.textOtp, {textAlign: 'right'}]}>OTP Valid For: 00:{seconds>9?seconds:"0"+seconds}</Text>
+
                         {
                             errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>
                         }
                         <View style={{ marginTop: 20 }}>
-                            <Text key={seconds+"seconds"} style={styles.textOtp}  >
-                                OTP Sent on +91 {phone}.{"\n\n"} Valid Till: 00:{seconds>9?seconds:"0"+seconds}
+                            <Text style={styles.textOtp}  >
+                                OTP Sent on +91 {phone} 
                             </Text>
                         </View>
                         <TouchableOpacity

@@ -40,6 +40,21 @@ class ReelsApiService{
         let response = await axios(options)
         return response.data;
     }
+
+    async getRandomReels(tags, seen){
+        let token = await basic.getBearerToken()
+        let url = `${NOTIFYMICRO}/participants/reels/get/random/reels`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({tags:tags, seen_reels:seen})
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
     
     async addTag(tag_id){
         let token = await basic.getBearerToken()

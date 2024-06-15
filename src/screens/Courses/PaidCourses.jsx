@@ -50,10 +50,10 @@ const PaidCourses = () => {
       }
     } catch (err) {
       console.log('Error in fetching videos for paid courses: ', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading2(false);
     }
@@ -74,10 +74,10 @@ const PaidCourses = () => {
       }
     } catch (err) {
       console.log('Error in fetching paid courses: ', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading(false);
       setLoading2(false);
@@ -100,10 +100,10 @@ const PaidCourses = () => {
       }
     } catch (err) {
       console.log('Error in fetching videos for paid courses: ', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading2(false);
     }
@@ -128,10 +128,10 @@ const PaidCourses = () => {
         'Error in fetching study material for a paid course: ',
         err.message,
       );
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading2(false);
     }

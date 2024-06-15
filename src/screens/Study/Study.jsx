@@ -58,10 +58,10 @@ export default function Study({ navigation }) {
       }
     } catch (error) {
       console.log("Error in adding exams: ", error.message);
-      Toast.show({
-        type: "info",
-        text1: "Something Went Wrong"
-      })
+      // Toast.show({
+      //   type: "info",
+      //   text1: "Something Went Wrong"
+      // })
     }
 
   }
@@ -80,10 +80,10 @@ export default function Study({ navigation }) {
       }
     } catch (err) {
       console.log("Error in fetching enrolled exams in study: ", err.message)
-      Toast.show({
-        type: "error",
-        text1: "Something Went Wrong"
-      })
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something Went Wrong"
+      // })
     } finally {
       setLoading(false)
     }
@@ -103,10 +103,10 @@ export default function Study({ navigation }) {
       }
     } catch (err) {
       console.log("Error in fetching not enrolled exams ", err.message)
-      Toast.show({
-        type: "error",
-        text1: "Something Went Wrong"
-      })
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something Went Wrong"
+      // })
     } finally {
       setLoading1(false)
     }

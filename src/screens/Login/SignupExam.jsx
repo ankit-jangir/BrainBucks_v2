@@ -51,10 +51,10 @@ export default function SignUpExam({ navigation, route }) {
     }
     catch (err) {
       console.log("Error in Registering User", err.message);
-      Toast.show({
-        type: "error",
-        text1: "Something went wrong"
-      })
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something went wrong"
+      // })
     } finally {
       setDisabled(false)
     }
@@ -87,10 +87,10 @@ export default function SignUpExam({ navigation, route }) {
       }
     }catch(err){
       console.log("Error in getting categories in signup: ",err.message);
-      Toast.show({
-        type: "error",
-        text1: "Something Went Wrong"
-      })
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something Went Wrong"
+      // })
     }
     finally{ 
       setRefresh(false),

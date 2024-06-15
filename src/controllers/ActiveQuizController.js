@@ -100,6 +100,7 @@ function activeSubmitHelper(id, time){
 }
 export async function submitactiveQuiz(id, time, toast) { 
     let res = await BasicServices.apiTryCatch(activeSubmitHelper(id, time), toast)
+    console.log(time, res);
     return res
 }
 

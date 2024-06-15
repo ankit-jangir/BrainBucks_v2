@@ -16,9 +16,9 @@ const NoDataFound = ({message, scale,  action, actionText}) => {
         <Text style={styles.Text1}>{message}</Text>
       </View>
       <View style={styles.actionContainer}>
-        <TouchableOpacity style={styles.buttonS} onPress={action}>
+        {/* <TouchableOpacity style={styles.buttonS} onPress={action}>
           <Text style={styles.buttonText}>{actionText}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

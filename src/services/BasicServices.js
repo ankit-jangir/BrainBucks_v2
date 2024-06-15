@@ -34,10 +34,10 @@ async function apiTryCatch(func, toast, beforeAll, afterAll) {
         }
     } catch (err) {
         console.log("Error in try catch: ", err);
-        toast.show({
-            type: 'error',
-            text1: "Something went wrong"
-        })
+        // toast.show({
+        //     type: 'error',
+        //     text1: "Something went wrong"
+        // })
         return false;
     } finally {
         if (afterAll)

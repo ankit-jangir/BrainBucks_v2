@@ -35,10 +35,10 @@ const FreePdf = () => {
       }
     } catch (err) {
       console.log('Error while getting list of pdfs', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     }finally{
       setloading(false)
     }

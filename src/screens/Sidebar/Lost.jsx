@@ -18,7 +18,7 @@ const Lost = ({ navigation, order }) => {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
-  const {quizState,dispatch} = useQuiz();
+  const { quizState, dispatch } = useQuiz();
 
 
   const history = new HistoryApiService()
@@ -70,9 +70,11 @@ const Lost = ({ navigation, order }) => {
           :
           lost.length === 0
             ?
-            <NoDataFound message={"No Data Found"} action={()=>{getLostQuizzes()}} actionText={"Refresh"} />
+            <NoDataFound message={"No Data Found"} action={() => { getLostQuizzes() }} actionText={"Refresh"} />
             :
             <FlatList
+              refreshing={loading}
+              onRefresh={() => getLostQuizzes()}
               onEndReached={() => { getLostQuizzes(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={lost}
@@ -90,7 +92,7 @@ const Lost = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      dispatch({type:'change',state:{id:item._id}})
+                      dispatch({ type: 'change', state: { id: item._id } })
                       navigation.navigate("QuizzesResult")
                     }
                     }

@@ -33,10 +33,10 @@ const Earned = () => {
       }
     } catch (err) {
       console.log("Error while getting earned data", err.message);
-      Toast.show({
-        type: 'error',
-        text1: "Something went wrong"
-      })
+      // Toast.show({
+      //   type: 'error',
+      //   text1: "Something went wrong"
+      // })
     } finally {
       setLoading(false)
     }

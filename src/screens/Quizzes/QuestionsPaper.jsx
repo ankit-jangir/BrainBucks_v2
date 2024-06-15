@@ -41,8 +41,8 @@ export default function QuestionsPaper({ navigation }) {
   }
 
   useEffect(() => {
-    setMinute(parseInt(quizState.time / 60))
-    setTimerCount(parseInt(quizState.time % 60))
+    setMinute(Math.floor(quizState.time / 60))
+    setTimerCount(Math.floor(quizState.time % 60))
     backRef.current = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     })
@@ -52,6 +52,10 @@ export default function QuestionsPaper({ navigation }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if(Object.keys(submitData).length!==0){
+        clearInterval(interval)
+        return;
+      }
       if (timerCount > 0) {
         setTimerCount(timerCount - 1);
       } else if (minute > 0) {
@@ -98,7 +102,7 @@ export default function QuestionsPaper({ navigation }) {
   }
 
   const handleSubmit = () => {
-    let time = parseInt(quizState.time - minute * 60 - timerCount)
+    let time = Math.floor(quizState.time - minute * 60 - timerCount)
     submitactiveQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
         backRef.current()

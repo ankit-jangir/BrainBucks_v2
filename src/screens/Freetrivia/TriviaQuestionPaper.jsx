@@ -28,7 +28,6 @@ export default function TriviaQuestionPaper({ navigation }) {
 
   let question = quizState.question
 
-
   useEffect(() => {
     getCurrentQuestion(currentQuestionIndex)
   }, [currentQuestionIndex])
@@ -38,8 +37,8 @@ export default function TriviaQuestionPaper({ navigation }) {
   }
 
   useEffect(() => {
-    setMinute(parseInt(quizState.time / 60))
-    setTimerCount(parseInt(quizState.time % 60))
+    setMinute(Math.floor(quizState.time / 60))
+    setTimerCount(Math.floor(quizState.time % 60))
     backRef.current = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     })
@@ -97,15 +96,15 @@ export default function TriviaQuestionPaper({ navigation }) {
   }
 
   const handleSubmit = () => {
-    let time = parseInt(quizState.time - minute * 60 - timerCount)
+    let time = Math.floor(quizState.time - minute * 60 - timerCount)
     submitTriviaQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
         backRef.current()
+        setModalVisible(false)
         navigation.dispatch(
           StackActions.replace('TriviaSubmit', {
           result: r
         }))
-        setModalVisible(false)
       }
     })
   }

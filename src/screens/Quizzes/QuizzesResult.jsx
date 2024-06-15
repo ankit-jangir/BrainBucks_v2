@@ -16,7 +16,7 @@ export default function QuizzesResult({ navigation, }) {
   const [isLoad, setLoad] = useState(false)
   const [isLoad2, setLoad2] = useState(true)
   const [mydata, setMydata] = useState([])
-  const [topRank, setTopRank] = useState({})
+  const [topRank, setTopRank] = useState({totMarks:0})
   const [score, setScore] = useState([])
 
   const [length, setLength] = useState()
@@ -36,9 +36,6 @@ export default function QuizzesResult({ navigation, }) {
         setMydata(res.topRank)
         setTopRank(res)
         setScore(res.scoreboard)
-        console.log('====================================');
-        console.log(res.scoreboard, 's99999');
-        console.log('====================================');
       } else {
         Toast.show({
           type: 'error',
@@ -47,10 +44,10 @@ export default function QuizzesResult({ navigation, }) {
       }
     } catch (err) {
       console.log('Error while getting earned data', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoad(false);
     }
@@ -60,12 +57,6 @@ export default function QuizzesResult({ navigation, }) {
   useEffect(() => {
     getActiveQuizResult()
   }, [])
-
-
-
-
-
-
 
 
 
@@ -126,14 +117,14 @@ export default function QuizzesResult({ navigation, }) {
           <>
             <ActivityIndicator color={ColorsConstant.Theme} size={40} style={{ marginTop: '80%' }} />
           </>
-          : 
+          :
           <GestureHandlerRootView style={{ flex: 1 }}>
             <StatusBar barStyle={'white-content'} translucent={false} backgroundColor={ColorsConstant.Theme} />
             <View style={styles.HeaderView}>
               <View style={styles.HeaderView1}>
                 <View style={{ flex: 0.40, }}>
                   <View style={styles.HeaderView2}>
-                    <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })} style={styles.HeaderTouchable}>
+                    <TouchableOpacity onPress={() => navigation.goBack() } style={styles.HeaderTouchable}>
                       <Image source={require('../../assets/img/arrows.png')} resizeMode='center' tintColor={'#fff'} style={{ width: 25, height: 25 }} />
                     </TouchableOpacity>
 
@@ -148,7 +139,6 @@ export default function QuizzesResult({ navigation, }) {
                   <View style={styles.MyDataView2} >
                     <Text style={styles.MyDataText}>Rank</Text>
                     <View style={{ flexDirection: "row", }}>
-                      {console.log(score.rank)}
                       <Text style={styles.MyDataTextB} >{topRank.rank}/ </Text>
                       <Text style={styles.MyDataTextBb} >{topRank.totalRanks}</Text>
                     </View>
@@ -169,8 +159,8 @@ export default function QuizzesResult({ navigation, }) {
                       topRank.submit_time_period
                       &&
                       <>
-                        <Text style={styles.MyDataTextB} >{parseInt(topRank.submit_time_period / 60)} : </Text>
-                        <Text style={styles.MyDataTextBb} >{parseInt(topRank.totMarks % 60)}</Text>
+                        <Text style={styles.MyDataTextB} >{Math.floor(topRank.submit_time_period / 60)>9 ? Math.floor(topRank.submit_time_period / 60) : "0"+Math.floor(topRank.submit_time_period / 60) }:</Text>
+                        <Text style={styles.MyDataTextBb} >{Math.floor(topRank.submit_time_period % 60)>9 ? Math.floor(topRank.submit_time_period % 60) : "0"+Math.floor(topRank.submit_time_period % 60) }</Text>
                       </>
                     }
                   </View>
@@ -195,36 +185,72 @@ export default function QuizzesResult({ navigation, }) {
                 <Animated.View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", height: 200, transform: [{ translateY: translationY }] }} >
                   <View style={styles.MainView} >
                     <View style={styles.modelViewData} >
-                      <Image source={{ uri: BLOBURL + mydata[1]?.image }} style={styles.modelImg} />
+                      {
+                        mydata[1]?.image
+                          ?
+                          <Image source={{ uri: BLOBURL + mydata[1]?.image }} style={styles.modelImg} />
+                          :
+                          <Image source={require('../../assets/img/nosay.png')} style={styles.modelImg} />
+                      }
                     </View>
                     <View style={{ width: '100%' }} >
-                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[1]?.stu_name}</Text>
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[1]?.stu_name ? mydata[1]?.stu_name : "Not Joined"}</Text>
                     </View>
                     <View style={styles.modelV} >
                       <Text style={styles.DataText}></Text>
-                      <Text style={styles.DataText}>{mydata[1]?.marks + "/" + topRank?.totMarks}</Text>
+                      {
+                        mydata[1]?.marks
+                          ?
+                          <Text style={styles.DataText}>{mydata[1]?.marks + "/" + topRank?.totMarks}</Text>
+                          :
+                          <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
+                      }
                     </View>
                   </View>
                   <View style={styles.ManiDataV1} >
                     <View style={styles.modelViewData} >
-                      <Image source={{ uri: BLOBURL + mydata[0]?.image }} style={styles.modelImg} />
+                    {
+                        mydata[0]?.image
+                          ?
+                          <Image source={{ uri: BLOBURL + mydata[0]?.image }} style={styles.modelImg} />
+                          :
+                          <Image source={require('../../assets/img/nosay.png')} style={styles.modelImg} />
+                      }
                     </View>
                     <View style={{ width: '100%' }} >
-                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0]?.stu_name}</Text>
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[0]?.stu_name ? mydata[0]?.stu_name : "Not Joined"}</Text>
                     </View>
                     <View style={styles.modelV} >
-                      <Text style={styles.DataText}>{mydata[0]?.marks + "/" + topRank?.totMarks}</Text>
+                      {
+                        mydata[0]?.marks
+                          ?
+                          <Text style={styles.DataText}>{mydata[0]?.marks + "/" + topRank?.totMarks}</Text>
+                          :
+                          <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
+                      }
                     </View>
                   </View>
                   <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
                     <View style={styles.modelViewData} >
-                      <Image source={{ uri: BLOBURL + mydata[2]?.image }} style={styles.modelImg} />
+                    {
+                        mydata[2]?.image
+                          ?
+                          <Image source={{ uri: BLOBURL + mydata[2]?.image }} style={styles.modelImg} />
+                          :
+                          <Image source={require('../../assets/img/nosay.png')} style={styles.modelImg} />
+                      }
                     </View>
                     <View style={{ width: '100%' }} >
-                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[2]?.stu_name}</Text>
+                      <Text numberOfLines={1} style={styles.DatatextN} >{mydata[2]?.stu_name ? mydata[2]?.stu_name : "Not Joined"}</Text>
                     </View>
                     <View style={styles.modelV} >
-                      <Text style={styles.DataText}>{mydata[2]?.marks + "/" + topRank?.totMarks}</Text>
+                      {
+                        mydata[2]?.marks
+                          ?
+                          <Text style={styles.DataText}>{mydata[2]?.marks + "/" + topRank?.totMarks}</Text>
+                          :
+                          <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
+                      }
                     </View>
                   </View>
                 </Animated.View>
@@ -270,7 +296,7 @@ export default function QuizzesResult({ navigation, }) {
                             <Text style={styles.TextTo}>{item.stu_name}</Text>
                             <View style={styles.tymView}>
                               <Text style={styles.textTym}>
-                                {item.rank} Rank
+                                Rank: {item.rank}
                               </Text>
                               <Text style={[styles.textTym, { color: '#367CFF' }]}>
                                 {item.marks} /{topRank.totMarks}
@@ -281,7 +307,7 @@ export default function QuizzesResult({ navigation, }) {
                       </View>
                     </View>
                   )}
-                  keyExtractor={item => item.id}
+                  keyExtractor={item => item._id}
                 />
               </BottomSheet>
             </>
@@ -496,7 +522,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: "center",
-    zIndex:200
+    zIndex: 200
   },
   Scorecard:
   {

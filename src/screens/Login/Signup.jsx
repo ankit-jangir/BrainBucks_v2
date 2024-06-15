@@ -18,18 +18,27 @@ export default function Signup({ navigation, route }) {
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState()
   const [loading, setLoading] = useState(false)
+  const [numberDone, setNumberDone] = useState(false)
 
   /**
    * This function validates user input and sends to the otp screen
    * @returns exit if the mobile number is not 10 digits or terms are not accepted
    */
   async function next() {
+
     setErrorMessage(null)
+    if (phone.length === 0) {
+      setErrorMessage("*Please enter mobile number")
+      setNumberDone(false)
+      return;
+    }
     if (phone.length !== 10) {
       setErrorMessage("*Mobile number must be of 10 digits")
+      setNumberDone(false)
       return;
     }
 
+    setNumberDone(true)
     if (!checked) {
       setErrorMessage("*You must accept the terms and conditions")
       return;
@@ -44,16 +53,16 @@ export default function Signup({ navigation, route }) {
       console.log("Response for OTP", resposne)
       if (resposne.status === 1) {
         if (resposne.otp) {
-          ToastAndroid.show(resposne.otp+"",ToastAndroid.LONG)
+          ToastAndroid.show(resposne.otp + "", ToastAndroid.LONG)
         }
         navigation.navigate('Otp', {
           phone: phone
         })
       } else {
-        setErrorMessage("*"+resposne.Backend_Error)
+        setErrorMessage("*" + resposne.Backend_Error)
       }
     } catch (error) {
-      console.log("Error while Sending OTP: ",error.message);
+      console.log("Error while Sending OTP: ", error.message);
       setErrorMessage("*Something went wrong")
     }
     finally {
@@ -102,7 +111,7 @@ export default function Signup({ navigation, route }) {
             </View>
             <View style={styles.inputView1}>
               <TextInput
-                onChangeText={value => setPhone(value)}
+                onChangeText={value => {setErrorMessage(null), setPhone(value)}}
                 value={phone}
                 maxLength={10}
                 style={styles.textinputt}
@@ -115,12 +124,15 @@ export default function Signup({ navigation, route }) {
         </View>
 
         <View>
-          {errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>}
+          {(errorMessage && !numberDone) && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>}
         </View>
         <View style={styles.checboxview}>
           <View style={styles.checboxview2}>
             <View style={{ flex: 1, flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => setChecked(!checked)}>
+              <TouchableOpacity onPress={() => {
+                setErrorMessage(null)
+                setChecked(!checked)
+              }}>
                 <View style={styles.checkboimg}>
                   <Image
                     source={
@@ -128,7 +140,7 @@ export default function Signup({ navigation, route }) {
                         ? require('../../assets/img/square.png')
                         : require('../../assets/img/check-box-with-check-sign.png')
                     }
-                    tintColor={'#fff'}
+                    tintColor={errorMessage ? "red" : '#fff'}
                     style={styles.checkboxImage}
                   />
                 </View>
@@ -162,6 +174,8 @@ export default function Signup({ navigation, route }) {
               </Text>
             </View>
           </View>
+          {(errorMessage && numberDone) && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>}
+
         </View>
 
         <Button

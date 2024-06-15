@@ -49,10 +49,10 @@ export default function CoursePlanHistory({navigation}) {
         'Error in fetching study material for a paln history course: ',
         err.message,
       );
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoad(false);
     }
@@ -105,9 +105,7 @@ export default function CoursePlanHistory({navigation}) {
           showsVerticalScrollIndicator={false}
           style={{flex: 1, backgroundColor: 'white'}}>
           {livequiz.map(res => {
-            // const momentDate = moment(parseInt(res.payment_datetime));
-            // const formattedDate = momentDate.format('DD-MM-YYYY HH:mm:ss');
-
+            
             return (
               
                 <View
@@ -149,9 +147,6 @@ export default function CoursePlanHistory({navigation}) {
                       </Text>
                       <Text style={{color: 'gray'}}>
                         {res.registor_time}
-                        {/* {new Date(parseInt(res.payment_datetime)).toLocaleString()} */}
-                        {/* {formattedTime} */}
-                        {/* {formattedDate} */}
                       </Text>
                     </View>
                     <View>

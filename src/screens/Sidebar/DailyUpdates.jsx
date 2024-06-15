@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,16 +11,16 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import {DrawerActions, useIsFocused} from '@react-navigation/native';
+import { DrawerActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HTMLRender from 'react-native-render-html';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import { screenWidth } from '../../constants/Sizes.constant';
 
-export default function DailyUpdate({navigation}) {
+export default function DailyUpdate({ navigation }) {
   const isFocused = useIsFocused();
   const [isLoad, setLoad] = useState(false);
   const [blog, setBlog] = useState([]);
@@ -34,9 +34,11 @@ export default function DailyUpdate({navigation}) {
   }, [isFocused, index]);
 
   const GetName = async () => {
-    try{let name = await BasicServices.getLocalObject()
-    // console.log(name.name);
-    setName(name.name);}catch(err){console.log("ERROR IN GETTING LOCAL OBJ",err)}
+    try {
+      let name = await BasicServices.getLocalObject()
+      // console.log(name.name);
+      setName(name.name);
+    } catch (err) { console.log("ERROR IN GETTING LOCAL OBJ", err) }
   };
 
   const getUpdate = async () => {
@@ -63,21 +65,24 @@ export default function DailyUpdate({navigation}) {
           setBlogCount(result.totalPages);
         } else {
           Toast.show({
-            type:'error',
-            text1:result.Backend_Error
+            type: 'error',
+            text1: result.Backend_Error
           })
         }
       })
-      .catch(error => {console.error(error), Toast.show({type:"error", text1:"Something went wrong."}) }).finally(()=>setLoad(false))
-    
+      .catch(error => {
+        console.error(error)
+          // Toast.show({ type: "error", text1: "Something went wrong." })
+      }).finally(() => setLoad(false))
+
   };
 
   const onNextButtonClick = () => {
-    setIndex(prevIndex => (prevIndex + 1) );
+    setIndex(prevIndex => (prevIndex + 1));
   };
 
   const onPreButtonClick = () => {
-    setIndex(prevIndex => (prevIndex-1));
+    setIndex(prevIndex => (prevIndex - 1));
   };
 
 
@@ -86,27 +91,27 @@ export default function DailyUpdate({navigation}) {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View style={{zIndex:200}}><Toast/></View>
-    <View style={styles.Hview}>
-    <View style={styles.Hview1}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.THead}>
-        <Image
-          source={require('../../assets/img/arrows.png')}
-          resizeMode="contain"
-          style={{width: 20, height: 20}}
-        />
-      </TouchableOpacity>
-      <View style={styles.ViewMy}>
-        <Text style={styles.TextMy}>Daily Update</Text>
+      <View style={{ zIndex: 200 }}><Toast /></View>
+      <View style={styles.Hview}>
+        <View style={styles.Hview1}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.THead}>
+            <Image
+              source={require('../../assets/img/arrows.png')}
+              resizeMode="contain"
+              style={{ width: 20, height: 20 }}
+            />
+          </TouchableOpacity>
+          <View style={styles.ViewMy}>
+            <Text style={styles.TextMy}>Daily Update</Text>
+          </View>
+        </View>
       </View>
-    </View>
-  </View>
 
       {isLoad ? (
         <ActivityIndicator size={28} color={'gray'} />
-      ) : blog.length===0 ? (
+      ) : blog.length === 0 ? (
         <Text style={styles.textNo}>No Update Today</Text>
       ) : (
         <>
@@ -117,11 +122,11 @@ export default function DailyUpdate({navigation}) {
                 disabled={index === 1}>
                 <Image
                   source={require('../../assets/img/arrow-left.png')}
-                  style={{height: 20, width: 20}}
+                  style={{ height: 20, width: 20 }}
                 />
               </TouchableOpacity>
               <View style={styles.counterView}>
-                <Text style={styles.textIndex}>{index }</Text>
+                <Text style={styles.textIndex}>{index}</Text>
                 <Text style={styles.textCount}>/{blogCount}</Text>
               </View>
               <TouchableOpacity
@@ -129,7 +134,7 @@ export default function DailyUpdate({navigation}) {
                 disabled={index === blogCount}>
                 <Image
                   source={require('../../assets/img/next.png')}
-                  style={{height: 20, width: 20}}
+                  style={{ height: 20, width: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -153,18 +158,18 @@ export default function DailyUpdate({navigation}) {
                   <Text style={styles.textShare}>Share</Text>
                   <Image
                     source={require('../../assets/img/share.png')}
-                    style={{height: 20, width: 20}}
+                    style={{ height: 20, width: 20 }}
                   />
                 </TouchableOpacity>
               </View>
               <Text style={styles.textDetails}>{currentItem?.headline}</Text>
               <View style={styles.detailsContainer}>
                 <HTMLRender
-                key={index+currentItem?.headline}
-                contentWidth={screenWidth}
+                  key={index + currentItem?.headline}
+                  contentWidth={screenWidth}
                   style={styles.texthtml}
-                  source={{html: currentItem?.details}}
-                  baseStyle={{color:'gray'}}
+                  source={{ html: currentItem?.details }}
+                  baseStyle={{ color: 'gray' }}
                 />
               </View>
             </View>
@@ -196,7 +201,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '600',
-    color:ColorsConstant.Black
+    color: ColorsConstant.Black
   },
   indexView: {
     height: 50,
@@ -305,11 +310,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'justify',
     paddingHorizontal: 10,
-    color:ColorsConstant.Black
+    color: ColorsConstant.Black
   },
   detailsContainer: {
     paddingHorizontal: 8,
-    color:"black"
+    color: "black"
   },
   texthtml: {
     fontSize: 12,

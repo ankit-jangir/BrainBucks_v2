@@ -59,10 +59,10 @@ export default function QuestionPaperList({navigation, route}) {
       })
       .catch((err) => {
         console.log('Pdf Download Error -> ', err)
-        Toast.show({
-          type:'error',
-          text1:"Download Failed."
-        })
+        // Toast.show({
+        //   type:'error',
+        //   text1:"Download Failed."
+        // })
       }
     )
   };
@@ -82,10 +82,10 @@ export default function QuestionPaperList({navigation, route}) {
       }
     } catch (err) {
       console.log('Error while getting Saved exam data', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setloading(false);
     }

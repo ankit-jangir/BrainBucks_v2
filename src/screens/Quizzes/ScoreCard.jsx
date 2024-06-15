@@ -36,10 +36,10 @@ export default function ScoreCard({ navigation, route }) {
       }
     } catch (err) {
       console.log("Error while getting earned data", err.message);
-      Toast.show({
-        type: "error",
-        text1: "Something went wrong",
-      });
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something went wrong",
+      // });
     } finally {
       setLoad(false);
     }
@@ -121,10 +121,10 @@ export default function ScoreCard({ navigation, route }) {
       })
       .catch((errorMessage, statusCode) => {
         console.log('Error:', errorMessage);
-        Toast.show({
-          type: 'error',
-          text1: 'Failed to download PDF',
-        });
+        // Toast.show({
+        //   type: 'error',
+        //   text1: 'Failed to download PDF',
+        // });
       });
   };
 

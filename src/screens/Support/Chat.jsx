@@ -80,10 +80,10 @@ export default function Chat({ navigation, route }) {
             }
         } catch (err) {
             console.log("Error in creating ticket", err);
-            Toast.show({
-                type: 'error',
-                text1: "Something went wrong"
-            })
+            // Toast.show({
+            //     type: 'error',
+            //     text1: "Something went wrong"
+            // })
         }
     }
 

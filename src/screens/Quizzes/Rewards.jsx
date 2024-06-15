@@ -42,7 +42,7 @@ export default function Rewards({ rewards }) {
             }
         }).catch((err) => {
             console.log("Error in fetching participants: ", err);
-            Toast.show({ type: "error", text1: "Something went wrong" })
+            // Toast.show({ type: "error", text1: "Something went wrong" })
         })
     }, [focus])
 

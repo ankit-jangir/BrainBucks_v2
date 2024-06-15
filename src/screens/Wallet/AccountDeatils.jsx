@@ -30,10 +30,11 @@ async function next(){
       })
     }
   }catch(err){
-    Toast.show({
-      type:'error',
-      text1:"Something went wrong"
-    })
+    console.log("Errir in dispatching in accounddetails: ",err);
+    // Toast.show({
+    //   type:'error',
+    //   text1:"Something went wrong"
+    // })
   }finally{
     setLoading(false)
   }

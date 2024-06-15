@@ -32,10 +32,10 @@ const AddBanks = ({ navigation }) => {
       }
     } catch (err) {
       console.log("Error in deleting bank", err.message);
-      Toast.show({
-        type: "error",
-        text1: "Something went wrong"
-      })
+      // Toast.show({
+      //   type: "error",
+      //   text1: "Something went wrong"
+      // })
     } finally {
       setLoading(false)
       setVisible(false)

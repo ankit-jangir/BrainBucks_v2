@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, View, Dimensions, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import HistoryApiService from '../../services/api/HistoryApiService';
 import Toast from 'react-native-toast-message';
@@ -50,10 +50,10 @@ const All = ({ navigation, order }) => {
       }
     } catch (err) {
       console.log('Error while getting earned data', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading(false);
       setLoadingMore(false)
@@ -78,6 +78,7 @@ const All = ({ navigation, order }) => {
             <NoDataFound message={"No Quiz Played Yet"} action={()=>{getAllHistory()}} actionText={"Load Again"} />
             :
             <FlatList
+              refreshControl={<RefreshControl refreshing={loading} onRefresh={()=>{getAllHistory()}}/>}
               onEndReached={() => { getAllHistory(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={allwin}

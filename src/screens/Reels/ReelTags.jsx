@@ -46,10 +46,10 @@ export default function ReelTags({ navigation }) {
             }
         } catch (error) {
             console.log("Error in adding tags: ", error.message);
-            Toast.show({
-                type: "info",
-                text1: "Something Went Wrong"
-            })
+            // Toast.show({
+            //     type: "info",
+            //     text1: "Something Went Wrong"
+            // })
         }
 
     }
@@ -68,10 +68,10 @@ export default function ReelTags({ navigation }) {
             }
         } catch (err) {
             console.log("Error in Fetching New Tags: ", err.message)
-            Toast.show({
-                type: "error",
-                text1: "Something Went Wrong"
-            })
+            // Toast.show({
+            //     type: "error",
+            //     text1: "Something Went Wrong"
+            // })
         } finally {
             setLoading(false)
         }
@@ -91,10 +91,10 @@ export default function ReelTags({ navigation }) {
             }
         } catch (err) {
             console.log("Error in fetching new tags ", err.message)
-            Toast.show({
-                type: "error",
-                text1: "Something Went Wrong"
-            })
+            // Toast.show({
+            //     type: "error",
+            //     text1: "Something Went Wrong"
+            // })
         } finally {
             setLoading1(false)
         }

@@ -30,10 +30,10 @@ const WithdrawMoney = ({navigation}) => {
       }
     }catch(err){
       console.log("ERROR in withdraw money send otp: ", err.message)
-      Toast.show({
-        type:'error',
-        text1:'Something went wrong'
-      })
+      // Toast.show({
+      //   type:'error',
+      //   text1:'Something went wrong'
+      // })
     }finally{
       setLoading(false)
     }

@@ -54,10 +54,10 @@ export default function ViewProfile({navigation, route}) {
       }
     } catch (err) {
       console.log('Error in Logging out', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something Went Wrong',
+      // });
     } finally {
       setLoggingOut(false);
     }
@@ -80,10 +80,10 @@ export default function ViewProfile({navigation, route}) {
       });
     } catch (err) {
       console.log('Error in Fetching Profile in Edit Profile', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong. Try again later',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong. Try again later',
+      // });
     }
   }, [isFocused]);
 

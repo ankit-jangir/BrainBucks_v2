@@ -38,10 +38,10 @@ const Withdraw = ({ navigation }) => {
       }
     } catch (err) {
       console.log("Error in getting verified banks: ", err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong'
-      })
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong'
+      // })
     } finally {
       setLoading(false)
     }

@@ -15,11 +15,11 @@ export default function Participants({ participants }) {
   useEffect(()=>{
     quizServ.getActiveQuizParticipants(quizState.id).then(res=>{
       if(res){
-        setData(res.participantNames)
+        setData(["You",...res.participantNames])
       }
     }).catch((err)=>{
       console.log("Error in fetching participants: ",err);
-      Toast.show({type:"error", text1:"Something went wrong"})
+      // Toast.show({type:"error", text1:"Something went wrong"})
     })
   },[focus])
 

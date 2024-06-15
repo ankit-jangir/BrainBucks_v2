@@ -16,8 +16,8 @@ import { StackActions } from "@react-navigation/native";
 
 export default function TriviaSubmit({ navigation, route }) {
   let arr = route.params.result.arr;
-  let minutes = parseInt(arr.submit_time_period/60)
-  let seconds = parseInt(arr.submit_time_period%60)
+  let minutes = Math.floor(arr.submit_time_period/60)
+  let seconds = Math.floor(arr.submit_time_period%60)
   if(minutes<10){minutes = "0"+minutes}
   if(seconds<10){seconds = "0"+seconds}
 

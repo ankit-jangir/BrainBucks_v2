@@ -43,10 +43,10 @@ const FreeCourses = ({ navigation, data }) => {
       }
     } catch (err) {
       console.log('Error in fetching free courses: ', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading(false);
       setLoading2(false);
@@ -69,10 +69,10 @@ const FreeCourses = ({ navigation, data }) => {
       }
     } catch (err) {
       console.log('Error in fetching videos for free courses: ', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading2(false);
     }
@@ -97,10 +97,10 @@ const FreeCourses = ({ navigation, data }) => {
         'Error in fetching study material for a free course: ',
         err.message,
       );
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something went wrong',
+      // });
     } finally {
       setLoading2(false);
     }

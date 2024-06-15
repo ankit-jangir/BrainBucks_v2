@@ -5,17 +5,17 @@ import basic from "../services/BasicServices";
 const homeServ = new HomeApiService()
 const chatServ = new ChatSockService()
 
-
-function helper() {
-    return async () => {
-        let res = await homeServ.getHomeData()
-        return res;
+function finalHelper(){
+    return async ()=>{
+        let homeData = await homeServ.getHomeData()
+        let reels = await homeServ.getReels()
+        return {...homeData, ...reels};
     }
 }
 
 export async function getHomeData(toast, setLoading, setData) {
     let res = await basic.apiTryCatch(
-        helper(),
+        finalHelper(),
         toast,
         () => { setLoading(true) },
         () => { setLoading(false) }

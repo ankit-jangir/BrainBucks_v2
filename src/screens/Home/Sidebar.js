@@ -53,10 +53,10 @@ const Sidebar = ({ navigation }) => {
       });
     } catch (err) {
       console.log('Error in Fetching User Profile', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something Went Wrong',
+      // });
     }
   }, [status]);
 
@@ -78,10 +78,10 @@ const Sidebar = ({ navigation }) => {
       }
     } catch (err) {
       console.log('Error in Logging out', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong',
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   text1: 'Something Went Wrong',
+      // });
     } finally {
       setLoggingOut(false);
     }
@@ -102,7 +102,7 @@ const Sidebar = ({ navigation }) => {
         <View style={styles.profileSection}>
           <Image
             source={{ uri: image1 }}
-            resizeMode="contain"
+            resizeMode="cover"
             style={styles.profileImage}
           />
           <View style={styles.profileInfo}>
@@ -169,7 +169,7 @@ const Sidebar = ({ navigation }) => {
           text="Refer & Earn"
         />
         <MenuItem
-          action={() => { navigation.navigate('reeltags') }}
+          action={() => { navigation.navigate('reels') }}
           image={require('../../assets/img/audit.png')}
           text="Reels"
         />

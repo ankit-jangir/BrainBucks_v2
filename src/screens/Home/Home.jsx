@@ -28,6 +28,8 @@ import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { useIsFocused } from '@react-navigation/native';
+import Video from 'react-native-video';
+import { screenWidth } from '../../constants/Sizes.constant';
 
 export default function Home({ navigation }) {
   const [refresh, setRefresh] = useState(false);
@@ -48,9 +50,9 @@ export default function Home({ navigation }) {
     });
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     getHomeData(Toast, setRefresh, setHomeData)
-  },[isFocused])
+  }, [isFocused])
   // console.log("HOME DATA: ", homeData);
 
   function loadData() {
@@ -114,7 +116,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes',  {type: 'active'})}
+                      onPress={() => navigation.navigate('AllLiveQuizzes', { type: 'active' })}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -184,7 +186,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes',  {type: 'trivia'})}
+                      onPress={() => navigation.navigate('AllLiveQuizzes', { type: 'trivia' })}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -243,7 +245,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('myexams', {exams: homeData?.exams})}
+                      onPress={() => navigation.navigate('myexams', { exams: homeData?.exams })}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -259,21 +261,21 @@ export default function Home({ navigation }) {
                       data={homeData.exams}
                       keyExtractor={item => item.id.toString()}
                       renderItem={({ item }) => (
-                          <View style={styles.ExamView}>
-                            <TouchableOpacity
-                              onPress={() => navigation.navigate('MyExamQuizzes', {id: item.id, imgurl: item.image, title:item.category_name})}
-                              style={styles.TouchExam}>
-                              <View style={styles.ActiveView}>
-                                <Image source={{ uri: BLOBURL + item.image }} style={{ width: 40, height: 40, borderRadius: 100 }} />
-                              </View>
-                              <View style={styles.ActiveView}>
-                                <Text style={styles.TextActive}>{item.category_name}</Text>
-                              </View>
-                              <View style={styles.ActiveView}>
-                                <Text style={[styles.TextActive, { color: 'blue' }]}>Go to exam</Text>
-                              </View>
-                            </TouchableOpacity>
-                          </View>
+                        <View style={styles.ExamView}>
+                          <TouchableOpacity
+                            onPress={() => navigation.navigate('MyExamQuizzes', { id: item.id, imgurl: item.image, title: item.category_name })}
+                            style={styles.TouchExam}>
+                            <View style={styles.ActiveView}>
+                              <Image source={{ uri: BLOBURL + item.image }} style={{ width: 40, height: 40, borderRadius: 100 }} />
+                            </View>
+                            <View style={styles.ActiveView}>
+                              <Text style={styles.TextActive}>{item.category_name}</Text>
+                            </View>
+                            <View style={styles.ActiveView}>
+                              <Text style={[styles.TextActive, { color: 'blue' }]}>Go to exam</Text>
+                            </View>
+                          </TouchableOpacity>
+                        </View>
                       )}
                       horizontal
                       pagingEnabled
@@ -294,7 +296,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('AllLiveQuizzes', {type: 'enrolled'})}
+                      onPress={() => navigation.navigate('AllLiveQuizzes', { type: 'enrolled' })}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
@@ -340,6 +342,53 @@ export default function Home({ navigation }) {
                       />
                   }
                 </View>
+
+                <View style={styles.LiveView}>
+                  <View style={styles.LiveView1}>
+                    <View style={styles.LiveView2}>
+                      <Text style={styles.LiveText}>Reels</Text>
+                      <View style={styles.lotiView}>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.SeeView}>
+                    <TouchableOpacity
+                      onPress={() =>{}}
+                      style={styles.TouchAll}>
+                      <Text style={styles.SeeAll}>See All</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ flex: 1, margin: 20 }}>
+                  {
+                    (homeData?.reels?.length === 0 || Object.keys(homeData).length === 0)
+                      ?
+                      <NoDataFound scale={0.7} message={"No Reels Found"} action={onRefresh} actionText={"Reload"} />
+                      :
+                      <FlatList
+                        data={homeData.reels}
+                        keyExtractor={item => item._id.toString()}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity onPress={() => {navigation.navigate('reels', {first_reel: item})}}>
+                            <Video
+                              paused={true}
+                              style={{ width: screenWidth / 3, height: 200, borderRadius: 30 }}
+                              source={{ uri: BLOBURL + item.blobName }}
+                              controls={false}
+                            />
+                          </TouchableOpacity>
+                        )}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        // snapToInterval={width}
+                        snapToAlignment="center"
+                        decelerationRate="fast"
+                        contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
+                      />
+                  }
+                </View>
+
               </View>
             </ScrollView>
         }

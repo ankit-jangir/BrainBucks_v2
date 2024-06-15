@@ -71,6 +71,8 @@ const {quizState,dispatch} = useQuiz();
               <NoDataFound message={"No Data Found"} action={()=>{getWonQuizzes()}} actionText={"Refresh"} />
               :
               <FlatList
+                refreshing={loading}
+                onRefresh={()=>getWonQuizzes()}
                 onEndReached={() => { getWonQuizzes(currentPage + 1) }}
                 onEndReachedThreshold={0.6}
                 data={won}

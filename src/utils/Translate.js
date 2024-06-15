@@ -30,7 +30,7 @@ function BButton(props){
 
             if(!props.ignore && text != null){
                 translate(text, language ? language : 'hi').then(result => {setText(result)},).catch(err=>{
-                    console.log(err)
+                    console.log("Error in Translation of Language: ",err)
                 });
             }
             return () => {
@@ -56,7 +56,7 @@ function TText(props) {
 
             if(!props.ignore && text != null){
                 translate(text, language ? language : 'hi').then(result => {setText(result)},).catch(err=>{
-                    console.log(err)
+                    console.log("Error in Language Translation:",err)
                 });
             }
             return () => {
