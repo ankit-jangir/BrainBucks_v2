@@ -98,12 +98,14 @@ export default function CreateLiveQuiz({ navigation }) {
 
                     <TextInput
                         style={styles.ddinput}
-                        placeholder="Enter details" // Add a placeholder if needed
+                        placeholder="Enter details" 
+                        placeholderTextColor= '#A1A2AD'
+                       
                     />
 
                     <View style={styles.TimeConatiner}>
-                        <Text>Time for Each Question</Text>
-                        <Text key={value+"val"}>{value} Sec</Text>
+                        <Text style={{color:"#A1A2AD"}} >Time for Each Question</Text>
+                        <Text style={{color:"#367CFF"}} key={value+"val"}>{value} Sec</Text>
                     </View>
                     <View>
       <Slider

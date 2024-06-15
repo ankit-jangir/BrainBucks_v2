@@ -101,6 +101,11 @@ import RoomEnter from './src/screens/Rooms/RoomEnter';
 import RoomsQuizHistory from './src/screens/Rooms/RoomsQuizHistory';
 import CreateLiveQuiz from './src/screens/Rooms/CreateLiveQuiz';
 import CreateLiveSlots from './src/screens/Rooms/CreateLiveSlots';
+import CreatedQuizSuccesfully from './src/screens/Rooms/CreatedQuizSuccesfully';
+import ScheduleQuiz from './src/screens/Rooms/ScheduleQuiz';
+import ScheduleQuizTime from './src/screens/Rooms/ScheduleQuizTime';
+import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfullyQuiz';
+import RoomSetting from './src/screens/Rooms/RoomSetting';
 
 
 
@@ -206,6 +211,12 @@ function MyStack() {
       <Stack.Screen name='roomhistory' component={RoomsQuizHistory}/>
       <Stack.Screen name='createlivequiz' component={CreateLiveQuiz}/> 
       <Stack.Screen name='createliveslots' component={CreateLiveSlots}/> 
+      <Stack.Screen name='createquizsuccesfully' component={CreatedQuizSuccesfully}/> 
+      <Stack.Screen name='schedulquiz' component={ScheduleQuiz}/> 
+      <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime}/> 
+      <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz}/> 
+      <Stack.Screen name='roomsetting' component={RoomSetting}/> 
+
 
     </Stack.Navigator>
   );
