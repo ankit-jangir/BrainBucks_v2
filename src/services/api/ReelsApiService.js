@@ -4,9 +4,9 @@ import basic from '../BasicServices'
 
 class ReelsApiService{
 
-    async getNewTags(){
+    async getTags(){
         let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/new/tag`
+        let url = `${NOTIFYMICRO}/participants/reels/get/tags`
         let headers = {"content-type":"application/json", "authorization":token}
         let options = {
             method: "get",
@@ -16,6 +16,7 @@ class ReelsApiService{
         let response = await axios(options)
         return response.data;
     }
+    
     async getAlotedTags(){
         let token = await basic.getBearerToken()
         let url = `${NOTIFYMICRO}/participants/reels/get/aloted/tag`

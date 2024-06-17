@@ -105,7 +105,7 @@ export default function Signup({ navigation, route }) {
         </View>
         <View style={{ width: '100%' }}>
           <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
-          <View style={[styles.inputView, errorMessage && { "borderColor": "red" }]}>
+          <View style={[styles.inputView, (errorMessage && !numberDone) && { "borderColor": "red" }]}>
             <View style={styles.inputview91}>
               <Text style={styles.text91}>+ 91</Text>
             </View>
@@ -140,7 +140,7 @@ export default function Signup({ navigation, route }) {
                         ? require('../../assets/img/square.png')
                         : require('../../assets/img/check-box-with-check-sign.png')
                     }
-                    tintColor={errorMessage ? "red" : '#fff'}
+                    tintColor={errorMessage && numberDone ? "red" : '#fff'}
                     style={styles.checkboxImage}
                   />
                 </View>

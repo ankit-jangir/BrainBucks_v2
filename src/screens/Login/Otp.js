@@ -29,16 +29,16 @@ export default function Otp({ navigation, route }) {
         let sec = 59;
         const interval = BackgroundTimer.setInterval(() => {
             console.log(sec);
-            if(sec>0){
-                sec=sec-1;
-                setSeconds(p=>p - 1)
+            if (sec > 0) {
+                sec = sec - 1;
+                setSeconds(p => p - 1)
             }
-            else{
+            else {
                 setSeconds(0)
                 BackgroundTimer.clearInterval(interval)
                 setErrorMessage("OTP Expired. Please Resend")
             }
-         }, 1000)
+        }, 1000)
         return () => { BackgroundTimer.clearInterval(interval) }
     }, [minute])
 
@@ -74,12 +74,12 @@ export default function Otp({ navigation, route }) {
     }
 
     async function next() {
-        if (!otp || otp.length === 0 ) {
+        if (!otp || otp.length === 0) {
             setErrorMessage("*Enter The OTP First")
             return;
         }
-        
-        if(otp.length!==4){
+
+        if (otp.length !== 4) {
             setErrorMessage("*OTP must be of 4 digits")
             return;
         }
@@ -159,14 +159,15 @@ export default function Otp({ navigation, route }) {
                                 }
                             />
                         </View>
-                        <Text key={seconds+"seconds"} style={[styles.textOtp, {textAlign: 'right'}]}>OTP Valid For: 00:{seconds>9?seconds:"0"+seconds}</Text>
-
-                        {
-                            errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>
-                        }
+                        <View style={{flexDirection:'row', alignItems:'center', justifyContent:errorMessage?"space-between":"flex-end"}}>
+                            {
+                                errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>
+                            }
+                            <Text key={seconds + "seconds"} style={[styles.textOtp, { textAlign: 'right', alignSelf:'flex-end' }]}>OTP Valid For: 00:{seconds > 9 ? seconds : "0" + seconds}</Text>
+                        </View>
                         <View style={{ marginTop: 20 }}>
                             <Text style={styles.textOtp}  >
-                                OTP Sent on +91 {phone} 
+                                OTP Sent on +91 {phone}
                             </Text>
                         </View>
                         <TouchableOpacity

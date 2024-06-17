@@ -19,14 +19,11 @@ import Carousel from 'react-native-reanimated-carousel';
 import styles from '../../styles/Home.styles';
 import basic from '../../services/BasicServices';
 import QuizCard from '../../components/QuizCard';
-import { getTriviaDetails } from '../../controllers/TriviaQuizController';
 import Toast from 'react-native-toast-message';
-import { useSignal } from '@preact/signals-react';
 import { getHomeData } from '../../controllers/HomeController';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
-import { useQuiz } from '../../context/QuizPlayReducer';
 import { useIsFocused } from '@react-navigation/native';
 import Video from 'react-native-video';
 import { screenWidth } from '../../constants/Sizes.constant';
@@ -353,12 +350,13 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() =>{}}
+                      onPress={() => { }}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+
                 <View style={{ flex: 1, margin: 20 }}>
                   {
                     (homeData?.reels?.length === 0 || Object.keys(homeData).length === 0)
@@ -369,7 +367,7 @@ export default function Home({ navigation }) {
                         data={homeData.reels}
                         keyExtractor={item => item._id.toString()}
                         renderItem={({ item }) => (
-                          <TouchableOpacity onPress={() => {navigation.navigate('reels', {first_reel: item})}}>
+                          <TouchableOpacity onPress={() => { navigation.navigate('reels', { first_reel: item }) }}>
                             <Video
                               paused={true}
                               style={{ width: screenWidth / 3, height: 200, borderRadius: 30 }}

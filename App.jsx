@@ -251,7 +251,7 @@ function MyTabs() {
             name="Study"
             component={Study}
             options={{
-              tabBarLabel: 'Study',
+              tabBarLabel: 'Categories',
               tabBarIcon: ({focused, color}) => (
                 <View>
                   {focused ? (
