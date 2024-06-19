@@ -197,7 +197,7 @@ function MyStack() {
       <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive}/>
       <Stack.Screen name="QuizzesResult" component={QuizzesResult}/>
       <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards}/>
-      <Stack.Screen name='reels' component={Reels}/>
+      <Stack.Screen name='reels' component={Reels} options={{gestureEnabled:false}}/>
       <Stack.Screen name='reeltags' component={ReelTags}/>
       <Stack.Screen name='rooms' component={Rooms}/>
       <Stack.Screen name='createroom' component={CreateRoom}/>

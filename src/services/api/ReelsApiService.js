@@ -56,6 +56,19 @@ class ReelsApiService{
         let response = await axios(options)
         return response.data;
     }
+
+    async likeReel(id){
+        let token = await basic.getBearerToken()
+        let url = `${NOTIFYMICRO}/participants/reels/add/like/to/reel?reel_id=${id}`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let options = {
+            method:'get',
+            headers:headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
     
     async addTag(tag_id){
         let token = await basic.getBearerToken()

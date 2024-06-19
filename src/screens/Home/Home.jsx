@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
+  Modal,
 } from 'react-native';
 import SearchBar from './SearchBar';
 import LottieView from 'lottie-react-native';
@@ -26,7 +27,7 @@ import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import { useIsFocused } from '@react-navigation/native';
 import Video from 'react-native-video';
-import { screenWidth } from '../../constants/Sizes.constant';
+import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
 export default function Home({ navigation }) {
   const [refresh, setRefresh] = useState(false);
