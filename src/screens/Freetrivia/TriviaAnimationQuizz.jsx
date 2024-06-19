@@ -12,7 +12,7 @@ export default function TriviaAnimationQuizz({navigation,}) {
         if(click == true){
             setTimeout(() => {
                 setState(state + 1)  
-            }, 1500);
+            }, 1000);
         }
 
         if(state == 3){

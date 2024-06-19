@@ -6,11 +6,8 @@ import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../control
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
-const ColorsConstant = {
-  White: '#FFFFFF',
-  Black: '#000000'
-};
 
 
 export default function QuestionsPaper({ navigation }) {
@@ -130,7 +127,7 @@ export default function QuestionsPaper({ navigation }) {
               onPress={() => setModalVisible(!modalVisible)}
               style={styles.quitView3}
             >
-              <Text style={styles.textQuite}>X  Quit</Text>
+              <Text style={styles.textQuite}>Quit</Text>
             </TouchableOpacity>
           </View>
           <View style={{
@@ -149,7 +146,7 @@ export default function QuestionsPaper({ navigation }) {
           <TouchableOpacity onPress={handlePrevious}>
             <View style={styles.quitView2}>
               <View style={styles.Daview}>
-                <Image source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+                <Image source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex ? '#a9a9a9' : '#000'} style={{ width: 20, height: 20, }} />
                 <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, 1 !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Previous</Text>
               </View>
             </View>
@@ -279,17 +276,17 @@ export default function QuestionsPaper({ navigation }) {
         <TouchableOpacity style={styles.RulesTouchable2}>
           <View style={styles.RulesPV2} >
             <View style={styles.RulesPV3}>
-              <Text style={styles.RulesText} >Congratulations !!</Text>
+              <Text style={styles.RulesText} >Congratulations!</Text>
               <LottieView
                 autoPlay
                 style={styles.RulesLott}
                 source={require('../../assets/img/upvote.json')}
               />
-              <Text style={styles.RegisteredT} >Quizze Successfully Submitted ! </Text>
+              <Text style={styles.RegisteredT} >Quiz Successfully Submitted ! </Text>
               <View style={styles.RegisteredV} >
                 <View style={styles.RulesName}>
                   {/* {console.log(message,"MESSAGE")} */}
-                  <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at " + submitData.msg : "soon"}</Text>
+                  <Text style={{ color: ColorsConstant.RedLight, fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at " + submitData.msg : "soon"}</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={() => {

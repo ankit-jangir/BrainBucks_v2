@@ -145,7 +145,7 @@ export default function TriviaQuestionPaper({ navigation }) {
           <TouchableOpacity onPress={handlePrevious}>
             <View style={styles.quitView2}>
               <View style={styles.Daview}>
-                <Image source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+                <Image key={1 === currentQuestionIndex ? '#a9a9a9prev' : "#000prev"} source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex ? '#a9a9a9' : "#000"} style={{ width: 20, height: 20, }} />
                 <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, 1 !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Previous</Text>
               </View>
             </View>
@@ -159,7 +159,7 @@ export default function TriviaQuestionPaper({ navigation }) {
           <TouchableOpacity onPress={handleNext}>
             <View style={styles.Daview}>
               <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, quizState.total !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Next</Text>
-              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+              <Image key={1 === currentQuestionIndex ? '#a9a9a9next' : "#000next"} source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
             </View>
           </TouchableOpacity>
         </View>
@@ -282,7 +282,7 @@ export default function TriviaQuestionPaper({ navigation }) {
                 style={styles.RulesLott}
                 source={require('../../assets/img/upvote.json')}
               />
-              <Text style={styles.RegisteredT} >Quizze Successfully Submit ! </Text>
+              <Text style={styles.RegisteredT} >Quiz Successfully Submit ! </Text>
               <View style={styles.RegisteredV} >
                 <View style={styles.RulesName}>
                   {/* {console.log(message,"MESSAGE")} */}
