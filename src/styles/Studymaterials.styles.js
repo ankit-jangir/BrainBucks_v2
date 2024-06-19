@@ -410,8 +410,21 @@ const styles = StyleSheet.create({
                     borderRadius: 10,
                     margin: 5
                   },
+                  buttonP: {
+                    paddingHorizontal:65,
+                    padding: 10,
+                    borderTopRightRadius:10,
+                    borderBottomRightRadius:10,
+                    margin: 5
+                  },
                   button1: {
                     paddingHorizontal: 51,
+                    padding: 10,
+                    borderRadius: 10,
+                    margin: 5
+                  },
+                  button2: {
+                    paddingHorizontal:65,
                     padding: 10,
                     borderRadius: 10,
                     margin: 5
@@ -647,6 +660,12 @@ paddingTop:10
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
   },
+  selectedButton1: {
+                    backgroundColor: '#8D4AE2',
+                  },
+                  deselectedButton1: {
+                    backgroundColor: '#F2F2F2'
+                  },
   });
 
   export default  styles

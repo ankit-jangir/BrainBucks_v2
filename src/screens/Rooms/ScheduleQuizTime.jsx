@@ -4,17 +4,8 @@ import styles from '../../styles/Rooms.styles';
 import { Button, Text, TextInput } from '../../utils/Translate';
 import { Dropdown, } from 'react-native-element-dropdown';
 import { Slider } from '@rneui/themed';
-export default function CreateLiveSlots({ navigation }) {
-    const [exams, setExams] = useState([
-        { label: 'Item 1', value: '1' },
-        { label: 'Item 2', value: '2' },
-        { label: 'Item 3', value: '3' },
-        { label: 'Item 4', value: '4' },
-        { label: 'Item 5', value: '5' },
-        { label: 'Item 6', value: '6' },
-        { label: 'Item 7', value: '7' },
-        { label: 'Item 8', value: '8' },
-    ]);
+export default function ScheduleQuizTime({ navigation }) {
+    
 
     
 
@@ -54,7 +45,7 @@ export default function CreateLiveSlots({ navigation }) {
 
                             <TextInput
                                 style={styles.ddinput}
-                                placeholder="Entry fees in BB Coins"
+                                placeholder="Entry fees in BB Coins" 
                        placeholderTextColor= '#A1A2AD'
 
                             />
@@ -62,32 +53,31 @@ export default function CreateLiveSlots({ navigation }) {
                         <Text style={styles.miniumT}>Minimum 10</Text>
 
                     </View>
-                    <Dropdown
-                        style={styles.dropdownExam}
-                        placeholderStyle={[styles.ddexamplaceholderStyle]}
-                        selectedTextStyle={styles.ddexamselectedTextStyle}
-                        inputSearchStyle={styles.ddexaminputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        itemContainerStyle={styles.ddExamItemContainerStyle}
-                        itemTextStyle={styles.ddItemTextStyle}
-                        data={exams}
-                        activeColor='#212121'
-                        onConfirmSelectItem={(item) => setSelectedExam(item)}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Select Exam"
-                        searchPlaceholder="Search..."
-                        value={selectedExam}
-                        onFocus={() => setIsFocusExam(true)}
-                        onBlur={() => setIsFocusExam(false)}
-                        onChange={item => {
-                            setSelectedExam(item.value);
-                            setIsFocusExam(false);
-                        }}
+                   
+                    <View>
+                    <Text style={styles.st}>Schedule Quiz</Text>
+                    <View style={styles.containerbb}>
+                    <View style={[styles.FeesContainer1,{backgroundColor:"#282940",borderRadius: 4,padding: 13,}]}>
+                    <Image
+                      source={require('../../assets/img/Timer.png')}
+                      style={{height: 20, width: 20}}
+                      resizeMode="contain"
                     />
+                    <Text style={[styles.feesT,{color:"#A1A2AD"}]}>20/12/2002</Text>
+                  </View>
+                        
+                  <View style={[styles.FeesContainer1,{backgroundColor:"#282940",borderRadius: 4,padding: 13,}]}>
+                    <Image
+                      source={require('../../assets/img/time2.png')}
+                      style={{height: 20, width: 20}}
+                      resizeMode="contain"
+                      tintColor={"gray"}
+                    />
+                    <Text style={[styles.feesT,{color:"#A1A2AD"}]}>12:30</Text>
+                  </View>
+                    </View>
 
+                </View>
 
                 </View>
 
@@ -95,8 +85,8 @@ export default function CreateLiveSlots({ navigation }) {
                     containerStyle={{ width: '100%' }}
                     buttonStyle={styles.proceedbtn}
                     titleStyle={{ color: "#000" }}
-                    title={"+Create Live Quiz"}
-                    onPress={()=>{navigation.navigate('createquizsuccesfully')}}
+                    title={"+Schedule Quiz"}
+                    onPress={()=>{navigation.navigate('scheduledsuccessfullyQuiz')}}
 
                 />
             </View>
