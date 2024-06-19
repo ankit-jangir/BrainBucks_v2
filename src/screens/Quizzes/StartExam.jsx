@@ -130,7 +130,7 @@ export default function StartExam({ navigation, route }) {
                 <View style={styles.EnteryV1}>
                   <View style={{ flex: 6 }}>
                     <View style={styles.EnteryFeesVi}>
-                      <Text style={styles.EnteryFeesText}>Fees</Text>
+                      <Text style={styles.EnteryFeesText}>Entry Fees</Text>
                       <View style={styles.EnteryV2}>
                         <Image
                           source={require('../../assets/img/bbcoin.png')}

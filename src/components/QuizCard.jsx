@@ -70,7 +70,7 @@ const QuizCard = ({
                     paddingLeft: 6,
                     fontWeight: '500',
                   }}>
-                  Fees
+                  Entry Fees
                 </Text>
               </View>
               <View
@@ -98,10 +98,10 @@ const QuizCard = ({
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View>
                 <Image
-                  source={require('../assets/img/time2.png')}
+                  source={require('../assets/img/calendar.png')}
                   resizeMode="contain"
                   tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{ width: 20, height: 20 }}
+                  style={{ width: 17, height: 17 }}
                 />
               </View>
               <View style={{ flexDirection: 'row', paddingLeft: 0 }}>
@@ -133,7 +133,7 @@ const QuizCard = ({
                     paddingLeft: 6,
                     fontWeight: '500',
                   }}>
-                  Prize
+                  Reward
                 </Text>
               </View>
               <View
@@ -161,10 +161,10 @@ const QuizCard = ({
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 17 }}>
               <View style={{}}>
                 <Image
-                  source={require('../assets/img/calendar.png')}
+                  source={require('../assets/img/time2.png')}
                   resizeMode="contain"
                   tintColor={'rgba(138, 138, 138, 1)'}
-                  style={{ width: 17, height: 17 }}
+                  style={{ width: 20, height: 20 }}
                 />
               </View>
               <View style={{ paddingLeft: 4 }}>

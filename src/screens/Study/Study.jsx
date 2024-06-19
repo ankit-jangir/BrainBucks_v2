@@ -271,7 +271,7 @@ export default function Study({ navigation }) {
                   style={{ height: 25, width: 25 }}></Image>
               </TouchableOpacity>
               <View style={styles.examView}>
-                <Text style={styles.textMy}>Study Materials</Text>
+                <Text style={styles.textMy}>Categories</Text>
               </View>
             </View>
           </View>

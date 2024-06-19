@@ -5,10 +5,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {Image} from 'react-native-elements';
-import {Text} from '../../utils/Translate';
+import { Image } from 'react-native-elements';
+import { Text } from '../../utils/Translate';
 import History from './History';
 import WalletApiService from '../../services/api/WalletApiService';
 import {
@@ -16,7 +16,7 @@ import {
   NavigationContainer,
   useIsFocused,
 } from '@react-navigation/native';
-import {ActivityIndicator} from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
 import { useSignal } from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
@@ -91,36 +91,36 @@ export default function Wallet({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{zIndex:100}}>
-      <Toast />
+      <View style={{ zIndex: 100 }}>
+        <Toast />
       </View>
       <View style={styles.stdView1}>
-      <View style={styles. stdView2}
+        <View style={styles.stdView2}
         >
-        <TouchableOpacity
-        onPress={() => navigation.openDrawer()}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: 4,
-          borderWidth: 1,
-          borderRadius: 100,
-          width: 50,
-          height: 50,
-          borderColor: '#F5F5F5',
-        }}>
-        <Image
-          source={require('../../assets/img/drawerr.png')}
-          style={{height: 25, width: 25}}></Image>
-      </TouchableOpacity>
-        <View style={styles.examView}>
+          <TouchableOpacity
+            onPress={() => navigation.openDrawer()}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginHorizontal: 4,
+              borderWidth: 1,
+              borderRadius: 100,
+              width: 50,
+              height: 50,
+              borderColor: '#F5F5F5',
+            }}>
+            <Image
+              source={require('../../assets/img/drawerr.png')}
+              style={{ height: 25, width: 25 }}></Image>
+          </TouchableOpacity>
+          <View style={styles.examView}>
             <Text style={styles.textMy}>My Wallet</Text>
           </View>
-      </View>
+        </View>
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={{width: '100%', borderRadius: 10}}
+          style={{ width: '100%', borderRadius: 10 }}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
             <View style={styles.headerLeft}>
@@ -167,10 +167,8 @@ export default function Wallet({ navigation }) {
               </Text>
             </View>
 
-            <View style={styles.detailsContainer}>
-              <Text
-                style={styles.detailsText}
-                onPress={() => navigation.navigate('myEarning')}>
+            <TouchableOpacity style={styles.detailsContainer} onPress={() => navigation.navigate('myEarning')} >
+              <Text style={styles.detailsText}>
                 Details
               </Text>
               <Image
@@ -179,7 +177,7 @@ export default function Wallet({ navigation }) {
                 style={styles.detailsIcon}
                 resizeMode="contain"
               />
-            </View>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
 
@@ -214,7 +212,7 @@ export default function Wallet({ navigation }) {
 
           <TouchableOpacity
             style={styles.actionItem}
-            onPress={() => navigation.navigate('history',{data:walletData.value.transactions})}>
+            onPress={() => navigation.navigate('history', { data: walletData.value.transactions })}>
             <View style={styles.actionIconContainer}>
               <Image
                 tintColor="gray"
@@ -245,7 +243,7 @@ export default function Wallet({ navigation }) {
         <View style={styles.actionsContainer1}>
           <Text style={styles.RecentText}>Recent Transactions</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('history',{data:walletData.value.transactions})}
+            onPress={() => navigation.navigate('history', { data: walletData.value.transactions })}
             style={styles.TouchableButton}>
             <Text style={styles.ViewText}>View</Text>
           </TouchableOpacity>
@@ -261,9 +259,9 @@ export default function Wallet({ navigation }) {
               <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
-                
+
                 <View key={res._id} style={styles.historyContainer}>
-                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails',{res:res}) }}>
+                  <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails', { res: res }) }}>
                     <View style={styles.transactionEntry}>
                       <View
                         style={[
@@ -531,8 +529,8 @@ const styles = StyleSheet.create({
   textMy: {
     fontSize: 18,
     fontFamily: 'WorkSans-SemiBold',
-    color:"#000",
-    textAlign:'center'
+    color: "#000",
+    textAlign: 'center'
   },
   stdView1: {
     width: '100%',
@@ -540,7 +538,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: ColorsConstant.LightGray,
-    marginBottom:5
+    marginBottom: 5
   },
   stdView2: {
     flexDirection: 'row',

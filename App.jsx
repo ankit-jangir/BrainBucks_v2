@@ -49,7 +49,7 @@ import Challenges from './src/screens/saved/Challenges';
 import FreeTrivia from './src/screens/saved/FreeTrivia';
 import PaymentPopup from './src/screens/Wallet/PaymentPopup';
 import AllLiveQuizzes from './src/screens/Quizzes/AllLiveQuizzes';
-import RulesofParticipation from './src/screens/Quizzes/RulesofParticipation';
+import RulesofParticipation from './src/screens/Quizzes/QuizDetails';
 import StartExam from './src/screens/Quizzes/StartExam';
 import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
@@ -58,7 +58,7 @@ import MyHistory from './src/screens/Sidebar/MyHistory';
 import InsideLobby from './src/screens/Quizzes/InsideLobby';
 import ActiveQuizzJoinAnimation from './src/screens/Quizzes/ActiveQuizzJoinAnimation';
 import FreeTriviaStarExam from './src/screens/Freetrivia/FreeTriviaStarExam';
-import FreeRulesParticipation from './src/screens/Freetrivia/FreeRulesParticipation';
+import FreeRulesParticipation from './src/screens/Freetrivia/TriviaQuizDetails';
 import TriviaAnimationQuizz from './src/screens/Freetrivia/TriviaAnimationQuizz';
 import TriviaQuestionPaper from './src/screens/Freetrivia/TriviaQuestionPaper';
 import TriviaSubmit from './src/screens/Freetrivia/TriviaSubmit';
@@ -106,6 +106,7 @@ import ScheduleQuiz from './src/screens/Rooms/ScheduleQuiz';
 import ScheduleQuizTime from './src/screens/Rooms/ScheduleQuizTime';
 import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfullyQuiz';
 import RoomSetting from './src/screens/Rooms/RoomSetting';
+import { ColorsConstant } from './src/constants/Colors.constant';
 
 
 
@@ -231,7 +232,7 @@ function MyTabs() {
           tabBarStyle: {height: 60, backgroundColor: 'white'},
           tabBarShowLabel: true,
           headerShown: false,
-          tabBarActiveTintColor: '#000',
+          tabBarActiveTintColor: ColorsConstant.Theme,
         }}>
         <>
           <Tab.Screen
@@ -246,6 +247,7 @@ function MyTabs() {
                       source={require('./src/assets/img/homedark.png')}
                       resizeMode="contain"
                       style={{width: 20, height: 20}}
+                      tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
@@ -270,6 +272,7 @@ function MyTabs() {
                       source={require('./src/assets/img/bookmarkblack.png')}
                       resizeMode="contain"
                       style={{width: 20, height: 20}}
+                      tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
@@ -376,6 +379,7 @@ function MyTabs() {
                       source={require('./src/assets/img/heart.png')}
                       resizeMode="contain"
                       style={{width: 20, height: 20}}
+                      tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
@@ -400,6 +404,7 @@ function MyTabs() {
                       source={require('./src/assets/img/walletblack.png')}
                       resizeMode="contain"
                       style={{width: 20, height: 20}}
+                      tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image

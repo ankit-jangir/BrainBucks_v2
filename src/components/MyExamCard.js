@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
   View,
   TouchableOpacity,
-  Image,
-  RefreshControl,
-  StyleSheet,
+  Image
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Text} from '../../utils/Translate';

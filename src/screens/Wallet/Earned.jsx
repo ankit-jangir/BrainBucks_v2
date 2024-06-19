@@ -72,7 +72,7 @@ const Earned = () => {
                     </View>
                   </View>
                   <View style={styles.spentForWrapper}>
-                    <Text style={styles.spentFor}>Reward for</Text>
+                    <Text style={styles.spentFor}>Reward for </Text>
                   </View>
                   <View style={styles.containerImg}>
                   <View style={styles.containerImg1}>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   spentFor: {
-    color: 'lightgray',
+    color: '#000',
     fontSize: 14,
     fontFamily:"Work Sans"
 

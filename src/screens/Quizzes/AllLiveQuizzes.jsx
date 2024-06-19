@@ -31,8 +31,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
   const type = route.params.type;
 
   const onRefresh = () => {
-    setRefresh(true);
-    setTimeout(() => setRefresh(false), 3000);
+    getData()
   };
 
   useEffect(() => {
@@ -136,7 +135,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
                 onEndReachedThreshold={0.8}
                 onEndReached={() => { getData(currentPage + 1) }}
                 refreshControl={
-                  <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+                  <RefreshControl refreshing={loading} onRefresh={onRefresh} />
                 }
                 data={data}
                 keyExtractor={item => item._id.toString()}

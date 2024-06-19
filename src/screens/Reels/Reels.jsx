@@ -46,10 +46,10 @@ const Reels = ({ navigation, route }) => {
         let tagsString = '';
 
         item.tags.forEach(element => {
-            tagsString+="#"+element+"  "
+            tagsString += "#" + element + "  "
         });
 
-        let caption = item.caption + "\n\n"+tagsString ;
+        let caption = item.caption + "\n\n" + tagsString;
         if (caption.length > 100) {
             if (expendedCaptions[item._id]) {
                 return caption;
@@ -94,27 +94,33 @@ const Reels = ({ navigation, route }) => {
                 return res
             }
             else {
-                let seen = again ? [] :  reels.map(item => item._id)
+                let seen = again ? [] : reels.map(item => item._id)
                 return await reServ.getRandomReels(selectedTags, seen)
             }
         }
     }
 
     async function getReels(page = 1, again) {
-        
-        let func = setLoadingMore   
+
+        let func = setLoadingMore
 
         let res = await BasicServices.apiTryCatch(getReelsHelper(page, again), Toast, () => { func(true) }, () => { func(false) })
         if (res && res.reel) {
-            if(res.reel.length===0){
-                getReels(page+1, true)
+            if (res.reel.length === 0) {
+                getReels(page + 1, true)
                 return;
             }
             if (firstReel && page === 1) {
                 setReels([firstReel, ...reels, ...res.reel])
                 setCurrentReel(firstReel._id)
             } else {
-                setReels([...reels, ...res.reel])
+                let arr = [...reels, ...res.reel]
+                if (arr.length > 20) {
+                    arr = arr.splice(0, arr.length - 20)
+                    setReels([...arr])
+                } else {
+                    setReels([...reels, ...res.reel])
+                }
                 if (page === 1) {
                     setCurrentReel(res?.reel[0]?._id)
                 }
@@ -156,10 +162,10 @@ const Reels = ({ navigation, route }) => {
         setTags([...newArr])
     }
 
-    function likeHelper(id){
-        return async () => { 
+    function likeHelper(id) {
+        return async () => {
             let res = await reServ.likeReel(id);
-            return res; 
+            return res;
         }
     }
 
@@ -224,7 +230,7 @@ const Reels = ({ navigation, route }) => {
 
             <FlatList
                 ref={scrollRef}
-                // onEndReached={() => { getReels(currentPage + 1) }}
+                onEndReached={() => { if(!loadingMore) getReels(currentPage + 1) }}
                 data={reels}
                 width={screenWidth}
                 height={screenHeight}
@@ -233,7 +239,7 @@ const Reels = ({ navigation, route }) => {
                 scrollAnimationDuration={1000}
                 decelerationRate={'fast'}
                 snapToInterval={screenHeight}
-                keyExtractor={(item, index) => item._id+index}
+                keyExtractor={(item, index) => item._id + index}
                 onViewableItemsChanged={({ changed, viewableItems }) => {
                     // if (!reels.includes(changed[0].item._id)) { setSeenReels([...seenReels, changed[0].item._id]) }
                     setCurrentReel(viewableItems[0]?.item?._id + viewableItems[0]?.index);
@@ -256,7 +262,7 @@ const Reels = ({ navigation, route }) => {
                             <View style={{ flex: 1, position: 'relative', width: screenWidth, height: screenHeight }}>
                                 <Video
                                     // poster={BLOBURL+item?.banner}
-                                    paused={(currentReel !== item._id+index) || paused}
+                                    paused={(currentReel !== item._id + index) || paused}
                                     style={{
                                         position: 'absolute',
                                         top: 0,

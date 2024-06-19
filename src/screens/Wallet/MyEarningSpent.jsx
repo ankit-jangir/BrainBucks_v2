@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   spentFor: {
-    color: 'lightgray',
+    color: '#000',
     fontSize: 14,
   },
   containerImg: {

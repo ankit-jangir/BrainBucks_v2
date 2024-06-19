@@ -102,7 +102,7 @@ export default function Home({ navigation }) {
                 <View style={styles.LiveView}>
                   <View style={styles.LiveView1}>
                     <View style={styles.LiveView2}>
-                      <Text style={styles.LiveText}>Live Quizes</Text>
+                      <Text style={styles.LiveText}>Live Quizzes</Text>
                       <View style={styles.lotiView}>
                         <LottieView
                           autoPlay
@@ -351,7 +351,7 @@ export default function Home({ navigation }) {
                   </View>
                   <View style={styles.SeeView}>
                     <TouchableOpacity
-                      onPress={() => { }}
+                      onPress={() => {navigation.navigate('reels')}}
                       style={styles.TouchAll}>
                       <Text style={styles.SeeAll}>See All</Text>
                     </TouchableOpacity>

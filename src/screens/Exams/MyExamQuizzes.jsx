@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   RefreshControl,
-  StyleSheet,
   ActivityIndicator,
   FlatList,
 } from 'react-native';
@@ -32,8 +31,7 @@ export default function MyExamQuizzes({ navigation, route }) {
   const [loading2, setLoading2] = useState(false)
 
   const onRefresh = () => {
-    setRefresh(true);
-    setTimeout(() => setRefresh(false), 3000);
+    getExamQuizzes()
   };
 
 
@@ -104,7 +102,7 @@ export default function MyExamQuizzes({ navigation, route }) {
               onEndReachedThreshold={0.6}
               data={live}
               refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+                <RefreshControl refreshing={loading} onRefresh={onRefresh} />
               }
               keyExtractor={item => item._id}
               renderItem={({ item }) => <QuizCard
