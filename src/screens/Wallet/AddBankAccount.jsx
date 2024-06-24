@@ -24,13 +24,13 @@ const AddBankAccount = ({ navigation }) => {
 
   function addIfsc(text) {
     if (text.length <= 11) {
-      dispatch({ type: "details", bankDetails: { 'ifsc': text } })
+      dispatch({ type: "details", bankDetails: { 'ifsc': text.trim() } })
     }
   }
 
   async function next() {
     setErrMsg(null)
-    if (!addBankState.bankName || !addBankState.holderName || !addBankState.accnum || !addBankState.ifsc) {
+    if (!addBankState.bankName.trim() || !addBankState.holderName.trim() || !addBankState.accnum.trim() || !addBankState.ifsc) {
       setErrMsg("All fields are mandatory")
       return
     }

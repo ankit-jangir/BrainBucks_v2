@@ -8,6 +8,7 @@ import { Overlay } from '@rneui/themed'
 import { useIsFocused } from '@react-navigation/native'
 import { ColorsConstant } from '../../constants/Colors.constant'
 import { color } from '@rneui/base'
+import { useAddBank } from '../../context/AddBankReducer'
 
 const AddBanks = ({ navigation }) => {
 
@@ -16,6 +17,7 @@ const AddBanks = ({ navigation }) => {
   const [visible, setVisible] = useState(false)
   const [delId, setDelId] = useState('')
   const isFocused = useIsFocused()
+  const {addBankState, dispatch} = useAddBank()
 
   const wallService = new WalletApiService()
 
@@ -43,6 +45,7 @@ const AddBanks = ({ navigation }) => {
   }
 
   useEffect(() => {
+    dispatch({type:'empty'})
     getBanks()
   }, [isFocused])
 

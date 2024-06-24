@@ -7,8 +7,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
-
-
+import BackgroundTimer from 'react-native-background-timer';
 
 export default function QuestionsPaper({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,6 +18,7 @@ export default function QuestionsPaper({ navigation }) {
   const [selectedOption, setSelectedOption] = useState(0)
   const { quizState, dispatch } = useQuiz()
   const [submitData, setSubmitData] = useState({})
+  const [submitText, setSubmitText] = useState("Submit Quiz")
   const backRef = useRef()
 
   let question = quizState.question
@@ -47,24 +47,32 @@ export default function QuestionsPaper({ navigation }) {
     return () => { backRef.current() }
   }, [])
 
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      if(Object.keys(submitData).length!==0){
+    let min = (Math.floor(quizState.time / 60));
+    let tmc = Math.floor(quizState.time % 60);
+
+    const interval = BackgroundTimer.setInterval(() => {
+      if (Object.keys(submitData).length !== 0) {
         clearInterval(interval)
         return;
       }
-      if (timerCount > 0) {
-        setTimerCount(timerCount - 1);
-      } else if (minute > 0) {
-        setMinute(minute - 1);
+      if (tmc > 0) {
+        tmc = tmc - 1;
+        setTimerCount(t => t - 1);
+      } else if (min > 0) {
+        min = min - 1;
+        tmc = 59;
+        setMinute(m => m - 1);
         setTimerCount(59);
       } else {
+        BackgroundTimer.clearInterval(interval)
+        Toast.show({ type: "info", text1: "Time's up. Submitting..." })
         handleSubmit()
       }
     }, 1000);
-
-    return () => clearInterval(interval);
-  }, [timerCount, minute]);
+  }
+    , [])
 
   const handleOptionPress = (optionIndex) => {
     setSelectedOption(optionIndex + 1);
@@ -99,6 +107,7 @@ export default function QuestionsPaper({ navigation }) {
   }
 
   const handleSubmit = () => {
+    console.log(quizState.time, minute, timerCount);
     let time = Math.floor(quizState.time - minute * 60 - timerCount)
     submitactiveQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
@@ -124,22 +133,32 @@ export default function QuestionsPaper({ navigation }) {
         <View style={styles.quitView1}>
           <View style={styles.quitView2}>
             <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {
+                setSubmitText("Quit from quiz")
+                setModalVisible(!modalVisible)
+              }
+            }
               style={styles.quitView3}
             >
               <Text style={styles.textQuite}>Quit</Text>
             </TouchableOpacity>
           </View>
-          <View style={{
-            backgroundColor: "#2E2E2E",
-          }}>
-            {/* Placeholder for score */}
-            <Text style={{ color: "#fff", fontFamily: "Work Sans", fontSize: 14, fontWeight: '500' }}>Question {currentQuestionIndex}</Text>
-          </View>
 
           <View style={styles.Daview}>
             <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
           </View>
+
+          <TouchableOpacity onPress={()=>{
+            setSubmitText("Submit quiz")
+            setModalVisible(!modalVisible)
+          }} style={{
+            backgroundColor: "#2E2E2E",
+          }}>
+            {/* Placeholder for score */}
+            <Text style={styles.textQuite}>Submit</Text>
+          </TouchableOpacity>
+
+          
         </View>
 
         <View style={styles.quitView}>
@@ -235,7 +254,7 @@ export default function QuestionsPaper({ navigation }) {
               style={styles.emoji}
             />
             <View style={styles.viewQ}>
-              <Text style={styles.qText}>Quit from Quiz</Text>
+              <Text style={styles.qText}>{submitText}</Text>
             </View>
 
             <View style={styles.yesView}>

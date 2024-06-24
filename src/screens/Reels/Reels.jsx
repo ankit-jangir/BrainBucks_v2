@@ -1,5 +1,5 @@
-import { ActivityIndicator, FlatList, Image, Modal, SafeAreaView, ScrollView, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import Video from 'react-native-video'
 import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 import { TouchableOpacity } from 'react-native';
@@ -9,22 +9,29 @@ import BasicServices from '../../services/BasicServices';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
-import { Text } from '../../utils/Translate';
+import { Text, TextInput } from '../../utils/Translate';
+import styles2 from '../../styles/Saved.styles';
+import styles from '../../styles/Reels.styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Reels = ({ navigation, route }) => {
 
     const [reels, setReels] = useState([])
     const [loading, setLoading] = useState(false)
     const [loadingMore, setLoadingMore] = useState(false)
+    const [commentsLoading, setCommentsLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [currentReel, setCurrentReel] = useState()
     const [visible, setVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
     const [paused, setPaused] = useState(false)
     const [buffering, setBuffering] = useState(false)
     const [muted, setMuted] = useState(false)
     const [tags, setTags] = useState([])
     const [selectedTags, setSelectedTags] = useState([])
     const [expendedCaptions, setExpendedCaptions] = useState({})
+    const [comments, setComments] = useState([])
+    const [comment, setComment] = useState('')
     const firstReel = route?.params?.first_reel;
     const reServ = new ReelsApiService()
     const timeoutRef = useRef()
@@ -112,17 +119,11 @@ const Reels = ({ navigation, route }) => {
             }
             if (firstReel && page === 1) {
                 setReels([firstReel, ...reels, ...res.reel])
-                setCurrentReel(firstReel._id)
+                setCurrentReel(firstReel._id + "0")
             } else {
-                let arr = [...reels, ...res.reel]
-                if (arr.length > 20) {
-                    arr = arr.splice(0, arr.length - 20)
-                    setReels([...arr])
-                } else {
-                    setReels([...reels, ...res.reel])
-                }
+                setReels([...reels, ...res.reel])
                 if (page === 1) {
-                    setCurrentReel(res?.reel[0]?._id)
+                    setCurrentReel(res?.reel[0]?._id + "0")
                 }
             }
             setCurrentPage(page)
@@ -186,11 +187,55 @@ const Reels = ({ navigation, route }) => {
     }
 
 
+    function getCurrentReelId() {
+        let indexedReelId = currentReel + "";
+        let currIndex = currentIndex.current + "";
+        let reelId = indexedReelId.substring(0, indexedReelId.length - currIndex.length)
+        return reelId;
+    }
+
+    function getCommentsHelper() {
+        return async () => {
+            let reelId = getCurrentReelId()
+            let res = await reServ.getComments(reelId)
+            return res;
+        }
+    }
+    async function getComments() {
+
+        setComments([])
+
+        let res = await BasicServices.apiTryCatch(getCommentsHelper(), Toast, () => { setCommentsLoading(true) }, () => { setCommentsLoading(false) })
+        if (res) {
+            setComments(res.comments)
+        }
+    }
+
+    async function deleteComment(comm) {
+        let currentId = getCurrentReelId();
+        let res = await BasicServices.apiTryCatch(async () => { return await reServ.deleteComment(currentId, comm) }, Toast);
+        if (res) {
+            getComments()
+        }
+    }
+    async function addComment() {
+        if (comment.trim().length === 0) {
+            return;
+        }
+        let currentId = getCurrentReelId();
+        let res = await BasicServices.apiTryCatch(async () => { return await reServ.addComment(currentId, comment) }, Toast);
+        if (res) {
+            getComments()
+            setComment('')
+        }
+    }
+
+
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <View style={{ zIndex: 200 }}><Toast /></View>
-            <TouchableOpacity onPress={() => { navigation.goBack() }} style={{ position: 'absolute', padding: 20, top: 20, left: 20, width: 30, height: 30, zIndex: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20 }}>
-                <Image style={{ width: 25, height: 25, borderRadius: 20 }} source={require('../../assets/img/arrow-left.png')} />
+            <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.backBtnView}>
+                <Image style={styles.backBtn} source={require('../../assets/img/arrow-left.png')} />
             </TouchableOpacity>
             {
                 visible &&
@@ -200,25 +245,31 @@ const Reels = ({ navigation, route }) => {
                         clearTimeout(timeoutRef.current)
                     }
                     timeoutRef.current = setTimeout(() => { setVisible(false) }, 2000)
-                }} style={{ zIndex: 21, position: 'absolute', padding: 20, top: screenHeight / 2 - 17, left: screenWidth / 2 - 17, width: 35, height: 35, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20 }}>
-                    {!paused ? <Image style={{ width: 30, height: 30, borderRadius: 20, objectFit: 'contain' }} source={require('../../assets/img/pause.png')} /> : <Image style={{ width: 25, height: 25, borderRadius: 20, objectFit: 'contain' }} source={require('../../assets/img/resume.png')} />}
+                }} style={styles.pauseBtnView}>
+                    {!paused ? <Image style={styles.pauseBtn} source={require('../../assets/img/pause.png')} /> : <Image style={styles.resumeBtn} source={require('../../assets/img/resume.png')} />}
                 </TouchableOpacity>
             }
             {
                 (buffering || loading && !visible) &&
-                <View style={{ zIndex: 11, position: 'absolute', padding: 20, top: screenHeight / 2 - 17, left: screenWidth / 2 - 17, width: 35, height: 35, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20 }}>
+                <View style={styles.pauseBtnView}>
                     <ActivityIndicator size={20} color={ColorsConstant.Theme} />
                 </View>
             }
 
 
-            <ScrollView horizontal style={{ marginLeft: 40, padding: 20, height: 100, backgroundColor: 'transparent' }} >
-                <View style={{ flexDirection: 'row', marginRight: 25 }}>
+            <ScrollView
+                horizontal
+                style={styles.tagsContainer}
+                contentContainerStyle={{ alignItems: 'center', }}
+                onStartShouldSetResponder={()=>true}
+                onStartShouldSetResponderCapture={()=>true}
+                >
+                <View style={styles.tagsView}>
                     {tags.map((item, index) =>
                         <TouchableOpacity
                             key={item._id}
                             onPress={() => { select(index) }}
-                            style={{ padding: 10, paddingHorizontal: 20, marginLeft: 20, borderRadius: 10, backgroundColor: !item.selected ? 'white' : ColorsConstant.Theme }}>
+                            style={[styles.tag, !item.selected && { backgroundColor: 'white' }]}>
                             <Text key={item._id + "" + item.selected} style={{ color: item.selected ? 'white' : ColorsConstant.Black }}>
                                 {item.selected && 'X  '}
                                 {item.tag_name}
@@ -227,18 +278,21 @@ const Reels = ({ navigation, route }) => {
                     )}
                 </View>
             </ScrollView>
-
+<> 
             <FlatList
+                style={{flexGrow:1}}
                 ref={scrollRef}
-                onEndReached={() => { if(!loadingMore) getReels(currentPage + 1) }}
+                onEndReached={() => { if (!loadingMore) getReels(currentPage + 1) }}
                 data={reels}
-                width={screenWidth}
-                height={screenHeight}
+                windowSize={5} // Number of items to render outside of the visible area
+                initialNumToRender={5} // Number of items to render initially
+                maxToRenderPerBatch={5} // Number of items rendered per batch
+                removeClippedSubviews={true}
                 horizontal={false}
                 snapToAlignment='start'
                 scrollAnimationDuration={1000}
                 decelerationRate={'fast'}
-                snapToInterval={screenHeight}
+                snapToInterval={screenHeight*(85/100)}
                 keyExtractor={(item, index) => item._id + index}
                 onViewableItemsChanged={({ changed, viewableItems }) => {
                     // if (!reels.includes(changed[0].item._id)) { setSeenReels([...seenReels, changed[0].item._id]) }
@@ -246,72 +300,116 @@ const Reels = ({ navigation, route }) => {
                     currentIndex.current = (viewableItems[0]?.index)
                     setLoading(false)
                     setBuffering(false)
-                    if (viewableItems[0] && viewableItems[0].index % 3 === 0) {
-                        let diff = reels.length - viewableItems[0].index
-                        if (diff === 3 || diff === 4);
+                    if (viewableItems[0] && viewableItems[0].index === reels.length - 1) {
                         getReels(currentPage + 1)
                     }
+                    // if (viewableItems[0] && viewableItems[0].index % 3 === 0) {
+                    //     let diff = reels.length - viewableItems[0].index
+                    //     if (diff === 3 || diff === 4);
+                    //     getReels(currentPage + 1)
+                    // }
                 }}
                 viewabilityConfig={{
                     itemVisiblePercentThreshold: 50
                 }}
                 renderItem={({ item, index }) => {
                     return (
-                        <TouchableWithoutFeedback
-                            onPress={handleClick}>
-                            <View style={{ flex: 1, position: 'relative', width: screenWidth, height: screenHeight }}>
-                                <Video
-                                    // poster={BLOBURL+item?.banner}
-                                    paused={(currentReel !== item._id + index) || paused}
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        bottom: 150,
-                                        right: 0,
-                                    }}
-                                    resizeMode='cover'
-                                    posterResizeMode='cover'
-                                    source={{ uri: BLOBURL + item.blobName }}
-                                    repeat
-                                    // onBuffer={() => setBuffering(true)}
-                                    // onLoad={() => { setBuffering(false) }}
-                                    onError={(e) => console.log("Error in loading reel ", e)}
-                                />
+                        <Pressable
+                            style={[styles.videoContainer]}
+                            onPress={handleClick}
+                        >
+                            <MemoizedVideo currentReel={currentReel} index={index} item={item} paused={paused} />
+                            <MemoizedCaptionSection expendedCaptions={expendedCaptions} item={item} renderCaption={renderCaption} toggleExpand={toggleExpand} />
+                            <MemoizedLikeCommentSection like={like} item={item} setModalVisible={setModalVisible} />
+                        </Pressable>
 
-                                <View style={{ position: 'absolute', left: 0, bottom: 100, right: 0, height: expendedCaptions[item._id] ? 400 : 140, backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                                    <ScrollView>
-                                        <Text style={{ paddingHorizontal: 20, color: ColorsConstant.White }} key={renderCaption(item)}>{renderCaption(item)}</Text>
-                                        {renderCaption(item).length > 100 && <TouchableOpacity onPress={() => toggleExpand(item)} style={{ marginLeft: 20 }}><Text key={expendedCaptions[item._id] ? "Read Less" : "Read More"} style={{ color: ColorsConstant.Theme, fontSize: 15 }}>{expendedCaptions[item._id] ? "Read Less" : "Read More"}</Text></TouchableOpacity>}
-                                    </ScrollView>
-                                </View>
-
-                                <View style={{ position: 'absolute', bottom: 240, right: 0, height: 200, width: 60, paddingTop: 10, backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'space-between' }}>
-
-                                    <TouchableOpacity onPress={() => { like(item._id) }} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <Image source={require('../../assets/img/like.png')} tintColor={item.liked ? "#ED2839" : "#fff"} style={{ widhth: 30, height: 30, objectFit: 'contain', }} />
-                                        <Text key={item.likes} style={{ color: ColorsConstant.White }}>{item.likes}</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <Image source={require('../../assets/img/comment.png')} style={{ widhth: 30, height: 30, objectFit: 'contain' }} />
-                                        <Text style={{ color: ColorsConstant.White }}>{item.commentsCount}</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                        <Image source={require('../../assets/img/sharereel.png')} style={{ widhth: 30, height: 30, objectFit: 'contain' }} />
-                                        <Text style={{ color: ColorsConstant.White }}>Share</Text>
-                                    </TouchableOpacity>
-
-                                </View>
-
-                            </View>
-                        </TouchableWithoutFeedback>
                     )
                 }
                 }
             />
+</>
+            <Modal
+                onShow={() => { getComments(), setComment("") }}
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles2.modalView}>
+                    <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={styles2.modalTocuh}></TouchableOpacity>
+                    <View style={styles2.modalview1}>
+                        <TouchableOpacity
+                            onPress={() => setModalVisible(false)}
+                            style={styles2.DownTouch}>
+                            <Image
+                                source={require('../../assets/img/down-arrow.png')}
+                                resizeMode="contain"
+                                style={{ width: 20, height: 20 }}
+                            />
+                        </TouchableOpacity>
+                        <View style={styles2.viewExam}>
+                            <View style={styles2.examview}>
+                                <View style={{ flex: 4 }}></View>
+                                <View style={styles2.addview}>
+                                    <Text style={styles2.textAdd}>Comments</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            style={{ width: '100%' }}>
+                            {commentsLoading || loading ? (
+                                <ActivityIndicator color={ColorsConstant.Theme} size={35} />
+                            ) : comments.length === 0 ? (
+                                <NoDataFound
+                                    message={'No Comments Found'}
+                                    action={() => { }}
+                                    actionText={'Reload'}
+                                />
+                            ) : (
+                                comments.map((item) => {
+                                    return (
+                                        <View key={item._id} style={{ padding: 4 }}>
+                                            <View style={styles2.EListss1}>
+                                                <View style={styles.commenterImageView}>
+                                                    <Image
+                                                        source={{ uri: BLOBURL + item.image }}
+                                                        resizeMode="cover"
+                                                        style={styles.commentImage}
+                                                    />
+                                                </View>
+                                                <View style={styles.nameAndCommentView}>
+                                                    <Text style={styles.commenterName}>{item.name}</Text>
+                                                    <Text style={[styles2.ItmText, { fontSize: 15, fontFamily: 'Inter' }]}>{item.comment}</Text>
+                                                </View>
+                                                {
+                                                    item.is_deletable
+                                                    &&
+                                                    <TouchableOpacity onPress={() => { deleteComment(item.comment) }}>
+                                                        <Image source={require("../../assets/img/redbin.png")} style={styles.deleteCommentIcon}></Image>
+                                                    </TouchableOpacity>
+                                                }
+                                            </View>
 
+                                        </View>
+                                    )
+                                })
+
+
+                            )}
+                        </ScrollView>
+                        <View style={styles.messageview}>
+                            <TextInput value={comment} placeholder="Enter Comment..." placeholderTextColor="gray" onChangeText={setComment} style={styles.messageinput} />
+                            <TouchableOpacity onPress={() => { addComment() }} style={styles.sendbtnView}>
+                                <Image style={styles.sendbtnImg} source={require('../../assets/img/rightarrow1.png')} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
 
         </View>
@@ -319,3 +417,63 @@ const Reels = ({ navigation, route }) => {
 }
 
 export default Reels
+
+
+const MemoizedVideo = memo(({ item, currentReel, index, paused, }) => {
+    return (
+        <Video
+            poster={BLOBURL + item?.banner}
+            paused={(currentReel !== item._id + index) || paused}
+            style={styles.video}
+            resizeMode='cover'
+            posterResizeMode='cover'
+            source={{ uri: item.blobName }}
+            repeat
+            // onBuffer={() => setBuffering(true)}
+            // onLoad={() => { setBuffering(false) }}
+            onError={(e) => console.log("Error in loading reel ", e)}
+        />
+    )
+})
+
+const MemoizedCaptionSection = memo(({ expendedCaptions, item, renderCaption, toggleExpand }) => {
+    return (
+        <View style={[styles.captionView, { height: expendedCaptions[item._id] ? 400 : 200 }]}>
+            <ScrollView>
+                <View style={styles.reelNameContainer}>
+                    <Image source={{ uri: BLOBURL + item.banner }} style={styles.reelImage} />
+                    <Text key={item.name} style={styles.reelName}>{item.name}</Text>
+                </View>
+                <Text style={styles.caption} key={renderCaption(item)}>{renderCaption(item)}</Text>
+                {renderCaption(item).length > 100 && <TouchableOpacity onPress={() => toggleExpand(item)} style={{ marginLeft: 20 }}><Text key={expendedCaptions[item._id] ? "Read Less" : "Read More"} style={{ color: ColorsConstant.Theme, fontSize: 15 }}>{expendedCaptions[item._id] ? "Read Less" : "Read More"}</Text></TouchableOpacity>}
+            </ScrollView>
+        </View>
+    )
+})
+
+
+const MemoizedLikeCommentSection = memo(({ like, item, setModalVisible }) => {
+    return (
+        <LinearGradient colors={['rgba(0,0,0,0.3)', 'transparent']}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 0 }}
+            style={styles.likeCommentContainer}>
+
+            <TouchableOpacity onPress={() => { like(item._id) }} style={styles.likeItemContainer}>
+                <Image source={require('../../assets/img/like.png')} tintColor={item.liked ? "#ED2839" : "#fff"} style={styles.likeIcon} />
+                <Text key={item.likes} style={{ color: ColorsConstant.White }}>{item.likes}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.likeItemContainer}>
+                <Image source={require('../../assets/img/comment.png')} style={styles.likeIcon} />
+                <Text style={{ color: ColorsConstant.White }}>{item.commentsCount}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.likeItemContainer}>
+                <Image source={require('../../assets/img/sharereel.png')} style={styles.likeIcon} />
+                <Text style={{ color: ColorsConstant.White }}>Share</Text>
+            </TouchableOpacity>
+
+        </LinearGradient>
+    )
+})

@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Image, TouchableOpacity, ScrollView, KeyboardAvoidingView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../styles/Rooms.styles'
 import styles2 from '../../styles/Studymaterials.styles'
@@ -11,7 +11,7 @@ export default function CreateRoom({navigation}) {
     const [selected, setSelected] = useState("Public")
 
     return (
-        <View style={styles.maincontainer}>
+        <SafeAreaView style={styles.maincontainer}>
             <View style={{ zIndex: 20 }}><Toast /></View>
             <View style={{ paddingVertical: 10, paddingHorizontal:20 }}>
                 <TouchableOpacity onPress={()=>navigation.goBack()} style={[styles.backimg, { padding: 20 }]}>
@@ -80,8 +80,8 @@ export default function CreateRoom({navigation}) {
                 onPress={()=>{navigation.navigate('roomcreatedsuccess')}}
                 title={"Create Room"}
                 buttonStyle={styles.createRoomBtn}
-                containerStyle={{ position: 'absolute', bottom: 0, right: 0, left: 0 }}
+                containerStyle={{alignSelf:"flex-end", width:"100%"}}
             />
-        </View>
+        </SafeAreaView>
     )
 }

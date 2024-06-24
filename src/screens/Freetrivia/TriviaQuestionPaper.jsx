@@ -24,6 +24,7 @@ export default function TriviaQuestionPaper({ navigation }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [selectedOption, setSelectedOption] = useState(0)
   const { quizState, dispatch } = useQuiz()
+  const [submitText, setSubmitText] = useState("Submit quiz")
   const backRef = useRef()
 
   let question = quizState.question
@@ -47,10 +48,16 @@ export default function TriviaQuestionPaper({ navigation }) {
   }, [])
 
   useEffect(() => {
+    let min = (Math.floor(quizState.time / 60));
+    let tmc = Math.floor(quizState.time % 60);
+
     const interval = BackgroundTimer.setInterval(() => {
-      if (timerCount > 0) {
+      if (tmc > 0) {
+        tmc = tmc-1;
         setTimerCount(t=>t - 1);
-      } else if (minute > 0) {
+      } else if (min > 0) {
+        min = min-1;
+        tmc = 59;
         setMinute(m=>m - 1);
         setTimerCount(59);
       } else {
@@ -61,7 +68,7 @@ export default function TriviaQuestionPaper({ navigation }) {
     }, 1000);
 
     return () => BackgroundTimer.clearInterval(interval);
-  }, [timerCount, minute]);
+  }, []);
 
   const handleOptionPress = (optionIndex) => {
     setSelectedOption(optionIndex + 1);
@@ -123,22 +130,33 @@ export default function TriviaQuestionPaper({ navigation }) {
         <View style={styles.quitView1}>
           <View style={styles.quitView2}>
             <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => {
+                setSubmitText("Quit from quiz")
+                setModalVisible(!modalVisible)
+              }}
               style={styles.quitView3}
             >
-              <Text style={styles.textQuite}>X  Quit</Text>
+              <Text style={styles.textQuite}>Quit</Text>
             </TouchableOpacity>
-          </View>
-          <View style={{
-            backgroundColor: "#2E2E2E",
-          }}>
-            {/* Placeholder for score */}
-            <Text style={{ color: "#fff", fontFamily: "Work Sans", fontSize: 14, fontWeight: '500' }}>Question {currentQuestionIndex}</Text>
           </View>
 
           <View style={styles.Daview}>
             <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
           </View>
+
+
+          <TouchableOpacity onPress={()=>{
+            setSubmitText("Submit quiz")
+            setModalVisible(!modalVisible)
+          }
+        } style={{
+            backgroundColor: "#2E2E2E",
+          }}>
+            {/* Placeholder for score */}
+            <Text style={styles.textQuite}>Submit</Text>
+          </TouchableOpacity>
+
+          
         </View>
 
         <View style={styles.quitView}>
@@ -235,7 +253,7 @@ export default function TriviaQuestionPaper({ navigation }) {
               style={styles.emoji}
             />
             <View style={styles.viewQ}>
-              <Text style={styles.qText}>Submit Quiz</Text>
+              <Text style={styles.qText}>{submitText}</Text>
             </View>
 
             <View style={styles.yesView}>

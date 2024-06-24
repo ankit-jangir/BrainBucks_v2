@@ -1,110 +1,15 @@
 import axios from 'axios';
-import { NOTIFYMICRO, QUIZMICRO } from '../../config/urls';
+import { NOTIFYMICRO, QUIZMICRO, ROOMURL } from '../../config/urls';
 import basic from '../BasicServices'
 
-class ReelsApiService{
-
-    async getTags(){
+class RoomsApiService{
+    async createRoom(room_name, room_type){
         let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/tags`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let options = {
-            method: "get",
-            headers: headers,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-    
-    async getAlotedTags(){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/aloted/tag`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let options = {
-            method: "get",
-            headers: headers,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-    async getReels(tag_id, page){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/reels/of/tag?tag_id=${tag_id}&page=${page}`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let options = {
-            method: "get",
-            headers: headers,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-
-    async getRandomReels(tags, seen){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/random/reels`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let data = JSON.stringify({tags:tags, seen_reels:seen})
-        let options = {
-            method: "post",
-            headers: headers,
-            data:data,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-
-    async likeReel(id){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/add/like/to/reel?reel_id=${id}`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let options = {
-            method:'get',
-            headers:headers,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-    
-    async addTag(tag_id){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/add/tag`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let data = JSON.stringify({"tag_id":tag_id})
-        let options = {
-            method: "post",
-            headers: headers,
-            data:data,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-
-    async getComments(reel_id){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/get/comments/of/reel?reel_id=${reel_id}`
-        let headers = {"content-type":"application/json", "authorization":token}
-        let options = {
-            method: "get",
-            headers: headers,
-            url
-        }
-        let response = await axios(options)
-        return response.data;
-    }
-    
-    async deleteComment(reel_id, comment){
-        let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/delete/comments/of/reel`
+        let url = `${ROOMURL}/participant/room/create/room`
         let headers = {"content-type":"application/json", "authorization":token}
         let data = JSON.stringify({
-            "reel_id":reel_id,
-            "comment":comment
+            "room_name":room_name,
+            "room_type":room_type
         })
         let options = {
             method: "post",
@@ -116,13 +21,116 @@ class ReelsApiService{
         return response.data;
     }
 
-    async addComment(reel_id, comment){
+    async joinPublicRoom(room_id){
         let token = await basic.getBearerToken()
-        let url = `${NOTIFYMICRO}/participants/reels/add/comments/to/reel`
+        let url = `${ROOMURL}/participant/room/join/in/public/room`
         let headers = {"content-type":"application/json", "authorization":token}
         let data = JSON.stringify({
-            "reel_id":reel_id,
-            "comment":comment
+            "room_id":room_id
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async joinPrivateRoom(room_hash){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/join/in/private/room`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_hash
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async withdrawJoinRequest(room_id){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/withdraw/request`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_id
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async rejectJoinRequest(room_id, user_id){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/reject/request`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_id,
+            "user_id":user_id
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async acceptJoinRequest(room_id, user_id){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/accept/request`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_id,
+            "user_id":user_id
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async exitRoom(room_id){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/exit/room`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_id
+        })
+        let options = {
+            method: "post",
+            headers: headers,
+            data:data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async deleteRoom(room_id){
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/delete/room`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let data = JSON.stringify({
+            "room_id":room_id
         })
         let options = {
             method: "post",
@@ -136,4 +144,4 @@ class ReelsApiService{
 
 }
 
-export default ReelsApiService;
+export default RoomsApiService;

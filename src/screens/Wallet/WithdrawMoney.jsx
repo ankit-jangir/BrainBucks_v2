@@ -19,7 +19,6 @@ const WithdrawMoney = ({navigation}) => {
         if(res.otp){
           ToastAndroid.show(res.otp+"",ToastAndroid.LONG)
         }
-        dispatch({type:"details", withdrawDetails:{otp:res.otp}})
         navigation.navigate('withdrawOtp')
 
       }else{
@@ -65,7 +64,7 @@ const WithdrawMoney = ({navigation}) => {
         <Text style={styles.bankLabel}>Name of Bank</Text>
         <View style={styles.bankRow}>
           <Image
-            source={require('../../assets/img/bb.png')}
+            source={require('../../assets/img/bank.png')}
             style={styles.bankImage}
             resizeMode="contain"
           />

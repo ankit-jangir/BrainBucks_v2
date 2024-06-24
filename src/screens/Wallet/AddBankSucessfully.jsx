@@ -16,7 +16,7 @@ const AddBankSucessfully = ({ navigation }) => {
   }
 
   useEffect(() => {
-    let eh = BackHandler.addEventListener('hardwareBackPress', ()=>{removeDetails('hardware')})
+    let eh = BackHandler.addEventListener('hardwareBackPress', () => { removeDetails('hardware') })
     return () => eh.remove()
   }, [])
 
@@ -36,7 +36,7 @@ const AddBankSucessfully = ({ navigation }) => {
           <View style={styles.bankDetailsHeader}>
             <View style={styles.bankIconContainer}>
               <Image
-                source={require('../../assets/img/bb.png')}
+                source={require('../../assets/img/bank.png')}
                 resizeMode="contain"
                 style={styles.bankIcon}
               />
@@ -48,11 +48,15 @@ const AddBankSucessfully = ({ navigation }) => {
             <Text style={styles.accountText}>{addBankState.accnum}</Text>
             <Text style={styles.ifscText}>{addBankState.ifsc}</Text>
           </View>
-
         </View>
+
+        <View style={{ justifyContent: "center", marginLeft:22  }}>
+            <Text style={{ color: "orange", fontSize: 17, fontWeight: "600", textAlign: "left" }}>Wait for the bank to be verified </Text>
+          </View>
+
       </TouchableOpacity>
       <TouchableOpacity onPress={removeDetails} style={styles.payNowButton}>
-        <Text style={styles.payNowText}>Back To Adding bank</Text>
+        <Text style={styles.payNowText}>Back To Add bank</Text>
       </TouchableOpacity>
     </View>
   )
@@ -61,82 +65,82 @@ const AddBankSucessfully = ({ navigation }) => {
 export default AddBankSucessfully
 
 const styles = StyleSheet.create({
-    bankDetailsContainer: {
-        margin: 20,
-        paddingTop: 10,
-        backgroundColor:'#EFEFEF',
-        // borderRadius: 10,
-        borderWidth:1,
-        borderColor: 'lightgray',
-        marginTop:50,
-        paddingBottom:15
-      },
-      bankDetailsHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 8,
-        paddingTop: 8,
-      },
-      bankIconContainer: {
-        height: 40,
-        width: 40,
-        borderRadius: 50,
-        borderWidth: 2,
-        borderColor: '#F2F2F2',
-      },
-      bankIcon: {
-        height: '100%',
-        width: '100%',
-      },
-      bankName: {
-        fontSize: 21,
-        fontWeight: '500',
-        paddingLeft: 15,
-        color: 'black',
-        fontFamily:"Work Sans"
+  bankDetailsContainer: {
+    margin: 20,
+    paddingTop: 10,
+    backgroundColor: '#EFEFEF',
+    // borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    marginTop: 50,
+    paddingBottom: 15
+  },
+  bankDetailsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 8,
+    paddingTop: 8,
+  },
+  bankIconContainer: {
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#F2F2F2',
+  },
+  bankIcon: {
+    height: '100%',
+    width: '100%',
+  },
+  bankName: {
+    fontSize: 21,
+    fontWeight: '500',
+    paddingLeft: 15,
+    color: 'black',
+    fontFamily: "Work Sans"
 
-      },
-      bankHolder: {
-        paddingLeft: 10,
-        fontWeight: '400',
-        color: '#7E7E7E',
-        paddingTop: 20,
-        fontSize:17,
-        fontFamily:"Work Sans"
+  },
+  bankHolder: {
+    paddingLeft: 10,
+    fontWeight: '400',
+    color: '#7E7E7E',
+    paddingTop: 20,
+    fontSize: 17,
+    fontFamily: "Work Sans"
 
-      },
-      bankAccountDetails: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-      },
-      payNowButton: {
-        marginTop:70,
-        borderColor:"white",
-        borderWidth:1,
-        padding: 13,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin:20
-      },
-      payNowText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight:"500",
-        fontFamily:"Work Sans"
+  },
+  bankAccountDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  payNowButton: {
+    marginTop: 70,
+    borderColor: "white",
+    borderWidth: 1,
+    padding: 13,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 20
+  },
+  payNowText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: "500",
+    fontFamily: "Work Sans"
 
-      },
-      accountText: {
-        color: 'black',
-        fontSize:17,
-        fontFamily:"Work Sans"
+  },
+  accountText: {
+    color: 'black',
+    fontSize: 17,
+    fontFamily: "Work Sans"
 
-      },
-      ifscText: {
-        color: 'black',
-        fontSize:17,
-        fontFamily:"Work Sans"
+  },
+  ifscText: {
+    color: 'black',
+    fontSize: 17,
+    fontFamily: "Work Sans"
 
   },
 })

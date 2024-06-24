@@ -204,7 +204,7 @@ export default function StartExam({ navigation, route }) {
                     {
                       remainingTime > 0
                         ?
-                        <Text key={'remaining'} style={styles.LobbtText}>Wait For Start Time</Text>
+                        <Text key={'remaining'} style={styles.LobbtText}>Wait for the start time</Text>
                         :
                         <Text key={'joinnow'} style={styles.LobbtText}>Join Now</Text>
                     }

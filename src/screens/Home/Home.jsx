@@ -369,10 +369,9 @@ export default function Home({ navigation }) {
                         keyExtractor={item => item._id.toString()}
                         renderItem={({ item }) => (
                           <TouchableOpacity onPress={() => { navigation.navigate('reels', { first_reel: item }) }}>
-                            <Video
-                              paused={true}
-                              style={{ width: screenWidth / 3, height: 200, borderRadius: 30 }}
-                              source={{ uri: BLOBURL + item.blobName }}
+                            <Image
+                              style={{ width: screenWidth / 3, height: 200, borderRadius: 5, objectFit:'cover' }}
+                              source={{ uri: BLOBURL + item.banner }}
                               controls={false}
                             />
                           </TouchableOpacity>
@@ -383,7 +382,7 @@ export default function Home({ navigation }) {
                         // snapToInterval={width}
                         snapToAlignment="center"
                         decelerationRate="fast"
-                        contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
+                        contentContainerStyle={{ paddingHorizontal: CARD_MARGIN, gap:14 }}
                       />
                   }
                 </View>
@@ -395,3 +394,17 @@ export default function Home({ navigation }) {
     </>
   );
 }
+
+
+// import { View, Text, ScrollView } from 'react-native'
+// import React from 'react'
+// import { screenHeight } from '../../constants/Sizes.constant'
+
+// export default function Home() {
+//   return (
+//     <ScrollView contentContainerStyle={{flexGrow:1}}>
+//       <Text style={{height:screenHeight}}>Home1</Text>
+//       <Text style={{height:screenHeight}}>Home2</Text>
+//     </ScrollView>
+//   )
+// }

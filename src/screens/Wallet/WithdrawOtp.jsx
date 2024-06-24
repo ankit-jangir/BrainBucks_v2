@@ -16,14 +16,14 @@ export default function WithdrawOtp({ navigation, route }) {
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState()
     const wallServ = new WalletApiService();
-    const {withdrawState, dispatch} = useWithdraw()
+    const { withdrawState, dispatch } = useWithdraw()
 
     function otpChanged(value) {
-        dispatch({type:"details", withdrawDetails:{'otp':value}})
+        dispatch({ type: "details", withdrawDetails: { 'otp': value } })
     }
 
     async function resendOtp() {
-        if(loading){
+        if (loading) {
             return;
         }
         setErrorMessage(null)
@@ -39,7 +39,7 @@ export default function WithdrawOtp({ navigation, route }) {
                     ToastAndroid.show(response.otp + "", ToastAndroid.LONG)
                 }
             } else {
-                setErrorMessage("*" + response.Backend_Error)
+                setErrorMessage("* "+response.Backend_Error)
             }
         } catch (error) {
             console.log("Error in Resending OTP: ", error.message);
@@ -50,34 +50,34 @@ export default function WithdrawOtp({ navigation, route }) {
 
     }
 
-    async function next(){
-        if(loading){
+    async function next() {
+        if (loading) {
             return;
         }
 
-        let ot = withdrawState.otp+""
-        
-        if(ot.length!==4){
+        let ot = withdrawState.otp + ""
+
+        if (ot.length !== 4) {
             setErrorMessage("*Enter The OTP First")
             return;
         }
 
-        try{
+        try {
             setErrorMessage(null)
             setLoading(true)
-            let response = await wallServ.withdrawMoney(withdrawState.amount,withdrawState.otp,withdrawState.bank._id)
-            if(response.status===1){
+            let response = await wallServ.withdrawMoney(withdrawState.amount, withdrawState.otp, withdrawState.bank._id)
+            if (response.status === 1) {
                 setErrorMessage(null)
                 navigation.dispatch(StackActions.replace('withdrawReq'));
             }
-            else{
+            else {
                 setErrorMessage(response.Backend_Error)
             }
 
-        }catch(err){
+        } catch (err) {
             console.log("Error in Verifying OTP in withdraw : ", err.message);
             setErrorMessage("*Something went wrong")
-        }finally{
+        } finally {
             setLoading(false)
         }
 
@@ -85,8 +85,10 @@ export default function WithdrawOtp({ navigation, route }) {
 
     return (
         <>
-            <SafeAreaView style={styles.safeArView}>
+            <View style={{ zIndex: 25 }}>
                 <Toast />
+            </View>
+            <SafeAreaView style={styles.safeArView}>
                 <View style={StyleConstants.bbView} >
                     <Image
                         source={require("../../assets/img/bbcolorlogo.png")}
@@ -99,28 +101,31 @@ export default function WithdrawOtp({ navigation, route }) {
                         <View style={StyleConstants.LetsView}>
                             <View style={styles.Lastview1} >
                                 <View style={{ flex: 0.75 }}>
-                                    <Text style={[styles.EnterOtp,{marginTop:20}]} >Enter OTP sent to XXX XXX 4329 to add Bank Account </Text>
+                                    <Text style={[styles.EnterOtp, { marginTop: 20 }]} >Enter OTP sent to your registered mobile number </Text>
                                 </View>
-                               
+
                             </View>
                         </View>
-                        <View style={[styles.otpContainer,{marginTop:70}]}>
+                        <View style={[styles.otpContainer, { marginTop: 70 }]}>
                             <OtpInput
-                            numberOfDigits={4}
-                            focusColor="blue"
-                            focusStickBlinkingDuration={500}
-                            onTextChange={otpChanged}
-                            theme={{
-                              pinCodeContainerStyle: styles.OtpBoxView,
-                              pinCodeTextStyle: styles.textOtp,
-                            }}
+                                textInputProps={
+                                    { selectTextOnFocus: false, caretHidden: true }
+                                }
+                                numberOfDigits={4}
+                                focusColor="blue"
+                                focusStickBlinkingDuration={500}
+                                onTextChange={otpChanged}
+                                theme={{
+                                    pinCodeContainerStyle: styles.OtpBoxView,
+                                    pinCodeTextStyle: styles.textOtp,
+                                }}
                             />
                         </View>
                         {
                             errorMessage && <Text key={errorMessage} style={styles.errormsg}>{errorMessage}</Text>
                         }
                         <View style={{ marginTop: 20 }}>
-                            
+
                         </View>
                         <TouchableOpacity
                             onPress={() => {
@@ -133,7 +138,7 @@ export default function WithdrawOtp({ navigation, route }) {
                             title="Confirm"
                             loading={loading}
                             titleStyle={styles.textOt}
-                            buttonStyle={[styles.BtnOtp,{marginTop:50}]}
+                            buttonStyle={[styles.BtnOtp, { marginTop: 50 }]}
                             loadingProps={{
                                 size: 'large',
                                 color: '#701DDB',

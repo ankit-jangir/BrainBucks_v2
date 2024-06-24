@@ -95,6 +95,7 @@ const Withdraw = ({ navigation }) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
+            dispatch({type:'empty'});
             navigation.navigate('Wallet');
           }}>
           <Image
@@ -109,7 +110,7 @@ const Withdraw = ({ navigation }) => {
           <Text style={styles.headerTitle}>Withdraw Money</Text>
           <Text style={{fontSize: 14, color: '#D92828',    fontFamily:"Work Sans"
         }}>
-            Transaction fees = 10/Transaction
+            Deduction fees = 3% per Transaction
           </Text>
         </View>
       </View>
@@ -127,7 +128,7 @@ const Withdraw = ({ navigation }) => {
           style={styles.inputs}
         />
         <Text>
-          Entered amount should be less{' '}
+          Entered amount should be less than or equal to{' '}
           <Text style={{ color: '#D92828' }}>₹ {withdrawState.balance - 10 >= 0 ? withdrawState.balance - 10 : 0}</Text>{' '}
         </Text>
       </View>
@@ -148,7 +149,7 @@ const Withdraw = ({ navigation }) => {
                       <View style={styles.bankDetailsHeader}>
                         <View style={styles.bankIconContainer}>
                           <Image
-                            source={require('../../assets/img/bb.png')}
+                            source={require('../../assets/img/bank.png')}
                             resizeMode="contain"
                             style={styles.bankIcon}
                           />

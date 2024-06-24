@@ -19,7 +19,7 @@ async function next(){
     let res = await wallServ.sendOtp()
     if(res.status===1){
       if(res.otp){
-        dispatch({type:"details", bankDetails:{'otp':res.otp}})
+        // dispatch({type:"details", bankDetails:{'otp':res.otp}})
         ToastAndroid.show(res.otp+"", ToastAndroid.LONG)
       }
       navigation.navigate('bankotp')

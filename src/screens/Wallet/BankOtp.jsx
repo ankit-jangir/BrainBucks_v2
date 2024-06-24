@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useLayoutEffect} from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,45 +7,47 @@ import {
   ToastAndroid,
 } from 'react-native';
 import styles from '../../styles/Login.style';
-import {ColorsConstant} from '../../constants/Colors.constant';
-import {StyleConstants} from '../../constants/Style.constant';
-import {Text} from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import { StyleConstants } from '../../constants/Style.constant';
+import { Text } from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
-import {Button} from '../../utils/Translate';
-import {OtpInput} from 'react-native-otp-entry';
+import { Button } from '../../utils/Translate';
+import { OtpInput } from 'react-native-otp-entry';
 import basic from '../../services/BasicServices';
 import { useAddBank } from '../../context/AddBankReducer';
 import WalletApiService from '../../services/api/WalletApiService';
 import { StackActions, useIsFocused } from '@react-navigation/native';
 
-export default function BankOtp({navigation, route}) {
+export default function BankOtp({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const [phone,setPhone] = useState('0000000000')
+  const [phone, setPhone] = useState('0000000000')
   const wallServ = new WalletApiService()
-  
-  const {addBankState, dispatch} = useAddBank()
+
+  const { addBankState, dispatch } = useAddBank()
 
   const isFocused = useIsFocused()
 
   function otpChanged(value) {
-    dispatch({type:'details', bankDetails:{otp:value}})
+    dispatch({ type: 'details', bankDetails: { otp: value } })
   }
 
-  useEffect(()=>{
-   try{
-    setLoading(true) 
-    basic.getLocalObject().then(res=>{
-      setPhone(res.number.substring(3,13))
-    })}catch(err){
+  useEffect(() => {
+    try {
+      setLoading(true)
+      basic.getLocalObject().then(res => {
+        console.log(res);
+        setPhone(res.number.substring(3, 13))
+      })
+    } catch (err) {
       console.log("Error in fetching local object: ", err.message);
-    }finally{
+    } finally {
       setLoading(false)
     }
-  },[isFocused])
+  }, [isFocused])
 
   async function resendOtp() {
-    if(loading){
+    if (loading) {
       return;
     }
     setErrorMessage(null);
@@ -72,7 +74,7 @@ export default function BankOtp({navigation, route}) {
   }
 
   async function next() {
-    if(loading){
+    if (loading) {
       return
     }
     if (addBankState.otp.length !== 4) {
@@ -99,27 +101,29 @@ export default function BankOtp({navigation, route}) {
 
   return (
     <>
-      <SafeAreaView style={styles.safeArView}>
+      <View style={{ zIndex: 299 }}>
         <Toast />
+      </View>
+      <SafeAreaView style={styles.safeArView}>
         <View style={StyleConstants.bbView}>
           <Image
             source={require('../../assets/img/bbcolorlogo.png')}
             resizeMode="contain"
-            style={{width: 250}}
+            style={{ width: 250 }}
           />
         </View>
         <View style={StyleConstants.containerCard}>
-          <View style={{paddingHorizontal: 25}}>
+          <View style={{ paddingHorizontal: 25 }}>
             <View style={StyleConstants.LetsView}>
               <View style={styles.Lastview1}>
                 <View>
-                  <Text key={phone} style={[styles.EnterOtp, {marginTop: 20}]}>
-                    Enter OTP sent to XXX XXX {phone.substring(6,10)} to add Bank Account{' '}
+                  <Text key={phone} style={[styles.EnterOtp, { marginTop: 20 }]}>
+                    Enter OTP sent to your registered mobile number{' '}
                   </Text>
                 </View>
               </View>
             </View>
-            <View style={[styles.otpContainer, {marginTop: 70}]}>
+            <View style={[styles.otpContainer, { marginTop: 70 }]}>
               <OtpInput
                 numberOfDigits={4}
                 focusColor="blue"
@@ -129,6 +133,9 @@ export default function BankOtp({navigation, route}) {
                   pinCodeContainerStyle: styles.OtpBoxView,
                   pinCodeTextStyle: styles.textOtp,
                 }}
+                textInputProps={
+                  { selectTextOnFocus: false, caretHidden: true }
+              }
               />
             </View>
             {errorMessage && (
@@ -136,7 +143,7 @@ export default function BankOtp({navigation, route}) {
                 {errorMessage}
               </Text>
             )}
-            <View style={{marginTop: 20}}></View>
+            <View style={{ marginTop: 20 }}></View>
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
@@ -146,7 +153,7 @@ export default function BankOtp({navigation, route}) {
               title="Confirm"
               loading={loading}
               titleStyle={styles.textOt}
-              buttonStyle={[styles.BtnOtp, {marginTop: 50}]}
+              buttonStyle={[styles.BtnOtp, { marginTop: 50 }]}
               loadingProps={{
                 size: 'large',
                 color: '#701DDB',
@@ -156,7 +163,7 @@ export default function BankOtp({navigation, route}) {
               <Text style={styles.textOtp}>Did not receive OTP ? </Text>
               <TouchableOpacity onPress={resendOtp}>
                 <Text
-                  style={[styles.textOtp, {color: ColorsConstant.TermColor}]}>
+                  style={[styles.textOtp, { color: ColorsConstant.TermColor }]}>
                   {' '}
                   Resend OTP
                 </Text>

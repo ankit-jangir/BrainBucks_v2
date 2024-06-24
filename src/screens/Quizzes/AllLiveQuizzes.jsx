@@ -119,7 +119,7 @@ export default function AllLiveQuizzes({ navigation, route }) {
               />
             </TouchableOpacity>
             <View style={styles.headerTitleContainer}>
-              <Text style={styles.headerTitle}>{type === 'trivia' ? "All Trivia Quizes" : type === 'enrolled' ? "All Enrolled Quizzes" : "All Live Quizzes"}</Text>
+              <Text style={styles.headerTitle}>{type === 'trivia' ? "All Free Trivia" : type === 'enrolled' ? "All Enrolled Quizzes" : "All Live Quizzes"}</Text>
             </View>
           </View>
         </View>
