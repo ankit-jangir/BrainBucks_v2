@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
-import {Text, Image, View, StatusBar} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer, useIsFocused} from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { Text, Image, View, StatusBar } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Sidebar from './src/screens/Home/Sidebar';
 import Wallet from './src/screens/Wallet/Wallet';
 import Study from './src/screens/Study/Study';
@@ -106,6 +106,7 @@ import ScheduleQuizTime from './src/screens/Rooms/ScheduleQuizTime';
 import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfullyQuiz';
 import RoomSetting from './src/screens/Rooms/RoomSetting';
 import { ColorsConstant } from './src/constants/Colors.constant';
+import GraphQLProvider from './src/context/GraphQLProvider';
 
 
 
@@ -167,21 +168,21 @@ function MyStack() {
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
       <Stack.Screen name="paymentpopup" component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
-      <Stack.Screen name='QuestionsPaper' component={QuestionsPaper}/>
-      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation}/>
+      <Stack.Screen name='QuestionsPaper' component={QuestionsPaper} />
+      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
-      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation}/>
+      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation} />
       <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
-      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation}/>
-      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz}/>
+      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation} />
+      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz} />
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
-      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper}/>
-      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation}/>
+      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
+      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
       <Stack.Screen name="resultreward" component={ResultRewards} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
@@ -191,30 +192,32 @@ function MyStack() {
       <Stack.Screen name="viewpdf" component={ViewPdf} />
       <Stack.Screen name="addExamss" component={AddExamss} />
       <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
-      <Stack.Screen name='myexams' component={MyExams}/>
-      <Stack.Screen name='search' component={Search}/>
-      <Stack.Screen name="Notification" component={Notification}/>
-      <Stack.Screen name='chat' component={Chat}/>
-      <Stack.Screen name='support' component={Support}/>
-      <Stack.Screen name="AboutBB" component={AboutBb}/>
-      <Stack.Screen name="CustomerSupport" component={CustomerSupport}/>
-      <Stack.Screen name="ScoreCard" component={ScoreCard}/>
-      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive}/>
-      <Stack.Screen name="QuizzesResult" component={QuizzesResult}/>
-      <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards}/>
-      <Stack.Screen name='reels' component={Reels} options={{gestureEnabled:false}}/>
-      <Stack.Screen name='rooms' component={Rooms}/>
-      <Stack.Screen name='createroom' component={CreateRoom}/>
-      <Stack.Screen name='roomcreatedsuccess' component={RoomCreatedSuccesfully}/>
-      <Stack.Screen name='roomenter' component={RoomEnter}/>
-      <Stack.Screen name='roomhistory' component={RoomsQuizHistory}/>
-      <Stack.Screen name='createlivequiz' component={CreateLiveQuiz}/> 
-      <Stack.Screen name='createliveslots' component={CreateLiveSlots}/> 
-      <Stack.Screen name='createquizsuccesfully' component={CreatedQuizSuccesfully}/> 
-      <Stack.Screen name='schedulquiz' component={ScheduleQuiz}/> 
-      <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime}/> 
-      <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz}/> 
-      <Stack.Screen name='roomsetting' component={RoomSetting}/> 
+      <Stack.Screen name='myexams' component={MyExams} />
+      <Stack.Screen name='search' component={Search} />
+      <Stack.Screen name="Notification" options={
+        {title:'Notification'}
+      } component={Notification} />
+      <Stack.Screen name='chat' component={Chat} />
+      <Stack.Screen name='support' component={Support} />
+      <Stack.Screen name="AboutBB" component={AboutBb} />
+      <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
+      <Stack.Screen name="ScoreCard" component={ScoreCard} />
+      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive} />
+      <Stack.Screen name="QuizzesResult" component={QuizzesResult} />
+      <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards} />
+      <Stack.Screen name='reels' component={Reels} options={{ gestureEnabled: false }} />
+      <Stack.Screen name='rooms' component={Rooms} />
+      <Stack.Screen name='createroom' component={CreateRoom} />
+      <Stack.Screen name='roomcreatedsuccess' component={RoomCreatedSuccesfully} />
+      <Stack.Screen name='roomenter' component={RoomEnter} />
+      <Stack.Screen name='roomhistory' component={RoomsQuizHistory} />
+      <Stack.Screen name='createlivequiz' component={CreateLiveQuiz} />
+      <Stack.Screen name='createliveslots' component={CreateLiveSlots} />
+      <Stack.Screen name='createquizsuccesfully' component={CreatedQuizSuccesfully} />
+      <Stack.Screen name='schedulquiz' component={ScheduleQuiz} />
+      <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime} />
+      <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz} />
+      <Stack.Screen name='roomsetting' component={RoomSetting} />
 
 
     </Stack.Navigator>
@@ -226,8 +229,8 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: {fontSize: 13, paddingBottom: 5},
-          tabBarStyle: {height: 60, backgroundColor: 'white'},
+          tabBarLabelStyle: { fontSize: 13, paddingBottom: 5 },
+          tabBarStyle: { height: 60, backgroundColor: 'white' },
           tabBarShowLabel: true,
           headerShown: false,
           tabBarActiveTintColor: ColorsConstant.Theme,
@@ -238,20 +241,20 @@ function MyTabs() {
             component={Home}
             options={{
               tabBarLabel: 'Home',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/homedark.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/homenormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -263,20 +266,20 @@ function MyTabs() {
             component={Study}
             options={{
               tabBarLabel: 'Categories',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/bookmarkblack.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/bookmark.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -298,13 +301,13 @@ function MyTabs() {
           ))}}/> */}
 
           <Tab.Screen
-            style={{position: 'relative '}}
+            style={{ position: 'relative ' }}
             name="Courses"
             component={Courses}
             options={{
-              tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
+              tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
               tabBarLabel: 'Courses',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View
                   style={{
                     position: 'absolute',
@@ -331,13 +334,13 @@ function MyTabs() {
                       <Image
                         source={require('./src/assets/img/roomimgwhite.png')}
                         resizeMode="contain"
-                        style={{width: 30, height: 30}}
+                        style={{ width: 30, height: 30 }}
                       />
                     ) : (
                       <Image
                         source={require('./src/assets/img/roomimg.png')}
                         resizeMode="contain"
-                        style={{width: 35, height: 35}}
+                        style={{ width: 35, height: 35 }}
                       />
                     )}
                   </View>
@@ -370,20 +373,20 @@ function MyTabs() {
             component={Saved}
             options={{
               tabBarLabel: 'Saved',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/heart.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/heartnormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -395,20 +398,20 @@ function MyTabs() {
             component={Wallet}
             options={{
               tabBarLabel: 'Wallet',
-              tabBarIcon: ({focused, color}) => (
+              tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
                       source={require('./src/assets/img/walletblack.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
                       source={require('./src/assets/img/walletnormal.png')}
                       resizeMode="contain"
-                      style={{width: 20, height: 20}}
+                      style={{ width: 20, height: 20 }}
                     />
                   )}
                 </View>
@@ -424,7 +427,7 @@ function MyTabs() {
 function MyDrawer() {
   return (
     <Drawer.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       drawerContent={props => <Sidebar {...props} />}>
       <Drawer.Screen name="Home" component={MyTabs} />
     </Drawer.Navigator>
@@ -439,7 +442,9 @@ export default function App() {
         <WithdrawReducer>
           <IdReducer>
             <QuizPlayReducer>
-              <MyStack />
+              <GraphQLProvider>
+                <MyStack />
+              </GraphQLProvider>
             </QuizPlayReducer>
           </IdReducer>
         </WithdrawReducer>

@@ -1,7 +1,10 @@
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native'
 import basic from '../services/BasicServices';
-import ChatSockService from '../services/api/ChatSockService';
+
+import NetInfo from '@react-native-community/netinfo'
+import { onlineManager } from '@tanstack/react-query'
+
 
 /**
  * this message shows the notification on the device when recieved it from any external source
@@ -17,24 +20,24 @@ export async function onMessageReceived(message) {
             name: 'Default Channel',
         }
     )
-    
+
 
     let item = message
 
-    if(typeof message !== 'object')
-    item = JSON.parse(message)
+    if (typeof message !== 'object')
+        item = JSON.parse(message)
 
     let msg = item.notification;
 
     await notifee.displayNotification({
         ...msg,
-        android:{
-            channelId:channel,
+        android: {
+            channelId: channel,
             pressAction: {
                 id: 'default',
-              }
+            }
         }
-      });
+    });
 }
 
 
@@ -55,6 +58,13 @@ export default async function onAppBootstrap() {
         // Save the token
         basic.setFcm(token)
         console.log("Fcm Token", token);
+
+        onlineManager.setEventListener((setOnline) => {
+            return NetInfo.addEventListener((state) => {
+                setOnline(!!state.isConnected)
+            })
+        })
+
     }
     catch (err) {
         console.log("Error in Fetching Fcm from firebase: ", err.message)

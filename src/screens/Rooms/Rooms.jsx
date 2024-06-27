@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
 import Explore from './Explore';
@@ -7,6 +7,10 @@ import MyRooms from './MyRooms';
 import { Button } from '../../utils/Translate';
 import { Text } from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
+import { getPublicRoomsController } from '../../controllers/RoomsController';
+import { useQuery } from '@apollo/client';
+import RoomsApiService from '../../services/api/RoomsApiService';
+import Search from '../Home/Search';
 
 const Tab = createMaterialTopTabNavigator();
 

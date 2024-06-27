@@ -4,11 +4,24 @@ import styles from '../../styles/Rooms.styles'
 import styles2 from '../../styles/Studymaterials.styles'
 import { Button, Text, TextInput } from '../../utils/Translate'
 import Toast from 'react-native-toast-message'
+import { createRoomInController } from '../../controllers/RoomsController'
+import { ColorsConstant } from '../../constants/Colors.constant'
 
 export default function CreateRoom({navigation}) {
 
     const [name, setName] = useState('')
     const [selected, setSelected] = useState("Public")
+    const [errorMessage, setErrorMessage] = useState("")
+    const [loading, setLoading] = useState(false);
+
+    async function createRoom(){
+        let type = selected==="Public"?1:0;
+        let res = await createRoomInController(type,name,setErrorMessage,setLoading)
+        if(res){
+            navigation.navigate('roomcreatedsuccess',{name:name})
+            setName("")
+        }
+    }
 
     return (
         <SafeAreaView style={styles.maincontainer}>
@@ -18,7 +31,6 @@ export default function CreateRoom({navigation}) {
                     <Image style={styles.backimg} source={require('../../assets/img/arrow-left.png')} />
                 </TouchableOpacity>
             </View>
-
 
             <ScrollView>
                 <View style={{ padding: 20 }}>
@@ -66,18 +78,21 @@ export default function CreateRoom({navigation}) {
                     <View>
                         <Text style={styles.createRoomOptionText}>Enter the name of Room</Text>
                         <TextInput
-                            style={styles.createRoomInput}
+                            style={[styles.createRoomInput, errorMessage&&{borderWidth:1,borderColor:"red"}]}
                             placeholder={"Ex. My UPSC Room"}
                             placeholderTextColor={"gray"}
                             value={name}
-                            onChangeText={setName} />
+                            onChangeText={text=>{setErrorMessage(null), setName(text)}} />
+                        {errorMessage&&<Text key={errorMessage} style={{color:"red", fontSize:15, marginTop:10}}>*{errorMessage}</Text>}
                     </View>
 
                 </View>
             </ScrollView>
 
             <Button
-                onPress={()=>{navigation.navigate('roomcreatedsuccess')}}
+                loading={loading}
+                loadingProps={{color:ColorsConstant.Theme, size:26}}
+                onPress={()=>{createRoom()}}
                 title={"Create Room"}
                 buttonStyle={styles.createRoomBtn}
                 containerStyle={{alignSelf:"flex-end", width:"100%"}}

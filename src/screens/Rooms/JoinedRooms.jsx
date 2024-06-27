@@ -22,8 +22,8 @@ export default function JoinedRooms({ navigation }) {
         }
     ])
 
-    async function getJoinedRooms() { }
-    async function exitRoom() { }
+    async function getJoinedRooms() {}
+    async function exitRoom() {}
 
 
     return (

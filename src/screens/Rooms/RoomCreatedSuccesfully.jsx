@@ -5,7 +5,7 @@ import { Button, Text } from '../../utils/Translate'
 import { ColorsConstant } from '../../constants/Colors.constant'
 
 export default function RoomCreatedSuccesfully({ navigation, route }) {
-    let roomname = 'Name'
+    let roomname = route.params.name;
     return (
         <View style={[styles.maincontainer, { padding: 10, justifyContent: 'center', alignItems: 'center' }]}>
             <View style={{ flex: 0.6, width: '100%', alignItems: 'center', justifyContent: 'center' }}>

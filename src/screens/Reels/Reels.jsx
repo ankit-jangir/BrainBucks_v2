@@ -280,6 +280,7 @@ const Reels = ({ navigation, route }) => {
             </ScrollView>
 <> 
             <FlatList
+                showsVerticalScrollIndicator={false}
                 style={{flexGrow:1}}
                 ref={scrollRef}
                 onEndReached={() => { if (!loadingMore) getReels(currentPage + 1) }}
