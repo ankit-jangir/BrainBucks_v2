@@ -66,35 +66,105 @@ class RoomsApiService {
        }
       }
        `;
-    Get_Req_Participants_Quiz = gql`
-  query GetParticipants($room_id: String, $page: Int!) {
-    get_req_participants_of_quiz(room_id: $room_id, page: $page) {
-        status
-        error
-        totalPages
-        response {
-            _id
-            name
-            image
-        }
-    }
-  }
-`;
 
-    Get_Enroll_Participants_Quiz = gql`
-  query GetEnrollParticipants {
-    get_enrl_participants_of_quiz(room_id: "66792b61535c7636160ec0e4", page: 1) {
-        status
-        error
-        totalPages
-        response {
-            _id
-            name
-            image
+    GETROOMJOINREQUESTS = gql`
+        query Get_req_participants_of_quiz($room_id:String!, $page: Int!) {
+            get_req_participants_of_quiz(room_id: $room_id, page: $page) {
+                status
+                error
+                totalPages
+                response {
+                    _id
+                    name
+                    image
+                }
+            }
         }
-    }
-  }
-`;
+    `;
+
+    GETROOMMEMBERS = gql`
+        query Get_enrl_participants_of_quiz($room_id:String!, $page:Int!) {
+            get_enrl_participants_of_quiz(room_id: $room_id, page: $page) {
+                status
+                error
+                totalPages
+                response {
+                    _id
+                    name
+                    image
+                }
+            }
+        }
+    `;
+
+    GETLIVEQUIZES = gql`
+        query Live_quizes($room_id: String!) {
+            live_quizes(room_id: $room_id) {
+                status
+                error
+                totalPages
+                response {
+                    _id
+                    prize
+                    slots
+                    slot_aloted
+                    sch_time
+                    category_name
+                    entryFees
+                    participants
+                    rewards
+                    room_name
+                    room_id
+                }
+            }
+        }`;
+
+
+    GETSCHEDULEDQUIZES = gql`
+        query Schedule_quizes($room_id: String!, $page: Int!) {
+            schedule_quizes(room_id: $room_id, page: $page) {
+                status
+                error
+                totalPages
+                response {
+                    _id
+                    prize
+                    slots
+                    slot_aloted
+                    sch_time
+                    category_name
+                    entryFees
+                    participants
+                    rewards
+                    room_name
+                    room_id
+                }
+            }
+        }
+    `;
+
+    GETHISTORYQUIZES = gql
+        `query History_quizes($room_id: String!, $page: Int!) {
+            history_quizes(room_id: $room_id, page: $page) {
+                status
+                error
+                totalPages
+                response {
+                    _id
+                    prize
+                    slots
+                    slot_aloted
+                    sch_time
+                    category_name
+                    entryFees
+                    participants
+                    rewards
+                    room_name
+                    room_id
+                }
+            }
+        }`;
+
 
     async createRoom(room_name, room_type) {
         let token = await basic.getBearerToken()

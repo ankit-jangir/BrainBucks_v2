@@ -71,6 +71,8 @@ export default function QuestionsPaper({ navigation }) {
         handleSubmit()
       }
     }, 1000);
+    
+    return ()=>{BackgroundTimer.clearInterval(interval)}
   }
     , [])
 
@@ -120,7 +122,6 @@ export default function QuestionsPaper({ navigation }) {
   }
 
 
-
   return (
     <>
       <View style={{ zIndex: 200 }}><Toast /></View>
@@ -137,7 +138,7 @@ export default function QuestionsPaper({ navigation }) {
                 setSubmitText("Quit from quiz")
                 setModalVisible(!modalVisible)
               }
-            }
+              }
               style={styles.quitView3}
             >
               <Text style={styles.textQuite}>Quit</Text>
@@ -148,7 +149,7 @@ export default function QuestionsPaper({ navigation }) {
             <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
           </View>
 
-          <TouchableOpacity onPress={()=>{
+          <TouchableOpacity onPress={() => {
             setSubmitText("Submit quiz")
             setModalVisible(!modalVisible)
           }} style={{
@@ -158,7 +159,7 @@ export default function QuestionsPaper({ navigation }) {
             <Text style={styles.textQuite}>Submit</Text>
           </TouchableOpacity>
 
-          
+
         </View>
 
         <View style={styles.quitView}>

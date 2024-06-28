@@ -102,7 +102,7 @@ export default function AboutBb({ navigation }) {
               <Text style={styles.AboutTextF5}>d. Corporate Relations</Text>
             </View>
             <Text style={styles.AboutTextF3}>4. Dharamveer singh nathawat -  Back-End Developer & DevOPS Engineer</Text>
-            <Text style={styles.AboutTextF3}>5. Pradeep Yadav - Back-End Developer & QA Engineer</Text>
+            <Text style={styles.AboutTextF3}>5. Yogesh Poonia - Full-Stack Developer</Text>
             <Text style={styles.AboutTextF7}>6. Sonu Yadav - Front-End Developer</Text>
             <Text style={styles.AboutTextF3}>7. Ayushi Sharma - Full-Stack Developer </Text>
           </View>

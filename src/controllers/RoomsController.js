@@ -23,8 +23,8 @@ export async function createRoomInController(room_type, room_name, setErrorMessa
             return await roomServ.createRoom(room_name, room_type);
         },
         toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
+        () => { setLoading(true) },
+        () => { setLoading(false) }
     )
 
     return res;
@@ -41,76 +41,70 @@ export async function joinPublicRoomInController(room_id, toast) {
     return res;
 }
 
-export async function joinPrivateRoomInController(room_hash, toast, setLoading){
+export async function joinPrivateRoomInController(room_hash, toast) {
+    if(!room_hash){
+        toast.show({
+            type:'info',
+            text1:"Please enter room hash first"
+        })
+    }
     let res = BasicServices.apiTryCatch(
         async () => {
             return await roomServ.joinPublicRoom(room_hash);
         },
-        toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
+        toast
     )
     return res;
 }
 
-export async function withdrawJoinRequestInController(room_id, toast, setLoading){
+export async function withdrawJoinRequestInController(room_id, toast) {
     let res = BasicServices.apiTryCatch(
         async () => {
             return await roomServ.withdrawJoinRequest(room_id);
         },
-        toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
+        toast
     )
     return res;
 }
 
-export async function rejectJoinRequestInController(room_id, user_id, toast, setLoading){
+export async function rejectJoinRequestInController(room_id, user_id, toast) {
     let res = BasicServices.apiTryCatch(
         async () => {
             return await roomServ.rejectJoinRequest(room_id, user_id);
         },
         toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
     )
     return res;
 }
 
-export async function acceptJoinRequestInController(room_id, user_id, toast, setLoading){
+export async function acceptJoinRequestInController(room_id, user_id, toast) {
     let res = BasicServices.apiTryCatch(
         async () => {
             return await roomServ.acceptJoinRequest(room_id, user_id);
         },
         toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
     )
     return res;
 }
 
-export async function exitRoomInController(room_id,toast, setLoading){
+export async function exitRoomInController(room_id, toast) {
     let res = BasicServices.apiTryCatch(
-        async()=>{
+        async () => {
             return await roomServ.exitRoom(room_id)
         },
-        toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}   
+        toast
     )
 
     return res;
 
 }
 
-export async function deleteRoomInController(room_id, toast, setLoading){
+export async function deleteRoomInController(room_id, toast) {
     let res = BasicServices.apiTryCatch(
-        async()=>{
+        async () => {
             return await roomServ.deleteRoom(room_id)
         },
-        toast,
-        ()=>{setLoading(true)},
-        ()=>{setLoading(false)}
+        toast
     )
 
     return res;

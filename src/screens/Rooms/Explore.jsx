@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Image, ActivityIndicator, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from '../Home/SearchBar'
 import styles from '../../styles/Rooms.styles'
 import styles2 from '../../styles/Study.styles'
@@ -19,15 +19,22 @@ export default function Explore() {
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)
     const [modalVisible, setModalVisible] = useState(false)
+    const timeoutRef = useRef();
+
 
     let ras = new RoomsApiService();
 
     async function sendRequest(room_id) {
         let res = await joinPublicRoomInController(room_id, Toast)
         if (res) {
-            refetch();
+            let newArr = rooms.filter((item) => item._id !== room_id)
+            setRooms([...newArr])
+
             setModalVisible(true)
-            setTimeout(() => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+            timeoutRef.current = setTimeout(() => {
                 setModalVisible(false)
             }, 3000)
         }
@@ -35,7 +42,7 @@ export default function Explore() {
 
     let { loading, error, data, refetch } = useQuery(ras.GETPUBLICROOMS, {
         variables: {
-            Search: search, page: currentPage
+            search: search, page: currentPage
         }
     })
 
@@ -79,68 +86,73 @@ export default function Explore() {
     // console.log(loading, error, (data?.getPublicRoom?.response?.length), data?.getPublicRoom?.totalPages)
 
     return (
-        <View style={[styles.maincontainer, { paddingHorizontal: 10 }]}>
-            <View style={styles2.inputView}>
-                <View style={styles2.inputView1}>
-                    <TextInput
-                        value={search}
-                        onChangeText={(text) => { setSearch(text) }}
-                        style={styles2.inputText}
-                        placeholder="Search for Exams"
-                        placeholderTextColor={'#7E7E7E'}
-                    >
-                    </TextInput>
-                    <TouchableOpacity style={styles2.touchSearch}>
-                        <Image
-                            source={require('../../assets/img/search.png')}
-                            resizeMode="contain"
-                            style={{ width: 20, height: 20 }}
-                        />
-                    </TouchableOpacity>
-                </View>
+        <>
+            <View style={{ zIndex: 20 }}>
+                <Toast />
             </View>
-            {
-                (loading && currentPage === 1)
-                    ?
-                    <ActivityIndicator size={40} color={ColorsConstant.Theme} />
-                    :
-                    rooms.length === 0
+            <View style={[styles.maincontainer, { paddingHorizontal: 10 }]}>
+                <View style={styles2.inputView}>
+                    <View style={styles2.inputView1}>
+                        <TextInput
+                            value={search}
+                            onChangeText={(text) => { setSearch(text) }}
+                            style={styles2.inputText}
+                            placeholder="Search for Rooms"
+                            placeholderTextColor={'#7E7E7E'}
+                        >
+                        </TextInput>
+                        <TouchableOpacity style={styles2.touchSearch}>
+                            <Image
+                                source={require('../../assets/img/search.png')}
+                                resizeMode="contain"
+                                style={{ width: 20, height: 20 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {
+                    (loading && currentPage === 1)
                         ?
-                        <NoDataFound scale={0.7} message={"No Rooms Found"} action={() => { }} actionText={"Load Again"} />
+                        <ActivityIndicator size={40} color={ColorsConstant.Theme} />
                         :
-                        <FlatList
-                            data={rooms}
-                            keyExtractor={(item) => item._id}
-                            onEndReached={() => {
-                                if (currentPage <= totalPages) {
-                                    setCurrentPage(pre => pre + 1)
+                        rooms.length === 0
+                            ?
+                            <NoDataFound scale={0.7} message={"No Rooms Found"} action={() => { }} actionText={"Load Again"} />
+                            :
+                            <FlatList
+                                data={rooms}
+                                keyExtractor={(item) => item._id}
+                                onEndReached={() => {
+                                    if (currentPage <= totalPages) {
+                                        setCurrentPage(pre => pre + 1)
+                                    }
                                 }
-                            }
-                            }
-                            onEndReachedThreshold={0.5}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={styles.roomContainer}>
-                                        <Text style={styles.roomNameText}>{item.room_name}</Text>
-                                        <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
-                                            <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
+                                }
+                                onEndReachedThreshold={0.5}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={styles.roomContainer}>
+                                            <Text style={styles.roomNameText}>{item.room_name}</Text>
+                                            <View style={styles.memberHolder}>
+                                                <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                                <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
+                                            </View>
+                                            <Button
+                                                onPress={() => {
+                                                    sendRequest(item._id)
+                                                }}
+                                                title={"Send Request"} />
                                         </View>
-                                        <Button
-                                            onPress={() => {
-                                                sendRequest(item._id)
-                                            }}
-                                            title={"Send Request"} />
-                                    </View>
-                                )
-                            }}
-                        />
-            }
+                                    )
+                                }}
+                            />
+                }
 
-            {loading && currentPage > 1 && <ActivityIndicator size={20} color={ColorsConstant.Theme} />}
-            <Modal visible={modalVisible} onDismiss={() => { setModalVisible(false) }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >
-                <LottieView source={require('../../assets/img/check.json')} autoPlay={true} style={{ width: 200, height: 200 }} />
-            </Modal>
-        </View>
+                {loading && currentPage > 1 && <ActivityIndicator size={20} color={ColorsConstant.Theme} />}
+                <Modal visible={modalVisible} onDismiss={() => { setModalVisible(false) }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >
+                    <LottieView source={require('../../assets/img/check.json')} autoPlay={true} style={{ width: 200, height: 200 }} />
+                </Modal>
+            </View>
+        </>
     )
 }

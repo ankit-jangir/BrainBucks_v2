@@ -13,7 +13,7 @@ const Tab = createMaterialTopTabNavigator()
 
 export default function RoomEnter({ navigation, route }) {
 
-    let roomName = "Room Name"
+    const room_data = route.params.room_data;
     const [selected, setSelected] = useState('Quizzes')
     const type = route.params.type;
 
@@ -32,7 +32,9 @@ export default function RoomEnter({ navigation, route }) {
                                 icon={<Image style={styles.histImg}
                                     source={require('../../assets/img/mail.png')} />
                                 }
-                                onPress={() => { }}
+                                onPress={() => {navigation.navigate("RoomNotification",{
+                                    room_data:room_data
+                                })}}
                                 buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                                 title={"9+"}
                                 titleStyle={{ fontSize: 14 }}
@@ -43,7 +45,7 @@ export default function RoomEnter({ navigation, route }) {
                             icon={<Image style={styles.histImg}
                                 source={type === 'created' ? require('../../assets/img/setting.png') : require('../../assets/img/historywatch.png')} />
                             }
-                            onPress={() => { }}
+                            onPress={() => { type==='created'&& navigation.navigate('roomsetting', {room_data:room_data, type:type})  }}
                             buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                             title={type === 'created' ? "Settings" : "History"}
                             titleStyle={{ fontSize: 14 }}
@@ -52,13 +54,14 @@ export default function RoomEnter({ navigation, route }) {
                 </View>
 
                 <View style={styles.detailsContainer}>
-                    <Text style={[styles.roomNameText, { color: ColorsConstant.White }]}>{roomName}</Text>
-                    <Text style={[styles.memberText, { color: ColorsConstant.White }]}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{20}</Text><Text style={{ color: ColorsConstant.White }}>/{30}</Text></Text>
+                    <Text style={[styles.roomNameText, { color: ColorsConstant.White }]}>{room_data.room_name}</Text>
+                    <Text style={[styles.memberText, { color: ColorsConstant.White }]}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{room_data.enrolled_participants_count}</Text><Text style={{ color: ColorsConstant.White }}>{}</Text></Text>
                     <View style={styles.invitePrev}>
                         <Button
                             icon={
                                 <Image
                                     style={styles.backRoomEnterImg}
+                                    tintColor={"white"}
                                     source={require('../../assets/img/share.png')}
                                 />
                             }
@@ -66,7 +69,7 @@ export default function RoomEnter({ navigation, route }) {
                             titleStyle={{ fontSize: 12 }}
                             title={"Invite"}
                         />
-                        <Text style={{ fontSize: 12 }}>Private</Text>
+                        <Text style={{ fontSize: 12, color:"white" }}>{room_data.room_hash ? "Private": "Public" }</Text>
                     </View>
 
                     <View style={[styles2.container, { marginHorizontal: 0 }]}>
@@ -130,8 +133,8 @@ export default function RoomEnter({ navigation, route }) {
 
             <View style={styles.secondEnter}>
                 <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={false} width={100} />}>
-                    <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
-                    <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} />
+                    <Tab.Screen name="Live Quizzes" component={LiveQuizzes} initialParams={{room_data:room_data}} />
+                    <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} initialParams={{room_data:room_data}}  />
                 </Tab.Navigator>
 
             </View>

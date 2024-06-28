@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, Image, View, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
+import { getHeaderTitle } from '@react-navigation/elements';
 import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -107,6 +108,7 @@ import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfully
 import RoomSetting from './src/screens/Rooms/RoomSetting';
 import { ColorsConstant } from './src/constants/Colors.constant';
 import GraphQLProvider from './src/context/GraphQLProvider';
+import RoomNotifications from './src/screens/Rooms/RoomNotifications';
 
 
 
@@ -195,7 +197,7 @@ function MyStack() {
       <Stack.Screen name='myexams' component={MyExams} />
       <Stack.Screen name='search' component={Search} />
       <Stack.Screen name="Notification" options={
-        {title:'Notification'}
+        { title: 'Notification' }
       } component={Notification} />
       <Stack.Screen name='chat' component={Chat} />
       <Stack.Screen name='support' component={Support} />
@@ -218,9 +220,24 @@ function MyStack() {
       <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime} />
       <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz} />
       <Stack.Screen name='roomsetting' component={RoomSetting} />
-
+      <Stack.Screen name="RoomNotification" component={RoomNotifications}/>
 
     </Stack.Navigator>
+  );
+}
+
+
+const getHeader = ({ navigation, route, options, back }) => {
+  const title = getHeaderTitle(options, route.name);
+
+  return (
+    <MyHeader
+      title={title}
+      leftButton={
+        back ? <MyBackButton onPress={navigation.goBack} /> : undefined
+      }
+      style={options.headerStyle}
+    />
   );
 }
 

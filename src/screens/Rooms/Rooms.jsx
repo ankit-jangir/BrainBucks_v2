@@ -11,6 +11,7 @@ import { getPublicRoomsController } from '../../controllers/RoomsController';
 import { useQuery } from '@apollo/client';
 import RoomsApiService from '../../services/api/RoomsApiService';
 import Search from '../Home/Search';
+import PrivateRooms from './PrivateRooms';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -18,6 +19,10 @@ export default function Rooms({ navigation }) {
 
 
     return (
+        <>
+        {/* <View style={{zIndex:20}}>
+            <Toast/>
+        </View> */}
         <View style={styles.maincontainer}>
             <View style={styles.topbtns}>
                 <Text style={styles.roomstext}>Rooms</Text>
@@ -29,11 +34,13 @@ export default function Rooms({ navigation }) {
                         paddingHorizontal: 15
                     }} />
             </View>
-            <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} />}>
+            <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}>
                 <Tab.Screen name="Explore" component={Explore} />
+                <Tab.Screen name="Private" component={PrivateRooms}/>
                 <Tab.Screen name="My Rooms" component={MyRooms} />
             </Tab.Navigator>
         </View>
+        </>
     )
 }
 
@@ -85,6 +92,7 @@ export function MyTabBar({ state, descriptors, navigation, position, imgNeeded, 
 
                 return (
                     <TouchableOpacity
+                        key={label}
                         accessibilityRole="button"
                         accessibilityState={isFocused ? { selected: true } : {}}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
