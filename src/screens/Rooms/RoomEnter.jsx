@@ -45,7 +45,9 @@ export default function RoomEnter({ navigation, route }) {
                             icon={<Image style={styles.histImg}
                                 source={type === 'created' ? require('../../assets/img/setting.png') : require('../../assets/img/historywatch.png')} />
                             }
-                            onPress={() => { type==='created'&& navigation.navigate('roomsetting', {room_data:room_data, type:type})  }}
+                            onPress={() => { type==='created'? navigation.navigate('roomsetting', {room_data:room_data, type:type}):
+                            navigation.navigate('roomhistory')
+                          }}
                             buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                             title={type === 'created' ? "Settings" : "History"}
                             titleStyle={{ fontSize: 14 }}
@@ -93,21 +95,7 @@ export default function RoomEnter({ navigation, route }) {
                                 </View>
                                 :
                                 <>
-                                    <TouchableOpacity
-                                        style={[
-                                            styles2.button1,
-                                            selected === 'Quizzes' ? { backgroundColor: '#FFF' } : { backgroundColor: '#8D4AE2' },
-                                            { flex: 1, paddingHorizontal: 0, alignItems: 'center', marginHorizontal: 0 }
-                                        ]}
-                                        onPress={() => setSelected('Quizzes')}
-                                    >
-                                        <Text style={[
-                                            styles2.text,
-                                            selected === 'Quizzes' ? { color: "#701DDB" } : { color: "#FFF" }
-                                        ]}>
-                                            Quizzes
-                                        </Text>
-                                    </TouchableOpacity>
+                                    
                                     <TouchableOpacity
                                         style={[
                                             styles2.button,

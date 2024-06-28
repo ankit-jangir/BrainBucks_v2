@@ -109,6 +109,15 @@ import RoomSetting from './src/screens/Rooms/RoomSetting';
 import { ColorsConstant } from './src/constants/Colors.constant';
 import GraphQLProvider from './src/context/GraphQLProvider';
 import RoomNotifications from './src/screens/Rooms/RoomNotifications';
+import RoomsAnimations from './src/screens/Rooms/RoomsAnimations';
+import RoomsDetails from './src/screens/Rooms/RoomsDetails';
+import RoomsStart from './src/screens/Rooms/RoomsStart';
+import RoomsParticipants from './src/screens/Rooms/RoomsParticipants.js';
+import RoomsReward from './src/screens/Rooms/RoomsReward';
+import RoomsRules from './src/screens/Rooms/RoomsRules.js';
+import RoomsQuestions from './src/screens/Rooms/RoomsQuestions.js';
+import RoomsResult from './src/screens/Rooms/RoomsResult.js';
+import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 
 
 
@@ -221,8 +230,19 @@ function MyStack() {
       <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz} />
       <Stack.Screen name='roomsetting' component={RoomSetting} />
       <Stack.Screen name="RoomNotification" component={RoomNotifications}/>
+      <Stack.Screen name="Roomanmations" component={RoomsAnimations}/>
+      <Stack.Screen name="Roomdetails" component={RoomsDetails}/>
+      <Stack.Screen name="Roomstart" component={RoomsStart}/>
+      <Stack.Screen name="RoomsParticipants" component={RoomsParticipants}/>
+      <Stack.Screen name="RoomsReward" component={RoomsReward}/>
+      <Stack.Screen name="RoomsRules" component={RoomsRules}/>
+      <Stack.Screen name="Roomsquestions" component={RoomsQuestions}/>
+      <Stack.Screen name="RoomsResult" component={RoomsResult}/>
+      <Stack.Screen name="RoomsScored" component={RoomsScored}/>
+      <Stack.Screen name="RoomsReward" component={RoomsReward}/>
 
-    </Stack.Navigator>
+
+</Stack.Navigator>
   );
 }
 

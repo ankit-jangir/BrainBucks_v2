@@ -82,7 +82,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                                 {console.log(item)}
                                 return (
                                     <QuizCard
-                                        onPress={() => {register(item._id)}}
+                                        onPress={() => {navigation.navigate('Roomdetails')}}
                                         image={require('../../assets/img/facebook.png')}
                                         title={item.category_name}
                                         fees={item.entryFees}

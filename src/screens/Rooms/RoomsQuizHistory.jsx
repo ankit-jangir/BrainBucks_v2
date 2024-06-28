@@ -114,7 +114,7 @@ export default function RoomsQuizHistory({ navigation }) {
                                             date={item.sch_time}
                                             onPress={() => {
                                                 dispatch({ type: 'change', state: { id: item._id } })
-                                                navigation.navigate("QuizzesResult")
+                                                navigation.navigate("RoomsResult")
                                             }
                                             }
                                             btntxt={"View Result"}
