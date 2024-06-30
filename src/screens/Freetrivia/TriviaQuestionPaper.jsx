@@ -51,6 +51,10 @@ export default function TriviaQuestionPaper({ navigation }) {
     let min = (Math.floor(quizState.time / 60));
     let tmc = Math.floor(quizState.time % 60);
 
+    
+    setMinute(min)
+    setTimerCount(tmc)
+
     const interval = BackgroundTimer.setInterval(() => {
       if (tmc > 0) {
         tmc = tmc-1;

@@ -18,7 +18,7 @@ export async function createRoomInController(room_type, room_name, setErrorMessa
         }
     }
 
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.createRoom(room_name, room_type);
         },
@@ -32,7 +32,7 @@ export async function createRoomInController(room_type, room_name, setErrorMessa
 
 export async function joinPublicRoomInController(room_id, toast) {
 
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.joinPublicRoom(room_id);
         },
@@ -42,13 +42,13 @@ export async function joinPublicRoomInController(room_id, toast) {
 }
 
 export async function joinPrivateRoomInController(room_hash, toast) {
-    if(!room_hash){
+    if (!room_hash) {
         toast.show({
-            type:'info',
-            text1:"Please enter room hash first"
+            type: 'info',
+            text1: "Please enter room hash first"
         })
     }
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.joinPublicRoom(room_hash);
         },
@@ -58,7 +58,7 @@ export async function joinPrivateRoomInController(room_hash, toast) {
 }
 
 export async function withdrawJoinRequestInController(room_id, toast) {
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.withdrawJoinRequest(room_id);
         },
@@ -68,7 +68,7 @@ export async function withdrawJoinRequestInController(room_id, toast) {
 }
 
 export async function rejectJoinRequestInController(room_id, user_id, toast) {
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.rejectJoinRequest(room_id, user_id);
         },
@@ -78,7 +78,7 @@ export async function rejectJoinRequestInController(room_id, user_id, toast) {
 }
 
 export async function acceptJoinRequestInController(room_id, user_id, toast) {
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.acceptJoinRequest(room_id, user_id);
         },
@@ -88,7 +88,7 @@ export async function acceptJoinRequestInController(room_id, user_id, toast) {
 }
 
 export async function exitRoomInController(room_id, toast) {
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.exitRoom(room_id)
         },
@@ -100,7 +100,7 @@ export async function exitRoomInController(room_id, toast) {
 }
 
 export async function deleteRoomInController(room_id, toast) {
-    let res = BasicServices.apiTryCatch(
+    let res = await BasicServices.apiTryCatch(
         async () => {
             return await roomServ.deleteRoom(room_id)
         },
@@ -110,3 +110,81 @@ export async function deleteRoomInController(room_id, toast) {
     return res;
 }
 
+export async function registerQuizInController(quiz_id, toast) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.registerInQuiz(quiz_id)
+        },
+        toast
+    )
+
+    return res;
+}
+
+export async function joinQuizInController(quiz_id, toast, setLoading) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.joinQuiz(quiz_id)
+        },
+        toast,
+        ()=>{setLoading(true)},
+        ()=>{setLoading(false)}
+    )
+
+    return res;
+}
+
+export async function getQuestionInController(quiz_id, page, toast, dispatch, setSelectedOption) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.getQuestion(quiz_id, page)
+        },
+        toast
+    )
+
+
+    if (res && res.question) {
+        dispatch({
+            type:'change',
+            state:{
+            question:res.question,
+            ans:res.selected_ans
+        }})
+        setSelectedOption(res.selected_ans)
+    }
+
+    return res;
+}
+
+export async function updateAnswerInController(quiz_id, page, ans, toast) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.updateAnswer(quiz_id, page, ans)
+        },
+        toast
+    )
+
+    return res;
+}
+
+export async function submitQuizInController(quiz_id, submit_time_period, toast){
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.submitQuiz(quiz_id, submit_time_period)
+        },
+        toast
+    )
+
+    return res;
+}
+
+export async function scoreCardInController(quiz_id, toast){
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.viewScorecard(quiz_id)
+        },
+        toast
+    )
+
+    return res;
+}

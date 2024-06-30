@@ -120,7 +120,6 @@ export default function PrivacyPolicy() {
                 style={{height: 20, width: 20}}
               />
             </TouchableOpacity>
-            {/* {console.log(isChecked)} */}
             <Text
               style={{
                 fontSize: 16,

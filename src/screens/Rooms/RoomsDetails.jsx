@@ -19,17 +19,23 @@ import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { StackActions } from '@react-navigation/native';
+import { registerQuizInController } from '../../controllers/RoomsController';
 
 export default function RoomsDetails({ navigation, route }) {
 
-  const[data, setData] = useState({})
+  console.log(route.params.quiz_obj);
+
+  const [data, setData] = useState(route.params.quiz_obj)
   const { quizState, dispatch } = useQuiz()
-//   useEffect(
-//     () => {
-//       getactiveDetails(route.params.id, Toast, setData, setRefresh, dispatch)
-//     }, [])
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  async function register() {
+    let res = await registerQuizInController(data._id, Toast)
+    if (res) {
+      setModalVisible()
+    }
+  }
 
   return (
     <>
@@ -77,7 +83,7 @@ export default function RoomsDetails({ navigation, route }) {
                     marginTop: 10,
                   }}>
                   <Image
-                    source={{uri: BLOBURL+data?.image}}
+                    source={require('../../assets/img/bbimg.png')}
                     style={{ width: 40, height: 40, borderRadius: 50 }}
                   />
                   <Text
@@ -179,7 +185,69 @@ export default function RoomsDetails({ navigation, route }) {
                     {data?.entryFees}
                   </Text>
                 </View>
-                <View>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: 'rgba(126, 126, 126, 1)',
+                    fontWeight: '500',
+                    marginTop: 10,
+                    fontFamily: 'WorkSans-SemiBold',
+                  }}>
+                  Reward
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginLeft: 2,
+                  }}>
+                  <Image
+                    source={require('../../assets/img/bbcoin.png')}
+                    style={{ width: 25, height: 25 }}
+                  />
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 14,
+                      fontWeight: '600',
+                      padding: 10,
+                      fontFamily: 'WorkSans-SemiBold',
+                    }}>
+                    {data?.prize}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: 'rgba(126, 126, 126, 1)',
+                    fontWeight: '500',
+                    marginTop: 10,
+                    fontFamily: 'WorkSans-SemiBold',
+                  }}>
+                  Slots
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginLeft: 2,
+                  }}>
+                  <Image
+                    source={require('../../assets/img/paper.png')}
+                    style={{ width: 25, height: 25 }}
+                  />
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 14,
+                      fontWeight: '600',
+                      padding: 10,
+                      fontFamily: 'WorkSans-SemiBold',
+                    }}>
+                    {data.slot_aloted}/{data.slots}
+                  </Text>
+                </View>
+                {/* <View>
                   <Text
                     style={{
                       fontSize: 18,
@@ -222,18 +290,17 @@ export default function RoomsDetails({ navigation, route }) {
                       </View>
                     ))}
                   </View>
-                </View>
+                </View> */}
 
-                <View>
+                {/* <View>
                   <Text
                     style={{
                       fontSize: 18,
                       color: 'rgba(46, 46, 46, 1)',
                       fontWeight: '500',
-                      marginTop: 30,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    <Text style={{color:'rgb(138,138,138)'}}>General Rules of Participation</Text>
+                    <Text style={{ color: 'rgb(138,138,138)' }}>Subjects:</Text>
                   </Text>
 
                   <View style={styles.ul}>
@@ -242,16 +309,17 @@ export default function RoomsDetails({ navigation, route }) {
                         <Text style={styles.liText1}>{index + 1}{".  "}{item}</Text>
                       </View>
                     ))}
+                    
                   </View>
-                </View>
+                </View> */}
               </View>}
         </ScrollView>
 
         <View style={styles.AgreeV}>
           <TouchableOpacity
             onPress={() => {
-                setModalVisible()
-            //   registerActiveQuiz(Toast, setRefresh, setModalVisible)
+              register()
+              //   registerActiveQuiz(Toast, setRefresh, setModalVisible)
             }}
             style={{ width: '100%' }}>
             <LinearGradient
@@ -286,7 +354,7 @@ export default function RoomsDetails({ navigation, route }) {
           navigation.goBack()
         }}>
         <TouchableOpacity
-          onPress={() => {setModalVisible(!modalVisible), navigation.goBack()}}
+          onPress={() => { setModalVisible(!modalVisible), navigation.goBack() }}
           style={styles.RulesTouchable2}>
           <View style={styles.RulesPV2}>
             <View style={styles.RulesPV3}>
@@ -302,7 +370,7 @@ export default function RoomsDetails({ navigation, route }) {
               <View style={styles.RegisteredV}>
                 <View style={styles.RegisteredV1}>
                   <Image
-                    source={{uri: BLOBURL+data?.image}}
+                    source={{ uri: BLOBURL + data?.image }}
                     resizeMode="contain"
                     style={styles.RegisteredImg}
                   />
@@ -313,8 +381,8 @@ export default function RoomsDetails({ navigation, route }) {
               </View>
               <TouchableOpacity
                 onPress={() => {
-                    navigation.navigate('Roomstart')
-                //   navigation.dispatch(StackActions.replace('StartExam', {id: route.params.id})), setModalVisible(false);
+                  // navigation.navigate('Roomstart')
+                  navigation.dispatch(StackActions.replace('Roomstart', { quiz_obj: data })), setModalVisible(false);
                 }}
                 style={styles.continueTouchable}>
                 <Text style={styles.continueText}>Continue</Text>

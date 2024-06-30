@@ -90,7 +90,7 @@ import Support from './src/screens/Support/Support';
 import AboutBb from './src/screens/Sidebar/AboutBb';
 import CustomerSupport from './src/screens/Profile/CustomerSupport';
 import ScoreCard from './src/screens/Quizzes/ScoreCard';
-import WinnerBoardLive from './src/screens/Quizzes/WinnerBoardLive';
+import WinnerBoard from './src/screens/Quizzes/WinnerBoardLive.jsx';
 import QuizzesResult from './src/screens/Quizzes/QuizzesResult';
 import QuizzesResultRewards from './src/screens/Quizzes/QuizzesResultRewards';
 import Reels from './src/screens/Reels/Reels';
@@ -213,7 +213,7 @@ function MyStack() {
       <Stack.Screen name="AboutBB" component={AboutBb} />
       <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
       <Stack.Screen name="ScoreCard" component={ScoreCard} />
-      <Stack.Screen name="WinnerBoardLive" component={WinnerBoardLive} />
+      <Stack.Screen name="WinnerBoardLive" component={WinnerBoard} />
       <Stack.Screen name="QuizzesResult" component={QuizzesResult} />
       <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards} />
       <Stack.Screen name='reels' component={Reels} options={{ gestureEnabled: false }} />
@@ -239,8 +239,6 @@ function MyStack() {
       <Stack.Screen name="Roomsquestions" component={RoomsQuestions}/>
       <Stack.Screen name="RoomsResult" component={RoomsResult}/>
       <Stack.Screen name="RoomsScored" component={RoomsScored}/>
-      <Stack.Screen name="RoomsReward" component={RoomsReward}/>
-
 
 </Stack.Navigator>
   );

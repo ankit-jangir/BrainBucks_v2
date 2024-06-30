@@ -5,8 +5,12 @@ import {Button, Image} from 'react-native-elements';
 import QuizCard from '../../components/QuizCard';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import { Text } from '../../utils/Translate';
+import { BLOBURL } from '../../config/urls';
 
-const ScheduledSuccessfullyQuiz = ({navigation}) => {
+const ScheduledSuccessfullyQuiz = ({navigation, route}) => {
+
+  let quiz_obj = route.params.obj;
+
   return (
     <View style={styles.maincontainers}>
       <View style={{height: 200, width: '100%'}}>
@@ -18,28 +22,28 @@ const ScheduledSuccessfullyQuiz = ({navigation}) => {
       </View>
       <View style={{alignItems: 'center'}}>
         <Text style={[styles.createLiveText1,{padding:10}]}>
-        New Quiz “SBI PO - Prelims” Scheduled Successfully
+        Quiz Scheduled Successfully
         </Text>
       </View>
       <View style={styles.SbiContainerm}>
         <View style={styles.SbiContainer}>
           <Image
-            source={require('../../assets/img/Rectangle.png')}
+            source={{uri: BLOBURL+quiz_obj.category_image}}
             style={{height: 25, width: 25}}
             resizeMode="contain"
           />
-          <Text style={styles.sbit}>SBI-PO Current Affairs</Text>
+          <Text style={styles.sbit}>{quiz_obj.category_name}</Text>
         </View>
         <View style={styles.FeesContainer}>
           <View style={styles.FeesContainer1}>
-            <Text style={styles.feesT}>Fees</Text>
+            <Text style={styles.feesT}>Entry Fees</Text>
 
             <Image
               source={require('../../assets/img/bb.png')}
               style={{height: 20, width: 20}}
               resizeMode="contain"
             />
-            <Text style={styles.feesT}>200</Text>
+            <Text style={styles.feesT}>{quiz_obj.entryFees}</Text>
           </View>
           <View style={styles.FeesContainer1}>
             <Image
@@ -47,19 +51,19 @@ const ScheduledSuccessfullyQuiz = ({navigation}) => {
               style={{height: 20, width: 20}}
               resizeMode="contain"
             />
-            <Text style={styles.feesT}>20/12/2002</Text>
+            <Text style={styles.feesT}>{quiz_obj.sch_time.substr(0,10)}</Text>
           </View>
         </View>
         <View style={styles.FeesContainer}>
           <View style={styles.FeesContainer1}>
-            <Text style={styles.feesT}>Prize</Text>
+            {/* <Text style={styles.feesT}>Prize</Text>
 
             <Image
               source={require('../../assets/img/bb.png')}
               style={{height: 20, width: 20}}
               resizeMode="contain"
             />
-            <Text style={styles.feesT}>200</Text>
+            <Text style={styles.feesT}>200</Text> */}
           </View>
           <View style={styles.textc}>
             <Image
@@ -68,7 +72,7 @@ const ScheduledSuccessfullyQuiz = ({navigation}) => {
               tintColor={'gray'}
               resizeMode="contain"
             />
-            <Text style={styles.feesT}>12:30</Text>
+            <Text style={styles.feesT}>{quiz_obj.sch_time.substr(11,8)}</Text>
           </View>
         </View>
         <View style={styles.textc1}>
@@ -78,7 +82,7 @@ const ScheduledSuccessfullyQuiz = ({navigation}) => {
             tintColor={'gray'}
             resizeMode="contain"
           />
-          <Text style={styles.feesT}>20/20</Text>
+          <Text style={styles.feesT}>{0}/{quiz_obj.slots}</Text>
         </View>
       </View>
       <View style={{gap: 20, margin: 10}}>
@@ -97,7 +101,7 @@ const ScheduledSuccessfullyQuiz = ({navigation}) => {
           title={'Invite Participants'}
         />
         <Button 
-        onPress={()=>{navigation.navigate('roomsetting')}}
+        onPress={()=>{navigation.pop(3)}}
         buttonStyle={{backgroundColor:"white"}}
         titleStyle={{color:"#701DDB"}}
         title={'View Quiz'} />

@@ -170,12 +170,12 @@ const Sidebar = ({ navigation }) => {
         />
         <MenuItem
           action={() => { navigation.navigate('reels') }}
-          image={require('../../assets/img/audit.png')}
+          image={require('../../assets/img/resume.png')}
           text="Reels"
         />
         <MenuItem
           action={() => { navigation.navigate('rooms') }}
-          image={require('../../assets/img/audit.png')}
+          image={require('../../assets/img/roomsimgs.png')}
           text="Rooms"
         />
 
@@ -244,6 +244,7 @@ const MenuItem = ({
           <Image
             source={image}
             resizeMode="contain"
+            tintColor={"#7e7e7e"}
             style={[styles.menuItemImage, imageStyle]}
           />
         )}

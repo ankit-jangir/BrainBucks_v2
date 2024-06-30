@@ -7,6 +7,7 @@ import QuizCard from '../../components/QuizCard'
 import RoomsApiService from '../../services/api/RoomsApiService'
 import { useQuery } from '@apollo/client'
 import Toast from 'react-native-toast-message'
+import { useIsFocused } from '@react-navigation/native'
 
 export default function ScheduledQuizzes({ navigation, route }) {
 
@@ -14,6 +15,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
 
     const [totalPages, setTotalPages] = useState(2)
     const [currentPage, setCurrentPage] = useState(1)
+    const isFocused = useIsFocused()
 
     const room_data = route.params.room_data;
     const roomServ = new RoomsApiService()
@@ -24,7 +26,6 @@ export default function ScheduledQuizzes({ navigation, route }) {
         }
     });
 
-    console.log(loading, error, data);
 
     useEffect(() => {
         if (data?.schedule_quizes.error) {
@@ -51,13 +52,22 @@ export default function ScheduledQuizzes({ navigation, route }) {
                 }
             }
         }
-    }, [data])
+    }, [data, isFocused])
 
     useEffect(() => {
         if (currentPage <= totalPages) {
             refetch()
         }
     }, [currentPage])
+
+    useEffect(()=>{
+        if(currentPage===1){
+            setCurrentPage(totalPages+1)
+            setTimeout(()=>setCurrentPage(1), 300)
+        }else{
+            setCurrentPage(1)
+        }
+    },[isFocused])
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -79,10 +89,9 @@ export default function ScheduledQuizzes({ navigation, route }) {
                             }
                             keyExtractor={(item) => item._id}
                             renderItem={({ item, index }) => {
-                                {console.log(item)}
                                 return (
                                     <QuizCard
-                                        onPress={() => {navigation.navigate('Roomdetails')}}
+                                        onPress={() => {navigation.navigate('Roomdetails', {quiz_obj: item})}}
                                         image={require('../../assets/img/facebook.png')}
                                         title={item.category_name}
                                         fees={item.entryFees}

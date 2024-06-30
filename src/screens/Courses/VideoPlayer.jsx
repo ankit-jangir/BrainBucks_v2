@@ -21,7 +21,6 @@ export default function VideoPlayer({navigation, route}) {
     try{
         let res = await serv.startVideo(course_id, video_id)
         if(res.status===1){
-            console.log(res);
             setVideo(res)
         }
         else{

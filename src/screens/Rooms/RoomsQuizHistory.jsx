@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import styles from '../../styles/Rooms.styles'
 import Toast from 'react-native-toast-message'
 import { Text } from '../../utils/Translate'
@@ -11,55 +11,66 @@ import NoDataFound from '../../components/NoDataFound'
 import { ActivityIndicator } from 'react-native'
 import { ColorsConstant } from '../../constants/Colors.constant'
 import { BLOBURL } from '../../config/urls'
+import RoomsApiService from '../../services/api/RoomsApiService'
+import { useIsFocused } from '@react-navigation/native'
+import { useQuery } from '@apollo/client'
 
-export default function RoomsQuizHistory({ navigation }) {
+export default function RoomsQuizHistory({ navigation, route }) {
 
     const [quizzes, setQuizzes] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [loadingMore, setLoadingMore] = useState(false)
-    const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)
-    const { quizState, dispatch } = useQuiz();
-    const history = new HistoryApiService()
-    const order = 1;
+    const [currentPage, setCurrentPage] = useState(1)
+    const [refreshing, setRefreshing] = useState(false)
+    const isFocused = useIsFocused()
+
+    const room_data = route.params.room_data;
+    const roomServ = new RoomsApiService()
+
+    const {quizState, dispatch} = useQuiz()
+
+    let { loading, error, data, refetch } = useQuery(roomServ.GETHISTORYQUIZES, {
+        variables: {
+            room_id: room_data._id, page: currentPage
+        }
+    });
+
+    useEffect(()=>{
+        setCurrentPage(1)
+    },[isFocused])
+
 
     useEffect(() => {
-        getQuizzes()
-    }, [])
-
-    function helper(page) {
-        return async () => {
-            let res = await history.getWonQuizzes(order, page)
-            return res
-        }
-    }
-
-    async function getQuizzes(page) {
-        let total = totalPages;
-        if (!page) {
-            page = 1
-            setTotalPages(2)
-            total = 2
+        if (data?.history_quizes.error) {
+            Toast.show({
+                type: 'error',
+                text1: data?.history_quizes.error
+            })
+            return;
         }
 
-        if (page > total) {
-            return
+        if (data && data.history_quizes) {
+
+            if (data.history_quizes.totalPages) {
+                setTotalPages(data.history_quizes.totalPages)
+            }
+
+            if (currentPage === 1) {
+                if (data.history_quizes.response) {
+                    setQuizzes(data.history_quizes.response)
+                }
+            } else {
+                if (data.history_quizes.response) {
+                    setQuizzes([...quizzes, ...data.history_quizes.response])
+                }
+            }
         }
+    }, [data])
 
-
-        let func = setLoadingMore
-        if (page === 1) {
-            func = setLoading
+    useEffect(() => {
+        if (currentPage <= totalPages) {
+            refetch()
         }
-
-        let res = await BasicServices.apiTryCatch(helper(page), Toast, () => { func(true) }, () => { func(false) })
-
-        if (res) {
-            setQuizzes(res.subActiveQuizz)
-            setTotalPages(res.totalpages)
-            setCurrentPage(page)
-        }
-    }
+    }, [currentPage])
 
 
 
@@ -87,29 +98,41 @@ export default function RoomsQuizHistory({ navigation }) {
                 </View>
 
                 {
-                    loading
+                    (loading && currentPage===1)
                         ?
                         <ActivityIndicator size={40} color={ColorsConstant.Theme} />
                         :
                         quizzes.length === 0
                             ?
-                            <NoDataFound message={"No Data Found"} action={() => { get() }} actionText={"Refresh"} />
+                            <NoDataFound message={"No Data Found"} action={() => {}} actionText={"Refresh"} />
                             :
                             <FlatList
-                                onEndReached={() => { getQuizzes(currentPage + 1) }}
+                                onRefresh={()=>{
+                                    if(currentPage===1){
+                                        setCurrentPage(totalPages+1)
+                                        setTimeout(() => {
+                                            setCurrentPage(1)
+                                        }, 300);
+                                    }
+                                    else{
+                                        setCurrentPage(1)
+                                    }
+                                }}
+                                refreshing={refreshing}
+                                onEndReached={() => { currentPage<=totalPages && setCurrentPage(currentPage + 1) }}
                                 onEndReachedThreshold={0.6}
                                 data={quizzes}
                                 keyExtractor={(item) => item._id.toString()}
                                 renderItem={({ item }) => {
                                     return (
                                         <QuizCard
-                                            title={item.quiz_name}
+                                            title={item.category_name}
                                             prize={item.prize}
                                             type={'active'}
                                             minper={item.min_reward_per}
                                             totalslots={item.slots}
                                             alotedslots={item.slot_aloted}
-                                            image={{ uri: BLOBURL + item.banner }}
+                                            image={{ uri: BLOBURL + item.image }}
                                             fees={item.entryFees}
                                             date={item.sch_time}
                                             onPress={() => {
@@ -118,13 +141,13 @@ export default function RoomsQuizHistory({ navigation }) {
                                             }
                                             }
                                             btntxt={"View Result"}
-                                            roomname={"Room Name"}
+                                            roomname={room_data?.room_name}
                                         />)
                                 }
                                 }
                             />
                 }
-                {loadingMore && <ActivityIndicator size={25} style={{ height: 30 }} />}
+                {loading && currentPage>1 && <ActivityIndicator size={25} style={{ height: 30 }} />}
 
             </View>
         </>

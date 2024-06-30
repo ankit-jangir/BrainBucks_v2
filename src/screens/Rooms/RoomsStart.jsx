@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import RoomsReward from './RoomsReward.js';
 import RoomsRules from './RoomsRules.js';
-import RoomsParticipants from './RoomsParticipants.js';
+import RoomsParticipants from './RoomsParticipants.js.jsx';
 import {
   View,
   TouchableOpacity,
@@ -17,75 +17,76 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Text } from '../../utils/Translate';
-import styles from '../../styles/StartExam.styles';
-import { useQuiz } from '../../context/QuizPlayReducer';
-import { getactiveDetails, joinactiveQuiz } from '../../controllers/ActiveQuizController';
+import { Text } from '../../utils/Translate.js';
+import styles from '../../styles/StartExam.styles.js';
+import { useQuiz } from '../../context/QuizPlayReducer.js';
+import { getactiveDetails, joinactiveQuiz } from '../../controllers/ActiveQuizController.js';
 import Toast from 'react-native-toast-message';
-import { BLOBURL } from '../../config/urls';
+import { BLOBURL } from '../../config/urls.js';
 import { LinearProgress } from '@rneui/themed';
-import basic from '../../services/BasicServices';
+import basic from '../../services/BasicServices.js';
 import { StackActions } from '@react-navigation/native';
+import { joinQuizInController } from '../../controllers/RoomsController.js';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function RoomsStart({ navigation }) {
+export default function RoomsStart({ navigation, route }) {
+
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false)
-  const { quizState, dispatch } = useQuiz()
   const [data, setData] = useState([])
+  const {quizState, dispatch} =useQuiz()
+
+  let quiz_obj = route.params.quiz_obj
 //   let id = route.params.id
-//   let timeoutId = useRef()
+  let timeoutId = useRef()
   const [remainingTime, setRemainingTime] = useState(1000)
 
-//   useEffect(() => {
-//     getactiveDetails(id, Toast, setData, setLoading, dispatch)
-//   }, [])
+  useEffect(() => {
+    try {
+      let time;
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current)
+      }
 
-//   useEffect(() => {
-//     try {
-//       let time;
-//       if (timeoutId.current) {
-//         clearTimeout(timeoutId.current)
-//       }
-
-//       if(data.sch_time){
-//         time = basic.getDateFromSchTime(data?.sch_time)- Date.now()
-//         setRemainingTime(time)
-//     }
-//       if (time > 0) {
-//         timeoutId.current = setTimeout(() => {
-//           setRemainingTime(basic.getDateFromSchTime(data?.sch_time) - Date.now())
-//         }, time + 200)
-//       }
-//     }
-//     catch (err) {
-//       console.log("ERROR IN DATE CONVERSION: ", err);
-//     }
-//   }, [data])
+      if(data.sch_time){
+        time = basic.getDateFromSchTime(quiz_obj?.sch_time)- Date.now()
+        setRemainingTime(time)
+    }
+      if (time > 0) {
+        timeoutId.current = setTimeout(() => {
+          setRemainingTime(basic.getDateFromSchTime(quiz_obj?.sch_time) - Date.now())
+        }, time + 200)
+      }
+    }
+    catch (err) {
+      console.log("ERROR IN DATE CONVERSION: ", err);
+    }
+  }, [data])
 
 
-//   async function joinQuiz() {
-//     let res = await joinactiveQuiz(id, Toast, setLoading, dispatch)
-//     if (res) {
-//       navigation.dispatch(
-//         StackActions.replace("ActiveQuizzJoinAnimation")
-//       )
-//     }
-//   }
+  async function joinQuiz() {
+    let res = await joinQuizInController(quiz_obj._id, Toast, setLoading)
+    if (res) {
+      dispatch({type:"change", state:{time:res.timeperiod, total:res.total_question, id:quiz_obj._id}})
+      navigation.dispatch(
+        StackActions.replace("Roomanmations")
+      )
+    }
+  }
 
-//   function next() {
-//     if (remainingTime > 0) {
-//       Toast.show({
-//         type: "info",
-//         text1: `Wait till ${data?.sch_time}`
-//       })
-//       return;
-//     }
+  function next() {
+    if (remainingTime > 0) {
+      Toast.show({
+        type: "info",
+        text1: `Wait till start time`
+      })
+      return;
+    }
 
-//     joinQuiz()
+    joinQuiz()
 
-//   }
+  }
 
   return (
     <>
@@ -114,7 +115,7 @@ export default function RoomsStart({ navigation }) {
               <View style={styles.InsufficientV4}>
                 <View style={styles.InsufficientV5}>
                   <Image
-                    source={{ uri: BLOBURL + data?.image }}
+                    source={{ uri: BLOBURL + quiz_obj?.image }}
                     resizeMode="contain"
                     style={styles.categoryImage}
                   />
@@ -122,7 +123,7 @@ export default function RoomsStart({ navigation }) {
                 <View style={styles.categoryView}>
                   <Text
                     style={[styles.categoryText, { marginTop: 10, color: '#8A8A8A' }]}>
-                    {data?.quiz_name}
+                    {quiz_obj?.category_name}
                   </Text>
                 </View>
               </View>
@@ -136,7 +137,7 @@ export default function RoomsStart({ navigation }) {
                           source={require('../../assets/img/bbcoin.png')}
                           style={styles.EnteryImg}
                         />
-                        <Text style={styles.EnteryFeesBText}>{data?.entryFees}</Text>
+                        <Text style={styles.EnteryFeesBText}>{quiz_obj?.entryFees}</Text>
                       </View>
                     </View>
                     {/* <View style={styles.EnteryV3}>
@@ -157,7 +158,7 @@ export default function RoomsStart({ navigation }) {
                         tintColor={'#8A8A8A'}
                         style={styles.EnteryImg}
                       />
-                      <Text style={styles.DateText}>{data?.sch_time?.substr(0, 10)}</Text>
+                      <Text style={styles.DateText}>{quiz_obj?.sch_time?.substr(0, 10)}</Text>
                     </View>
                     <View style={styles.DateV1}>
                       <Image
@@ -165,7 +166,7 @@ export default function RoomsStart({ navigation }) {
                         tintColor={'#8A8A8A'}
                         style={styles.EnteryImg}
                       />
-                      <Text style={styles.DateText}>{data?.sch_time?.substr(11, 8)}</Text>
+                      <Text style={styles.DateText}>{quiz_obj?.sch_time?.substr(11, 8)}</Text>
                     </View>
                   </View>
                 </View>
@@ -177,9 +178,9 @@ export default function RoomsStart({ navigation }) {
                   style={styles.DateImg}
                 />
                 <View style={styles.TotalSlotsVi1}>
-                  <Text style={styles.TotalSlotsBtext}>{data?.slot_aloted}/</Text>
+                  <Text style={styles.TotalSlotsBtext}>{quiz_obj?.slot_aloted}/</Text>
                   <Text style={[styles.TotalSlotsBtext, { color: '#333333' }]}>
-                    {data?.slots}
+                    {quiz_obj?.slots}
                   </Text>
                 </View>
               </View>
@@ -187,14 +188,14 @@ export default function RoomsStart({ navigation }) {
                 <View style={styles.TotalSlotsVi3}>
                   <LinearProgress
                     style={{ marginVertical: 10, height: 8, borderRadius: 10 }}
-                    value={data.slots ? data.slot_aloted / data.slots : 0}
+                    value={quiz_obj.slots ? quiz_obj.slot_aloted / quiz_obj.slots : 0}
                     variant="determinate"
                     color={'#54ACFD'}
                   />
                 </View>
               </View>
               <View style={styles.StartExamV}>
-                <TouchableOpacity onPress={()=>navigation.navigate('Roomanmations')} style={{ width: '80%' }}>
+                <TouchableOpacity onPress={()=>{next()}} style={{ width: '80%' }}>
                   <LinearGradient
                     key={remainingTime > 0}
                     start={{ x: 0.0, y: 0.25 }}
@@ -204,7 +205,7 @@ export default function RoomsStart({ navigation }) {
                     {
                       remainingTime > 0
                         ?
-                        <Text key={'remaining'} style={styles.LobbtText}>Start</Text>
+                        <Text key={'remaining'} style={styles.LobbtText}>{quiz_obj.sch_time}</Text>
                         :
                         <Text key={'joinnow'} style={styles.LobbtText}>Start</Text>
                     }
@@ -229,7 +230,8 @@ export default function RoomsStart({ navigation }) {
 
             <View style={{ flex: 1 }}>
               <Roomsrules
-                rulesList={data.rules ? data?.rules : []}
+                rulesList={quiz_obj.rules ? quiz_obj?.rules : []}
+                quiz_obj={quiz_obj}
               />
             </View>
           </View>
@@ -238,7 +240,7 @@ export default function RoomsStart({ navigation }) {
   );
 }
 
-const Roomsrules = ({ rulesList }) => {
+const Roomsrules = ({ rulesList, quiz_obj }) => {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
@@ -255,15 +257,15 @@ const Roomsrules = ({ rulesList }) => {
           },
           tabBarIndicatorStyle: { backgroundColor: '#000000' },
         }}>
-        <Tab.Screen name="RoomsParticipants">
+        <Tab.Screen name="Participants">
           {props => (
-            <RoomsParticipants {...props}></RoomsParticipants>
+            <RoomsParticipants {...props} participants={quiz_obj.participants}></RoomsParticipants>
           )}
         </Tab.Screen>
-        <Tab.Screen name="RoomsReward">
-          {props => <RoomsReward {...props} ></RoomsReward>}
+        <Tab.Screen name="Reward">
+          {props => <RoomsReward {...props} rewards={quiz_obj.rewards} ></RoomsReward>}
         </Tab.Screen>
-        <Tab.Screen name="RoomsRules">
+        <Tab.Screen name="Rules">
           {props => <RoomsRules {...props} rulesList={rulesList}></RoomsRules>}
         </Tab.Screen>
       </Tab.Navigator>

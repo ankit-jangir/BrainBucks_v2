@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
+import RoomsApiService from '../../services/api/RoomsApiService';
 
 const ParticipantsData = ({ item, index }) => {
 
@@ -31,20 +32,9 @@ const ParticipantsData = ({ item, index }) => {
 export default function RoomsReward({ rewards }) {
 
     const focus = useIsFocused()
-    const quizServ = new ActiveQuizApiService()
+    const roomServ = new RoomsApiService()
     const { quizState, dispatch } = useQuiz()
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-        quizServ.getActiveQuizRewards(quizState.id).then(res => {
-            if (res) {
-                setData(res.send_rewards)
-            }
-        }).catch((err) => {
-            console.log("Error in fetching participants: ", err);
-            // Toast.show({ type: "error", text1: "Something went wrong" })
-        })
-    }, [focus])
+    const [data, setData] = useState(rewards)
 
     return (
         <>

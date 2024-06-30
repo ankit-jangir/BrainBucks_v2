@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, AppState } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
-import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../controllers/ActiveQuizController';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import BackgroundTimer from 'react-native-background-timer';
+import { getQuestionInController, submitQuizInController, updateAnswerInController } from '../../controllers/RoomsController';
 
 export default function RoomsQuestions({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,6 +20,7 @@ export default function RoomsQuestions({ navigation }) {
   const [submitData, setSubmitData] = useState({})
   const [submitText, setSubmitText] = useState("Submit Quiz")
   const backRef = useRef()
+  const intervalRef = useRef()
 
   let question = quizState.question
 
@@ -27,14 +28,11 @@ export default function RoomsQuestions({ navigation }) {
   const appState = useRef(AppState.currentState)
 
   useEffect(() => {
-  }, [])
-
-  useEffect(() => {
     getCurrentQuestion(currentQuestionIndex)
   }, [currentQuestionIndex])
 
   async function getCurrentQuestion(page) {
-    await getactiveQuestion(quizState.id, page, Toast, dispatch, setSelectedOption)
+    await getQuestionInController(quizState.id, page, Toast, dispatch, setSelectedOption)
   }
 
   useEffect(() => {
@@ -52,9 +50,12 @@ export default function RoomsQuestions({ navigation }) {
     let min = (Math.floor(quizState.time / 60));
     let tmc = Math.floor(quizState.time % 60);
 
-    const interval = BackgroundTimer.setInterval(() => {
-      if (Object.keys(submitData).length !== 0) {
-        clearInterval(interval)
+    setMinute(min)
+    setTimerCount(tmc)
+
+    intervalRef.current = BackgroundTimer.setInterval(() => {
+      if (Object.keys(submitData).length !== 0 && intervalRef.current) {
+        clearInterval(intervalRef.current)
         return;
       }
       if (tmc > 0) {
@@ -66,13 +67,13 @@ export default function RoomsQuestions({ navigation }) {
         setMinute(m => m - 1);
         setTimerCount(59);
       } else {
-        BackgroundTimer.clearInterval(interval)
+        BackgroundTimer.clearInterval(intervalRef.current)
         Toast.show({ type: "info", text1: "Time's up. Submitting..." })
         handleSubmit()
       }
     }, 1000);
-    
-    return ()=>{BackgroundTimer.clearInterval(interval)}
+
+    return () => { intervalRef.current && BackgroundTimer.clearInterval(intervalRef.current) }
   }
     , [])
 
@@ -82,18 +83,18 @@ export default function RoomsQuestions({ navigation }) {
 
   const handleSaveNext = () => {
     if (currentQuestionIndex < quizState.total) {
-      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast).then(() =>
+      updateAnswerInController(quizState.id, currentQuestionIndex, selectedOption, Toast).then(() =>
         setCurrentQuestionIndex(currentQuestionIndex + 1)
       )
     } else {
-      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast)
+      updateAnswerInController(quizState.id, currentQuestionIndex, selectedOption, Toast)
       setModalVisible(true)
     }
   }
 
   const handleClear = () => {
     setSelectedOption(0)
-    updateAnswer(quizState.id, currentQuestionIndex, 0, Toast)
+    updateAnswerInController(quizState.id, currentQuestionIndex, 0, Toast)
   }
 
   const handleNext = () => {
@@ -109,10 +110,11 @@ export default function RoomsQuestions({ navigation }) {
   }
 
   const handleSubmit = () => {
-    console.log(quizState.time, minute, timerCount);
+    console.log(quizState.time, minute*60, timerCount);
     let time = Math.floor(quizState.time - minute * 60 - timerCount)
-    submitactiveQuiz(quizState.id, time, Toast).then((r) => {
+    submitQuizInController(quizState.id, time, Toast).then((r) => {
       if (r) {
+        BackgroundTimer.clearInterval(intervalRef.current)
         backRef.current()
         setSubmitData(r.arr)
         setModalVisible1(true)
@@ -305,15 +307,14 @@ export default function RoomsQuestions({ navigation }) {
               <Text style={styles.RegisteredT} >Quiz Successfully Submitted ! </Text>
               <View style={styles.RegisteredV} >
                 <View style={styles.RulesName}>
-                  {/* {console.log(message,"MESSAGE")} */}
                   <Text style={{ color: ColorsConstant.RedLight, fontFamily: 'inter', textAlign: 'center', }}>Result will be declared {submitData.msg ? "at " + submitData.msg : "soon"}</Text>
                 </View>
               </View>
               <TouchableOpacity onPress={() => {
                 backRef.current();
-                navigation.navigate('Home'), setModalVisible1(false)
+                navigation.goBack(), setModalVisible1(false)
               }} style={styles.continueTouchable} >
-                <Text style={styles.continueText}>Back To Home</Text>
+                <Text style={styles.continueText}>Back To Quizzes</Text>
               </TouchableOpacity>
             </View>
           </View>

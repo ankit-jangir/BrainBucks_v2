@@ -31,7 +31,6 @@ function activeRegisterHelper(id) {
 }
 export async function registerActiveQuiz(id, toast, setRefresh,  setModalVisible){
     let res = await BasicServices.apiTryCatch(activeRegisterHelper(id), toast, ()=>{setRefresh(true)}, ()=>{setRefresh(false)})
-    console.log(res);
     if (res) {
         setModalVisible(true)
     }
@@ -65,7 +64,6 @@ function activeGetQuestionHelper(id, page) {
 }
 export async function getactiveQuestion(id, page, toast, dispatch, setSelectedOption) {
     let res = await BasicServices.apiTryCatch(activeGetQuestionHelper(id, page), toast)
-    console.log(res);
     if (res && res.question) {
         dispatch({
             type:'change',
@@ -100,7 +98,6 @@ function activeSubmitHelper(id, time){
 }
 export async function submitactiveQuiz(id, time, toast) { 
     let res = await BasicServices.apiTryCatch(activeSubmitHelper(id, time), toast)
-    console.log(time, res);
     return res
 }
 

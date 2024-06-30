@@ -26,7 +26,6 @@ const FreePdf = () => {
       let res = await saved.listPdfs(idState.id);
       if(res.status===1){
         setFreepdf(res.send_data)
-        // console.log(res);
       }else{
         Toast.show({
           type: 'error',

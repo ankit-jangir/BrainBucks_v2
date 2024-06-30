@@ -35,9 +35,8 @@ export default function DailyUpdate({ navigation }) {
 
   const GetName = async () => {
     try {
-      let name = await BasicServices.getLocalObject()
-      // console.log(name.name);
-      setName(name.name);
+      let localObj = await BasicServices.getLocalObject()
+      setName(localObj.name);
     } catch (err) { console.log("ERROR IN GETTING LOCAL OBJ", err) }
   };
 

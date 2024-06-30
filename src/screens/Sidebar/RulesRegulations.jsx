@@ -219,7 +219,6 @@ export default function RulesRegulations() {
                 style={{height: 20, width: 20}}
               />
             </TouchableOpacity>
-            {/* {console.log(isChecked)} */}
             <Text style={styles.textHer}>
               I hereby agree to the{' '}
               <Text style={styles.textRule}>Rules & Regulations</Text> of the

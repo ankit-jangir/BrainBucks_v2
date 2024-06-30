@@ -21,6 +21,7 @@ const QuizPlayReducer = ({ children }) => {
     },)
 
     function quizReducer(state, action) {
+        console.log(state, action);
         switch (action.type) {
             case 'change': {
                 console.log('updating', { ...state, ...action.state });

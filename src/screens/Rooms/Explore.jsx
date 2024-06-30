@@ -83,12 +83,10 @@ export default function Explore() {
         }
     }, [currentPage])
 
-    // console.log(loading, error, (data?.getPublicRoom?.response?.length), data?.getPublicRoom?.totalPages)
-
     return (
         <>
-            <View style={{ zIndex: 20 }}>
-                <Toast />
+            <View style={{ zIndex: 10 }}>
+                <Toast key={"explToast"} />
             </View>
             <View style={[styles.maincontainer, { paddingHorizontal: 10 }]}>
                 <View style={styles2.inputView}>

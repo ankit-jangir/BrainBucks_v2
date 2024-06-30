@@ -7,4 +7,4 @@ export const IMAGE_URL="https://auth.brainbucks.in/stream/get/public?blobname="
 export const IFSC_CHECk = 'https://ifsc.razorpay.com'
 export const CHATURL = 'https://socket.brainbucks.co.in'
 export const TICKETURL = 'https://notify.brainbucks.co.in'
-export const ROOMURL = 'https://rooms.brainbucks.co.in'
+export const ROOMURL = 'https://room.brainbucks.co.in'

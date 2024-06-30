@@ -7,21 +7,8 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 
 export default function RoomsParticipants({ participants }) {
-  const focus = useIsFocused()
-  const quizServ = new ActiveQuizApiService()
-  const {quizState, dispatch} = useQuiz()
-  const [data, setData] = useState([])
+  const [data, setData] = useState(["You",...participants])
 
-  useEffect(()=>{
-    quizServ.getActiveQuizParticipants(quizState.id).then(res=>{
-      if(res){
-        setData(["You",...res.participantNames])
-      }
-    }).catch((err)=>{
-      console.log("Error in fetching participants: ",err);
-      // Toast.show({type:"error", text1:"Something went wrong"})
-    })
-  },[focus])
 
   return (
     <View style={styles.container}>

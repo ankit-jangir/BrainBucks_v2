@@ -52,6 +52,10 @@ export default function QuestionsPaper({ navigation }) {
     let min = (Math.floor(quizState.time / 60));
     let tmc = Math.floor(quizState.time % 60);
 
+    
+    setMinute(min)
+    setTimerCount(tmc)
+
     const interval = BackgroundTimer.setInterval(() => {
       if (Object.keys(submitData).length !== 0) {
         clearInterval(interval)

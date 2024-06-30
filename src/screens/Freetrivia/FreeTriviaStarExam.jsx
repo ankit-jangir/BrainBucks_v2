@@ -169,9 +169,6 @@ export default function FreeTriviaStarExam({navigation, route}) {
 }
 
 const RulesView = (props,index) => {
-    console.log('====================================');
-    console.log(props);
-    console.log('====================================');
     return (
       <View style={styles.FeesV9}>
         <View style={{ flex: 0.10, }}>

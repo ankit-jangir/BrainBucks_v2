@@ -25,8 +25,6 @@ export default function LiveQuizzes({ navigation, route }) {
         }
     });
 
-    console.log(loading, error, data);
-
     useEffect(() => {
         if (data?.live_quizes.error) {
             Toast.show({

@@ -11,15 +11,15 @@ export default function PrivateRooms() {
 
     const [search, setSearch] = useState("");
 
-    function sendRequest() {
-        if(!search){
-            Toast.show({
-                type:"info",
-                text1:"Room hash can't be empty"
-            })
-            return;
-        }
-        let res = joinPrivateRoomInController(search, Toast)
+    async function sendRequest() {
+        // if(!search){
+        //     Toast.show({
+        //         type:"info",
+        //         text1:"Room hash can't be empty"
+        //     })
+        //     return;
+        // }
+        let res =  await joinPrivateRoomInController(search, Toast)
         if (res) {
             Toast.show({ text1: "Request sent Successfully", type: "success" })
             setSearch('')
@@ -29,7 +29,9 @@ export default function PrivateRooms() {
     return (
         <>
             <View style={{ zIndex: 20 }}>
-                <Toast />
+                <Toast
+                key={"privToast"}
+                 />
             </View>
 
             <View style={styles.container}>

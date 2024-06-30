@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import WinnerBoardLive from './WinnerBoardLive';
 import { View, TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, BackHandler, ActivityIndicator, ToastAndroid, StyleSheet } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -11,6 +10,7 @@ import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import Toast from 'react-native-toast-message';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
+import RoomsApiService from '../../services/api/RoomsApiService';
 
 export default function RoomsResult({ navigation, }) {
   const [isLoad, setLoad] = useState(false)
@@ -19,20 +19,19 @@ export default function RoomsResult({ navigation, }) {
   const [topRank, setTopRank] = useState({totMarks:0})
   const [score, setScore] = useState([])
 
-  const [length, setLength] = useState()
-
   const { quizState, dispatch } = useQuiz()
   const quiz_id = quizState.id
 
   const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);
 
-  const serv = new ActiveQuizApiService()
+  const serv = new RoomsApiService()
 
-  async function getActiveQuizResult() {
+  async function getResult() {
     try {
       setLoad(true);
-      let res = await serv.getActiveQuizResult(quiz_id);
-      if (res.status === 1) {
+      let res = await serv.viewScorecard(quiz_id)
+      console.log(res);
+      if (res.status === -1) {
         setMydata(res.topRank)
         setTopRank(res)
         setScore(res.scoreboard)
@@ -55,7 +54,7 @@ export default function RoomsResult({ navigation, }) {
 
 
   useEffect(() => {
-    getActiveQuizResult()
+    getResult()
   }, [])
 
 

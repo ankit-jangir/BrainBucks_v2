@@ -17,7 +17,6 @@ const AddBankAccount = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { addBankState, dispatch } = useAddBank()
-  console.log(addBankState);
 
   const wallServ = new WalletApiService()
   let inputstyle = [styles.inputs, errMsg && { borderWidth: 1, borderColor: "#ff0000",}]

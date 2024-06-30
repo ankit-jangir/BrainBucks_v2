@@ -28,7 +28,6 @@ export default function Otp({ navigation, route }) {
         setSeconds(59)
         let sec = 59;
         const interval = BackgroundTimer.setInterval(() => {
-            console.log(sec);
             if (sec > 0) {
                 sec = sec - 1;
                 setSeconds(p => p - 1)

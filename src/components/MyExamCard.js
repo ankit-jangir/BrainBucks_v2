@@ -10,9 +10,6 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/AllLiveQuizzes.styles';
 
 export default function MyExamQuizzes({navigation,route}) {
-  console.log('====================================');
-  console.log(route);
-  console.log('====================================');
   const DATA = [
     {
       id: '1',

@@ -46,7 +46,7 @@ export default function RoomEnter({ navigation, route }) {
                                 source={type === 'created' ? require('../../assets/img/setting.png') : require('../../assets/img/historywatch.png')} />
                             }
                             onPress={() => { type==='created'? navigation.navigate('roomsetting', {room_data:room_data, type:type}):
-                            navigation.navigate('roomhistory')
+                            navigation.navigate('roomhistory', {room_data:room_data})
                           }}
                             buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                             title={type === 'created' ? "Settings" : "History"}
@@ -79,18 +79,19 @@ export default function RoomEnter({ navigation, route }) {
                             type === 'created'
                                 ?
                                 <View style={styles.roomContainerBtns}>
-                                    <Button
-                                        onPress={()=>{navigation.navigate('createlivequiz')}}
+                                    {/* <Button
+                                        onPress={()=>{navigation.navigate('roomhistory', {room_data: room_data})}}
                                         titleStyle={[styles.enterbtn, {color:ColorsConstant.Theme}]}
                                         containerStyle={styles.enterbtncontainer}
                                         buttonStyle={{backgroundColor:'#fff'}}
                                         title={" + Live Quiz"}
-                                    />
+                                    /> */}
                                     <Button
                                         titleStyle={[styles.enterbtn]}
                                         containerStyle={styles.enterbtncontainer}
                                         buttonStyle={{backgroundColor:'#0CBC8B'}}
                                         title={" + Schedule Quiz"}
+                                        onPress = {()=>{navigation.navigate('schedulquiz', {room_data: room_data})}}
                                     />
                                 </View>
                                 :
