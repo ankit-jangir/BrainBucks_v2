@@ -52,10 +52,6 @@ export default function QuestionsPaper({ navigation }) {
     let min = (Math.floor(quizState.time / 60));
     let tmc = Math.floor(quizState.time % 60);
 
-    
-    setMinute(min)
-    setTimerCount(tmc)
-
     const interval = BackgroundTimer.setInterval(() => {
       if (Object.keys(submitData).length !== 0) {
         clearInterval(interval)
@@ -72,7 +68,7 @@ export default function QuestionsPaper({ navigation }) {
       } else {
         BackgroundTimer.clearInterval(interval)
         Toast.show({ type: "info", text1: "Time's up. Submitting..." })
-        handleSubmit()
+        handleSubmit(true)
       }
     }, 1000);
     
@@ -112,9 +108,9 @@ export default function QuestionsPaper({ navigation }) {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (autoSubmitted) => {
     console.log(quizState.time, minute, timerCount);
-    let time = Math.floor(quizState.time - minute * 60 - timerCount)
+    let time = autoSubmitted ? quizState.time : Math.floor(quizState.time - minute * 60 - timerCount)
     submitactiveQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
         backRef.current()
@@ -265,7 +261,7 @@ export default function QuestionsPaper({ navigation }) {
             <View style={styles.yesView}>
               <View style={styles.yesView1}>
                 <TouchableOpacity
-                  onPress={handleSubmit}
+                  onPress={()=>{handleSubmit()}}
                   style={styles.yesView2}
                 >
                   <Text style={styles.textYes}>Yes</Text>

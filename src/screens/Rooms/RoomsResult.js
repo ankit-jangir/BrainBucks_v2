@@ -12,7 +12,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
 import RoomsApiService from '../../services/api/RoomsApiService';
 
-export default function RoomsResult({ navigation, }) {
+export default function RoomsResult({ navigation }) {
   const [isLoad, setLoad] = useState(false)
   const [isLoad2, setLoad2] = useState(true)
   const [mydata, setMydata] = useState([])
@@ -29,9 +29,8 @@ export default function RoomsResult({ navigation, }) {
   async function getResult() {
     try {
       setLoad(true);
-      let res = await serv.viewScorecard(quiz_id)
-      console.log(res);
-      if (res.status === -1) {
+      let res = await serv.viewResult(quiz_id)
+      if (res.status === 1) {
         setMydata(res.topRank)
         setTopRank(res)
         setScore(res.scoreboard)
@@ -168,7 +167,7 @@ export default function RoomsResult({ navigation, }) {
                 <TouchableOpacity onPress={() => { navigation.navigate("RoomsScored") }} style={styles.Touchable} >
                   <Text style={styles.Scorecard} >View Scorecard</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate("RoomsReward") }} style={styles.TouchableReward} >
+                <TouchableOpacity onPress={() => { navigation.navigate("RoomsRewards", {result: topRank}) }} style={styles.TouchableReward} >
                   <Image source={require('../../assets/img/giftbox.png')} style={{ width: 30, height: 30, }} />
                   <Text style={styles.Scorecard} >View Rewards</Text>
                 </TouchableOpacity>

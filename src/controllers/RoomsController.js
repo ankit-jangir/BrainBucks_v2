@@ -50,7 +50,7 @@ export async function joinPrivateRoomInController(room_hash, toast) {
     }
     let res = await BasicServices.apiTryCatch(
         async () => {
-            return await roomServ.joinPublicRoom(room_hash);
+            return await roomServ.joinPrivateRoom(room_hash);
         },
         toast
     )

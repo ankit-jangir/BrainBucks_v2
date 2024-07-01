@@ -9,6 +9,8 @@ import QuizCard from '../../components/QuizCard'
 import { useQuery } from '@apollo/client'
 import RoomsApiService from '../../services/api/RoomsApiService'
 import Toast from 'react-native-toast-message'
+import { useIsFocused } from '@react-navigation/native'
+import { BLOBURL } from '../../config/urls'
 
 export default function LiveQuizzes({ navigation, route }) {
 
@@ -17,6 +19,16 @@ export default function LiveQuizzes({ navigation, route }) {
     const [currentPage, setCurrentPage] = useState(1)
 
     const room_data = route.params.room_data;
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (currentPage === 1) {
+            setCurrentPage(totalPages + 2)
+            setTimeout(() => { setCurrentPage(1) }, 300)
+        } else {
+            setCurrentPage(1)
+        }
+    }, [isFocused])
 
     const roomServ = new RoomsApiService()
     let { loading, error, data, refetch } = useQuery(roomServ.GETLIVEQUIZES, {
@@ -25,6 +37,7 @@ export default function LiveQuizzes({ navigation, route }) {
         }
     });
 
+    
     useEffect(() => {
         if (data?.live_quizes.error) {
             Toast.show({
@@ -72,16 +85,16 @@ export default function LiveQuizzes({ navigation, route }) {
                                     return (
                                         <QuizCard
                                             onPress={() => { }}
-                                            image={require('../../assets/img/facebook.png')}
-                                            title={item.name}
-                                            fees={200}
-                                            prize={200}
-                                            date={"01/02/2004 09:09:09"}
-                                            totalslots={22}
-                                            alotedslots={23}
-                                            type={'active'}
+                                            image={{uri: BLOBURL+item.category_image}}
                                             btntxt={"Enter Lobby"}
                                             invitebtn={true}
+                                            title={item.category_name}
+                                            fees={item.entryFees}
+                                            prize={item.prize}
+                                            date={item.sch_time}
+                                            totalslots={item.slots}
+                                            alotedslots={item.slot_aloted}
+                                            type={'active'}
                                         />
                                     )
 

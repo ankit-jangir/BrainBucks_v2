@@ -110,14 +110,16 @@ class RoomsApiService {
                     slot_aloted
                     sch_time
                     category_name
+                    category_image
                     entryFees
                     participants
                     rewards
                     room_name
                     room_id
+                    is_res_dec
                 }
             }
-        }`;
+        }`
 
 
     GETSCHEDULEDQUIZES = gql`
@@ -133,6 +135,7 @@ class RoomsApiService {
                     slot_aloted
                     sch_time
                     category_name
+                    category_image
                     entryFees
                     participants
                     rewards
@@ -225,11 +228,12 @@ class RoomsApiService {
     }
 
     async joinPrivateRoom(room_hash) {
+        console.log(room_hash);
         let token = await basic.getBearerToken()
         let url = `${ROOMURL}/participant/room/join/in/private/room`
         let headers = { "content-type": "application/json", "authorization": token }
         let data = JSON.stringify({
-            "room_id": room_hash
+            "room_hash": room_hash
         })
         let options = {
             method: "post",
@@ -329,20 +333,20 @@ class RoomsApiService {
     }
 
 
-    async createQuiz({room_id, room_name, category_id, category_name, category_image, sub_cat_id, total_ques, entryFees, slots, time_per_que, sch_time, lobby_time}){
+    async createQuiz({ room_id, room_name, category_id, category_name, category_image, sub_cat_id, total_ques, entryFees, slots, time_per_que, sch_time, lobby_time }) {
         let data = {
-            "room_id":room_id,
-            "room_name":room_name,
-            "category_id":category_id,
-            "category_name":category_name,
-            "category_image":category_image,
-            "sub_cat_id":sub_cat_id,
+            "room_id": room_id,
+            "room_name": room_name,
+            "category_id": category_id,
+            "category_name": category_name,
+            "category_image": category_image,
+            "sub_cat_id": sub_cat_id,
             "total_num_of_quest": total_ques,
-            "entryFees":entryFees,
-            "slots":slots,
-            "time_per_question":time_per_que,
+            "entryFees": entryFees,
+            "slots": slots,
+            "time_per_question": time_per_que,
             "sch_time": sch_time, //"27-06-2024 20:40:50",
-            "lobby_time":lobby_time //"5 mins"
+            "lobby_time": lobby_time //"5 mins"
         };
 
         let token = await basic.getBearerToken()
@@ -359,9 +363,9 @@ class RoomsApiService {
         return response.data;
     }
 
-    async registerInQuiz(roomquiz_id){
+    async registerInQuiz(roomquiz_id) {
         let data = {
-            "roomquiz_id":roomquiz_id
+            "roomquiz_id": roomquiz_id
         };
 
         let token = await basic.getBearerToken()
@@ -378,9 +382,9 @@ class RoomsApiService {
         return response.data;
     }
 
-    async joinQuiz(roomquiz_id){
+    async joinQuiz(roomquiz_id) {
         let data = {
-            "roomquiz_id":roomquiz_id
+            "roomquiz_id": roomquiz_id
         };
 
         let token = await basic.getBearerToken()
@@ -397,10 +401,10 @@ class RoomsApiService {
         return response.data;
     }
 
-    async getQuestion(roomquiz_id, page){
+    async getQuestion(roomquiz_id, page) {
         let data = {
-            "roomquiz_id":roomquiz_id,
-            "page":page
+            "roomquiz_id": roomquiz_id,
+            "page": page
         };
 
         let token = await basic.getBearerToken()
@@ -417,11 +421,11 @@ class RoomsApiService {
         return response.data;
     }
 
-    async updateAnswer(roomquiz_id, page, ans){
+    async updateAnswer(roomquiz_id, page, ans) {
         let data = {
-            "roomquiz_id":roomquiz_id,
-            "page":page,
-            "ans":ans
+            "roomquiz_id": roomquiz_id,
+            "page": page,
+            "ans": ans
         };
 
         let token = await basic.getBearerToken()
@@ -438,10 +442,10 @@ class RoomsApiService {
         return response.data;
     }
 
-    async submitQuiz(roomquiz_id, submit_time_period){
+    async submitQuiz(roomquiz_id, submit_time_period) {
         let data = {
-            "roomquiz_id":roomquiz_id,
-            "submit_time_period":submit_time_period
+            "roomquiz_id": roomquiz_id,
+            "submit_time_period": submit_time_period
         };
 
         let token = await basic.getBearerToken()
@@ -458,9 +462,9 @@ class RoomsApiService {
         return response.data;
     }
 
-    async viewScorecard(roomquiz_id){
+    async viewScorecard(roomquiz_id) {
         let data = {
-            "roomquiz_id":roomquiz_id
+            "roomquiz_id": roomquiz_id
         };
 
         let token = await basic.getBearerToken()
@@ -477,8 +481,23 @@ class RoomsApiService {
         return response.data;
     }
 
-    async viewResult(){
-        //let's see
+    async viewResult(roomquiz_id) {
+        let data = {
+            "roomquiz_id": roomquiz_id
+        };
+
+        let token = await basic.getBearerToken()
+        let url = `${ROOMURL}/participant/room/quiz/view/result/of/quiz`
+        let headers = { "content-type": "application/json", "authorization": token }
+        data = JSON.stringify(data)
+        let options = {
+            method: "post",
+            headers: headers,
+            data: data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
     }
 
 

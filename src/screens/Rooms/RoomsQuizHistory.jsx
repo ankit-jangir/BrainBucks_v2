@@ -132,7 +132,7 @@ export default function RoomsQuizHistory({ navigation, route }) {
                                             minper={item.min_reward_per}
                                             totalslots={item.slots}
                                             alotedslots={item.slot_aloted}
-                                            image={{ uri: BLOBURL + item.image }}
+                                            image={item.image ? { uri: BLOBURL + item.image } : require("../../assets/img/bbimg.png")}
                                             fees={item.entryFees}
                                             date={item.sch_time}
                                             onPress={() => {

@@ -223,6 +223,7 @@ const QuizCard = ({
                   :
                   <>
                     <Text
+                      key={alotedslots}
                       style={{
                         color: type === 'trivia' || type == 0 ? '#C922E4' : '#2188E7',
                         fontFamily: 'WorkSans-SemiBold',
@@ -231,6 +232,7 @@ const QuizCard = ({
                       {alotedslots}/
                     </Text>
                     <Text
+                    key={totalslots}
                       style={{
                         color: type === 'trivia' || type == 0 ? '#C922E4' : '#333333',
 

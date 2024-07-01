@@ -118,6 +118,8 @@ import RoomsRules from './src/screens/Rooms/RoomsRules.js';
 import RoomsQuestions from './src/screens/Rooms/RoomsQuestions.js';
 import RoomsResult from './src/screens/Rooms/RoomsResult.js';
 import RoomsScored from './src/screens/Rooms/RoomsScored.js';
+import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
+
 
 
 
@@ -239,6 +241,7 @@ function MyStack() {
       <Stack.Screen name="Roomsquestions" component={RoomsQuestions}/>
       <Stack.Screen name="RoomsResult" component={RoomsResult}/>
       <Stack.Screen name="RoomsScored" component={RoomsScored}/>
+      <Stack.Screen name="RoomsRewards" component={RoomsRewards}/>
 
 </Stack.Navigator>
   );

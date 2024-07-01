@@ -17,6 +17,7 @@ import Toast from 'react-native-toast-message';
 import {useQuiz} from '../../context/QuizPlayReducer';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import { BLOBURL } from '../../config/urls';
+import RoomsApiService from '../../services/api/RoomsApiService';
 export default function RoomsRewards({navigation, route}) {
   const [Load, setLoad] = useState(false);
   const [wallet, setwallet] = useState();
@@ -25,12 +26,12 @@ export default function RoomsRewards({navigation, route}) {
   const [data, setData] = useState({});
 
   const SubActive_id = quizState.id;
-  const serv = new ActiveQuizApiService();
+  const serv = new RoomsApiService();
 
-  async function getActiveQuizResult() {
+  async function getQuizResult() {
     try {
       setLoad(true);
-      let res = await serv.getActiveQuizResult(SubActive_id);
+      let res = await serv.viewResult(SubActive_id);
       if (res.status === 1) {
         setData(res);
       } else {
@@ -51,7 +52,7 @@ export default function RoomsRewards({navigation, route}) {
   }
 
   useEffect(() => {
-    getActiveQuizResult();
+    getQuizResult();
   }, []);
 
   // const goBack = () => {
@@ -110,7 +111,7 @@ export default function RoomsRewards({navigation, route}) {
           <View style={styles.RewardName}>
 
           
-            <Text style={styles.RewardText}>{data. reward === 0?'Better Luck Next Time ':'Congratulations'}</Text>
+            <Text style={styles.RewardText}>{data.reward === 0?'Better Luck Next Time ':'Congratulations'}</Text>
             <Text style={styles.RewardText1}>{data.self_name}</Text>
           </View>
           <View style={styles.containerV3}>

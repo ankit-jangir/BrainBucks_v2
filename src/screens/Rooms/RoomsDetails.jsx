@@ -23,8 +23,6 @@ import { registerQuizInController } from '../../controllers/RoomsController';
 
 export default function RoomsDetails({ navigation, route }) {
 
-  console.log(route.params.quiz_obj);
-
   const [data, setData] = useState(route.params.quiz_obj)
   const { quizState, dispatch } = useQuiz()
   const [refresh, setRefresh] = useState(false);
@@ -376,7 +374,7 @@ export default function RoomsDetails({ navigation, route }) {
                   />
                 </View>
                 <View style={styles.RulesName}>
-                  <Text style={styles.NameText}>{data?.quiz_name}</Text>
+                  <Text style={styles.NameText}>{data?.category_name}</Text>
                 </View>
               </View>
               <TouchableOpacity

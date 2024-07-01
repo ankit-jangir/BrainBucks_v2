@@ -148,7 +148,7 @@ const RoomSetting = ({ navigation, route }) => {
               <Button
                 title={'History'}
                 buttonStyle={{ backgroundColor: '#8D4AE2' }}
-                onPress={() => navigation.navigate('roomhistory')}
+                onPress={() => navigation.navigate('roomhistory', {room_data: room_data})}
               />
             </View>
             <View style={styles.HistoryV2}>

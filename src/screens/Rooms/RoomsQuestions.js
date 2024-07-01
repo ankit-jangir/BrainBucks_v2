@@ -69,7 +69,7 @@ export default function RoomsQuestions({ navigation }) {
       } else {
         BackgroundTimer.clearInterval(intervalRef.current)
         Toast.show({ type: "info", text1: "Time's up. Submitting..." })
-        handleSubmit()
+        handleSubmit(true)
       }
     }, 1000);
 
@@ -109,12 +109,12 @@ export default function RoomsQuestions({ navigation }) {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (autoSubmmited) => {
     console.log(quizState.time, minute*60, timerCount);
-    let time = Math.floor(quizState.time - minute * 60 - timerCount)
+    let time = autoSubmmited ? 0 : Math.floor(quizState.time - minute * 60 - timerCount)
     submitQuizInController(quizState.id, time, Toast).then((r) => {
       if (r) {
-        BackgroundTimer.clearInterval(intervalRef.current)
+        // BackgroundTimer.clearInterval(intervalRef.current)
         backRef.current()
         setSubmitData(r.arr)
         setModalVisible1(true)
@@ -263,7 +263,7 @@ export default function RoomsQuestions({ navigation }) {
             <View style={styles.yesView}>
               <View style={styles.yesView1}>
                 <TouchableOpacity
-                  onPress={handleSubmit}
+                  onPress={()=>{handleSubmit()}}
                   style={styles.yesView2}
                 >
                   <Text style={styles.textYes}>Yes</Text>

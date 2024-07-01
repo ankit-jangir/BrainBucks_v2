@@ -8,6 +8,7 @@ import RoomsApiService from '../../services/api/RoomsApiService'
 import { useQuery } from '@apollo/client'
 import Toast from 'react-native-toast-message'
 import { useIsFocused } from '@react-navigation/native'
+import { BLOBURL } from '../../config/urls'
 
 export default function ScheduledQuizzes({ navigation, route }) {
 
@@ -52,7 +53,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                 }
             }
         }
-    }, [data, isFocused])
+    }, [data])
 
     useEffect(() => {
         if (currentPage <= totalPages) {
@@ -92,7 +93,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                                 return (
                                     <QuizCard
                                         onPress={() => {navigation.navigate('Roomdetails', {quiz_obj: item})}}
-                                        image={require('../../assets/img/facebook.png')}
+                                        image={{uri: BLOBURL+ item.category_image}}
                                         title={item.category_name}
                                         fees={item.entryFees}
                                         prize={item.prize}

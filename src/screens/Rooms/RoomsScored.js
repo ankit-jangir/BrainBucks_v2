@@ -13,6 +13,7 @@ import Toast from "react-native-toast-message";
 import ReactNativeBlobUtil from "react-native-blob-util";
 import ActiveQuizApiService from "../../services/api/ActiveQuizApiService";
 import { useQuiz } from "../../context/QuizPlayReducer";
+import RoomsApiService from "../../services/api/RoomsApiService";
 
 export default function RoomsScored({ navigation, route }) {
   const [isLoad, setLoad] = useState(false);
@@ -20,12 +21,12 @@ export default function RoomsScored({ navigation, route }) {
   const [data, setData] = useState([]);
 
   const SubActive_id = quizState.id;
-  const serv = new ActiveQuizApiService();
+  const serv = new RoomsApiService();
 
   async function getActiveQuizScoreboard() {
     try {
       setLoad(true);
-      let res = await serv.getActiveQuizScoreboard(SubActive_id);
+      let res = await serv.viewScorecard(SubActive_id);
       if (res.status === 1) {
         setData(res.answer_sheet);
       } else {
