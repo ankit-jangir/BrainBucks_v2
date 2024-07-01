@@ -34,10 +34,10 @@ export default function RoomsStart({ navigation, route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState([])
   const {quizState, dispatch} =useQuiz()
 
   let quiz_obj = route.params.quiz_obj
+
 //   let id = route.params.id
   let timeoutId = useRef()
   const [remainingTime, setRemainingTime] = useState(1000)
@@ -49,7 +49,7 @@ export default function RoomsStart({ navigation, route }) {
         clearTimeout(timeoutId.current)
       }
 
-      if(data.sch_time){
+      if(quiz_obj.sch_time){
         time = basic.getDateFromSchTime(quiz_obj?.sch_time)- Date.now()
         setRemainingTime(time)
     }
@@ -62,7 +62,7 @@ export default function RoomsStart({ navigation, route }) {
     catch (err) {
       console.log("ERROR IN DATE CONVERSION: ", err);
     }
-  }, [data])
+  }, [quiz_obj])
 
 
   async function joinQuiz() {
@@ -96,10 +96,10 @@ export default function RoomsStart({ navigation, route }) {
           ?
           <ActivityIndicator size={40} style={{ flex: 1 }} />
           :
-          <View key={JSON.stringify(data)} style={{ flex: 1, backgroundColor: '#fff' }}>
+          <View key={JSON.stringify(quiz_obj)} style={{ flex: 1, backgroundColor: '#fff' }}>
             <View style={{ width: '100%', height: 150 }}>
               <ImageBackground
-                source={{ uri: BLOBURL + data?.image }}
+                source={{ uri: BLOBURL + quiz_obj?.category_image }}
                 style={{ flex: 1 }}>
                 <TouchableOpacity onPress={() => navigation.goBack()}
                   style={styles.InsufficientTouchable1}>
@@ -115,7 +115,7 @@ export default function RoomsStart({ navigation, route }) {
               <View style={styles.InsufficientV4}>
                 <View style={styles.InsufficientV5}>
                   <Image
-                    source={{ uri: BLOBURL + quiz_obj?.image }}
+                    source={{ uri: BLOBURL + quiz_obj?.category_image }}
                     resizeMode="contain"
                     style={styles.categoryImage}
                   />
@@ -140,16 +140,16 @@ export default function RoomsStart({ navigation, route }) {
                         <Text style={styles.EnteryFeesBText}>{quiz_obj?.entryFees}</Text>
                       </View>
                     </View>
-                    {/* <View style={styles.EnteryV3}>
-                      <Text style={[styles.EnteryFeesText]}>First Prize</Text>
+                    <View style={styles.EnteryV3}>
+                      <Text style={[styles.EnteryFeesText]}>Reward</Text>
                       <View style={styles.EnteryV2}>
                         <Image
                           source={require('../../assets/img/bbcoin.png')}
                           style={styles.EnteryImg}
                         />
-                        <Text style={styles.EnteryFeesBText}>dothis</Text>
+                        <Text style={styles.EnteryFeesBText}>{quiz_obj.prize}</Text>
                       </View>
-                    </View> */}
+                    </View>
                   </View>
                   <View style={styles.DateV}>
                     <View style={styles.DateV1}>
@@ -171,7 +171,7 @@ export default function RoomsStart({ navigation, route }) {
                   </View>
                 </View>
               </View>
-              <View style={styles.TotalSlotsVi}>
+              <View style={[styles.TotalSlotsVi, {marginTop:20}]}>
                 <Image
                   source={require('../../assets/img/dollar.png')}
                   resizeMode="contain"

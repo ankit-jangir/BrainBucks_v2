@@ -25,7 +25,7 @@ export default function CreatedRooms({ navigation }) {
     async function deleteRoom(room_id) {
         let res = await deleteRoomInController(room_id, Toast)
         if (res) {
-            let newArr = rooms.filter((item, index)=>item._id!==room_id)
+            let newArr = rooms.filter((item, index) => item._id !== room_id)
             setRooms([...newArr])
 
             setModalVisible(true)
@@ -52,32 +52,16 @@ export default function CreatedRooms({ navigation }) {
         }
 
         if (data && data.get_created_rooms) {
-
-            if (data.get_created_rooms.totalPages) {
-                setTotalPages(data.get_created_rooms.totalPages)
-            }
-
-            if (currentPage === 1) {
-                if (data.get_created_rooms.response) {
-                    setRooms(data.get_created_rooms.response)
-                }
-            } else {
-                if (data.get_created_rooms.response) {
-                    setRooms([...rooms, ...data.get_created_rooms.response])
-                }
+            if (data.get_created_rooms.response) {
+                setRooms(data.get_created_rooms.response)
             }
         }
     }, [data])
 
-    useEffect(() => {
-        setCurrentPage(1)
-    }, [search])
 
     useEffect(() => {
-        if (currentPage <= totalPages) {
-            refetch()
-        }
-    }, [currentPage])
+        refetch()
+    }, [search])
 
 
     return (
@@ -92,58 +76,19 @@ export default function CreatedRooms({ navigation }) {
                         <NoDataFound scale={0.7} message={"No Rooms Joined Yet"} action={() => { }} actionText={"Load Again"} />
                         :
                         <FlatList
-                            data={rooms}                            
+                            data={rooms}
                             keyExtractor={(item) => item._id}
                             renderItem={({ item, index }) => {
+                                console.log(item);
                                 return (
                                     <View style={styles.roomContainer}>
                                         <Text style={styles.roomNameText}>{item.room_name}</Text>
                                         <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text><Text style={{ color: ColorsConstant.Black }}>{item.capacity}</Text></Text>
+                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text><Text style={{ color: ColorsConstant.Black }}>{item.capacity}</Text></Text>
                                             <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
                                         </View>
                                         <View>
-                                            <View style={styles2.ActiveView}>
-                                                <View style={styles2.ActiveView1}>
-                                                    <View style={{ flex: 0.7 }}>
-                                                        <View style={styles2.ActiveView2}>
-                                                            <Text style={styles2.textAct}>Active Quizzes</Text>
-                                                            <Text
-                                                                style={[styles2.textAct, { color: '#367CFF' }]}>
-                                                                {item.live}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={{ flex: 0.8 }}>
-                                                        <View style={styles2.Cview}>
-                                                            <Text style={styles2.textC}>Trivia Quizzes</Text>
-                                                            <Text
-                                                                style={[
-                                                                    styles2.textC,
-                                                                    { fontFamily: 'WorkSans-SemiBold' },
-                                                                ]}>
-                                                                {item.trivia}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                </View>
-                                            </View>
-
                                             <View style={[styles2.textP, { flexDirection: "row", justifyContent: "auto", gap: 25 }]}>
-                                                <View
-                                                    style={[
-                                                        styles2.Cview,
-                                                        { justifyContent: 'center', alignItems: 'center' },
-                                                    ]}>
-                                                    <Text style={styles2.textC}>Enrolled Quizzes</Text>
-                                                    <Text
-                                                        style={[
-                                                            styles2.textC,
-                                                            { fontFamily: 'WorkSans-SemiBold' },
-                                                        ]}>
-                                                        {item.enrolled}
-                                                    </Text>
-                                                </View>
                                                 <View
                                                     style={[
                                                         styles2.Cview,
@@ -162,8 +107,8 @@ export default function CreatedRooms({ navigation }) {
 
                                         </View>
                                         <View style={styles.roomContainerBtns}>
-                                            <Button onPress={() => { navigation.navigate('roomenter', { type: 'created', room_data:item }) }} titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
-                                            <TouchableOpacity style={styles.exitview} onPress={()=>{deleteRoom(item._id)}}>
+                                            <Button onPress={() => { navigation.navigate('roomenter', { type: 'created', room_data: item }) }} titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
+                                            <TouchableOpacity style={styles.exitview} onPress={() => { deleteRoom(item._id) }}>
                                                 <Image style={styles.exitimg} source={require('../../assets/img/redbin.png')} />
                                                 <Text style={styles.exitbtn}>Delete Room</Text>
                                             </TouchableOpacity>

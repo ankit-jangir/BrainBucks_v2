@@ -99,51 +99,11 @@ export default function JoinedRooms({ navigation }) {
                                     <View style={styles.roomContainer}>
                                         <Text style={styles.roomNameText}>{item.room_name}</Text>
                                         <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
                                             <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
                                         </View>
                                         <View>
-                                            <View style={styles2.ActiveView}>
-                                                <View style={styles2.ActiveView1}>
-                                                    <View style={{ flex: 0.7 }}>
-                                                        <View style={styles2.ActiveView2}>
-                                                            <Text style={styles2.textAct}>Active Quizzes</Text>
-                                                            <Text
-                                                                style={[styles2.textAct, { color: '#367CFF' }]}>
-                                                                {item.live}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={{ flex: 0.8 }}>
-                                                        <View style={styles2.Cview}>
-                                                            <Text style={styles2.textC}>Trivia Quizzes</Text>
-                                                            <Text
-                                                                style={[
-                                                                    styles2.textC,
-                                                                    { fontFamily: 'WorkSans-SemiBold' },
-                                                                ]}>
-                                                                {item.trivia}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                </View>
-                                            </View>
-
                                             <View style={[styles2.textP, {flexDirection:"row", justifyContent:"auto", gap:25}]}>
-                                                <View
-                                                    style={[
-                                                        styles2.Cview,
-                                                        { justifyContent: 'center', alignItems: 'center' },
-                                                    ]}>
-                                                    <Text style={styles2.textC}>Enrolled Quizzes</Text>
-                                                    <Text
-                                                        style={[
-                                                            styles2.textC,
-                                                            { fontFamily: 'WorkSans-SemiBold' },
-                                                        ]}>
-                                                        {item.enrolled}
-                                                    </Text>
-                                                </View>
                                                 <View
                                                     style={[
                                                         styles2.Cview,

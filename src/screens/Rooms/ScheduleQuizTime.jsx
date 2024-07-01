@@ -29,13 +29,10 @@ export default function ScheduleQuizTime({ navigation, route }) {
         setDatePickerVisibility(true);
     };
 
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
 
     const handleConfirm = (date) => {
         setDate(date);
-        hideDatePicker();
+        setDatePickerVisibility(false)
     };
 
     let obj = route.params.obj;
@@ -156,27 +153,30 @@ export default function ScheduleQuizTime({ navigation, route }) {
 
                         </View>
 
-                        <Dropdown
-                            style={styles.dropdownExam}
-                            placeholderStyle={styles.ddexamplaceholderStyle}
-                            selectedTextStyle={styles.ddexamselectedTextStyle}
-                            inputSearchStyle={styles.ddexaminputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            itemContainerStyle={styles.ddExamItemContainerStyle}
-                            itemTextStyle={styles.ddItemTextStyle}
-                            data={data}
-                            activeColor='#212121'
-                            search
-                            maxHeight={300}
-                            labelField="time"
-                            valueField="time"
-                            placeholder="Select Lobby Time"
-                            searchPlaceholder="Search..."
-                            value={selectedTime}
-                            onChange={item => {
-                                setSelectedTime(item.time)
-                            }}
-                        />
+                        <View>
+                            <Text style={styles.st}>Lobby Time</Text>
+                            <Dropdown
+                                style={styles.dropdownExam}
+                                placeholderStyle={styles.ddexamplaceholderStyle}
+                                selectedTextStyle={styles.ddexamselectedTextStyle}
+                                inputSearchStyle={styles.ddexaminputSearchStyle}
+                                iconStyle={styles.iconStyle}
+                                itemContainerStyle={styles.ddExamItemContainerStyle}
+                                itemTextStyle={styles.ddItemTextStyle}
+                                data={data}
+                                activeColor='#212121'
+                                search
+                                maxHeight={300}
+                                labelField="time"
+                                valueField="time"
+                                placeholder="Select Lobby Time"
+                                searchPlaceholder="Search..."
+                                value={selectedTime}
+                                onChange={item => {
+                                    setSelectedTime(item.time)
+                                }}
+                            />
+                        </View>
 
                         <View>
                             <Text style={styles.st}>Schedule Quiz</Text>
@@ -211,7 +211,7 @@ export default function ScheduleQuizTime({ navigation, route }) {
                                 isVisible={isDatePickerVisible}
                                 mode={mode}
                                 onConfirm={handleConfirm}
-                                onCancel={hideDatePicker}
+                                onCancel={() => { setDatePickerVisibility(false) }}
                             />
 
 

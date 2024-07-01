@@ -16,12 +16,12 @@ const ParticipantsData = ({ item, index }) => {
             <View style={styles.RewardsV1}>
                 <View style={styles.RewardsV2}>
                     <Image source={require('../../assets/img/crown.png')} style={styles.RewardImg} />
-                    <Text style={styles.Btext}>{item.Rank}.</Text>
+                    <Text style={styles.Btext}>{index+1}.</Text>
                 </View>
                 <View style={styles.RewardsV3}>
                     <View style={styles.RewardsV4}>
                         <Image source={require('../../assets/img/bbcoin.png')} style={styles.RewardImg} />
-                        <Text style={styles.Btext}>{item.reward}</Text>
+                        <Text style={styles.Btext}>{item}</Text>
                     </View>
                 </View>
             </View>

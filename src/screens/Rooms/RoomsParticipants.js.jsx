@@ -7,7 +7,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 
 export default function RoomsParticipants({ participants }) {
-  const [data, setData] = useState(["You",...participants])
+  const [data, setData] = useState([...participants])
 
 
   return (

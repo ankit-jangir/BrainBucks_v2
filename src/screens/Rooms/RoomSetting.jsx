@@ -212,7 +212,7 @@ const RoomSetting = ({ navigation, route }) => {
 
         <View style={{ margin: 10, flex: 1 }}>
           <Text style={styles.memberText1}>
-            Members: <Text style={{ color: '#129C73' }}>{room_data.enrolled_participants_count}</Text>
+            Members: <Text key={room_data?.enrolled_participants_count} style={{ color: '#129C73' }}>{room_data.enrolled_participants_count}</Text>
             {/* <Text style={{color: '#000000'}}>/30</Text> */}
           </Text>
           {

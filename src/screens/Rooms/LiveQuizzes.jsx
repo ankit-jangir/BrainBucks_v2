@@ -15,20 +15,9 @@ import { BLOBURL } from '../../config/urls'
 export default function LiveQuizzes({ navigation, route }) {
 
     const [liveQuizzes, setLiveQuizzes] = useState([])
-    const [totalPages, setTotalPages] = useState(2)
-    const [currentPage, setCurrentPage] = useState(1)
-
     const room_data = route.params.room_data;
-    const isFocused = useIsFocused()
 
-    useEffect(() => {
-        if (currentPage === 1) {
-            setCurrentPage(totalPages + 2)
-            setTimeout(() => { setCurrentPage(1) }, 300)
-        } else {
-            setCurrentPage(1)
-        }
-    }, [isFocused])
+    const isFocused = useIsFocused()
 
     const roomServ = new RoomsApiService()
     let { loading, error, data, refetch } = useQuery(roomServ.GETLIVEQUIZES, {
@@ -37,7 +26,10 @@ export default function LiveQuizzes({ navigation, route }) {
         }
     });
 
-    
+    useEffect(() => {
+        refetch()
+    }, [isFocused])
+
     useEffect(() => {
         if (data?.live_quizes.error) {
             Toast.show({
@@ -48,19 +40,8 @@ export default function LiveQuizzes({ navigation, route }) {
         }
 
         if (data && data.live_quizes) {
-
-            if (data.live_quizes.totalPages) {
-                setTotalPages(data.live_quizes.totalPages)
-            }
-
-            if (currentPage === 1) {
-                if (data.live_quizes.response) {
-                    setLiveQuizzes(data.live_quizes.response)
-                }
-            } else {
-                if (data.live_quizes.response) {
-                    setLiveQuizzes([...liveQuizzes, ...data.live_quizes.response])
-                }
+            if (data.live_quizes.response) {
+                setLiveQuizzes(data.live_quizes.response)
             }
         }
     }, [data])
@@ -84,8 +65,8 @@ export default function LiveQuizzes({ navigation, route }) {
                                 renderItem={({ item, index }) => {
                                     return (
                                         <QuizCard
-                                            onPress={() => { }}
-                                            image={{uri: BLOBURL+item.category_image}}
+                                            onPress={() => {navigation.navigate('Roomstart', { quiz_obj: item }) }}
+                                            image={{ uri: BLOBURL + item.category_image }}
                                             btntxt={"Enter Lobby"}
                                             invitebtn={true}
                                             title={item.category_name}

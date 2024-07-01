@@ -57,7 +57,7 @@ export default function RoomEnter({ navigation, route }) {
 
                 <View style={styles.detailsContainer}>
                     <Text style={[styles.roomNameText, { color: ColorsConstant.White }]}>{room_data.room_name}</Text>
-                    <Text style={[styles.memberText, { color: ColorsConstant.White }]}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{room_data.enrolled_participants_count}</Text><Text style={{ color: ColorsConstant.White }}>{}</Text></Text>
+                    <Text style={[styles.memberText, { color: ColorsConstant.White }]}>Members: <Text key={room_data?.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{room_data.enrolled_participants_count}</Text><Text style={{ color: ColorsConstant.White }}>{}</Text></Text>
                     <View style={styles.invitePrev}>
                         <Button
                             icon={

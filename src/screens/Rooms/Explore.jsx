@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image, ActivityIndicator, FlatList } from 'react-native'
+import { View, TouchableOpacity, Image, ActivityIndicator, FlatList, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from '../Home/SearchBar'
 import styles from '../../styles/Rooms.styles'
@@ -132,7 +132,7 @@ export default function Explore() {
                                         <View style={styles.roomContainer}>
                                             <Text style={styles.roomNameText}>{item.room_name}</Text>
                                             <View style={styles.memberHolder}>
-                                                <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                                <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
                                                 <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
                                             </View>
                                             <Button

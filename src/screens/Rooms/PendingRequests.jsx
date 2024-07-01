@@ -123,7 +123,7 @@ export default function PendingRequests({navigation}) {
                                     <View style={styles.roomContainer}>
                                         <Text style={styles.roomNameText}>{item.room_name}</Text>
                                         <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
                                             <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
                                         </View>
                                         <Button

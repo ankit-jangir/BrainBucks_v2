@@ -67,6 +67,8 @@ const Sidebar = ({ navigation }) => {
       if (response.status === 1) {
         BasicServices.setJwt('').then(() => {
           AsyncStorage.removeItem('language').then(() => {
+            toggleOverlay()
+            ChatSockService.disconnect()
             navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
           });
         });
@@ -171,7 +173,7 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => { navigation.navigate('reels') }}
           image={require('../../assets/img/resume.png')}
-          text="Reels"
+          text="Brain Boosters"
         />
         <MenuItem
           action={() => { navigation.navigate('rooms') }}
@@ -201,7 +203,7 @@ const Sidebar = ({ navigation }) => {
               }}
               buttonStyle={styles.logoutyesbutton}
               onPress={() => {
-                logOut().then(toggleOverlay).then(ChatSockService.disconnect);
+                logOut()
               }}
             />
             <Button
