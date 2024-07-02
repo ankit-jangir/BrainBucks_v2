@@ -191,6 +191,30 @@ class RoomsApiService {
         }
         `
 
+    GETQUIZDETAILS = gql`
+        query View_detail_of_roomquiz($room_id: String!) {
+            view_detail_of_roomquiz(roomquiz_id: $room_id) {
+                status
+                error
+                response {
+                    _id
+                    prize
+                    slots
+                    slot_aloted
+                    sch_time
+                    category_name
+                    category_image
+                    entryFees
+                    participants
+                    rewards
+                    room_name
+                    room_id
+                    is_res_dec
+                }
+            }
+        }
+    `
+
 
     async createRoom(room_name, room_type) {
         let token = await basic.getBearerToken()

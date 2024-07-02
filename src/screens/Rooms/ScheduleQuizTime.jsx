@@ -67,11 +67,18 @@ export default function ScheduleQuizTime({ navigation, route }) {
             return;
         }
 
-        if (entryFees < 10 || totalSlots < 10) {
+        if (entryFees < 10 ) {
             Toast.show({
                 type: "error",
-                text1: "The minimum value for slots and entry fees is 10",
-                text1Style: { fontSize: 11 }
+                text1: "Minimum Entry Fees is 10",
+            })
+            return;
+        }
+
+        if(totalSlots < 10){
+            Toast.show({
+                type: "error",
+                text1: "Minimum Number of Slots is 10",
             })
             return;
         }
@@ -205,13 +212,14 @@ export default function ScheduleQuizTime({ navigation, route }) {
 
                                 </View>
                             </View>
-
+                            
                             <DateTimePickerModal
                                 date={date}
                                 isVisible={isDatePickerVisible}
                                 mode={mode}
                                 onConfirm={handleConfirm}
                                 onCancel={() => { setDatePickerVisibility(false) }}
+                                minimumDate={new Date(Date.now())}
                             />
 
 
@@ -223,7 +231,7 @@ export default function ScheduleQuizTime({ navigation, route }) {
                         containerStyle={{ width: '100%' }}
                         buttonStyle={styles.proceedbtn}
                         titleStyle={{ color: "#000" }}
-                        title={"+Schedule Quiz"}
+                        title={"Proceed"}
                         onPress={() => { scheduleQuiz() }}
 
                     />

@@ -84,7 +84,7 @@ const MyEarningSpent = () => {
                     <View style={styles.containerImg1}>
                       <Image
                         source={{uri: BLOBURL + res.banner}}
-                        resizeMode="contain"
+                        resizeMode="cover"
                         style={styles.mainImage}
                       />
                     </View>
@@ -165,14 +165,14 @@ const styles = StyleSheet.create({
   containerImg1: {
     borderWidth: 0.2,
     borderColor: 'lightgray',
-    padding: 8,
     borderRadius: 50,
     objectFit: 'cover',
   },
 
   mainImage: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
+    borderRadius:39
   },
   textTitle: {
     marginLeft: 15,

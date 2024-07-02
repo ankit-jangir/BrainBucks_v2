@@ -29,9 +29,7 @@ export default function PrivateRooms() {
     return (
         <>
             <View style={{ zIndex: 20 }}>
-                <Toast
-                key={"privToast"}
-                 />
+                <Toast/>
             </View>
 
             <View style={styles.container}>

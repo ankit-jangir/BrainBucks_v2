@@ -50,9 +50,6 @@ export function MyTabBar({ state, descriptors, navigation, position, imgNeeded, 
     return (
 
         <View style={[styles.topbar, width&&{width:width+"%"}]}>
-            <View style={{ zIndex: 1 }}>
-                <Toast />
-            </View>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =

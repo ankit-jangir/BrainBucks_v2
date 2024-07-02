@@ -56,14 +56,14 @@ const ScheduledSuccessfullyQuiz = ({navigation, route}) => {
         </View>
         <View style={styles.FeesContainer}>
           <View style={styles.FeesContainer1}>
-            {/* <Text style={styles.feesT}>Prize</Text>
+            <Text style={styles.feesT}>Reward</Text>
 
             <Image
               source={require('../../assets/img/bb.png')}
               style={{height: 20, width: 20}}
               resizeMode="contain"
             />
-            <Text style={styles.feesT}>200</Text> */}
+            <Text style={styles.feesT}>0</Text>
           </View>
           <View style={styles.textc}>
             <Image

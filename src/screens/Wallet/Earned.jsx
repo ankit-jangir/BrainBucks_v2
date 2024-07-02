@@ -10,7 +10,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 
 const Earned = () => {
- 
+
   const [loading, setLoading] = useState(false)
   const [Earned, setEarned] = useState([])
 
@@ -24,7 +24,7 @@ const Earned = () => {
       setLoading(true)
       let res = await wallet.getEarnedMoney()
       if (res.status === 1) {
-          setEarned(res.mashup)
+        setEarned(res.mashup)
       } else {
         Toast.show({
           type: 'error',
@@ -44,49 +44,49 @@ const Earned = () => {
 
   return (
     <>
-      <View style={{zIndex:1}}>
-      <Toast />
+      <View style={{ zIndex: 1 }}>
+        <Toast />
       </View>
       <ScrollView>
         <View style={styles.wrapper}>
-          { 
-            loading ? 
-            <ActivityIndicator color={ColorsConstant.Theme} size={35} />:
-            Earned.length===0 ?
-            <NoDataFound message={"No data Found"} action={getEarnedData} actionText={"Reload"} />:
-            
-            Earned.map((res) => {
-              return (
-                <View key={res._id} style={styles.card}>
-                  <View style={styles.row}>
-                    <Image
-                      source={require('../../assets/img/bb.png')}
-                      style={styles.icon}
-                    />
-                    <View style={styles.info}>
-                      <Text style={styles.amount}>+ {res.amount}</Text>
-                      <Text style={styles.date}>{res.date}</Text>
+          {
+            loading ?
+              <ActivityIndicator color={ColorsConstant.Theme} size={35} /> :
+              Earned.length === 0 ?
+                <NoDataFound message={"No data Found"} action={getEarnedData} actionText={"Reload"} /> :
+
+                Earned.map((res) => {
+                  return (
+                    <View key={res._id} style={styles.card}>
+                      <View style={styles.row}>
+                        <Image
+                          source={require('../../assets/img/bb.png')}
+                          style={styles.icon}
+                        />
+                        <View style={styles.info}>
+                          <Text style={styles.amount}>+ {res.amount}</Text>
+                          <Text style={styles.date}>{res.date}</Text>
+                        </View>
+                        <View style={styles.titleWrapper}>
+                          <Text style={styles.title}>{res.type}</Text>
+                        </View>
+                      </View>
+                      <View style={styles.spentForWrapper}>
+                        <Text style={styles.spentFor}>Reward for </Text>
+                      </View>
+                      <View style={styles.containerImg}>
+                        <View style={styles.containerImg1}>
+                          <Image
+                            source={{ uri: BLOBURL + res.banner }}
+                            resizeMode="cover"
+                            style={styles.mainImage}
+                          />
+                        </View>
+                        <Text style={styles.textTitle}>{res.name}</Text>
+                      </View>
                     </View>
-                    <View style={styles.titleWrapper}>
-                      <Text style={styles.title}>{res.type}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.spentForWrapper}>
-                    <Text style={styles.spentFor}>Reward for </Text>
-                  </View>
-                  <View style={styles.containerImg}>
-                  <View style={styles.containerImg1}>
-                  <Image
-                  source={{uri:BLOBURL+res.banner}}
-                    resizeMode="contain"
-                    style={styles.mainImage}
-                  />
-                  </View>
-                    <Text style={styles.textTitle}>{res.name}</Text>
-                  </View>
-                </View>
-              )
-            })
+                  )
+                })
           }
 
         </View>
@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: "#16AC72",
-    fontFamily:"Work Sans"
+    fontFamily: "Work Sans"
 
   },
   date: {
     color: 'gray',
     fontSize: 10,
-    fontFamily:"Work Sans"
+    fontFamily: "Work Sans"
 
   },
   titleWrapper: {
@@ -143,9 +143,9 @@ const styles = StyleSheet.create({
     color: '#2E2E2E',
     fontSize: 14,
     fontWeight: '400',
-    paddingRight:5,
-    textAlign:"right",
-    fontFamily:"Work Sans"
+    paddingRight: 5,
+    textAlign: "right",
+    fontFamily: "Work Sans"
 
 
   },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   spentFor: {
     color: '#000',
     fontSize: 14,
-    fontFamily:"Work Sans"
+    fontFamily: "Work Sans"
 
   },
   containerImg: {
@@ -163,24 +163,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
-  containerImg1:{
-    borderWidth:0.2,
-    borderColor:"lightgray",
-    padding:8,
-    borderRadius:50,
-    objectFit:"cover",
+  containerImg1: {
+    borderWidth: 0.2,
+    borderColor: "lightgray",
+    borderRadius: 50,
+    objectFit: "cover",
 
   },
   mainImage: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
+    borderRadius: 30,
   },
   textTitle: {
     marginLeft: 15,
     fontSize: 16,
     fontWeight: '500',
-    fontFamily:"Inter",
-    color:"#2E2E2E"
-
+    fontFamily: "Inter",
+    color: "#2E2E2E",
   },
 });

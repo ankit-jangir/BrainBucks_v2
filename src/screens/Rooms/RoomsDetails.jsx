@@ -20,13 +20,46 @@ import { BLOBURL } from '../../config/urls';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { StackActions } from '@react-navigation/native';
 import { registerQuizInController } from '../../controllers/RoomsController';
+import { useQuery } from '@apollo/client';
+import RoomsApiService from '../../services/api/RoomsApiService';
 
 export default function RoomsDetails({ navigation, route }) {
 
-  const [data, setData] = useState(route.params.quiz_obj)
+  // const [data, setData] = useState(route.params.quiz_obj)
   const { quizState, dispatch } = useQuiz()
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [response, setResponse] = useState({})
+
+  let roomServ = new RoomsApiService()
+
+  const {error, data, loading, refetch} = useQuery(roomServ.GETQUIZDETAILS, {
+    variables:{
+      room_id: route.params.quiz_obj._id
+    }
+  })
+
+  useEffect(()=>{
+    if(!data || !data.view_detail_of_roomquiz){
+      return;
+    }
+
+    const details = data.view_detail_of_roomquiz;
+
+    if(details.error){
+      Toast.show({
+        type:'error',
+        text1:details.error
+      })      
+      return;
+    }
+
+    let res = details.response;
+    if(res){
+      setResponse(res)
+    }
+
+  },[data])
 
   async function register() {
     let res = await registerQuizInController(data._id, Toast)
@@ -81,10 +114,11 @@ export default function RoomsDetails({ navigation, route }) {
                     marginTop: 10,
                   }}>
                   <Image
-                    source={{uri : BLOBURL+data?.category_image}}
+                    source={{uri : BLOBURL+response?.category_image}}
                     style={{ width: 40, height: 40, borderRadius: 50 }}
                   />
                   <Text
+                  key={response.category_name}
                     style={{
                       color: '#000',
                       fontSize: 18,
@@ -92,7 +126,7 @@ export default function RoomsDetails({ navigation, route }) {
                       padding: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    {data?.category_name}
+                    {response?.category_name}
                   </Text>
                 </View>
                 <Text
@@ -119,6 +153,7 @@ export default function RoomsDetails({ navigation, route }) {
                       style={{ width: 18, height: 18 }}
                     />
                     <Text
+                    key={response?.sch_time?.substr(0, 10)}
                       style={{
                         color: 'black',
                         fontSize: 14,
@@ -126,7 +161,7 @@ export default function RoomsDetails({ navigation, route }) {
                         padding: 10,
                         fontFamily: 'WorkSans-SemiBold',
                       }}>
-                      {data?.sch_time?.substr(0, 10)}
+                      {response?.sch_time?.substr(0, 10)}
                     </Text>
                   </View>
                   <View
@@ -141,6 +176,7 @@ export default function RoomsDetails({ navigation, route }) {
                       style={{ width: 20, height: 20 }}
                     />
                     <Text
+                     key={response?.sch_time?.substr(11,8)}
                       style={{
                         color: 'black',
                         fontSize: 14,
@@ -148,7 +184,7 @@ export default function RoomsDetails({ navigation, route }) {
                         padding: 10,
                         fontFamily: 'WorkSans-SemiBold',
                       }}>
-                      {data?.sch_time?.substr(11, 8)}
+                      {response?.sch_time?.substr(11, 8)}
                     </Text>
                   </View>
                 </View>
@@ -173,6 +209,7 @@ export default function RoomsDetails({ navigation, route }) {
                     style={{ width: 25, height: 25 }}
                   />
                   <Text
+                    key={response.entryFees}
                     style={{
                       color: 'black',
                       fontSize: 14,
@@ -180,7 +217,7 @@ export default function RoomsDetails({ navigation, route }) {
                       padding: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    {data?.entryFees}
+                    {response?.entryFees}
                   </Text>
                 </View>
                 <Text
@@ -204,6 +241,7 @@ export default function RoomsDetails({ navigation, route }) {
                     style={{ width: 25, height: 25 }}
                   />
                   <Text
+                    key={response.prize}
                     style={{
                       color: 'black',
                       fontSize: 14,
@@ -211,7 +249,7 @@ export default function RoomsDetails({ navigation, route }) {
                       padding: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    {data?.prize}
+                    {response?.prize}
                   </Text>
                 </View>
                 <Text
@@ -235,6 +273,7 @@ export default function RoomsDetails({ navigation, route }) {
                     style={{ width: 25, height: 25 }}
                   />
                   <Text
+                    key={response.slot_aloted}
                     style={{
                       color: 'black',
                       fontSize: 14,
@@ -242,7 +281,7 @@ export default function RoomsDetails({ navigation, route }) {
                       padding: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    {data.slot_aloted}/{data.slots}
+                    {response?.slot_aloted}/{response?.slots}
                   </Text>
                 </View>
                 {/* <View>
@@ -254,7 +293,7 @@ export default function RoomsDetails({ navigation, route }) {
                       marginTop: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    <Text style={{color:'rgb(138,138,138)'}}>Number of Questions :</Text> {data?.total_num_of_quest}
+                    <Text style={{color:'rgb(138,138,138)'}}>Number of Questions :</Text> {response?.total_num_of_quest}
                   </Text>
                   <Text
                     style={{
@@ -264,7 +303,7 @@ export default function RoomsDetails({ navigation, route }) {
                       marginTop: 10,
                       fontFamily: 'WorkSans-SemiBold',
                     }}>
-                    <Text style={{color:'rgb(138,138,138)'}}>Time for Each Question :</Text> {data?.time_per_question} Sec.
+                    <Text style={{color:'rgb(138,138,138)'}}>Time for Each Question :</Text> {response?.time_per_question} Sec.
                   </Text>
                 </View>
 
@@ -281,7 +320,7 @@ export default function RoomsDetails({ navigation, route }) {
                   </Text>
 
                   <View style={styles.ul}>
-                    {data?.subjects?.map((item, index) => (
+                    {response?.subjects?.map((item, index) => (
                       <View style={styles.li} key={index}>
                         <Text style={styles.liBullet}>• </Text>
                         <Text style={styles.liText}>{item.name}</Text>
@@ -302,7 +341,7 @@ export default function RoomsDetails({ navigation, route }) {
                   </Text>
 
                   <View style={styles.ul}>
-                    {data?.rules?.map((item, index) => (
+                    {response?.rules?.map((item, index) => (
                       <View style={styles.li} key={index}>
                         <Text style={styles.liText1}>{index + 1}{".  "}{item}</Text>
                       </View>
@@ -368,19 +407,19 @@ export default function RoomsDetails({ navigation, route }) {
               <View style={styles.RegisteredV}>
                 <View style={styles.RegisteredV1}>
                   <Image
-                    source={{ uri: BLOBURL + data?.image }}
+                    source={{ uri: BLOBURL + response?.image }}
                     resizeMode="contain"
                     style={styles.RegisteredImg}
                   />
                 </View>
                 <View style={styles.RulesName}>
-                  <Text style={styles.NameText}>{data?.category_name}</Text>
+                  <Text style={styles.NameText}>{response?.category_name}</Text>
                 </View>
               </View>
               <TouchableOpacity
                 onPress={() => {
                   // navigation.navigate('Roomstart')
-                  navigation.dispatch(StackActions.replace('Roomstart', { quiz_obj: data })), setModalVisible(false);
+                  navigation.dispatch(StackActions.replace('Roomstart', { quiz_obj: response })), setModalVisible(false);
                 }}
                 style={styles.continueTouchable}>
                 <Text style={styles.continueText}>Continue</Text>

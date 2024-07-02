@@ -18,7 +18,7 @@ export default function RoomCreatedSuccesfully({ navigation, route }) {
                     source={require('../../assets/img/whatsapp.png')} />}
                     buttonStyle={{ backgroundColor: '#16AC72', alignItems:'center', justifyContent:'center' }}
                     title={"Invite Friend"} />
-                <Button onPress={() => navigation.pop(2)} title={"View Room"} />
+                <Button onPress={() => navigation.pop(2)} title={"Back To Rooms"} />
             </View>
         </View>
     )
