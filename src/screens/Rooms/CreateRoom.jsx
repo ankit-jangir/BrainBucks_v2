@@ -20,8 +20,6 @@ export default function CreateRoom({navigation}) {
         if(res){
             navigation.navigate('roomcreatedsuccess',{name:name})
             setName("")
-        }else{
-            setErrorMessage("Something went wrong...")
         }
     }
 
