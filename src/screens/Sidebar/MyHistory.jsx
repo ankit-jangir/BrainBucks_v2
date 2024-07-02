@@ -55,16 +55,19 @@ const MyHistory = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.RView} >
-        <Tab.Navigator style={{}} screenOptions={{
-          tabBarActiveTintColor: '#000000',
-          tabBarLabelStyle: { fontSize: 16, textTransform: "none", },
-          tabBarStyle: { width: "100%", },
-          tabBarIndicatorStyle: { backgroundColor: "#000000", },
-        }} >
-          <Tab.Screen style={{ fontSize: 17, fontFamily: 'WorkSans-Medium', }} name="All">{(props) => <All {...props} order={order}  />}</Tab.Screen>
-          <Tab.Screen name="Win">{(props) => <Win {...props} order={order} />}</Tab.Screen>
-          <Tab.Screen name="Lost">{(props) => <Lost {...props} order={order} />}</Tab.Screen>
-          <Tab.Screen name="Free">{(props) => <Free {...props} order={order} />}</Tab.Screen>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarLabelStyle: { fontSize: 16, textTransform: "none", },
+            tabBarStyle: { width: "100%"},
+            tabBarIndicatorStyle: { backgroundColor: "#000000", },
+            lazy: false,
+            animationEnabled:false,
+            tabBarPressColor:'none' 
+          }} >
+          <Tab.Screen key={"allhistory"} style={{ fontSize: 17, fontFamily: 'WorkSans-Medium', }} name="All">{(props) => <All key="allhistorytab" {...props} order={order} />}</Tab.Screen>
+          <Tab.Screen key={"winhistory"} name="Won">{(props) => <Win key="winhistorytab" {...props} order={order} />}</Tab.Screen>
+          <Tab.Screen key={"losthistory"} name="Lost">{(props) => <Lost key="losthistorytab" {...props} order={order} />}</Tab.Screen>
+          <Tab.Screen key={"freehistory"} name="Free">{(props) => <Free key="freehistorytab" {...props} order={order} />}</Tab.Screen>
         </Tab.Navigator>
 
       </View>

@@ -78,7 +78,7 @@ const Lost = ({ navigation, order }) => {
               onEndReached={() => { getLostQuizzes(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={lost}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => "lost"+item._id}
               renderItem={({ item }) => {
                 return (
                   <QuizCard

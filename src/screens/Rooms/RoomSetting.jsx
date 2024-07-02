@@ -102,7 +102,7 @@ const RoomSetting = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={[styles.TextMy1, {marginLeft:-50}]}>Setting</Text>
+              <Text style={[styles.TextMy1, {marginLeft:-50}]}>Settings</Text>
             </View>
             <View>
               {/* <Button

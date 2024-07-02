@@ -82,7 +82,7 @@ const All = ({ navigation, order }) => {
               onEndReached={() => { getAllHistory(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={allwin}
-              keyExtractor={(item) => item._id.toString()}
+              keyExtractor={(item) => "all"+item._id.toString()}
               renderItem={({ item }) => {
                 return (
                   <QuizCard

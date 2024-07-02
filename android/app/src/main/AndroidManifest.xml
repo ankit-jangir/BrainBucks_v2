@@ -11,6 +11,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="brainbucks"/>
+        <data android:scheme="https" />
       </intent-filter>
     </activity>
   </application>

@@ -110,7 +110,7 @@ export default function QuizzesResultRewards({navigation, route}) {
           <View style={styles.RewardName}>
 
           
-            <Text style={styles.RewardText}>{data. reward === 0?'Better Luck Next Time ':'Congratulations'}</Text>
+            <Text style={styles.RewardText}>{!data.reward ? 'Better Luck Next Time ':'Congratulations'}</Text>
             <Text style={styles.RewardText1}>{data.self_name}</Text>
           </View>
           <View style={styles.containerV3}>
@@ -139,7 +139,7 @@ export default function QuizzesResultRewards({navigation, route}) {
               source={require('../../assets/img/bbcoin.png')}
               style={styles.RewardImg}
             />
-            <Text style={styles.RewardTextB}>{data.reward}</Text>
+            <Text style={styles.RewardTextB}>{data.reward || 0}</Text>
           </View>
           <View style={styles.WalletView}>
             <TouchableOpacity

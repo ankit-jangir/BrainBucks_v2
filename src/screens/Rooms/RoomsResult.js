@@ -16,7 +16,7 @@ export default function RoomsResult({ navigation }) {
   const [isLoad, setLoad] = useState(false)
   const [isLoad2, setLoad2] = useState(true)
   const [mydata, setMydata] = useState([])
-  const [topRank, setTopRank] = useState({totMarks:0})
+  const [topRank, setTopRank] = useState({ totMarks: 0 })
   const [score, setScore] = useState([])
 
   const { quizState, dispatch } = useQuiz()
@@ -30,14 +30,15 @@ export default function RoomsResult({ navigation }) {
     try {
       setLoad(true);
       let res = await serv.viewResult(quiz_id)
+      console.log(res,"dharma");
       if (res.status === 1) {
         setMydata(res.topRank)
         setTopRank(res)
         setScore(res.scoreboard)
       } else {
         Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
+          type: 'info',
+          text1: "Seems like you did not play the quiz",
         });
       }
     } catch (err) {
@@ -110,6 +111,7 @@ export default function RoomsResult({ navigation }) {
 
   return (
     <>
+    <View style={{zIndex:20}}><Toast/></View>
       {
         isLoad ?
           <>
@@ -122,7 +124,7 @@ export default function RoomsResult({ navigation }) {
               <View style={styles.HeaderView1}>
                 <View style={{ flex: 0.40, }}>
                   <View style={styles.HeaderView2}>
-                    <TouchableOpacity onPress={() => navigation.goBack() } style={styles.HeaderTouchable}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.HeaderTouchable}>
                       <Image source={require('../../assets/img/arrows.png')} resizeMode='center' tintColor={'#fff'} style={{ width: 25, height: 25 }} />
                     </TouchableOpacity>
 
@@ -137,15 +139,15 @@ export default function RoomsResult({ navigation }) {
                   <View style={styles.MyDataView2} >
                     <Text style={styles.MyDataText}>Rank</Text>
                     <View style={{ flexDirection: "row", }}>
-                      <Text style={styles.MyDataTextB} >{topRank.rank}/ </Text>
-                      <Text style={styles.MyDataTextBb} >{topRank.totalRanks}</Text>
+                      <Text style={styles.MyDataTextB} >{topRank.rank || 0}/ </Text>
+                      <Text style={styles.MyDataTextBb} >{topRank.totalRanks || 0}</Text>
                     </View>
                   </View>
                   <View style={styles.MyDataView3} >
                     <Text style={styles.MyDataText}>Score</Text>
                     <View style={{ flexDirection: "row", }}>
-                      <Text style={styles.MyDataTextB} >{topRank.obtainMarks} / </Text>
-                      <Text style={styles.MyDataTextBb} >{topRank.totMarks}</Text>
+                      <Text style={styles.MyDataTextB} >{topRank.obtainMarks || 0} / </Text>
+                      <Text style={styles.MyDataTextBb} >{topRank.totMarks || 0}</Text>
                     </View>
                   </View>
                 </View>
@@ -157,9 +159,11 @@ export default function RoomsResult({ navigation }) {
                       topRank.submit_time_period
                       &&
                       <>
-                        <Text style={styles.MyDataTextB} >{Math.floor(topRank.submit_time_period / 60)>9 ? Math.floor(topRank.submit_time_period / 60) : "0"+Math.floor(topRank.submit_time_period / 60) }:</Text>
-                        <Text style={styles.MyDataTextBb} >{Math.floor(topRank.submit_time_period % 60)>9 ? Math.floor(topRank.submit_time_period % 60) : "0"+Math.floor(topRank.submit_time_period % 60) }</Text>
+                        <Text style={styles.MyDataTextB} >{Math.floor(topRank.submit_time_period / 60) > 9 ? Math.floor(topRank.submit_time_period / 60) : "0" + Math.floor(topRank.submit_time_period / 60)}:</Text>
+                        <Text style={styles.MyDataTextBb} >{Math.floor(topRank.submit_time_period % 60) > 9 ? Math.floor(topRank.submit_time_period % 60) : "0" + Math.floor(topRank.submit_time_period % 60)}</Text>
                       </>
+                      ||
+                      <Text style={styles.MyDataTextB}>00:00</Text>
                     }
                   </View>
                 </View>
@@ -167,7 +171,7 @@ export default function RoomsResult({ navigation }) {
                 <TouchableOpacity onPress={() => { navigation.navigate("RoomsScored") }} style={styles.Touchable} >
                   <Text style={styles.Scorecard} >View Scorecard</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate("RoomsRewards", {result: topRank}) }} style={styles.TouchableReward} >
+                <TouchableOpacity onPress={() => { navigation.navigate("RoomsRewards", { result: topRank }) }} style={styles.TouchableReward} >
                   <Image source={require('../../assets/img/giftbox.png')} style={{ width: 30, height: 30, }} />
                   <Text style={styles.Scorecard} >View Rewards</Text>
                 </TouchableOpacity>
@@ -181,7 +185,7 @@ export default function RoomsResult({ navigation }) {
               <View style={styles.RewardView1} >
 
                 <Animated.View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", height: 200, transform: [{ translateY: translationY }] }} >
-                  <View style={styles.MainView} >
+                  {mydata[1] && <View style={styles.MainView} >
                     <View style={styles.modelViewData} >
                       {
                         mydata[1]?.image
@@ -204,10 +208,10 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>
-                  <View style={styles.ManiDataV1} >
+                  </View>}
+                  {mydata[0] && <View style={styles.ManiDataV1} >
                     <View style={styles.modelViewData} >
-                    {
+                      {
                         mydata[0]?.image
                           ?
                           <Image source={{ uri: BLOBURL + mydata[0]?.image }} style={styles.modelImg} />
@@ -227,10 +231,10 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>
-                  <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
+                  </View>}
+                  {mydata[2] && <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
                     <View style={styles.modelViewData} >
-                    {
+                      {
                         mydata[2]?.image
                           ?
                           <Image source={{ uri: BLOBURL + mydata[2]?.image }} style={styles.modelImg} />
@@ -250,24 +254,25 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>
+                  </View>}
                 </Animated.View>
 
                 <View style={styles.MainDataV} >
                   <View style={styles.ManiDataV1} >
-                    <Animated.View style={{ width: '100%', transform: [{ translateY: translationY2 }] }}>
+                    {mydata[1] && <Animated.View style={{ width: '100%', transform: [{ translateY: translationY2 }] }}>
                       <Image source={require('../../assets/img/rank2img.png')} resizeMode='center' style={styles.MainImg} />
                     </Animated.View>
+                    }
                   </View>
                   <View style={styles.ManiDataV1} >
-                    <Animated.View style={{ width: '100%', alignItems: "center", transform: [{ translateY: translationY1 }] }}>
+                    {mydata[0] && <Animated.View style={{ width: '100%', alignItems: "center", transform: [{ translateY: translationY1 }] }}>
                       <Image source={require('../../assets/img/rank1img.png')} resizeMode='center' style={styles.MainImg1} />
-                    </Animated.View>
+                    </Animated.View>}
                   </View>
                   <View style={styles.ManiDataV1} >
-                    <Animated.View style={{ width: '100%', transform: [{ translateY: translationY3 }] }}>
+                   {mydata[2] && <Animated.View style={{ width: '100%', transform: [{ translateY: translationY3 }] }}>
                       <Image source={require('../../assets/img/rank3img.png')} resizeMode='center' style={styles.MainImg2} />
-                    </Animated.View>
+                    </Animated.View>}
                   </View>
                 </View>
               </View>

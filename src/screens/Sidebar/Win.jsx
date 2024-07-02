@@ -76,7 +76,7 @@ const {quizState,dispatch} = useQuiz();
                 onEndReached={() => { getWonQuizzes(currentPage + 1) }}
                 onEndReachedThreshold={0.6}
                 data={won}
-                keyExtractor={(item) => item._id.toString()}
+                keyExtractor={(item) => "win"+item._id.toString()}
                 renderItem={({ item }) => {
                   return (
                     <QuizCard

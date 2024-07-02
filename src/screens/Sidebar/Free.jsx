@@ -77,7 +77,7 @@ const Free = ({ navigation, order }) => {
               onEndReached={() => { getFreeQuizzes(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={free}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => "free"+item._id}
               renderItem={({ item }) => {
                 return (
                   <QuizCard
