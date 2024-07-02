@@ -220,20 +220,15 @@ const styles = StyleSheet.create({
       paddingLeft:4
     },
     Cview: {
-      width: 160,
       height: 30,
       backgroundColor: '#EFFFF6',
       borderRadius: 5,
       flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding:5
     },
     textC: {
       fontFamily: 'WorkSans-Regular',
       fontSize: 13,
       color: '#1DC173',
-      paddingLeft:4
 
     },
     textP: {

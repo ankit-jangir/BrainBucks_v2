@@ -107,7 +107,7 @@ export default function TriviaQuestionPaper({ navigation }) {
 
   const handleSubmit = (autoSubmmited) => {
     console.log(quizState.time, minute, timerCount, autoSubmmited);
-    let time = autoSubmmited ? 0 : Math.floor(quizState.time - minute * 60 - timerCount)
+    let time = autoSubmmited ? quizState.time : Math.floor(quizState.time - minute * 60 - timerCount)
     submitTriviaQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
         backRef.current()

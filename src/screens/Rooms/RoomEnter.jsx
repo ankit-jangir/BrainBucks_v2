@@ -96,7 +96,7 @@ export default function RoomEnter({ navigation, route }) {
                                 </View>
                                 :
                                 <>
-                                    
+{/*                                     
                                     <TouchableOpacity
                                         style={[
                                             styles2.button,
@@ -111,7 +111,7 @@ export default function RoomEnter({ navigation, route }) {
                                         ]}>
                                             Participants
                                         </Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </>
                         }
                     </View>

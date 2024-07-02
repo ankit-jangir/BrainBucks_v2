@@ -111,7 +111,8 @@ export default function RoomsQuestions({ navigation }) {
 
   const handleSubmit = (autoSubmmited) => {
     console.log(quizState.time, minute*60, timerCount);
-    let time = autoSubmmited ? 0 : Math.floor(quizState.time - minute * 60 - timerCount)
+    let time = autoSubmmited ? quizState.time : Math.floor(quizState.time - minute * 60 - timerCount)
+    console.log(time);
     submitQuizInController(quizState.id, time, Toast).then((r) => {
       if (r) {
         // BackgroundTimer.clearInterval(intervalRef.current)
@@ -136,14 +137,14 @@ export default function RoomsQuestions({ navigation }) {
         <View style={styles.quitView1}>
           <View style={styles.quitView2}>
             <TouchableOpacity
-              onPress={() => {
-                setSubmitText("Quit from quiz")
-                setModalVisible(!modalVisible)
-              }
-              }
+              // onPress={() => {
+              //   setSubmitText("Quit from quiz")
+              //   setModalVisible(!modalVisible)
+              // }
+              // }
               style={styles.quitView3}
             >
-              <Text style={styles.textQuite}>Quit</Text>
+              {/* <Text style={styles.textQuite}>Quit</Text> */}
             </TouchableOpacity>
           </View>
 
@@ -180,7 +181,7 @@ export default function RoomsQuestions({ navigation }) {
           <TouchableOpacity onPress={handleNext}>
             <View style={styles.Daview}>
               <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, quizState.total !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Next</Text>
-              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex ? '#a9a9a9' : "#000"} style={{ width: 20, height: 20, }} />
             </View>
           </TouchableOpacity>
         </View>
@@ -263,7 +264,7 @@ export default function RoomsQuestions({ navigation }) {
             <View style={styles.yesView}>
               <View style={styles.yesView1}>
                 <TouchableOpacity
-                  onPress={()=>{handleSubmit()}}
+                  onPress={()=>{handleSubmit(false)}}
                   style={styles.yesView2}
                 >
                   <Text style={styles.textYes}>Yes</Text>
@@ -587,7 +588,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#2E2E2E',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingVertical:10
 
   },
   quitView: {

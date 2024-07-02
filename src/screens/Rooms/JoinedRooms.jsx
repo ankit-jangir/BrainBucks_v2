@@ -103,13 +103,13 @@ export default function JoinedRooms({ navigation }) {
                                             <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
                                         </View>
                                         <View>
-                                            <View style={[styles2.textP, {flexDirection:"row", justifyContent:"auto", gap:25}]}>
+                                            <View style={[styles2.textP, {flexDirection:"row", justifyContent:"auto", gap:25,}]}>
                                                 <View
                                                     style={[
                                                         styles2.Cview,
                                                         { justifyContent: 'center', alignItems: 'center', backgroundColor:"transparent" },
                                                     ]}>
-                                                    <Text style={[styles2.textC, {color:"#000"}]}>Room hash:</Text>
+                                                    <Text style={[styles2.textC, {color:"#000"}]}>Room hash: </Text>
                                                     <Text
                                                         style={[
                                                             styles2.textC,

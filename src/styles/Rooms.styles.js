@@ -314,6 +314,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#282940',
     color: '#A1A2AD',
     borderRadius: 4,
+    width:"100%",
     paddingHorizontal: 10,
   },
   TimeConatiner: {

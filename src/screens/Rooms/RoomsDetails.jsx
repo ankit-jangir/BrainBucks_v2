@@ -81,7 +81,7 @@ export default function RoomsDetails({ navigation, route }) {
                     marginTop: 10,
                   }}>
                   <Image
-                    source={require('../../assets/img/bbimg.png')}
+                    source={{uri : BLOBURL+data?.category_image}}
                     style={{ width: 40, height: 40, borderRadius: 50 }}
                   />
                   <Text

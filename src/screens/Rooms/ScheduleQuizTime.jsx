@@ -106,7 +106,7 @@ export default function ScheduleQuizTime({ navigation, route }) {
 
     return (
         <>
-            <View style={{ zIndex: 20 }}>
+            <View key={"tiukl"} style={{ zIndex: 20 }}>
                 <Toast />
             </View>
             <View style={[styles.enterRoomMainContainer, { padding: 15 }]}>

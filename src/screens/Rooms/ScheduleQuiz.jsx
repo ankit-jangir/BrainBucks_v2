@@ -58,10 +58,10 @@ export default function ScheduleQuiz({ navigation, route }) {
     }, [data])
 
     function proceed() {
-        if (!selectedCategory || !selectedSubCat || !categoryName || questionNum <= 0 ||!selectedImage) {
+        if (!selectedCategory || !selectedSubCat || !categoryName || !questionNum || questionNum <= 0 ||!selectedImage) {
             Toast.show({
                 type: 'error',
-                text1: "Please fill all the correct details"
+                text1: "Please fill all the details correct"
             })
             return;
         }

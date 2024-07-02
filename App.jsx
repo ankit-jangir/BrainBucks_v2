@@ -473,8 +473,18 @@ function MyDrawer() {
 }
 
 export default function App() {
+
+  const linking = {
+    prefixes: ['https://brainbucks.com', 'brainbucks://'],
+    config: {
+      screens: {
+        Splash:'splash'
+      },
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>
