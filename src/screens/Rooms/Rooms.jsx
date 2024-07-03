@@ -20,26 +20,42 @@ export default function Rooms({ navigation }) {
 
     return (
         <>
-        {/* <View style={{zIndex:20}}>
+            {/* <View style={{zIndex:20}}>
             <Toast/>
         </View> */}
-        <View style={styles.maincontainer}>
-            <View style={styles.topbtns}>
-                <Text style={styles.roomstext}>Rooms</Text>
-                <Button
-                title={"+ Create Room"}
-                onPress={()=>{navigation.navigate("createroom")}}
-                    buttonStyle={{
-                        borderRadius: 4,
-                        paddingHorizontal: 15
-                    }} />
+            <View style={styles.maincontainer}>
+                <View style={styles.topbtns}>
+                    <TouchableOpacity
+                        onPress={() => navigation.openDrawer()}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginHorizontal: 4,
+                            borderWidth: 1,
+                            borderRadius: 100,
+                            width: 50,
+                            height: 50,
+                            borderColor: '#F5F5F5',
+                        }}>
+                        <Image
+                            source={require('../../assets/img/drawerr.png')}
+                            style={{ height: 25, width: 25 }}></Image>
+                    </TouchableOpacity>
+                    <Text style={styles.roomstext}>Rooms</Text>
+                    <Button
+                        title={"+ Create Room"}
+                        onPress={() => { navigation.navigate("createroom") }}
+                        buttonStyle={{
+                            borderRadius: 4,
+                            paddingHorizontal: 15
+                        }} />
+                </View>
+                <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}>
+                    <Tab.Screen name="Explore" component={Explore} />
+                    <Tab.Screen name="Private" component={PrivateRooms} />
+                    <Tab.Screen name="My Rooms" component={MyRooms} />
+                </Tab.Navigator>
             </View>
-            <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}>
-                <Tab.Screen name="Explore" component={Explore} />
-                <Tab.Screen name="Private" component={PrivateRooms}/>
-                <Tab.Screen name="My Rooms" component={MyRooms} />
-            </Tab.Navigator>
-        </View>
         </>
     )
 }
@@ -49,7 +65,7 @@ export default function Rooms({ navigation }) {
 export function MyTabBar({ state, descriptors, navigation, position, imgNeeded, width }) {
     return (
 
-        <View style={[styles.topbar, width&&{width:width+"%"}]}>
+        <View style={[styles.topbar, width && { width: width + "%" }]}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =
@@ -99,7 +115,7 @@ export function MyTabBar({ state, descriptors, navigation, position, imgNeeded, 
                         style={{ flex: 1 }}
                     >
                         <View style={[styles.tabBarLabelHolder, isFocused && { borderBottomWidth: 1 }]}>
-                            {imgNeeded&&<Image style={[styles.tabBarLabelLogo, isFocused && { tintColor: "#000" }]} source={src} />}
+                            {imgNeeded && <Image style={[styles.tabBarLabelLogo, isFocused && { tintColor: "#000" }]} source={src} />}
                             <Text style={[styles.tabBarLabel, isFocused && { color: "#000" }]}>
                                 {label}
                             </Text>

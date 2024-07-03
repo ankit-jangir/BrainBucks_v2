@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
       height: 10,
     },
     viewBtn: {
-      width: '100%',
+      flexGrow:1,
       height: 45,
       borderRadius: 5,
       justifyContent: 'center',

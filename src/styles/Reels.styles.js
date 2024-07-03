@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     video: {
        height:'100%',
     },
-    captionView: { position: 'absolute', left: 0, bottom: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.2)' },
+    captionView: { position: 'absolute', left: 0, bottom: 30, right: 0, backgroundColor: 'rgba(0,0,0,0.2)' },
     reelNameContainer: { flexDirection: 'row', margin: 20 },
     reelImage: { width: 30, height: 30, borderRadius: 50 },
     reelName: { color: ColorsConstant.White, fontSize: 16, paddingHorizontal: 20, textAlign: "center", textAlignVertical: "center" },

@@ -255,7 +255,7 @@ export default function Study({ navigation }) {
           <View style={styles.stdView1}>
             <View style={styles.stdView2}>
               <TouchableOpacity
-                onPress={() => navigation.openDrawer()}
+                onPress={() => navigation.goBack()}
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -267,8 +267,8 @@ export default function Study({ navigation }) {
                   borderColor: '#F5F5F5',
                 }}>
                 <Image
-                  source={require('../../assets/img/drawerr.png')}
-                  style={{ height: 25, width: 25 }}></Image>
+                  source={require('../../assets/img/back.png')}
+                  style={{ height: 50, width: 50 }}></Image>
               </TouchableOpacity>
               <View style={styles.examView}>
                 <Text style={styles.textMy}>Categories</Text>

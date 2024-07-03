@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   MainView: {
     paddingVertical: 10,
     flexDirection: 'row',
+    justifyContent:'space-between'
   },
   TouchImage: {
     justifyContent: 'center',
@@ -28,10 +29,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   TextSearch: {
-    color: 'rgba(126, 126, 126, 1)',
-    fontSize: 14,
-    flex: 0.8,
+    color: '#fff',
+    fontSize: 20,
     fontFamily: 'WorkSans-Regular',
+    verticalAlign:'center',
+    textAlignVertical:'center'
   },
   ShareView: {
     flex: 0.1,

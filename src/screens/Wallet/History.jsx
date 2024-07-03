@@ -37,7 +37,7 @@ const History = ({navigation,route}) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Wallet');
+            navigation.goBack();
           }}>
           <Image
             source={require('../../assets/img/back.png')}

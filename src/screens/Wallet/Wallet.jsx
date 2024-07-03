@@ -98,7 +98,7 @@ export default function Wallet({ navigation }) {
         <View style={styles.stdView2}
         >
           <TouchableOpacity
-            onPress={() => navigation.openDrawer()}
+            onPress={() => navigation.goBack()}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -110,7 +110,7 @@ export default function Wallet({ navigation }) {
               borderColor: '#F5F5F5',
             }}>
             <Image
-              source={require('../../assets/img/drawerr.png')}
+              source={require('../../assets/img/backcopy.png')}
               style={{ height: 25, width: 25 }}></Image>
           </TouchableOpacity>
           <View style={styles.examView}>

@@ -13,6 +13,7 @@ import { Text, TextInput } from '../../utils/Translate';
 import styles2 from '../../styles/Saved.styles';
 import styles from '../../styles/Reels.styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { useIsFocused } from '@react-navigation/native';
 
 const Reels = ({ navigation, route }) => {
 
@@ -38,6 +39,7 @@ const Reels = ({ navigation, route }) => {
     const scrollRef = useRef()
 
     const currentIndex = useRef(0)
+    const isFocused = useIsFocused()
 
     //note:- page means the number of reels and currentReel is just the id of the reel currently playing
 
@@ -47,6 +49,9 @@ const Reels = ({ navigation, route }) => {
         getReels()
     }, [])
 
+    useEffect(()=>{
+        isFocused ? setPaused(false) : setPaused(true)
+    },[isFocused])
 
 
     function renderCaption(item) {
@@ -281,7 +286,7 @@ const Reels = ({ navigation, route }) => {
 <> 
             <FlatList
                 showsVerticalScrollIndicator={false}
-                style={{flexGrow:1}}
+                style={{flexGrow:1, }}
                 ref={scrollRef}
                 onEndReached={() => { if (!loadingMore) getReels(currentPage + 1) }}
                 data={reels}

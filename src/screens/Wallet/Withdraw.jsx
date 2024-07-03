@@ -96,7 +96,7 @@ const Withdraw = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             dispatch({type:'empty'});
-            navigation.navigate('Wallet');
+            navigation.goBack()
           }}>
           <Image
             tintColor="gray"

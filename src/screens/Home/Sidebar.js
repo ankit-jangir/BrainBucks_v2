@@ -176,9 +176,9 @@ const Sidebar = ({ navigation }) => {
           text="Brain Boosters"
         />
         <MenuItem
-          action={() => { navigation.navigate('rooms') }}
-          image={require('../../assets/img/roomsimgs.png')}
-          text="Rooms"
+          action={() => { navigation.navigate("study") }}
+          image={require('../../assets/img/heart.png')}
+          text="Saved Exams"
         />
 
         <MenuItem

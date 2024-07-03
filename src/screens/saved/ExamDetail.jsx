@@ -55,7 +55,7 @@ export default function ExamDetail({navigation, route}) {
         <Tab.Screen name="Quizze">{(props) => <Quizze {...props}/>}</Tab.Screen>
         <Tab.Screen name="Free Trivia">{(props) => <FreeTrivia {...props}/>}</Tab.Screen>
         <Tab.Screen name="MyQuizzes">{(props) => <Challenges {...props}/>}</Tab.Screen>
-        <Tab.Screen name="Study">{(props) => <StudyMaterials {...props}/>}</Tab.Screen>
+        {/* <Tab.Screen name="Study">{(props) => <StudyMaterials {...props}/>}</Tab.Screen> */}
       </Tab.Navigator>
     </View>
 

@@ -300,8 +300,8 @@ function MyTabs() {
             }}
           />
           <Tab.Screen
-            name="Study"
-            component={Study}
+            name="Saved"
+            component={Saved}
             options={{
               tabBarLabel: 'Categories',
               tabBarIcon: ({ focused, color }) => (
@@ -407,24 +407,25 @@ function MyTabs() {
             }}
           />
           <Tab.Screen
-            name="saved"
-            component={Saved}
+            name="Rooms"
+            component={Rooms}
             options={{
-              tabBarLabel: 'Saved',
+              tabBarLabel: 'Rooms',
               tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
-                      source={require('./src/assets/img/heart.png')}
+                      source={require('./src/assets/img/roomsimgs.png')}
                       resizeMode="contain"
                       style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
-                      source={require('./src/assets/img/heartnormal.png')}
+                      source={require('./src/assets/img/roomsimgs.png')}
                       resizeMode="contain"
                       style={{ width: 20, height: 20 }}
+                      tintColor={ColorsConstant.AshGray}
                     />
                   )}
                 </View>
@@ -432,24 +433,25 @@ function MyTabs() {
             }}
           />
           <Tab.Screen
-            name="Wallet"
-            component={Wallet}
+            name="Brain Boosters"
+            component={Reels}
             options={{
-              tabBarLabel: 'Wallet',
+              tabBarLabel: 'Brain Boosters',
               tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
                     <Image
-                      source={require('./src/assets/img/walletblack.png')}
+                      source={require('./src/assets/img/resume.png')}
                       resizeMode="contain"
                       style={{ width: 20, height: 20 }}
                       tintColor={ColorsConstant.Theme}
                     />
                   ) : (
                     <Image
-                      source={require('./src/assets/img/walletnormal.png')}
+                      source={require('./src/assets/img/resume.png')}
                       resizeMode="contain"
                       style={{ width: 20, height: 20 }}
+                      tintColor={ColorsConstant.AshGray}
                     />
                   )}
                 </View>

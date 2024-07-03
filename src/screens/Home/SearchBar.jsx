@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../../styles/Home.styles'
 
 export default function SearchBar() {
@@ -19,27 +19,24 @@ export default function SearchBar() {
       <TouchableOpacity
         onPress={() => navigation.openDrawer()}
         style={styles.TouchImage}>
-        <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
           <Image
             source={require('../../assets/img/drawerr.png')}
-            style={{height: 25, width: 25}}></Image>
+            style={{ height: 25, width: 25 }}></Image>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {navigation.navigate('search')}} 
-        style={styles.SearchBar}>
-        <TouchableOpacity style={{flex: 0.20,paddingHorizontal:5}}>
-          <Image source={require('../../assets/img/search.png')} resizeMode='contain' style={{ width: 20, height: 20 }} />
-        </TouchableOpacity>
-        <Text style={styles.TextSearch}>Search for Exams</Text>
-      </TouchableOpacity>
+      <View style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
+        <Image
+          source={require('../../assets/img/bbcolorlogo.png')}
+          style={{width:140, height:30, objectFit:'contain'}}></Image>
+      </View>
       <View style={styles.BellView}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Notification')}
-          style={{alignItems: 'center'}}>
+          onPress={() => navigation.navigate('wallet')}
+          style={{ alignItems: 'center' }}>
           <Image
-            source={require('../../assets/img/notification.png')}
-            style={{height: 25, width: 25}}></Image>
+            source={require('../../assets/img/walletblack.png')}
+            style={{ height: 25, width: 25 }}></Image>
         </TouchableOpacity>
       </View>
     </View>

@@ -65,7 +65,7 @@ const Deposit = ({navigation}) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Wallet');
+            navigation.goBack();
           }}>
           <Image
             tintColor="gray"

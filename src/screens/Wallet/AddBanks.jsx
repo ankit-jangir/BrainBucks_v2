@@ -77,7 +77,7 @@ const AddBanks = ({ navigation }) => {
       </View>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Wallet')}>
+          onPress={() => navigation.goBack()}>
           <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
         </TouchableOpacity>
         <Text style={{ color: "black", fontSize: 20, fontWeight: "600" }}>Your Banks</Text>

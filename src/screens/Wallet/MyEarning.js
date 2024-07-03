@@ -9,7 +9,7 @@ const MyEarning = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
       <View style={styles.header}>
-      <TouchableOpacity onPress={()=>{navigation.navigate("Wallet")}}>
+      <TouchableOpacity onPress={()=>{navigation.goBack()}}>
       <Image source={require('../../assets/img/back.png')} style={styles.backImage} />
       
       </TouchableOpacity>
