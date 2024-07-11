@@ -265,7 +265,7 @@ const Reels = ({ navigation, route }) => {
             <ScrollView
                 horizontal
                 style={styles.tagsContainer}
-                contentContainerStyle={{ alignItems: 'center', }}
+                contentContainerStyle={{ alignItems: 'center', flexGrow:1 }}
                 onStartShouldSetResponder={()=>true}
                 onStartShouldSetResponderCapture={()=>true}
                 >

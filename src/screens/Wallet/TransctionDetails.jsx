@@ -108,8 +108,8 @@ const TransctionDetails = ({ navigation, route }) => {
 
               }
               <View style={styles.detailsContainer}>
-                <Text style={styles.transactionLabel}>Transaction ID</Text>
-                <Text style={styles.transactionId}>{data.payment_id}</Text>
+                <Text style={styles.transactionLabel}>Order ID</Text>
+                <Text style={styles.transactionId}>{data.order_id}</Text>
                 <View>
                   <Text style={styles.paymentText}>Payment Method</Text>
                   <View style={styles.ImageContiner}>
@@ -140,23 +140,23 @@ const TransctionDetails = ({ navigation, route }) => {
                   &&
                   <View style={styles.FailureContainer}>
                     <Text style={styles.FailureText}>Bank Details</Text>
-                      <View key={data.bankdetails._id} style={styles.bankDetailsContainer}>
-                        <View style={styles.bankDetailsHeader}>
-                          <View style={styles.bankIconContainer}>
-                            <Image
-                              source={require('../../assets/img/bank.png')}
-                              resizeMode="contain"
-                              style={styles.bankIcon}
-                            />
-                          </View>
-                          <Text style={styles.bankName}>{data.bankdetails.bank_name}</Text>
+                    <View key={data.bankdetails._id} style={styles.bankDetailsContainer}>
+                      <View style={styles.bankDetailsHeader}>
+                        <View style={styles.bankIconContainer}>
+                          <Image
+                            source={require('../../assets/img/bank.png')}
+                            resizeMode="contain"
+                            style={styles.bankIcon}
+                          />
                         </View>
-                        <Text style={styles.bankHolder}>{data.bankdetails.acc_holder_name}</Text>
-                        <View style={styles.bankAccountDetails}>
-                          <Text style={styles.accountText}>{data.bankdetails.bank_acc_no}</Text>
-                          <Text style={styles.ifscText}>{data.bankdetails.ifsc_code}</Text>
-                        </View>
+                        <Text style={styles.bankName}>{data.bankdetails.bank_name}</Text>
                       </View>
+                      <Text style={styles.bankHolder}>{data.bankdetails.acc_holder_name}</Text>
+                      <View style={styles.bankAccountDetails}>
+                        <Text style={styles.accountText}>{data.bankdetails.bank_acc_no}</Text>
+                        <Text style={styles.ifscText}>{data.bankdetails.ifsc_code}</Text>
+                      </View>
+                    </View>
 
                   </View>
                 }
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     // backgroundColor:'#EFEFEF',
     borderRadius: 10,
     borderWidth: 1,
-    width:'100%',
+    width: '100%',
     borderColor: 'lightgray',
   },
   bankDetailsHeader: {

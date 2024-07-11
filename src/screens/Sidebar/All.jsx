@@ -49,7 +49,7 @@ const All = ({ navigation, order }) => {
         });
       }
     } catch (err) {
-      console.log('Error while getting earned data', err.message);
+      console.log('Error while getting All history data', err.message);
       // Toast.show({
       //   type: 'error',
       //   text1: 'Something went wrong',
@@ -96,10 +96,13 @@ const All = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      dispatch({type:'change',state:{id:item._id}})
-                      item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
-                    }}
-                    btntxt={"View Result"}
+                      if (item.is_res_dec) {
+                          dispatch({ type: 'change', state: { id: item._id } })
+                          navigation.navigate("RoomsResult")
+                      }
+                  }
+                  }
+                  btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
                   />)
               }}
             />

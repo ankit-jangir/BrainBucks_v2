@@ -164,6 +164,8 @@ class RoomsApiService {
                     rewards
                     room_name
                     room_id
+                    is_res_dec
+                    crontab_result_time
                 }
             }
         }`;

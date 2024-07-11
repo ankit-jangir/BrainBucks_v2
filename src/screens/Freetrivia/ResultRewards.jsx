@@ -85,7 +85,7 @@ export default function TriviaResult({ navigation, route }) {
                 <View style={styles.PerView1}>
                   <View style={styles.PerView2} >
                     <Text style={styles.TextScore}>Percentage</Text>
-                    <Text style={styles.TextPr} >{per} %</Text>
+                    <Text style={styles.TextPr} >{per}%</Text>
                   </View>
                   <View style={[styles.PerView2, { flex: 0.40 }]} >
                     <Text style={styles.TextScore}>score</Text>
@@ -102,7 +102,7 @@ export default function TriviaResult({ navigation, route }) {
                   </View>
                 </View> */}
                 <TouchableOpacity onPress={() => navigation.navigate('TriviaScoreCard')} style={styles.TRecord} >
-                  <Text style={styles.textView} >View Scorecard</Text>
+                  <Text style={styles.textView} >View Score Card</Text>
                 </TouchableOpacity>
               </View>
             </View>

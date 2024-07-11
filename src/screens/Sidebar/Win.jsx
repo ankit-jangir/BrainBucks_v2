@@ -15,7 +15,7 @@ const Win = ({ navigation, order }) => {
   const [loadingMore, setLoadingMore] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
-const {quizState,dispatch} = useQuiz();
+  const { quizState, dispatch } = useQuiz();
   const history = new HistoryApiService()
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const {quizState,dispatch} = useQuiz();
     if (!page) {
       page = 1
       setTotalPages(2)
-      total=2
+      total = 2
     }
 
     if (page > total) {
@@ -50,8 +50,8 @@ const {quizState,dispatch} = useQuiz();
     let res = await BasicServices.apiTryCatch(helper(page), Toast, () => { func(true) }, () => { func(false) })
 
     if (res) {
-        setWon(res.subActiveQuizz)
-        setTotalPages(res.totalpages)
+      setWon(res.subActiveQuizz)
+      setTotalPages(res.totalpages)
       setCurrentPage(page)
     }
   }
@@ -68,15 +68,15 @@ const {quizState,dispatch} = useQuiz();
             :
             won.length === 0
               ?
-              <NoDataFound message={"No Data Found"} action={()=>{getWonQuizzes()}} actionText={"Refresh"} />
+              <NoDataFound message={"No Data Found"} action={() => { getWonQuizzes() }} actionText={"Refresh"} />
               :
               <FlatList
                 refreshing={loading}
-                onRefresh={()=>getWonQuizzes()}
+                onRefresh={() => getWonQuizzes()}
                 onEndReached={() => { getWonQuizzes(currentPage + 1) }}
                 onEndReachedThreshold={0.6}
                 data={won}
-                keyExtractor={(item) => "win"+item._id.toString()}
+                keyExtractor={(item) => "win" + item._id.toString()}
                 renderItem={({ item }) => {
                   return (
                     <QuizCard
@@ -90,12 +90,13 @@ const {quizState,dispatch} = useQuiz();
                       fees={item.entryFees}
                       date={item.sch_time}
                       onPress={() => {
-                        dispatch({type:'change',state:{id:item._id}})
-                      navigation.navigate("QuizzesResult")
+                        if (item.is_res_dec) {
+                          dispatch({ type: 'change', state: { id: item._id } })
+                          navigation.navigate("RoomsResult")
+                        }
                       }
                       }
-                      btntxt={"View Result"}
-
+                      btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
                     />)
                 }
                 }

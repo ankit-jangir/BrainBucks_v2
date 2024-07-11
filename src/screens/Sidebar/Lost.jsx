@@ -78,7 +78,7 @@ const Lost = ({ navigation, order }) => {
               onEndReached={() => { getLostQuizzes(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={lost}
-              keyExtractor={(item) => "lost"+item._id}
+              keyExtractor={(item) => "lost" + item._id}
               renderItem={({ item }) => {
                 return (
                   <QuizCard
@@ -92,11 +92,13 @@ const Lost = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      dispatch({ type: 'change', state: { id: item._id } })
-                      navigation.navigate("QuizzesResult")
+                      if (item.is_res_dec) {
+                        dispatch({ type: 'change', state: { id: item._id } })
+                        navigation.navigate("RoomsResult")
+                      }
                     }
                     }
-                    btntxt={"View Result"}
+                    btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
 
                   />)
               }

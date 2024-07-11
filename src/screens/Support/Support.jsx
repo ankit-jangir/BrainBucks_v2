@@ -101,7 +101,7 @@ export default function Support({ navigation }) {
                                     })} style={styles.tickettopview} >
                                         <View style={styles.ticketview}>
                                             <Text style={styles.ticketname}>{item.title}</Text>
-                                            <Text style={{ color: 'black', fontSize: 15 }}>Last Updated: {new Date(item.update_on).toUTCString().replace(" GMT", "")}</Text>
+                                            <Text style={{ color: 'black', fontSize: 15 }}>Last Updated: {item.update_on}</Text>
                                             <Text style={{ color: !item.is_closed ? 'blue' : 'gray' }}>{!item.is_closed ? "Active" : "Closed"}</Text>
                                         </View>
                                         <Image style={{ width: '8%', height: 30, objectFit:'contain' }} source={require('../../assets/img/rightarrow1.png')} />

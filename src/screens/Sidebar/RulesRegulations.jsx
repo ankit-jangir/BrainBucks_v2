@@ -204,7 +204,7 @@ export default function RulesRegulations() {
           </ScrollView>
         </View>
 
-        <View style={styles.checkV}>
+        {/* <View style={styles.checkV}>
           <View
             style={{
               flexDirection: 'row',
@@ -225,7 +225,7 @@ export default function RulesRegulations() {
               Brain Bucks app
             </Text>
           </View>
-        </View>
+        </View> */}
       </SafeAreaView>
     </>
   );

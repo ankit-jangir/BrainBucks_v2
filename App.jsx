@@ -231,19 +231,18 @@ function MyStack() {
       <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime} />
       <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz} />
       <Stack.Screen name='roomsetting' component={RoomSetting} />
-      <Stack.Screen name="RoomNotification" component={RoomNotifications}/>
-      <Stack.Screen name="Roomanmations" component={RoomsAnimations}/>
-      <Stack.Screen name="Roomdetails" component={RoomsDetails}/>
-      <Stack.Screen name="Roomstart" component={RoomsStart}/>
-      <Stack.Screen name="RoomsParticipants" component={RoomsParticipants}/>
-      <Stack.Screen name="RoomsReward" component={RoomsReward}/>
-      <Stack.Screen name="RoomsRules" component={RoomsRules}/>
-      <Stack.Screen name="Roomsquestions" component={RoomsQuestions}/>
-      <Stack.Screen name="RoomsResult" component={RoomsResult}/>
-      <Stack.Screen name="RoomsScored" component={RoomsScored}/>
-      <Stack.Screen name="RoomsRewards" component={RoomsRewards}/>
-
-</Stack.Navigator>
+      <Stack.Screen name="RoomNotification" component={RoomNotifications} />
+      <Stack.Screen name="Roomanmations" component={RoomsAnimations} />
+      <Stack.Screen name="Roomdetails" component={RoomsDetails} />
+      <Stack.Screen name="Roomstart" component={RoomsStart} />
+      <Stack.Screen name="RoomsParticipants" component={RoomsParticipants} />
+      <Stack.Screen name="RoomsReward" component={RoomsReward} />
+      <Stack.Screen name="RoomsRules" component={RoomsRules} />
+      <Stack.Screen name="Roomsquestions" component={RoomsQuestions} />
+      <Stack.Screen name="RoomsResult" component={RoomsResult} />
+      <Stack.Screen name="RoomsScored" component={RoomsScored} />
+      <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
+    </Stack.Navigator>
   );
 }
 
@@ -480,7 +479,7 @@ export default function App() {
     prefixes: ['https://brainbucks.com', 'brainbucks://'],
     config: {
       screens: {
-        Splash:'splash'
+        Splash: 'splash'
       },
     },
   };

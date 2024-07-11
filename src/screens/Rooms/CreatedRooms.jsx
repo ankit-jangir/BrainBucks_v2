@@ -12,6 +12,7 @@ import { deleteRoomInController } from '../../controllers/RoomsController'
 import Toast from 'react-native-toast-message'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 export default function CreatedRooms({ navigation }) {
     const [rooms, setRooms] = useState([])
@@ -79,7 +80,6 @@ export default function CreatedRooms({ navigation }) {
                             data={rooms}
                             keyExtractor={(item) => item._id}
                             renderItem={({ item, index }) => {
-                                console.log(item);
                                 return (
                                     <View style={styles.roomContainer}>
                                         <Text style={styles.roomNameText}>{item.room_name}</Text>
@@ -102,6 +102,13 @@ export default function CreatedRooms({ navigation }) {
                                                         ]}>
                                                         {item.room_hash ? item.room_hash : "NA"}
                                                     </Text>
+                                                    {item.room_hash && <TouchableOpacity
+                                                        onPress={() => {
+                                                            Clipboard.setString(item.room_hash)
+                                                        }}
+                                                    >
+                                                        <Image style={{ width: 15, height: 15, objectFit: "contain" }} source={require("../../assets/img/copyk.png")} />
+                                                    </TouchableOpacity>}
                                                 </View>
                                             </View>
 

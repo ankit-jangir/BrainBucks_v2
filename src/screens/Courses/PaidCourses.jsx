@@ -464,19 +464,12 @@ const PaidCourses = () => {
 };
 
 export default PaidCourses;
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   modalView: {
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 10,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
     height: 400,
     width: '100%',
   },
@@ -495,7 +488,6 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 10,
     padding: 8,
-    elevation: 2,
     marginTop: 10,
     paddingHorizontal: 20,
     backgroundColor: '#eee3fc',

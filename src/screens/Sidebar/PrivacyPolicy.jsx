@@ -99,7 +99,7 @@ export default function PrivacyPolicy() {
             <Privacy navigation={navigation} />
           </View>
         </ScrollView>
-        <View
+        {/* <View
           style={{
             alignItems: 'center',
             width: '100%',
@@ -140,7 +140,7 @@ export default function PrivacyPolicy() {
               of the Brain Bucks app
             </Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </>
   );

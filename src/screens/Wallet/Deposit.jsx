@@ -5,19 +5,47 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Button, Text, TextInput} from '../../utils/Translate';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import React, { useEffect, useState } from 'react';
+import { Button, Text, TextInput } from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import Toast from 'react-native-toast-message';
 import WalletApiService from '../../services/api/WalletApiService';
 import RazorpayCheckout from 'react-native-razorpay';
+import {
+  CFDropCheckoutPayment,
+  CFEnvironment,
+  CFPaymentComponentBuilder,
+  CFPaymentModes,
+  CFSession,
+  CFThemeBuilder,
+} from 'cashfree-pg-api-contract';
+import { CFPaymentGatewayService } from 'react-native-cashfree-pg-sdk';
+import { useIsFocused } from '@react-navigation/native';
 
-const Deposit = ({navigation}) => {
+const Deposit = ({ navigation }) => {
   const [amount, setAmount] = useState();
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState();
 
   let walletService = new WalletApiService();
+
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    CFPaymentGatewayService.setCallback({
+      onVerify(orderID) {
+        console.log(orderID, "Verified")
+      },
+      onError(error, orderID) {
+        console.log(
+          'exception is : ' + JSON.stringify(error) + '\norderId is :' + orderID
+        );
+      },
+    });
+
+    return CFPaymentGatewayService.removeCallback();
+
+  }, [isFocused])
 
   async function createOrder() {
     if (loading) {
@@ -32,17 +60,50 @@ const Deposit = ({navigation}) => {
       setLoading(true);
       let res = await walletService.createOrder(amount);
       if (res.status === 1) {
-        RazorpayCheckout.open(res.option2)
-          .then(data => {
-            navigation.navigate('paymentpopup', {
-              status: 1,
-            });
-          })
-          .catch(error => {
-            navigation.navigate('paymentpopup', {
-              status: 0,
-            });
-          });
+        const session = new CFSession(
+          res.payment_session_id,
+          res.order_id,
+          CFEnvironment.SANDBOX
+        );
+
+        const paymentModes = new CFPaymentComponentBuilder()
+          .add(CFPaymentModes.CARD)
+          .add(CFPaymentModes.UPI)
+          .add(CFPaymentModes.NB)
+          .add(CFPaymentModes.WALLET)
+          .add(CFPaymentModes.PAY_LATER)
+          .build();
+
+
+        const theme = new CFThemeBuilder()
+          .setNavigationBarBackgroundColor(ColorsConstant.Theme)
+          .setNavigationBarTextColor('#FFFFFF')
+          .setButtonBackgroundColor(ColorsConstant.Theme)
+          .setButtonTextColor('#FFFFFF')
+          .setPrimaryTextColor('#212121')
+          .setSecondaryTextColor('#757575')
+          .build();
+        const dropPayment = new CFDropCheckoutPayment(
+          session,
+          paymentModes,
+          theme
+        );
+
+        CFPaymentGatewayService.doPayment(dropPayment);
+
+        // CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
+
+        // RazorpayCheckout.open(res.option2)
+        //   .then(data => {
+        //     navigation.navigate('paymentpopup', {
+        //       status: 1,
+        //     });
+        //   })
+        //   .catch(error => {
+        //     navigation.navigate('paymentpopup', {
+        //       status: 0,
+        //     });
+        //   });
       } else {
         Toast.show({
           type: 'error',
@@ -61,7 +122,9 @@ const Deposit = ({navigation}) => {
   }
   return (
     <View style={styles.container}>
-      <Toast />
+      <View style={{ zIndex: 30 }}>
+        <Toast />
+      </View>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
@@ -77,7 +140,7 @@ const Deposit = ({navigation}) => {
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Deposit Money</Text>
-          <Text style={{fontSize: 14, fontFamily: 'Work Sans', color:'gray'}}>
+          <Text style={{ fontSize: 14, fontFamily: 'Work Sans', color: 'gray' }}>
             In my Brain Bucks Wallet
           </Text>
         </View>
@@ -90,7 +153,7 @@ const Deposit = ({navigation}) => {
           placeholder="Type Here..."
           style={[
             styles.inputs,
-            errMsg && {borderWidth: 1, borderColor: 'red'},
+            errMsg && { borderWidth: 1, borderColor: 'red' },
           ]}
           value={amount}
           editable={false}

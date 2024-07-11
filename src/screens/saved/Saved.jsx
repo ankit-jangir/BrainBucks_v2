@@ -298,17 +298,17 @@ export default function Saved({ navigation }) {
                                 <Image
                                   source={{ uri: BLOBURL + res.image }}
                                   style={{
-                                    height: 50,
-                                    width: 50,
+                                    height: 45,
+                                    width: 45,
                                     borderRadius: 100,
-                                    resizeMode: 'contain',
+                                    objectFit: 'cover',
                                   }}></Image>
                               </View>
                               <View style={styles.cateName}>
                                 <Text style={styles.cateName1}>{res.exam_name}</Text>
                               </View>
                             </View>
-                            <View style={styles.ActiveView}>
+                            {/* <View style={styles.ActiveView}>
                               <View style={styles.ActiveView1}>
                                 <View style={{ flex: 0.7 }}>
                                   <View style={styles.ActiveView2}>
@@ -349,18 +349,18 @@ export default function Saved({ navigation }) {
                                   {res.enrolled_quizes}
                                 </Text>
                               </View>
-                            </View>
-                            <View style={{ flexDirection: 'row', gap: 20 }}>
+                            </View> */}
+                            <View style={{ flexDirection: 'row', gap: 20, paddingVertical:20 }}>
                               <TouchableOpacity
                                 onPress={() => { dispatch({ type: 'change', idState: { id: res.exam_id } }), navigation.navigate('ExamDetail') }}
-                                style={styles.viewBtn}>
-                                <Text style={styles.textDetails}>View Quizzes</Text>
+                                style={styles.viewBtnQuiz}>
+                                <Text style={styles.textDetails}>Quizzes</Text>
                               </TouchableOpacity>
                               <TouchableOpacity
                                 onPress={() => { dispatch({ type: 'change', idState: { id: res.exam_id } }), navigation.navigate('StudyMaterials') }}
-                                style={styles.viewBtn}
+                                style={styles.viewBtnMaterial}
                               >
-                                <Text style={styles.textDetails}>View Study Material</Text>
+                                <Text style={[styles.textDetails, {color:ColorsConstant.AshGray}]}>Study Material</Text>
                               </TouchableOpacity>
                             </View>
                           </View>

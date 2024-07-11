@@ -27,18 +27,58 @@ import { LinearProgress } from '@rneui/themed';
 import basic from '../../services/BasicServices.js';
 import { StackActions } from '@react-navigation/native';
 import { joinQuizInController } from '../../controllers/RoomsController.js';
+import RoomsApiService from '../../services/api/RoomsApiService.js';
+import { useQuery } from '@apollo/client';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function RoomsStart({ navigation, route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const {quizState, dispatch} =useQuiz()
+  const [load, setLoad] = useState(false)
+  const { quizState, dispatch } = useQuiz()
 
   let quiz_obj = route.params.quiz_obj
 
-//   let id = route.params.id
+  const [refresh, setRefresh] = useState(false);
+  const [response, setResponse] = useState({
+    participants:[],
+    rewards:[]
+  })
+
+  let roomServ = new RoomsApiService();
+
+  const { error, data, loading, refetch } = useQuery(roomServ.GETQUIZDETAILS, {
+    variables: {
+      room_id: quiz_obj._id
+    }
+  })
+
+  // console.log(response.participants, response.rewards, error, "sakalakaboomboom");
+
+  useEffect(() => {
+    if (!data || !data.view_detail_of_roomquiz) {
+      return;
+    }
+
+    const details = data.view_detail_of_roomquiz;
+
+    if (details.error) {
+      Toast.show({
+        type: 'error',
+        text1: details.error
+      })
+      return;
+    }
+
+    let res = details.response;
+    if (res) {
+      setResponse(res)
+    }
+
+  }, [data])
+
+  //   let id = route.params.id
   let timeoutId = useRef()
   const [remainingTime, setRemainingTime] = useState(1000)
 
@@ -49,10 +89,10 @@ export default function RoomsStart({ navigation, route }) {
         clearTimeout(timeoutId.current)
       }
 
-      if(quiz_obj.sch_time){
-        time = basic.getDateFromSchTime(quiz_obj?.sch_time)- Date.now()
+      if (quiz_obj.sch_time) {
+        time = basic.getDateFromSchTime(quiz_obj?.sch_time) - Date.now()
         setRemainingTime(time)
-    }
+      }
       if (time > 0) {
         timeoutId.current = setTimeout(() => {
           setRemainingTime(basic.getDateFromSchTime(quiz_obj?.sch_time) - Date.now())
@@ -66,9 +106,9 @@ export default function RoomsStart({ navigation, route }) {
 
 
   async function joinQuiz() {
-    let res = await joinQuizInController(quiz_obj._id, Toast, setLoading)
+    let res = await joinQuizInController(quiz_obj._id, Toast, setLoad)
     if (res) {
-      dispatch({type:"change", state:{time:res.timeperiod, total:res.total_question, id:quiz_obj._id}})
+      dispatch({ type: "change", state: { time: res.timeperiod, total: res.total_question, id: quiz_obj._id } })
       navigation.dispatch(
         StackActions.replace("Roomanmations")
       )
@@ -92,7 +132,7 @@ export default function RoomsStart({ navigation, route }) {
     <>
       <View style={{ zIndex: 20 }}><Toast /></View>
       {
-        loading
+        load
           ?
           <ActivityIndicator size={40} style={{ flex: 1 }} />
           :
@@ -171,7 +211,7 @@ export default function RoomsStart({ navigation, route }) {
                   </View>
                 </View>
               </View>
-              <View style={[styles.TotalSlotsVi, {marginTop:20}]}>
+              <View style={[styles.TotalSlotsVi, { marginTop: 20 }]}>
                 <Image
                   source={require('../../assets/img/dollar.png')}
                   resizeMode="contain"
@@ -195,7 +235,7 @@ export default function RoomsStart({ navigation, route }) {
                 </View>
               </View>
               <View style={styles.StartExamV}>
-                <TouchableOpacity onPress={()=>{next()}} style={{ width: '80%' }}>
+                <TouchableOpacity onPress={() => { next() }} style={{ width: '80%' }}>
                   <LinearGradient
                     key={remainingTime > 0}
                     start={{ x: 0.0, y: 0.25 }}
@@ -230,8 +270,10 @@ export default function RoomsStart({ navigation, route }) {
 
             <View style={{ flex: 1 }}>
               <Roomsrules
+                key={JSON.stringify(response)}
                 rulesList={quiz_obj.rules ? quiz_obj?.rules : []}
-                quiz_obj={quiz_obj}
+                response={response}
+                refetch={refetch}
               />
             </View>
           </View>
@@ -240,11 +282,14 @@ export default function RoomsStart({ navigation, route }) {
   );
 }
 
-const Roomsrules = ({ rulesList, quiz_obj }) => {
+const Roomsrules = ({ rulesList, response, refetch }) => {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         style={{ flex: 1 }}
+        screenListeners={{
+          tabPress: ()=>{refetch()}
+        }}
         screenOptions={{
           tabBarActiveTintColor: '#000000',
           tabBarLabelStyle: { fontSize: 16, textTransform: 'none' },
@@ -257,13 +302,13 @@ const Roomsrules = ({ rulesList, quiz_obj }) => {
           },
           tabBarIndicatorStyle: { backgroundColor: '#000000' },
         }}>
-        <Tab.Screen name="Participants">
+        <Tab.Screen name="Participants" >
           {props => (
-            <RoomsParticipants {...props} participants={quiz_obj.participants}></RoomsParticipants>
+            <RoomsParticipants {...props} participants={response.participants}></RoomsParticipants>
           )}
         </Tab.Screen>
         <Tab.Screen name="Reward">
-          {props => <RoomsReward {...props} rewards={quiz_obj.rewards} ></RoomsReward>}
+          {props => <RoomsReward {...props} rewards={response.rewards} ></RoomsReward>}
         </Tab.Screen>
         <Tab.Screen name="Rules">
           {props => <RoomsRules {...props} rulesList={rulesList}></RoomsRules>}

@@ -21,6 +21,7 @@ export default function VideoPlayer({navigation, route}) {
     try{
         let res = await serv.startVideo(course_id, video_id)
         if(res.status===1){
+            console.log(res);
             setVideo(res)
         }
         else{
@@ -60,13 +61,13 @@ export default function VideoPlayer({navigation, route}) {
             source={{
                 uri:video.url,
             }}
-            drm={{
-                type: DRMType.WIDEVINE,
-                licenseServer: 'https://drm-widevine-licensing.axprod.net/AcquireLicense',
-                headers: {
-                    'X-AxDRM-Message':video.token,
-                },
-            }}
+            // drm={{
+            //     type: DRMType.WIDEVINE,
+            //     licenseServer: 'https://drm-widevine-licensing.axprod.net/AcquireLicense',
+            //     headers: {
+            //         'X-AxDRM-Message':video.token,
+            //     },
+            // }}
         />
         }
         </>

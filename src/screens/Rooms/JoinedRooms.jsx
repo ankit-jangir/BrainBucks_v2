@@ -13,6 +13,7 @@ import { exitRoomInController } from '../../controllers/RoomsController'
 import Toast from 'react-native-toast-message'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 export default function JoinedRooms({ navigation }) {
     const [rooms, setRooms] = useState([])
@@ -30,10 +31,10 @@ export default function JoinedRooms({ navigation }) {
     async function exitRoom(room_id) {
         let res = await exitRoomInController(room_id, Toast)
         if (res) {
-            let newArr = rooms.filter((item, index)=>item._id!==room_id)
+            let newArr = rooms.filter((item, index) => item._id !== room_id)
             setRooms([...newArr])
             setModalVisible(true)
-            if(timeoutRef.current){
+            if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current)
             }
             timeoutRef.current = setTimeout(() => {
@@ -89,7 +90,7 @@ export default function JoinedRooms({ navigation }) {
                     :
                     rooms.length === 0
                         ?
-                        <NoDataFound scale={0.7} message={"No Rooms Joined Yet"} action={()=>{}} actionText={"Load Again"} />
+                        <NoDataFound scale={0.7} message={"No Rooms Joined Yet"} action={() => { }} actionText={"Load Again"} />
                         :
                         <FlatList
                             data={rooms}
@@ -103,20 +104,29 @@ export default function JoinedRooms({ navigation }) {
                                             <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
                                         </View>
                                         <View>
-                                            <View style={[styles2.textP, {flexDirection:"row", justifyContent:"auto", gap:25,}]}>
+                                            <View style={[styles2.textP, { flexDirection: "row", justifyContent: "auto", gap: 25, }]}>
                                                 <View
                                                     style={[
                                                         styles2.Cview,
-                                                        { justifyContent: 'center', alignItems: 'center', backgroundColor:"transparent" },
+                                                        { justifyContent: 'center', alignItems: 'center', backgroundColor: "transparent" },
                                                     ]}>
-                                                    <Text style={[styles2.textC, {color:"#000"}]}>Room hash: </Text>
-                                                    <Text
-                                                        style={[
-                                                            styles2.textC,
-                                                            { fontFamily: 'WorkSans-SemiBold', color:"#000" },
-                                                        ]}>
-                                                        {item.room_hash ? item.room_hash : "NA"}
-                                                    </Text>
+                                                    <Text style={[styles2.textC, { color: "#000" }]}>Room hash: </Text>
+                                                    <TouchableOpacity>
+                                                        <Text
+                                                            style={[
+                                                                styles2.textC,
+                                                                { fontFamily: 'WorkSans-SemiBold', color: "#000" },
+                                                            ]}>
+                                                            {item.room_hash ? item.room_hash : "NA"}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                    {item.room_hash &&<TouchableOpacity
+                                                        onPress={() => {
+                                                            Clipboard.setString(item.room_hash)
+                                                        }}
+                                                    >
+                                                        <Image style={{ width: 15, height: 15, objectFit: "contain" }} source={require("../../assets/img/copyk.png")} />
+                                                    </TouchableOpacity>}
                                                 </View>
                                             </View>
 
@@ -125,11 +135,11 @@ export default function JoinedRooms({ navigation }) {
                                         </View>
                                         <View style={styles.roomContainerBtns}>
                                             <Button
-                                                onPress={() => { navigation.navigate('roomenter', { type: 'joined', room_data:item }) }}
+                                                onPress={() => { navigation.navigate('roomenter', { type: 'joined', room_data: item }) }}
                                                 titleStyle={styles.enterbtn}
                                                 containerStyle={styles.enterbtncontainer}
                                                 title={"Enter Room"} />
-                                            <TouchableOpacity onPress={()=>{exitRoom(item._id)}} style={styles.exitview}>
+                                            <TouchableOpacity onPress={() => { exitRoom(item._id) }} style={styles.exitview}>
                                                 <Image style={styles.exitimg} source={require('../../assets/img/exit.png')} />
                                                 <Text style={styles.exitbtn}>Leave Room</Text>
                                             </TouchableOpacity>

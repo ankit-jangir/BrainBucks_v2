@@ -132,7 +132,7 @@ const SelectGender = ({item, selected, onPress}) => {
               alignItems: 'center',
               textAlign: 'center',
             }}>
-            {item.gen}
+            {item.gen === "No Say" ? "Other": item.gen}
           </Text>
         </TouchableOpacity>
       </View>

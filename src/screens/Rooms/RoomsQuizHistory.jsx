@@ -26,7 +26,7 @@ export default function RoomsQuizHistory({ navigation, route }) {
     const room_data = route.params.room_data;
     const roomServ = new RoomsApiService()
 
-    const {quizState, dispatch} = useQuiz()
+    const { quizState, dispatch } = useQuiz()
 
     let { loading, error, data, refetch } = useQuery(roomServ.GETHISTORYQUIZES, {
         variables: {
@@ -34,9 +34,9 @@ export default function RoomsQuizHistory({ navigation, route }) {
         }
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         setCurrentPage(1)
-    },[isFocused])
+    }, [isFocused])
 
 
     useEffect(() => {
@@ -98,28 +98,28 @@ export default function RoomsQuizHistory({ navigation, route }) {
                 </View>
 
                 {
-                    (loading && currentPage===1)
+                    (loading && currentPage === 1)
                         ?
                         <ActivityIndicator size={40} color={ColorsConstant.Theme} />
                         :
                         quizzes.length === 0
                             ?
-                            <NoDataFound message={"No Data Found"} action={() => {}} actionText={"Refresh"} />
+                            <NoDataFound message={"No Data Found"} action={() => { }} actionText={"Refresh"} />
                             :
                             <FlatList
-                                onRefresh={()=>{
-                                    if(currentPage===1){
-                                        setCurrentPage(totalPages+1)
+                                onRefresh={() => {
+                                    if (currentPage === 1) {
+                                        setCurrentPage(totalPages + 1)
                                         setTimeout(() => {
                                             setCurrentPage(1)
                                         }, 300);
                                     }
-                                    else{
+                                    else {
                                         setCurrentPage(1)
                                     }
                                 }}
                                 refreshing={refreshing}
-                                onEndReached={() => { currentPage<=totalPages && setCurrentPage(currentPage + 1) }}
+                                onEndReached={() => { currentPage <= totalPages && setCurrentPage(currentPage + 1) }}
                                 onEndReachedThreshold={0.6}
                                 data={quizzes}
                                 keyExtractor={(item) => item._id.toString()}
@@ -136,18 +136,20 @@ export default function RoomsQuizHistory({ navigation, route }) {
                                             fees={item.entryFees}
                                             date={item.sch_time}
                                             onPress={() => {
-                                                dispatch({ type: 'change', state: { id: item._id } })
-                                                navigation.navigate("RoomsResult")
+                                                if (item.is_res_dec) {
+                                                    dispatch({ type: 'change', state: { id: item._id } })
+                                                    navigation.navigate("RoomsResult")
+                                                }
                                             }
                                             }
-                                            btntxt={"View Result"}
+                                            btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
                                             roomname={room_data?.room_name}
                                         />)
                                 }
                                 }
                             />
                 }
-                {loading && currentPage>1 && <ActivityIndicator size={25} style={{ height: 30 }} />}
+                {loading && currentPage > 1 && <ActivityIndicator size={25} style={{ height: 30 }} />}
 
             </View>
         </>

@@ -69,7 +69,6 @@ const Sidebar = ({ navigation }) => {
           AsyncStorage.removeItem('language').then(() => {
             toggleOverlay()
             ChatSockService.disconnect()
-            navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
           });
         });
       } else {
@@ -85,6 +84,7 @@ const Sidebar = ({ navigation }) => {
       //   text1: 'Something Went Wrong',
       // });
     } finally {
+      navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
       setLoggingOut(false);
     }
   }

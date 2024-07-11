@@ -4,6 +4,10 @@ import basic from '../services/BasicServices';
 
 import NetInfo from '@react-native-community/netinfo'
 import { onlineManager } from '@tanstack/react-query'
+import {
+    CFErrorResponse,
+    CFPaymentGatewayService,
+} from 'react-native-cashfree-pg-sdk';
 
 
 /**
@@ -64,7 +68,6 @@ export default async function onAppBootstrap() {
                 setOnline(!!state.isConnected)
             })
         })
-
     }
     catch (err) {
         console.log("Error in Fetching Fcm from firebase: ", err.message)

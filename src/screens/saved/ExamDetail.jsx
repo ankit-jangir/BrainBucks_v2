@@ -39,7 +39,7 @@ export default function ExamDetail({navigation, route}) {
               />
             </TouchableOpacity>
             <View style={styles.ViewMy}>
-              <Text style={styles.TextMy}>My Exams</Text>
+              <Text style={styles.TextMy}>Exams Quizzes </Text>
             </View>
           </View>
         </View>
@@ -52,7 +52,7 @@ export default function ExamDetail({navigation, route}) {
         tabBarStyle: { width: "100%", },
         tabBarIndicatorStyle: { backgroundColor: "#000000", },
       }} >
-        <Tab.Screen name="Quizze">{(props) => <Quizze {...props}/>}</Tab.Screen>
+        <Tab.Screen name="Quizzes">{(props) => <Quizze {...props}/>}</Tab.Screen>
         <Tab.Screen name="Free Trivia">{(props) => <FreeTrivia {...props}/>}</Tab.Screen>
         <Tab.Screen name="MyQuizzes">{(props) => <Challenges {...props}/>}</Tab.Screen>
         {/* <Tab.Screen name="Study">{(props) => <StudyMaterials {...props}/>}</Tab.Screen> */}

@@ -9,14 +9,14 @@ const styles = StyleSheet.create({
     pauseBtnView: { zIndex: 21, position: 'absolute', padding: 20, top: screenHeight / 2 - 17, left: screenWidth / 2 - 17, width: 35, height: 35, zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderRadius: 20 },
     pauseBtn: { width: 30, height: 30, borderRadius: 20, objectFit: 'contain' },
     resumeBtn: { width: 25, height: 25, borderRadius: 20, objectFit: 'contain' },
-    tagsContainer: { marginLeft: 40, padding: 20, flexGrow:0, height:"11%", backgroundColor: 'transparent' },
+    tagsContainer: { marginLeft: 40, padding: 20, flexGrow: 0, height: "11%", backgroundColor: 'transparent' },
     tagsView: { flexDirection: 'row', marginRight: 25 },
-    tag: { padding: 10, paddingHorizontal: 20, marginLeft: 20, borderRadius: 10, backgroundColor: ColorsConstant.Theme },
+    tag: { padding: 10, paddingHorizontal: 20, marginLeft: 20, borderRadius: 10, backgroundColor: ColorsConstant.Theme, flexGrow: 1 },
     videoContainer: {
-        height:screenHeight*(85/100)
+        height: screenHeight * (85 / 100)
     },
     video: {
-       height:'100%',
+        height: '100%',
     },
     captionView: { position: 'absolute', left: 0, bottom: 30, right: 0, backgroundColor: 'rgba(0,0,0,0.2)' },
     reelNameContainer: { flexDirection: 'row', margin: 20 },

@@ -34,14 +34,9 @@ export default function RoomsRewards({navigation, route}) {
       let res = await serv.viewResult(SubActive_id);
       if (res.status === 1) {
         setData(res);
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
       }
     } catch (err) {
-      console.log('Error while getting earned data', err.message);
+      console.log('Error while getting Reward in rooms ', err.message);
       // Toast.show({
       //   type: 'error',
       //   text1: 'Something went wrong',

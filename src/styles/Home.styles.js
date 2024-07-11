@@ -230,8 +230,22 @@ const styles = StyleSheet.create({
       fontSize: 20,
       fontFamily: 'WorkSans-SemiBold',
       textAlign: 'center'
+    },
+    buyCourseModalView:{
+      width:300,
+      height:200,
+      backgroundColor:"#fff",
+      justifyContent:"space-evenly",
+      padding:20
+    },
+    buyCourseModalButtonsView:{
+      flexDirection:"row",
+      justifyContent:"space-evenly"
+    },
+    buyCourseModalText:{
+      textAlign:"center",
+      fontSize:20
     }
-  
 
 });
 

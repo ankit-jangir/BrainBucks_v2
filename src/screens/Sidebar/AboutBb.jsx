@@ -83,28 +83,24 @@ export default function AboutBb({ navigation }) {
             <Text style={styles.AboutTextF3}>It take tremendous efforts of thousands of “ Brain Buskeers” in order to deliver the high quality experience to you. We all should take a moment to thanks and show our gratitude towards the hard work they have put in.</Text>
             <Text style={styles.AboutTextF3}>It take tremendous efforts of thousands of “ Brain Buskeers” in order to deliver the high quality experience to you. We all should take a moment to thanks and show our gratitude towards the hard work they have put in.</Text>
             <Text style={styles.AboutTextF3}>Here is the list of a few key “Brain Buskeers” who have made this platform from scratch and currently taking care of this Platform, where millions of aspirants like you come and carve the initial foundation of their success, and achieving their dreams and converting them into reality.</Text>
-            <Text style={styles.AboutTextF3}>1. Harsh Kadyan - Chief Operating Officer</Text>
-            <View style={styles.AboutTextF4} >
-              <Text style={styles.AboutTextF5}>a. Entire UI/UX</Text>
-              <Text style={styles.AboutTextF5}>b. Project Management</Text>
-              <Text style={styles.AboutTextF5}>c. Business Process Automation</Text>
-            </View>
-            <Text style={styles.AboutTextF3}>2. Saurav Kumawat - Chief Technology Officer</Text>
-            <View style={styles.AboutTextF4} >
-              <Text style={styles.AboutTextF5}>a. Managing software Technicalities</Text>
-              <Text style={styles.AboutTextF5}>b. Business Process Automation</Text>
-            </View>
-            <Text style={styles.AboutTextF3}>3. Ghanshyam Malhotra - Human Resources</Text>
+            
+            <Text style={styles.AboutTextF3}>1. Kapil Sharma - Chief Operating Officer</Text>
             <View style={styles.AboutTextF4} >
               <Text style={styles.AboutTextF5}>a. Setting up new team</Text>
               <Text style={styles.AboutTextF5}>b. Content Management</Text>
               <Text style={styles.AboutTextF5}>c. Internal Business process handling</Text>
               <Text style={styles.AboutTextF5}>d. Corporate Relations</Text>
             </View>
-            <Text style={styles.AboutTextF3}>4. Dharamveer singh nathawat -  Back-End Developer & DevOPS Engineer</Text>
-            <Text style={styles.AboutTextF3}>5. Yogesh Poonia - Full-Stack Developer</Text>
-            <Text style={styles.AboutTextF7}>6. Sonu Yadav - Front-End Developer</Text>
-            <Text style={styles.AboutTextF3}>7. Ayushi Sharma - Full-Stack Developer </Text>
+
+            <Text style={styles.AboutTextF3}>2. Saurav Kumawat - Chief Technology Officer</Text>
+            <View style={styles.AboutTextF4} >
+              <Text style={styles.AboutTextF5}>a. Managing software Technicalities</Text>
+              <Text style={styles.AboutTextF5}>b. Business Process Automation</Text>
+            </View>
+            <Text style={styles.AboutTextF3}>3. Dharamveer singh nathawat -  Back-End Developer & DevOPS Engineer</Text>
+            <Text style={styles.AboutTextF3}>4. Yogesh Poonia - Full-Stack Developer</Text>
+            <Text style={styles.AboutTextF7}>5. Sonu Yadav - Front-End Developer</Text>
+            <Text style={styles.AboutTextF3}>6. Ayushi Sharma - Full-Stack Developer </Text>
           </View>
         </ScrollView>
         <View style={styles.followV1}>

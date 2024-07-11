@@ -185,7 +185,7 @@ export default function RoomsResult({ navigation }) {
               <View style={styles.RewardView1} >
 
                 <Animated.View style={{ flexDirection: "row", width: "100%", justifyContent: "space-between", height: 200, transform: [{ translateY: translationY }] }} >
-                  {mydata[1] && <View style={styles.MainView} >
+                  {mydata[1] ? <View style={styles.MainView} >
                     <View style={styles.modelViewData} >
                       {
                         mydata[1]?.image
@@ -208,8 +208,8 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>}
-                  {mydata[0] && <View style={styles.ManiDataV1} >
+                  </View>: <View style={{flex:1}}></View>}
+                  {mydata[0] ? <View style={styles.ManiDataV1} >
                     <View style={styles.modelViewData} >
                       {
                         mydata[0]?.image
@@ -231,8 +231,8 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>}
-                  {mydata[2] && <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
+                  </View>: <View style={{flex:1}}></View>}
+                  {mydata[2] ? <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
                     <View style={styles.modelViewData} >
                       {
                         mydata[2]?.image
@@ -254,7 +254,7 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>}
+                  </View>: <View style={{flex:1}}></View>}
                 </Animated.View>
 
                 <View style={styles.MainDataV} >

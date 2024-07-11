@@ -37,7 +37,7 @@ export default function StudyMaterials({ navigation }) {
             style={{ height: 25, width: 25 }}></Image>
         </TouchableOpacity>
         <View style={styles2.examView}>
-          <Text style={styles2.textMy}>My Categories</Text>
+          <Text style={styles2.textMy}>Study Material</Text>
         </View>
         <View style={styles2.viewAdd}>
         </View>

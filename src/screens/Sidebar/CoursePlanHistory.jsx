@@ -143,7 +143,7 @@ export default function CoursePlanHistory({navigation}) {
                           fontSize: 16,
                           fontWeight: '400',
                         }}>
-                        Payment Date Time :
+                        Purchase Time :
                       </Text>
                       <Text style={{color: 'gray'}}>
                         {res.registor_time}
@@ -156,7 +156,7 @@ export default function CoursePlanHistory({navigation}) {
                           fontSize: 16,
                           fontWeight: '400',
                         }}>
-                        Expire Time:{' '}
+                        Expiry Time:{' '}
                       </Text>
                       <Text style={{color: 'gray'}}>{res.expire_time}</Text>
                     </View>
@@ -169,7 +169,7 @@ export default function CoursePlanHistory({navigation}) {
                           fontSize: 16,
                           fontWeight: '400',
                         }}>
-                        Amount:{' '}
+                        Price:{' '}
                         <Text style={{color: 'gray'}}>{res.amount}</Text>{' '}
                       </Text>
                     </View>

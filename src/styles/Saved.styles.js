@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#F5F5F5',
       backgroundColor: ColorsConstant.White,
+      elevation: 3,
     },
     liveVIew2: {
       flexDirection: 'row',
@@ -257,7 +258,19 @@ const styles = StyleSheet.create({
       width: '50%',
       height: 10,
     },
-    viewBtn: {
+    viewBtnQuiz: {
+      flexGrow:1,
+      height: 45,
+      borderRadius: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: '#D9D9D9',
+      backgroundColor:ColorsConstant.Blue,
+      marginTop: 10,
+      marginBottom: 8,
+    },
+    viewBtnMaterial:{
       flexGrow:1,
       height: 45,
       borderRadius: 5,
@@ -266,10 +279,10 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#D9D9D9',
       marginTop: 10,
-      marginBottom: 8,
+      marginBottom: 8
     },
     textDetails: {
-      color: '#000',
+      color: '#fff',
       fontSize: 15,
       fontFamily: 'WorkSans-Medium',
     },

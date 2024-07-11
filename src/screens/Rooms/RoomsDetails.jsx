@@ -62,7 +62,7 @@ export default function RoomsDetails({ navigation, route }) {
   },[data])
 
   async function register() {
-    let res = await registerQuizInController(data._id, Toast)
+    let res = await registerQuizInController(response._id, Toast)
     if (res) {
       setModalVisible()
     }
