@@ -92,7 +92,8 @@ const Win = ({ navigation, order }) => {
                       onPress={() => {
                         if (item.is_res_dec) {
                           dispatch({ type: 'change', state: { id: item._id } })
-                          navigation.navigate("RoomsResult")
+                          item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
+
                         }
                       }
                       }

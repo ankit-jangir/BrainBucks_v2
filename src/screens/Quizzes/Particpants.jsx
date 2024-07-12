@@ -15,7 +15,7 @@ export default function Participants({ participants }) {
   useEffect(()=>{
     quizServ.getActiveQuizParticipants(quizState.id).then(res=>{
       if(res){
-        setData(["You",...res.participantNames])
+        setData([...res.participantNames])
       }
     }).catch((err)=>{
       console.log("Error in fetching participants: ",err);

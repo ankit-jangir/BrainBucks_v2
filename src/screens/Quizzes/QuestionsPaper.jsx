@@ -178,7 +178,7 @@ export default function QuestionsPaper({ navigation }) {
           <TouchableOpacity onPress={handleNext}>
             <View style={styles.Daview}>
               <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, quizState.total !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Next</Text>
-              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+              <Image source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex ? '#a9a9a9' : "#000"} style={{ width: 20, height: 20, }} />
             </View>
           </TouchableOpacity>
         </View>

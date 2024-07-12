@@ -14,7 +14,7 @@ const All = ({ navigation, order }) => {
   const [loadingMore, setLoadingMore] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
-  const {quizState,dispatch} = useQuiz();
+  const { quizState, dispatch } = useQuiz();
 
   const history = new HistoryApiService()
 
@@ -75,14 +75,14 @@ const All = ({ navigation, order }) => {
           <ActivityIndicator size={40} />
           :
           allwin.length === 0 ?
-            <NoDataFound message={"No Quiz Played Yet"} action={()=>{getAllHistory()}} actionText={"Load Again"} />
+            <NoDataFound message={"No Quiz Played Yet"} action={() => { getAllHistory() }} actionText={"Load Again"} />
             :
             <FlatList
-              refreshControl={<RefreshControl refreshing={loading} onRefresh={()=>{getAllHistory()}}/>}
+              refreshControl={<RefreshControl refreshing={loading} onRefresh={() => { getAllHistory() }} />}
               onEndReached={() => { getAllHistory(currentPage + 1) }}
               onEndReachedThreshold={0.6}
               data={allwin}
-              keyExtractor={(item) => "all"+item._id.toString()}
+              keyExtractor={(item) => "all" + item._id.toString()}
               renderItem={({ item }) => {
                 return (
                   <QuizCard
@@ -97,12 +97,13 @@ const All = ({ navigation, order }) => {
                     date={item.sch_time}
                     onPress={() => {
                       if (item.is_res_dec) {
-                          dispatch({ type: 'change', state: { id: item._id } })
-                          navigation.navigate("RoomsResult")
+                        dispatch({ type: 'change', state: { id: item._id } })
+                        item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
+
                       }
-                  }
-                  }
-                  btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
+                    }
+                    }
+                    btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
                   />)
               }}
             />

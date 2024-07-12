@@ -37,11 +37,13 @@ export default function QuizzesResult({ navigation, }) {
         setTopRank(res)
         setScore(res.scoreboard)
       } else {
-        console.log("Backend Error in rrsult: ",res);
         Toast.show({
           type: 'error',
           text1: res.Backend_Error,
         });
+        // setMydata(res?.topRank)
+        // setTopRank(res)
+        // setScore(res?.scoreboard)
       }
     } catch (err) {
       console.log('Error while getting Quizz Result data', err.message);
@@ -141,7 +143,7 @@ export default function QuizzesResult({ navigation, }) {
                   <View style={styles.MyDataView2} >
                     <Text style={styles.MyDataText}>Rank</Text>
                     <View style={{ flexDirection: "row", }}>
-                      <Text style={styles.MyDataTextB} >{topRank.rank || 0}/ </Text>
+                      <Text style={styles.MyDataTextB} >{topRank.obtainRank || 0}/ </Text>
                       <Text style={styles.MyDataTextBb} >{topRank.totalRanks || 0}</Text>
                     </View>
                   </View>

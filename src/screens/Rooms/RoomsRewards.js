@@ -34,6 +34,8 @@ export default function RoomsRewards({navigation, route}) {
       let res = await serv.viewResult(SubActive_id);
       if (res.status === 1) {
         setData(res);
+      }else{
+        setData(res);
       }
     } catch (err) {
       console.log('Error while getting Reward in rooms ', err.message);
