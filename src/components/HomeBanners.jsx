@@ -36,7 +36,7 @@ export default function HomeBanners({ setLoading }) {
             scrollAnimationDuration={1000}
             renderItem={({ item }) => (
               <View key={item._id} style={styles.carouselItem}>
-                <Image source={{ uri: BLOBURL + item.banner }} style={styles.carouselImage} />
+                <Image source={{ uri: BLOBURL + item.banner }} resizeMode='contain' style={styles.carouselImage} />
               </View>
             )}
           />

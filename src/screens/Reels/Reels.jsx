@@ -52,9 +52,9 @@ const Reels = ({ navigation, route }) => {
         getReels()
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         isFocused ? setPaused(false) : setPaused(true)
-    },[isFocused])
+    }, [isFocused])
 
 
     function renderCaption(item) {
@@ -120,6 +120,7 @@ const Reels = ({ navigation, route }) => {
         let func = setLoadingMore
 
         let res = await BasicServices.apiTryCatch(getReelsHelper(page, again), Toast, () => { func(true) }, () => { func(false) })
+
         if (res && res.reel) {
             if (res.reel.length === 0) {
                 getReels(page + 1, true)
@@ -268,75 +269,85 @@ const Reels = ({ navigation, route }) => {
             <ScrollView
                 horizontal
                 style={styles.tagsContainer}
-                contentContainerStyle={{ alignItems: 'center', flexGrow:1 }}
-                onStartShouldSetResponder={()=>true}
-                onStartShouldSetResponderCapture={()=>true}
-                >
+                contentContainerStyle={{ alignItems: 'center', flexGrow: 1 }}
+                onStartShouldSetResponder={() => true}
+                onStartShouldSetResponderCapture={() => true}
+            >
                 <View style={styles.tagsView}>
-                    {tags.map((item, index) =>
-                        <TouchableOpacity
-                            key={item._id}
-                            onPress={() => { select(index) }}
-                            style={[styles.tag, !item.selected && { backgroundColor: 'white' }]}>
-                            <Text key={item._id + "" + item.selected} style={{ color: item.selected ? 'white' : ColorsConstant.Black }}>
-                                {item.selected && 'X  '}
-                                {item.tag_name}
-                            </Text>
-                        </TouchableOpacity>
-                    )}
+                    {
+                        tags.length === 0 ?
+                            <Text style={{color:"#000", paddingHorizontal:20}}>No Tags Found</Text>
+                            :
+                            tags.map((item, index) =>
+                                <TouchableOpacity
+                                    key={item._id}
+                                    onPress={() => { select(index) }}
+                                    style={[styles.tag, !item.selected && { backgroundColor: 'white' }]}>
+                                    <Text key={item._id + "" + item.selected} style={{ color: item.selected ? 'white' : ColorsConstant.Black }}>
+                                        {item.selected && 'X  '}
+                                        {item.tag_name}
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
                 </View>
             </ScrollView>
-<> 
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                style={{flexGrow:1, }}
-                ref={scrollRef}
-                onEndReached={() => { if (!loadingMore) getReels(currentPage + 1) }}
-                data={reels}
-                windowSize={5} // Number of items to render outside of the visible area
-                initialNumToRender={5} // Number of items to render initially
-                maxToRenderPerBatch={5} // Number of items rendered per batch
-                removeClippedSubviews={true}
-                horizontal={false}
-                snapToAlignment='start'
-                scrollAnimationDuration={1000}
-                decelerationRate={'fast'}
-                snapToInterval={screenHeight*(85/100)}
-                keyExtractor={(item, index) => item._id + index}
-                onViewableItemsChanged={({ changed, viewableItems }) => {
-                    // if (!reels.includes(changed[0].item._id)) { setSeenReels([...seenReels, changed[0].item._id]) }
-                    setCurrentReel(viewableItems[0]?.item?._id + viewableItems[0]?.index);
-                    currentIndex.current = (viewableItems[0]?.index)
-                    setLoading(false)
-                    setBuffering(false)
-                    if (viewableItems[0] && viewableItems[0].index === reels.length - 1) {
-                        getReels(currentPage + 1)
-                    }
-                    // if (viewableItems[0] && viewableItems[0].index % 3 === 0) {
-                    //     let diff = reels.length - viewableItems[0].index
-                    //     if (diff === 3 || diff === 4);
-                    //     getReels(currentPage + 1)
-                    // }
-                }}
-                viewabilityConfig={{
-                    itemVisiblePercentThreshold: 50
-                }}
-                renderItem={({ item, index }) => {
-                    return (
-                        <Pressable
-                            style={[styles.videoContainer]}
-                            onPress={handleClick}
-                        >
-                            <MemoizedVideo currentReel={currentReel} index={index} item={item} paused={paused} />
-                            <MemoizedCaptionSection expendedCaptions={expendedCaptions} item={item} renderCaption={renderCaption} toggleExpand={toggleExpand} />
-                            <MemoizedLikeCommentSection like={like} item={item} setModalVisible={setModalVisible} />
-                        </Pressable>
+            <>
+                {
+                    reels.length === 0 ?
+                        <View style={{ flex: 1, height: 300, padding: 30, backgroundColor: "white" }}>
+                            <NoDataFound message={"No Reels Found"} />
+                        </View>
+                        :
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            style={{ flexGrow: 1, }}
+                            ref={scrollRef}
+                            onEndReached={() => { if (!loadingMore) getReels(currentPage + 1) }}
+                            data={reels}
+                            windowSize={5} // Number of items to render outside of the visible area
+                            initialNumToRender={5} // Number of items to render initially
+                            maxToRenderPerBatch={5} // Number of items rendered per batch
+                            removeClippedSubviews={true}
+                            horizontal={false}
+                            snapToAlignment='start'
+                            scrollAnimationDuration={1000}
+                            decelerationRate={'fast'}
+                            snapToInterval={screenHeight * (85 / 100)}
+                            keyExtractor={(item, index) => item._id + index}
+                            onViewableItemsChanged={({ changed, viewableItems }) => {
+                                // if (!reels.includes(changed[0].item._id)) { setSeenReels([...seenReels, changed[0].item._id]) }
+                                setCurrentReel(viewableItems[0]?.item?._id + viewableItems[0]?.index);
+                                currentIndex.current = (viewableItems[0]?.index)
+                                setLoading(false)
+                                setBuffering(false)
+                                if (viewableItems[0] && viewableItems[0].index === reels.length - 1) {
+                                    getReels(currentPage + 1)
+                                }
+                                // if (viewableItems[0] && viewableItems[0].index % 3 === 0) {
+                                //     let diff = reels.length - viewableItems[0].index
+                                //     if (diff === 3 || diff === 4);
+                                //     getReels(currentPage + 1)
+                                // }
+                            }}
+                            viewabilityConfig={{
+                                itemVisiblePercentThreshold: 50
+                            }}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <Pressable
+                                        style={[styles.videoContainer]}
+                                        onPress={handleClick}
+                                    >
+                                        <MemoizedVideo currentReel={currentReel} index={index} item={item} paused={paused} />
+                                        <MemoizedCaptionSection expendedCaptions={expendedCaptions} item={item} renderCaption={renderCaption} toggleExpand={toggleExpand} />
+                                        <MemoizedLikeCommentSection like={like} item={item} setModalVisible={setModalVisible} />
+                                    </Pressable>
 
-                    )
-                }
-                }
-            />
-</>
+                                )
+                            }
+                            }
+                        />}
+            </>
             <Modal
                 onShow={() => { getComments(), setComment("") }}
                 animationType="slide"

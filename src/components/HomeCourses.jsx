@@ -93,7 +93,7 @@ export default function HomeCourses() {
                                 current = current.item
                                 return (
                                     <View style={[styles2.centeredView, { margin: 10 }]}>
-                                        <View style={[styles2.modalView, { elevation: 2 }]}>
+                                        <View style={[styles2.modalView, { elevation: 2, height:"auto", paddingBottom:20 }]}>
                                             <View style={{ height: 150, width: '100%', objfit: 'cover' }}>
                                                 <Image
                                                     source={{ uri: BLOBURL + current?.banner }}

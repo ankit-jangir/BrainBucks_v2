@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     carouselItem: {
       justifyContent: 'center',
       alignItems: 'center',
+      paddingHorizontal:6
     },
     LiveView: {
       flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, Image, View, StatusBar } from 'react-native';
+import { Text, Image, View, StatusBar, Linking } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getHeaderTitle } from '@react-navigation/elements';
@@ -440,10 +440,15 @@ export default function App() {
     prefixes: ['https://brainbucks.com', 'brainbucks://'],
     config: {
       screens: {
-        Splash: 'splash'
+        Splash: 'splash',
       },
     },
   };
+
+  Linking.addEventListener("url", (data)=>{
+    
+  })
+
 
   return (
     <NavigationContainer linking={linking}>
