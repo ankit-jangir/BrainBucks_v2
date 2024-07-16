@@ -244,7 +244,8 @@ const styles = StyleSheet.create({
     },
     buyCourseModalText:{
       textAlign:"center",
-      fontSize:20
+      fontSize:20,
+      color:"#000"
     }
 
 });

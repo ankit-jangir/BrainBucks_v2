@@ -20,7 +20,8 @@ const QuizCard = ({
   minper,
   btntxt,
   invitebtn,
-  roomname
+  roomname,
+  declareTime
 }) => {
 
   return (
@@ -181,12 +182,30 @@ const QuizCard = ({
           </View>
         </>
 
+
         <>
           {
-            roomname&&
-            <View style={{ flexDirection: 'row', paddingVertical:20, gap:12, alignItems:'center' }}>
-              <Image style={{width:20, height:17.5, objectFit:'contain'}} source={require('../assets/img/roomsimgs.png')} />
-              <Text style={{color:ColorsConstant.Black, fontFamily:"Inter", fontWeight:'700', fontSize:16}}>{roomname}</Text>
+            declareTime &&
+            <View>
+              <Text
+                style={{
+                  color: 'rgba(126, 126, 126, 1)',
+                  fontSize: 14,
+                  paddingLeft: 6,
+                  fontWeight: '500',
+                  marginTop:10
+                }}
+              >Declaration Time: {declareTime}</Text>
+            </View>
+          }
+        </>
+
+        <>
+          {
+            roomname &&
+            <View style={{ flexDirection: 'row', paddingVertical: 20, gap: 12, alignItems: 'center' }}>
+              <Image style={{ width: 20, height: 17.5, objectFit: 'contain' }} source={require('../assets/img/roomsimgs.png')} />
+              <Text style={{ color: ColorsConstant.Black, fontFamily: "Inter", fontWeight: '700', fontSize: 16 }}>{roomname}</Text>
             </View>
           }
         </>
@@ -232,7 +251,7 @@ const QuizCard = ({
                       {alotedslots}/
                     </Text>
                     <Text
-                    key={totalslots}
+                      key={totalslots}
                       style={{
                         color: type === 'trivia' || type == 0 ? '#C922E4' : '#333333',
 
@@ -298,7 +317,7 @@ const QuizCard = ({
             </TouchableOpacity>
           ) : type === 'enrolled' ? (
             <TouchableOpacity
-              style={{ marginTop:1 , flex:1 }}
+              style={{ marginTop: 1, flex: 1 }}
               onPress={onPress}>
               <LinearGradient
                 start={{ x: 0.0, y: 0.25 }}

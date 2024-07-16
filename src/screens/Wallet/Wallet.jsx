@@ -4,10 +4,10 @@ import {
   Linking,
   TouchableOpacity,
   ScrollView,
+  Image
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
 import History from './History';
 import WalletApiService from '../../services/api/WalletApiService';
@@ -68,7 +68,7 @@ export default function Wallet({ navigation }) {
   async function getWalletData() {
     try {
       setLoading(true);
-      let res = await wallet.getTransactions();
+      let res = await wallet.getTransactions(1, 10);
       if (res.status === 1) {
         walletData.value = res;
         dispatch({ type: 'details', withdrawDetails: { balance: res.wallet } })
@@ -243,9 +243,9 @@ export default function Wallet({ navigation }) {
         <View style={styles.actionsContainer1}>
           <Text style={styles.RecentText}>Recent Transactions</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('history', { data: walletData.value.transactions })}
+            onPress={() => navigation.navigate('history')}
             style={styles.TouchableButton}>
-            <Text style={styles.ViewText}>View</Text>
+            <Text style={styles.ViewText}>View All</Text>
           </TouchableOpacity>
         </View>
       </View>

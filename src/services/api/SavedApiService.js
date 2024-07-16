@@ -6,7 +6,7 @@ export default class SavedApiService{
 
     async getSavedExams(){
         let token = await basic.getBearerToken()
-        let url = `${QUIZMICRO}/participants/get/saved`
+        let url = `${QUIZMICRO}/participants/get/saved/exams`
         let headers = {"content-type":"application/json", authorization:token}
         let options = {
             method: 'get',

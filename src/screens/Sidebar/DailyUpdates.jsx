@@ -19,6 +19,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import { screenWidth } from '../../constants/Sizes.constant';
+import { AUTHMICRO, QUIZMICRO } from '../../config/urls';
 
 export default function DailyUpdate({ navigation }) {
   const isFocused = useIsFocused();
@@ -54,7 +55,7 @@ export default function DailyUpdate({ navigation }) {
     setLoad(true)
 
     fetch(
-      `https://quiz.brainbucks.in/participants/get/daily/updates?page=${index}`,
+      `${QUIZMICRO}/participants/get/daily/updates?page=${index}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -143,7 +144,7 @@ export default function DailyUpdate({ navigation }) {
               <View style={styles.bannerContainer}>
                 <Image
                   source={{
-                    uri: `https://auth.brainbucks.in/stream/get/public?blobname=${currentItem?.banner_image}`,
+                    uri: `${AUTHMICRO}/stream/get/public?blobname=${currentItem?.banner_image}`,
                   }}
                   resizeMode="contain"
                   style={styles.bannerImage}

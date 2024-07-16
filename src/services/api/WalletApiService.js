@@ -33,9 +33,9 @@ class WalletApiService {
 
 
 
-  async getTransactions() {
+  async getTransactions(page, limit=25) {
     let token = await basic.getBearerToken()
-    let url = `${AUTHMICRO}/sales/get/payment/transaction`;
+    let url = `${AUTHMICRO}/sales/get/payment/transaction?page=${page}&limit=${limit}`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -163,9 +163,9 @@ class WalletApiService {
     return response.data
   }
 
-  async getSpentMoney() {
+  async getSpentMoney(page) {
     let token = await basic.getBearerToken()
-    let url = `${AUTHMICRO}/sales/see/spent_money`;
+    let url = `${AUTHMICRO}/sales/see/spent_money?page=${page}&limit=${25}`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",
@@ -176,9 +176,9 @@ class WalletApiService {
     return response.data
   }
 
-  async getEarnedMoney() {
+  async getEarnedMoney(page) {
     let token = await basic.getBearerToken()
-    let url = `${AUTHMICRO}/sales/see/earned_money`;
+    let url = `${AUTHMICRO}/sales/see/earned_money?page=${page}&limit=${25}`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",

@@ -92,12 +92,17 @@ const Win = ({ navigation, order }) => {
                       onPress={() => {
                         if (item.is_res_dec) {
                           dispatch({ type: 'change', state: { id: item._id } })
-                          item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
-
+                          navigation.navigate("QuizzesResult")
+                        }else{
+                          Toast.show({
+                            type:"info",
+                            text1:"Wait for result declaration"
+                          })
                         }
                       }
                       }
-                      btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
+                      btntxt={(item.is_res_dec) ? "View Result" : "Declaration Pending"}
+                      declareTime={item.crontab_result_time}
                     />)
                 }
                 }

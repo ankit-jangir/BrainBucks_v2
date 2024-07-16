@@ -96,14 +96,19 @@ const All = ({ navigation, order }) => {
                     fees={item.entryFees}
                     date={item.sch_time}
                     onPress={() => {
-                      if (item.is_res_dec) {
+                      if (item.is_res_dec || !item.is_active) {
                         dispatch({ type: 'change', state: { id: item._id } })
                         item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
-
+                      }else{
+                        Toast.show({
+                          type:"info",
+                          text1:"Wait for result declaration"
+                        })
                       }
                     }
                     }
-                    btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
+                    btntxt={(item.is_res_dec || !item.is_active) ? "View Result" : "Declaration Pending"}
+                    declareTime={item.crontab_result_time}
                   />)
               }}
             />

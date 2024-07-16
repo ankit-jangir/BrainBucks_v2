@@ -11,6 +11,7 @@ import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import Toast from 'react-native-toast-message';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
+import BasicServices from '../../services/BasicServices';
 
 export default function QuizzesResult({ navigation, }) {
   const [isLoad, setLoad] = useState(false)
@@ -19,14 +20,51 @@ export default function QuizzesResult({ navigation, }) {
   const [topRank, setTopRank] = useState({ totMarks: 0 })
   const [score, setScore] = useState([])
 
-  const [length, setLength] = useState()
-
   const { quizState, dispatch } = useQuiz()
   const quiz_id = quizState.id
 
   const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);
 
   const serv = new ActiveQuizApiService()
+
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
+
+  useEffect(() => {
+    getLeaderBoard();
+  }, []);
+
+  function getDataHelper(page) {
+    return async () => {
+      let res = await serv.getActiveQuizLeaderBoard(quiz_id, page);
+      return res;
+    }
+  }
+
+  async function getLeaderBoard(page) {
+    if (!page) {
+      page = 1
+    }
+    if (page <= totalPages) {
+      setCurrentPage(page)
+      let func = setLoadingMore
+      if (page === 1) {
+        func = setLoading
+      }
+      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      if (res) {
+        console.log(res);
+        setTotalPages(res.totalPages)
+        if (page === 1)
+          setScore(res.winners)
+        else
+          setScore([...score, ...res.winners])
+      }
+    }
+  }
+
 
   async function getActiveQuizResult() {
     try {
@@ -35,7 +73,6 @@ export default function QuizzesResult({ navigation, }) {
       if (res.status === 1) {
         setMydata(res.topRank)
         setTopRank(res)
-        setScore(res.scoreboard)
       } else {
         Toast.show({
           type: 'error',
@@ -107,11 +144,6 @@ export default function QuizzesResult({ navigation, }) {
   })
 
   const sheetRef = React.useRef(null);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoad2(false);
-    }, 4000)
-  }, [])
 
   return (
     <>
@@ -286,38 +318,48 @@ export default function QuizzesResult({ navigation, }) {
             <>
               <BottomSheet index={0} snapPoints={snapPoints}>
                 <Text style={styles.containerHeadline}>Winner’s Leaderboard 🎉</Text>
-                <FlatList
-                  data={score}
-                  renderItem={({ item, index }) => (
-                    <View style={styles.contentContainer}>
-                      <View style={styles.Container}>
-                        <TouchableOpacity style={styles.touch}>
-                          <Text style={styles.TextIn}>{index + 1}</Text>
-                          <View style={styles.imgView}>
-                            <Image
-                              source={{ uri: BLOBURL + item.image }}
-                              resizeMode="contain"
-                              style={styles.img}
-                            />
-                          </View>
+                {
+                  loading
+                    ?
+                    <ActivityIndicator size={25} color={ColorsConstant.Theme} />
+                    :
+                    <FlatList
+                      onEndReachedThreshold={0.8}
+                      onEndReached={() => { getLeaderBoard(currentPage + 1) }}
+                      data={score}
+                      renderItem={({ item, index }) => (
+                        <View style={styles.contentContainer}>
+                          <View style={styles.Container}>
+                            <TouchableOpacity style={styles.touch}>
+                              <Text style={styles.TextIn}>{index + 1}</Text>
+                              <View style={styles.imgView}>
+                                <Image
+                                  source={{ uri: BLOBURL + item.image }}
+                                  resizeMode="contain"
+                                  style={styles.img}
+                                />
+                              </View>
 
-                          <View style={styles.TotView}>
-                            <Text style={styles.TextTo}>{item.stu_name}</Text>
-                            <View style={styles.tymView}>
-                              <Text style={styles.textTym}>
-                                Rank: {item.rank}
-                              </Text>
-                              <Text style={[styles.textTym, { color: '#367CFF' }]}>
-                                {item.marks} /{topRank.totMarks}
-                              </Text>
-                            </View>
+                              <View style={styles.TotView}>
+                                <Text style={styles.TextTo}>{item.stu_name}</Text>
+                                <View style={styles.tymView}>
+                                  <Text style={styles.textTym}>
+                                    Rank: {item.Rank}
+                                  </Text>
+                                  <Text style={[styles.textTym, { color: '#367CFF' }]}>
+                                    {item.marks} /{topRank.totMarks}
+                                  </Text>
+                                </View>
+                              </View>
+                            </TouchableOpacity>
                           </View>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )}
-                  keyExtractor={item => item._id}
-                />
+                        </View>
+                      )}
+                      keyExtractor={item => item._id}
+                    />
+                }
+                {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
+
               </BottomSheet>
             </>
           </GestureHandlerRootView>

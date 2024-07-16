@@ -139,11 +139,17 @@ export default function RoomsQuizHistory({ navigation, route }) {
                                                 if (item.is_res_dec) {
                                                     dispatch({ type: 'change', state: { id: item._id } })
                                                     navigation.navigate("RoomsResult")
+                                                }else{
+                                                    Toast.show({
+                                                        type:"info",
+                                                        text1:"Result is not declared yet"
+                                                    })
                                                 }
                                             }
                                             }
-                                            btntxt={item.is_res_dec ? "View Result" : item.crontab_result_time}
+                                            btntxt={item.is_res_dec ? "View Result" : "Declaration Pending"}
                                             roomname={room_data?.room_name}
+                                            declareTime={item.crontab_result_time}
                                         />)
                                 }
                                 }

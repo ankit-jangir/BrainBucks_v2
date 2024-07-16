@@ -7,7 +7,7 @@ import { ColorsConstant } from '../../constants/Colors.constant';
 export default function CustomerSupport({ navigation }) {
 
   const [number, setNumber] = useState('989 654 52365');
-  const [email, setEmail] = useState('Support@brainbucks.co.in');
+  const [email, setEmail] = useState('Support@brainbucks.in');
 
   useEffect(() => {
     getDetails();
@@ -19,7 +19,7 @@ export default function CustomerSupport({ navigation }) {
       redirect: 'follow'
     };
 
-    fetch("https://brainbucks.co.in/api/user/customer-support", requestOptions)
+    fetch("https://brainbucks.in/api/user/customer-support", requestOptions)
       .then(response => response.json())
       .then(result => {
         setNumber(result.supportContact.value);

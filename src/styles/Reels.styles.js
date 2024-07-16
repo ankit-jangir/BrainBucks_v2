@@ -10,8 +10,19 @@ const styles = StyleSheet.create({
     pauseBtn: { width: 30, height: 30, borderRadius: 20, objectFit: 'contain' },
     resumeBtn: { width: 25, height: 25, borderRadius: 20, objectFit: 'contain' },
     tagsContainer: { marginLeft: 40, padding: 20, flexGrow: 0, height: "11%", backgroundColor: 'transparent' },
-    tagsView: { flexDirection: 'row', marginRight: 25 },
-    tag: { padding: 10, paddingHorizontal: 20, marginLeft: 20, borderRadius: 10, backgroundColor: ColorsConstant.Theme, flexGrow: 1 },
+    tagsView: { 
+        flexDirection: 'row',
+        marginRight: 25,
+        flex:1,
+     },
+    tag: { 
+        padding: 10, 
+        paddingHorizontal: 20, 
+        marginLeft: 20, 
+        borderRadius: 10, 
+        backgroundColor: ColorsConstant.Theme, 
+        flexGrow: 1 
+    },
     videoContainer: {
         height: screenHeight * (85 / 100)
     },

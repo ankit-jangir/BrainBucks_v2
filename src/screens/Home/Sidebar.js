@@ -143,14 +143,14 @@ const Sidebar = ({ navigation }) => {
           image={require('../../assets/img/privacypolicy.png')}
           text="Privacy Policy"
         />
-        <MenuItem
+        {/* <MenuItem
           action={() => {
             navigation.navigate('Study');
           }}
           image={require('../../assets/img/myexamimg.png')}
           text="My Exams"
           imageStyle={{ width: 25, height: 25 }}
-        />
+        /> */}
         <MenuItem
           action={() => {
             navigation.navigate('myhistory');
@@ -165,20 +165,24 @@ const Sidebar = ({ navigation }) => {
           image={require('../../assets/img/ebook.png')}
           text="Course Plan History"
         />
-        <MenuItem
+        {/* <MenuItem
           action={() => { }}
           image={require('../../assets/img/audit.png')}
           text="Refer & Earn"
-        />
+        /> */}
         <MenuItem
-          action={() => { navigation.navigate('reels') }}
+          action={() => {
+            navigation.closeDrawer()
+            navigation.navigate('Reels')
+          }
+          }
           image={require('../../assets/img/resume.png')}
           text="Brain Boosters"
         />
         <MenuItem
-          action={() => { navigation.navigate("study") }}
+          action={() => { navigation.navigate("saved") }}
           image={require('../../assets/img/heart.png')}
-          text="Saved Exams"
+          text="My Exams"
         />
 
         <MenuItem

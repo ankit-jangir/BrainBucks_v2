@@ -39,11 +39,11 @@ export default function MyExams({ navigation, route }) {
               data={exams}
               scrollEnabled
               numColumns={2}
-              keyExtractor={item => item.id.toString()}
+              keyExtractor={item => item._id.toString()}
               renderItem={({ item }) => (
                 <View style={styles.ExamView}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('MyExamQuizzes', { id: item.id, imgurl: item.image, title: item.category_name })}
+                    onPress={() => navigation.navigate('MyExamQuizzes', { id: item._id, imgurl: item.image, title: item.category_name })}
                     style={styles.TouchExam}>
                     <View style={styles.ActiveView}>
                       <Image source={{ uri: BLOBURL + item.image }} style={{ width: 40, height: 40, borderRadius: 100 }} />

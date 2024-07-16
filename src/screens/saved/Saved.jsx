@@ -46,7 +46,7 @@ export default function Saved({ navigation }) {
     try {
       let res = await saved.getSavedExams();
       if (res.status === 1) {
-        setExamData(res.send_data);
+        setExamData(res.data);
       } else {
         Toast.show({
           type: 'error',
@@ -251,23 +251,23 @@ export default function Saved({ navigation }) {
           <View style={styles.Hview}>
             <View style={styles.Hview1}>
               <TouchableOpacity
-                onPress={() => navigation.openDrawer()}
+                onPress={() => navigation.goBack()}
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginHorizontal: 4,
                   borderWidth: 1,
                   borderRadius: 100,
-                  width: 50,
-                  height: 50,
+                  width: 40,
+                  height: 40,
                   borderColor: '#F5F5F5',
                 }}>
                 <Image
-                  source={require('../../assets/img/drawerr.png')}
-                  style={{ height: 25, width: 25 }}></Image>
+                  source={require('../../assets/img/backcopy.png')}
+                  style={{ height: 20, width: 20 }}></Image>
               </TouchableOpacity>
               <View style={styles.examView}>
-                <Text style={styles.textMy}>My Categories</Text>
+                <Text style={styles.textMy}>My Exams</Text>
               </View>
               <View style={styles.viewAdd}>
                 <TouchableOpacity
@@ -290,7 +290,7 @@ export default function Saved({ navigation }) {
 
                   SavedExam.map(res => {
                     return (
-                      <View key={res.exam_id} style={{ flex: 1, padding: 15 }}>
+                      <View key={res._id} style={{ flex: 1, padding: 15 }}>
                         <View style={styles.liveVIew}>
                           <View style={styles.liveVIew1}>
                             <View style={styles.liveVIew2}>
@@ -305,7 +305,7 @@ export default function Saved({ navigation }) {
                                   }}></Image>
                               </View>
                               <View style={styles.cateName}>
-                                <Text style={styles.cateName1}>{res.exam_name}</Text>
+                                <Text style={styles.cateName1}>{res.category_name}</Text>
                               </View>
                             </View>
                             {/* <View style={styles.ActiveView}>
@@ -352,12 +352,12 @@ export default function Saved({ navigation }) {
                             </View> */}
                             <View style={{ flexDirection: 'row', gap: 20, paddingVertical:20 }}>
                               <TouchableOpacity
-                                onPress={() => { dispatch({ type: 'change', idState: { id: res.exam_id } }), navigation.navigate('ExamDetail') }}
+                                onPress={() => { dispatch({ type: 'change', idState: { id: res._id } }), navigation.navigate('ExamDetail') }}
                                 style={styles.viewBtnQuiz}>
                                 <Text style={styles.textDetails}>Quizzes</Text>
                               </TouchableOpacity>
                               <TouchableOpacity
-                                onPress={() => { dispatch({ type: 'change', idState: { id: res.exam_id } }), navigation.navigate('StudyMaterials') }}
+                                onPress={() => { dispatch({ type: 'change', idState: { id: res._id } }), navigation.navigate('StudyMaterials') }}
                                 style={styles.viewBtnMaterial}
                               >
                                 <Text style={[styles.textDetails, {color:ColorsConstant.AshGray}]}>Study Material</Text>

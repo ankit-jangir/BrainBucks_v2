@@ -16,6 +16,7 @@ import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
 import { Modal } from 'react-native-paper';
 import { Button, Image } from 'react-native-elements';
+import BasicServices from '../../services/BasicServices';
 
 const PaidCourses = () => {
   const [loading, setLoading] = useState(false);
@@ -23,14 +24,59 @@ const PaidCourses = () => {
   const [videos, setVideos] = useState({});
   const [material, setMaterial] = useState({});
   const [loading2, setLoading2] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [data, setData] = useState([])
   const [modalVisible, setModalVisible] = useState(false);
   const [current, setCurrent] = useState();
   const [buycourses, setbuyCourses] = useState([]);
   const serv = new CourseApiService();
 
+
+  const onRefresh = () => {
+    getData()
+  };
+
   useEffect(() => {
-    getPaidCourses();
-  }, []);
+    getData()
+  }, [])
+
+  function getDataHelper(page) {
+    return async () => {
+      let res = await serv.getPaidCourses(page);
+      return res;
+    }
+  }
+
+  async function getData(page) {
+    if (!page) {
+      page = 1
+    }
+    if (page <= totalPages) {
+      setCurrentPage(page)
+      let func = (type) => {
+        setLoadingMore(type);
+        setLoading2(type);
+      }
+      if (page === 1) {
+        func = (type) => {
+          setLoading(type)
+          setLoading2(type)
+        }
+      }
+      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      if (res) {
+        setTotalPages(res.totalPages)
+        if (page === 1)
+          setData(res.data)
+        else
+          setData([...data, ...res.data])
+      }
+    }
+
+  }
+
 
   async function buyCourse() {
     try {
@@ -59,30 +105,6 @@ const PaidCourses = () => {
     }
   }
 
-  async function getPaidCourses() {
-    try {
-      setLoading(true);
-      setLoading2(true);
-      let res = await serv.getPaidCourses();
-      if (res.status === 1) {
-        setCourses(res.data);
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
-      }
-    } catch (err) {
-      console.log('Error in fetching paid courses: ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
-    } finally {
-      setLoading(false);
-      setLoading2(false);
-    }
-  }
 
   async function getVideoForParticularCourse(course_id) {
     try {
@@ -145,196 +167,205 @@ const PaidCourses = () => {
       <ScrollView>
         {loading ? (
           <ActivityIndicator size={40} />
-        ) : courses.length === 0 ? (
+        ) : data.length === 0 ? (
           <NoDataFound
-            action={getPaidCourses}
+            // action={getPaidCourses}
             actionText={'Load again'}
             message={'No Courses Found'}
           />
         ) : (
-          courses.map(item => (
-            <Accordion
-              onExpand={() => {
-                getVideoForParticularCourse(item._id);
-              }}
-              buttonStyle={{
-                backgroundColor: '#eee3fc',
-                color: '#701DDB',
-              }}
-              key={item._id}
-              containerStyle={{
-                backgroundColor: '#fff',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 10,
-                borderRadius: 5,
-                marginTop: 10,
-                elevation: 4,
-              }}
-              buttonText={'Buy Now'}
-              itemText={item.cou_name}
-              icon={{ uri: BLOBURL + item.banner }}
-              onButtonPress={() => {
-                setCurrent(item), setModalVisible(true);
-              }}>
-              {!videos[item._id] ? (
-                loading2 ? (
-                  <ActivityIndicator size={40} />
-                ) : (
-                  <View style={{ height: 200 }}>
-                    <NoDataFound
-                      scale={0.5}
-                      message={'No Videos Found for this course'}
-                      action={() => {
-                        getVideoForParticularCourse(item._id);
-                      }}
-                      actionText={'Refresh'}
-                    />
-                  </View>
-                )
-              ) : videos[item._id].length === 0 ? (
-                <View style={{ height: 200 }}>
-                  <NoDataFound
-                    scale={0.5}
-                    message={'No Videos Found for this course'}
-                    action={() => {
-                      getVideoForParticularCourse(item._id);
-                    }}
-                    actionText={'Refresh'}
-                  />
-                </View>
-              ) : (
-                videos[item._id].map((video, index) => (
-                  <Accordion
-                    key={video._id}
-                    containerStyle={{
-                      backgroundColor: '#fff',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 10,
-                      paddingVertical: 5,
-                      marginHorizontal: 10,
-                      marginBottom: 4,
-                      elevation: 4,
-                      borderRadius: 5,
-                      marginTop: index === 0 ? 5 : 0,
-                    }}
-                    buttonStyle={{
-                      backgroundColor: '#eee3fc',
-                      color: '#701DDB',
-                    }}
-                    buttonText={'Play Now'}
-                    itemText={video.title}
-                    icon={require('../../assets/img/play-button.png')}
-                    onButtonPress={() => {
-                      Toast.show({
-                        type: 'info',
-                        text1: 'Buy the course to watch the video',
-                      });
-                    }}
-                    onExpand={() => {
-                      getMaterialForParticularVideo(item._id, video._id);
-                    }}>
-                    {!material[video._id] ? (
-                      loading2 ? (
-                        <ActivityIndicator size={40} />
-                      ) : (
-                        <View style={{ height: 200 }}>
-                          <NoDataFound
-                            scale={0.5}
-                            message={'No Study Material Found for this Video'}
-                            action={() => {
-                              getMaterialForParticularVideo(item._id, video._id);
-                            }}
-                            actionText={'Refresh'}
-                          />
-                        </View>
-                      )
-                    ) : material[video._id].length === 0 ? (
+          <>
+            <FlatList
+              style={{ marginBottom: 45 }}
+              data={data}
+              onEndReachedThreshold={0.8}
+              onEndReached={() => { getData(currentPage + 1) }}
+              renderItem={({ item, index }) => (
+                <Accordion
+                  onExpand={() => {
+                    getVideoForParticularCourse(item._id);
+                  }}
+                  buttonStyle={{
+                    backgroundColor: '#eee3fc',
+                    color: '#701DDB',
+                  }}
+                  key={item._id}
+                  containerStyle={{
+                    backgroundColor: '#fff',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    padding: 10,
+                    borderRadius: 5,
+                    marginTop: 10,
+                    elevation: 2,
+                    margin:5
+                  }}
+                  buttonText={'Buy Now'}
+                  itemText={item.cou_name}
+                  icon={{ uri: BLOBURL + item.banner }}
+                  onButtonPress={() => {
+                    setCurrent(item), setModalVisible(true);
+                  }}>
+                  {!videos[item._id] ? (
+                    loading2 ? (
+                      <ActivityIndicator size={40} />
+                    ) : (
                       <View style={{ height: 200 }}>
                         <NoDataFound
                           scale={0.5}
-                          message={'No Study Material For This Video'}
+                          message={'No Videos Found for this course'}
                           action={() => {
-                            getMaterialForParticularVideo(item._id, video._id);
+                            getVideoForParticularCourse(item._id);
                           }}
                           actionText={'Refresh'}
                         />
                       </View>
-                    ) : (
-                      <FlatList
-                        data={material[video._id]}
-                        keyExtractor={item => item._id}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <Pressable>
-                              <View
-                                style={{
-                                  backgroundColor: '#fff',
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                  paddingHorizontal: 10,
-                                  paddingVertical: 8,
-                                  marginHorizontal: 10,
-                                  marginBottom: 4,
-                                  elevation: 4,
-                                  marginLeft: 18,
-                                  borderRadius: 5,
-                                  marginTop: index === 0 ? 5 : 0,
-                                }}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    flex: 1,
-                                    alignItems: 'center',
-                                  }}>
-                                  <Image
-                                    source={require('../../assets/img/pdf.png')}
-                                    style={{ height: 20, width: 20, marginRight: 4 }}
-                                    resizeMode="contain"
-                                  />
-                                  <Text style={{ color: '#000', flex: 1 }}>
-                                    {item.title}
-                                  </Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
+                    )
+                  ) : videos[item._id].length === 0 ? (
+                    <View style={{ height: 200 }}>
+                      <NoDataFound
+                        scale={0.5}
+                        message={'No Videos Found for this course'}
+                        action={() => {
+                          getVideoForParticularCourse(item._id);
+                        }}
+                        actionText={'Refresh'}
+                      />
+                    </View>
+                  ) : (
+                    videos[item._id].map((video, index) => (
+                      <Accordion
+                        key={video._id}
+                        containerStyle={{
+                          backgroundColor: '#fff',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          marginHorizontal: 10,
+                          marginBottom: 4,
+                          elevation: 4,
+                          borderRadius: 5,
+                          marginTop: index === 0 ? 5 : 0,
+                        }}
+                        buttonStyle={{
+                          backgroundColor: '#eee3fc',
+                          color: '#701DDB',
+                        }}
+                        buttonText={'Play Now'}
+                        itemText={video.title}
+                        icon={require('../../assets/img/play-button.png')}
+                        onButtonPress={() => {
+                          Toast.show({
+                            type: 'info',
+                            text1: 'Buy the course to watch the video',
+                          });
+                        }}
+                        onExpand={() => {
+                          getMaterialForParticularVideo(item._id, video._id);
+                        }}>
+                        {!material[video._id] ? (
+                          loading2 ? (
+                            <ActivityIndicator size={40} />
+                          ) : (
+                            <View style={{ height: 200 }}>
+                              <NoDataFound
+                                scale={0.5}
+                                message={'No Study Material Found for this Video'}
+                                action={() => {
+                                  getMaterialForParticularVideo(item._id, video._id);
+                                }}
+                                actionText={'Refresh'}
+                              />
+                            </View>
+                          )
+                        ) : material[video._id].length === 0 ? (
+                          <View style={{ height: 200 }}>
+                            <NoDataFound
+                              scale={0.5}
+                              message={'No Study Material For This Video'}
+                              action={() => {
+                                getMaterialForParticularVideo(item._id, video._id);
+                              }}
+                              actionText={'Refresh'}
+                            />
+                          </View>
+                        ) : (
+                          <FlatList
+                            data={material[video._id]}
+                            keyExtractor={item => item._id}
+                            renderItem={({ item, index }) => {
+                              return (
+                                <Pressable>
                                   <View
                                     style={{
-                                      justifyContent: 'center',
-                                      alignItems: 'center',
+                                      backgroundColor: '#fff',
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                      paddingHorizontal: 10,
+                                      paddingVertical: 8,
+                                      marginHorizontal: 10,
+                                      marginBottom: 4,
+                                      elevation: 4,
+                                      marginLeft: 18,
+                                      borderRadius: 5,
+                                      marginTop: index === 0 ? 5 : 0,
                                     }}>
-                                    <TouchableOpacity
-                                      onPress={() => {
-                                        Toast.show({
-                                          type: 'info',
-                                          text1:
-                                            'Buy the course to see the material',
-                                        });
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        flex: 1,
+                                        alignItems: 'center',
                                       }}>
-                                      <Text
-                                        style={{
-                                          padding: 5,
-                                          borderRadius: 5,
-                                          backgroundColor: '#eee3fc',
-                                          color: '#701DDB',
-                                          fontSize: 12,
-                                          fontWeight: 400,
-                                        }}>
-                                        View Pdf
+                                      <Image
+                                        source={require('../../assets/img/pdf.png')}
+                                        style={{ height: 20, width: 20, marginRight: 4 }}
+                                        resizeMode="contain"
+                                      />
+                                      <Text style={{ color: '#000', flex: 1 }}>
+                                        {item.title}
                                       </Text>
-                                    </TouchableOpacity>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                      <View
+                                        style={{
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}>
+                                        <TouchableOpacity
+                                          onPress={() => {
+                                            Toast.show({
+                                              type: 'info',
+                                              text1:
+                                                'Buy the course to see the material',
+                                            });
+                                          }}>
+                                          <Text
+                                            style={{
+                                              padding: 5,
+                                              borderRadius: 5,
+                                              backgroundColor: '#eee3fc',
+                                              color: '#701DDB',
+                                              fontSize: 12,
+                                              fontWeight: 400,
+                                            }}>
+                                            View Pdf
+                                          </Text>
+                                        </TouchableOpacity>
+                                      </View>
+                                    </View>
                                   </View>
-                                </View>
-                              </View>
-                            </Pressable>
-                          );
-                        }}></FlatList>
-                    )}
-                  </Accordion>
-                ))
+                                </Pressable>
+                              );
+                            }}></FlatList>
+                        )}
+                      </Accordion>
+                    ))
+                  )}
+                </Accordion>
               )}
-            </Accordion>
-          ))
+            />
+          </>
         )}
       </ScrollView>
 

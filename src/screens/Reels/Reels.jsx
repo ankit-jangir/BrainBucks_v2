@@ -34,6 +34,9 @@ const Reels = ({ navigation, route }) => {
     const [comments, setComments] = useState([])
     const [comment, setComment] = useState('')
     const firstReel = route?.params?.first_reel;
+
+    // console.log(route, "reel route");
+
     const reServ = new ReelsApiService()
     const timeoutRef = useRef()
     const scrollRef = useRef()

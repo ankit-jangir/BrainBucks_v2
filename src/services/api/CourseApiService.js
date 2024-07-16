@@ -18,9 +18,9 @@ class CourseApiService {
     return response.data
   }
 
-  async getPaidCourses() {
+  async getPaidCourses(page) {
     let token = await basic.getBearerToken()
-    let url = `${PRERECMICRO}/participant/course/get/paid/courses`;
+    let url = `${PRERECMICRO}/participant/course/get/paid/courses?page=${page}`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",

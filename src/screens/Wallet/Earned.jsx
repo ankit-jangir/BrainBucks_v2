@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native-elements';
 import { Text } from '../../utils/Translate';
@@ -8,67 +8,104 @@ import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
+import BasicServices from '../../services/BasicServices';
 
 const Earned = () => {
 
   const [loading, setLoading] = useState(false)
   const [Earned, setEarned] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
+  const [loadingMore, setLoadingMore] = useState(false)
 
   const wallet = new WalletApiService()
   useEffect(() => {
     getEarnedData();
   }, [])
 
-  async function getEarnedData() {
-    try {
-      setLoading(true)
-      let res = await wallet.getEarnedMoney()
-      if (res.status === 1) {
-        setEarned(res.mashup)
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error
-        })
-      }
-    } catch (err) {
-      console.log("Error while getting earned data", err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: "Something went wrong"
-      // })
-    } finally {
-      setLoading(false)
+  function getDataHelper(page) {
+    return async () => {
+      let res = await wallet.getEarnedMoney(page);
+      return res;
     }
   }
+
+  async function getEarnedData(page) {
+    if (!page) {
+      page = 1
+    }
+    if (page <= totalPages) {
+      setCurrentPage(page)
+      let func = setLoadingMore
+      if (page === 1) {
+        func = setLoading
+      }
+      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      if (res) {
+        setTotalPages(res.totalPages)
+        if (page === 1)
+          setEarned(res.mashup)
+        else
+          setEarned([...Earned, ...res.mashup])
+      }
+    }
+
+  }
+
+  // async function getEarnedData(page) {
+  //   try {
+  //     setLoading(true)
+  //     let res = await wallet.getEarnedMoney(page)
+  //     if (res.status === 1) {
+  //       setEarned(res.mashup)
+  //     } else {
+  //       Toast.show({
+  //         type: 'error',
+  //         text1: res.Backend_Error
+  //       })
+  //     }
+  //   } catch (err) {
+  //     console.log("Error while getting earned data", err.message);
+  //     // Toast.show({
+  //     //   type: 'error',
+  //     //   text1: "Something went wrong"
+  //     // })
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   return (
     <>
       <View style={{ zIndex: 1 }}>
         <Toast />
       </View>
-      <ScrollView>
-        <View style={styles.wrapper}>
-          {
-            loading ?
-              <ActivityIndicator color={ColorsConstant.Theme} size={35} /> :
-              Earned.length === 0 ?
-                <NoDataFound message={"No data Found"} action={getEarnedData} actionText={"Reload"} /> :
-
-                Earned.map((res) => {
-                  return (
-                    <View key={res._id} style={styles.card}>
+      <View style={styles.wrapper}>
+        {
+          loading ?
+            <ActivityIndicator color={ColorsConstant.Theme} size={35} /> :
+            Earned.length === 0 ?
+              <NoDataFound message={"No data Found"} action={getEarnedData} actionText={"Reload"} /> :
+              <FlatList
+                data={Earned}
+                onEndReachedThreshold={0.8}
+                onEndReached={() => { getEarnedData(currentPage + 1) }}
+                keyExtractor={item => item._id}
+                renderItem={
+                  ({ item }) =>
+                  (
+                    <View style={styles.card}>
                       <View style={styles.row}>
                         <Image
                           source={require('../../assets/img/bb.png')}
                           style={styles.icon}
                         />
                         <View style={styles.info}>
-                          <Text style={styles.amount}>+ {res.amount}</Text>
-                          <Text style={styles.date}>{res.date}</Text>
+                          <Text style={styles.amount}>+ {item.amount}</Text>
+                          <Text style={styles.date}>{item.date}</Text>
                         </View>
                         <View style={styles.titleWrapper}>
-                          <Text style={styles.title}>{res.type}</Text>
+                          <Text style={styles.title}>{item.type}</Text>
                         </View>
                       </View>
                       <View style={styles.spentForWrapper}>
@@ -77,20 +114,20 @@ const Earned = () => {
                       <View style={styles.containerImg}>
                         <View style={styles.containerImg1}>
                           <Image
-                            source={{ uri: BLOBURL + res.banner }}
+                            source={{ uri: BLOBURL + item.banner }}
                             resizeMode="cover"
                             style={styles.mainImage}
                           />
                         </View>
-                        <Text style={styles.textTitle}>{res.name}</Text>
+                        <Text style={styles.textTitle}>{item.name}</Text>
                       </View>
                     </View>
                   )
-                })
-          }
-
-        </View>
-      </ScrollView>
+                }
+              />
+        }
+        {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme}/>}
+      </View>
 
     </>
   );

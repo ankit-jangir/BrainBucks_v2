@@ -298,7 +298,7 @@ function MyTabs() {
               ),
             }}
           />
-          <Tab.Screen
+          {/* <Tab.Screen
             name="Saved"
             component={Saved}
             options={{
@@ -322,7 +322,7 @@ function MyTabs() {
                 </View>
               ),
             }}
-          />
+          /> */}
           {/* <Tab.Screen style={{position:'relative ',}} name="Room" component={Rooms} options={{ tabBarLabelStyle:{ fontSize:12, paddingBottom:5 }, 'tabBarLabel':"Rooms", 'tabBarIcon':( ({focused, color}) => (
             <View style={{position:"absolute", justifyContent:"center", bottom:8, alignItems:"center", flex:1, justifyContent:'center', alignItems:'center',backgroundColor:  focused ? '#475B9F' : "#F6F8FF" ,borderRadius:100,borderColor:'#ECECEC',borderWidth:1}}> 
                    <View style={{ borderRadius:100, height:60, width:60, justifyContent:'center', alignItems:'center',}}>
@@ -342,65 +342,26 @@ function MyTabs() {
             name="Courses"
             component={Courses}
             options={{
-              tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
+              // tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
               tabBarLabel: 'Courses',
               tabBarIcon: ({ focused, color }) => (
-                <View
-                  style={{
-                    position: 'absolute',
-                    justifyContent: 'center',
-                    bottom: 8,
-                    alignItems: 'center',
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: focused ? '#475B9F' : '#F6F8FF',
-                    borderRadius: 100,
-                    borderColor: '#ECECEC',
-                    borderWidth: 1,
-                  }}>
-                  <View
-                    style={{
-                      borderRadius: 100,
-                      height: 60,
-                      width: 60,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    {focused ? (
-                      <Image
-                        source={require('./src/assets/img/roomimgwhite.png')}
-                        resizeMode="contain"
-                        style={{ width: 30, height: 30 }}
-                      />
-                    ) : (
-                      <Image
-                        source={require('./src/assets/img/roomimg.png')}
-                        resizeMode="contain"
-                        style={{ width: 35, height: 35 }}
-                      />
-                    )}
-                  </View>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: 50,
-                      width: '100%',
-                      height: 20,
-                      backgroundColor: 'red',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 3,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'WorkSans-Regular',
-                        fontSize: 12,
-                        color: '#fff',
-                      }}>
-                      New
-                    </Text>
-                  </View>
+                <View>
+                  {focused ? (
+                    <Image
+                      source={require('./src/assets/img/roomimgwhite.png')}
+                      resizeMode="contain"
+                      style={{ width: 20, height: 20 }}
+                      tintColor={ColorsConstant.Theme}
+                    />
+                  ) : (
+                    <Image
+                      source={require('./src/assets/img/roomimg.png')}
+                      resizeMode="contain"
+                      style={{ width: 20, height: 20 }}
+                      tintColor={ColorsConstant.AshGray}
+
+                    />
+                  )}
                 </View>
               ),
             }}
@@ -432,7 +393,7 @@ function MyTabs() {
             }}
           />
           <Tab.Screen
-            name="Brain Boosters"
+            name="Reels"
             component={Reels}
             options={{
               tabBarLabel: 'Brain Boosters',

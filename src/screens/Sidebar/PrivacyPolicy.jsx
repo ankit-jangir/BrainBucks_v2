@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
       redirect: 'follow',
     };
 
-    fetch('https://brainbucks.co.in/api/user/get-roles-policy', requestOptions)
+    fetch('https://brainbucks.in/api/user/get-roles-policy', requestOptions)
       .then(response => response.json())
 
       .then(result => {

@@ -3,13 +3,14 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { ROOMURL } from '../config/urls';
 import { setContext } from '@apollo/client/link/context';
 import BasicServices from '../services/BasicServices';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
 const httpLink = createHttpLink({
   uri: `${ROOMURL}/graphql`,
 });
 
-const authLink = setContext(async(_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = await BasicServices.getBearerToken()
   // return the headers to the context so httpLink can read them
@@ -17,7 +18,7 @@ const authLink = setContext(async(_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? token : "",
-      "Content-Type":"application/json"
+      "Content-Type": "application/json"
     }
   }
 });
@@ -27,10 +28,15 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+const queryClient = new QueryClient()
+
+
 export default GraphQLProvider = ({ children }) => {
   return (
     <ApolloProvider client={client}>
-      {children}
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
     </ApolloProvider>
   )
 }
