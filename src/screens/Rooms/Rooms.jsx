@@ -15,8 +15,7 @@ import PrivateRooms from './PrivateRooms';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function Rooms({ navigation }) {
-
+export default function Rooms({ navigation, route }) {
 
     return (
         <>

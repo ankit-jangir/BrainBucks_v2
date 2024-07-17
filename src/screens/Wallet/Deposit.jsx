@@ -59,6 +59,7 @@ const Deposit = ({ navigation }) => {
     try {
       setLoading(true);
       let res = await walletService.createOrder(amount);
+      console.log(res);
       if (res.status === 1) {
         const session = new CFSession(
           res.payment_session_id,

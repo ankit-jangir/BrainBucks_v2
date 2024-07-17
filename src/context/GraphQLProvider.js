@@ -4,6 +4,8 @@ import { ROOMURL } from '../config/urls';
 import { setContext } from '@apollo/client/link/context';
 import BasicServices from '../services/BasicServices';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useNavigation } from '@react-navigation/native';
+import { Linking } from 'react-native';
 
 
 const httpLink = createHttpLink({
@@ -32,6 +34,8 @@ const queryClient = new QueryClient()
 
 
 export default GraphQLProvider = ({ children }) => {
+
+
   return (
     <ApolloProvider client={client}>
       <QueryClientProvider client={queryClient}>

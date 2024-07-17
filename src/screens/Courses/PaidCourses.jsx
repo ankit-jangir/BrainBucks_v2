@@ -442,7 +442,7 @@ const PaidCourses = () => {
                   gap: 10,
                 }}>
                 <Text style={styles.datatext1}>
-                  <Text style={styles.datatext}>Price:</Text> ₹{' '}
+                  <Text style={styles.datatext}>Offer Price:</Text> ₹{' '}
                   {current?.final_amount}
                 </Text>
                 <Text

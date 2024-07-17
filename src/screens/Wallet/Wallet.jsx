@@ -22,6 +22,7 @@ import { useSignal } from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
 import { useWithdraw } from '../../context/WithdrawReducer';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import BasicServices from '../../services/BasicServices';
 
 
 export default function Wallet({ navigation }) {
@@ -63,7 +64,25 @@ export default function Wallet({ navigation }) {
 
   useEffect(() => {
     getWalletData();
+    getTransactions();
   }, [isFocused])
+
+
+  function getDataHelper(page) {
+    return async () => {
+      let res = await wallet.getTransactions(page);
+      return res;
+    }
+  }
+
+  async function getTransactions() {
+    let func = setLoading;
+    let res = await BasicServices.apiTryCatch(getDataHelper(1), Toast, () => { func(true) }, () => { func(false) })
+    if (res) {
+      let transactions = res.transactions
+      walletData.value = { ...walletData, transactions: transactions }
+    }
+  }
 
   async function getWalletData() {
     try {
@@ -133,7 +152,7 @@ export default function Wallet({ navigation }) {
             </View>
 
             <View style={styles.headerRight}>
-              <Text style={styles.shareText}>Share</Text>
+              {/* <Text style={styles.shareText}>Share</Text>
               <TouchableOpacity>
                 <Image
                   tintColor="white"
@@ -141,7 +160,7 @@ export default function Wallet({ navigation }) {
                   style={styles.shareIcon}
                   resizeMode="contain"
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
 
@@ -253,7 +272,7 @@ export default function Wallet({ navigation }) {
         {
           loading
             ?
-            <ActivityIndicator />
+            <ActivityIndicator size={30} color={ColorsConstant.Theme} />
             :
             walletData.value.transactions.length === 0 ?
               <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />

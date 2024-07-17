@@ -3,7 +3,7 @@ import { Text, Image, View, StatusBar, Linking } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getHeaderTitle } from '@react-navigation/elements';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -436,18 +436,31 @@ function MyDrawer() {
 
 export default function App() {
 
-  const linking = {
-    prefixes: ['https://brainbucks.com', 'brainbucks://'],
-    config: {
-      screens: {
-        Splash: 'splash',
+  const config = {
+    screens: {
+      Home: {
+        screens: {
+          Home: {
+            screens: {
+              Rooms: 'rooms',
+            }
+          }
+        }
+      },
+      RulesofParticipation: {
+        path: 'quiz',
+        parse: {
+          id: (id) => `${id}`,
+        },
       },
     },
   };
 
-  Linking.addEventListener("url", (data)=>{
-    
-  })
+  const linking = {
+    prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://*.brainbucks.in'],
+    config: config
+  };
+
 
 
   return (

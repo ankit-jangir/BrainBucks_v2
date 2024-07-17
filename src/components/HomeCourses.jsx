@@ -93,7 +93,7 @@ export default function HomeCourses() {
                                 current = current.item
                                 return (
                                     <View style={[styles2.centeredView, { margin: 10 }]}>
-                                        <View style={[styles2.modalView, { elevation: 2, height:"auto", paddingBottom:20 }]}>
+                                        <View style={[styles2.modalView, { height:"auto", paddingBottom:20, width:"auto", borderWidth:0.15, borderRadius:5 }]}>
                                             <View style={{ height: 150, width: '100%', objfit: 'cover' }}>
                                                 <Image
                                                     source={{ uri: BLOBURL + current?.banner }}
@@ -154,7 +154,7 @@ export default function HomeCourses() {
                                                     gap: 10,
                                                 }}>
                                                 <Text style={styles2.datatext1}>
-                                                    <Text style={styles2.datatext}>Price:</Text> ₹{' '}
+                                                    <Text style={styles2.datatext}>Offer Price:</Text> ₹{' '}
                                                     {current?.final_amount}
                                                 </Text>
                                                 <Text

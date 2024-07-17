@@ -69,9 +69,9 @@ class ActiveQuizApiService {
     return response.data
   }
 
-  async getActiveQuizParticipants(subactivequiz_id) {
+  async getActiveQuizParticipants(subactivequiz_id, page, limit=25) {
     let token = await basic.getBearerToken()
-    let url = `${this.quizmicro}/participants/particpants/in/active/quiz`;
+    let url = `${this.quizmicro}/participants/particpants/in/active/quiz?page=${page}&limit=${limit}`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({ subactivequiz_id: subactivequiz_id })
     let options = {
@@ -85,9 +85,9 @@ class ActiveQuizApiService {
   }
 
 
-  async getActiveQuizRewards(subactivequiz_id) {
+  async getActiveQuizRewards(subactivequiz_id, page, limit=25) {
     let token = await basic.getBearerToken()
-    let url = `${this.quizmicro}/participants/reward/in/active/quiz`;
+    let url = `${this.quizmicro}/participants/reward/in/active/quiz?page=${page}&limit=${limit}`;
     let headers = { "content-type": "application/json", authorization: token };
     let data = JSON.stringify({ subactivequiz_id: subactivequiz_id })
     let options = {

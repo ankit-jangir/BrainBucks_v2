@@ -21,7 +21,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import { StackActions } from '@react-navigation/native';
 
 export default function AllLiveQuizzes({ navigation, route }) {
-
+  
   const[data, setData] = useState({})
   const { quizState, dispatch } = useQuiz()
   useEffect(
@@ -40,7 +40,13 @@ export default function AllLiveQuizzes({ navigation, route }) {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <TouchableOpacity
-              onPress={() => navigation.goBack()}
+              onPress={() => {
+                if(navigation.canGoBack()){
+                  navigation.goBack()
+                }else{
+                  navigation.navigate('Splash')
+                }
+              }}
               style={styles.backButton}>
               <Image
                 source={require('../../assets/img/arrows.png')}

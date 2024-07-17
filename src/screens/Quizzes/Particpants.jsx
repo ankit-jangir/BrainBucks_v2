@@ -5,23 +5,48 @@ import { useIsFocused } from '@react-navigation/native';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
+import BasicServices from '../../services/BasicServices';
 
 export default function Participants({ participants }) {
+
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(2)
   const focus = useIsFocused()
   const quizServ = new ActiveQuizApiService()
-  const {quizState, dispatch} = useQuiz()
+  const { quizState, dispatch } = useQuiz()
   const [data, setData] = useState([])
 
-  useEffect(()=>{
-    quizServ.getActiveQuizParticipants(quizState.id).then(res=>{
-      if(res){
-        setData([...res.participantNames])
+  useEffect(() => {
+    getRewards();
+  }, [focus]);
+
+  function getDataHelper(page) {
+    return async () => {
+      let res = await quizServ.getActiveQuizParticipants(quizState.id, page);
+      return res;
+    }
+  }
+
+  async function getRewards(page) {
+    if (!page) {
+      page = 1
+    }
+
+    if (page <= totalPages) {
+      setCurrentPage(page)
+      let func = setLoadingMore
+      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      if (res) {
+        setTotalPages(res.totalPages)
+        if (page === 1)
+          setData(res.participantNames)
+        else
+          setData([...data, ...res.participantNames])
       }
-    }).catch((err)=>{
-      console.log("Error in fetching participants: ",err);
-      // Toast.show({type:"error", text1:"Something went wrong"})
-    })
-  },[focus])
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -61,6 +86,6 @@ const styles = StyleSheet.create({
   participantText: {
     fontFamily: 'WorkSans-Medium',
     fontSize: 14,
-    color:'#000'
+    color: '#000'
   },
 });

@@ -33,7 +33,6 @@ export default function HomeActiveQuizzes({ homeData }) {
 
     const { data, isFetching, refetch } = useQuery({ queryKey: ['homeActiveQuizzes'], queryFn: getActiveHomeQuizzes })
     const [activeQuizzes, setActiveQuizzes] = useState(data?.activequizes || [])
-    
 
     useEffect(()=>{
         setActiveQuizzes(data?.activequizes || [])

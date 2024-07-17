@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Image, StyleSheet } from 'react-native';
+import { View, FlatList, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
+import BasicServices from '../../services/BasicServices';
 
 const ParticipantsData = ({ item, index }) => {
 
@@ -30,21 +31,46 @@ const ParticipantsData = ({ item, index }) => {
 
 export default function Rewards({ rewards }) {
 
+    const [loading, setLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(2)
+
     const focus = useIsFocused()
     const quizServ = new ActiveQuizApiService()
     const { quizState, dispatch } = useQuiz()
     const [data, setData] = useState([])
 
     useEffect(() => {
-        quizServ.getActiveQuizRewards(quizState.id).then(res => {
-            if (res) {
-                setData(res.send_rewards)
-            }
-        }).catch((err) => {
-            console.log("Error in fetching participants: ", err);
-            // Toast.show({ type: "error", text1: "Something went wrong" })
-        })
-    }, [focus])
+        getRewards();
+      }, [focus]);
+
+    function getDataHelper(page) {
+        return async () => {
+          let res = await quizServ.getActiveQuizRewards(quizState.id, page);
+          return res;
+        }
+      }
+    
+      async function getRewards(page) {
+        if (!page) {
+          page = 1
+        }
+
+        if (page <= totalPages) {
+          setCurrentPage(page)
+          let func = setLoadingMore
+          let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+          if (res) {
+            setTotalPages(res.totalPages)
+            if (page === 1)
+              setData(res.send_rewards)
+            else
+              setData([...data, ...res.send_rewards])
+          }
+        }
+      }
+
 
     return (
         <>
@@ -62,10 +88,13 @@ export default function Rewards({ rewards }) {
                 <View style={styles.RankV4}>
                     <FlatList
                         data={data}
+                        onEndReachedThreshold={0.8}
+                        onEndReached={() => { getRewards(currentPage + 1) }}
                         renderItem={({ item, index }) => <ParticipantsData item={item} index={index} />}
                         keyExtractor={(item, index) => index}
                         showsVerticalScrollIndicator={false}
                     />
+                    {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme}/>}
                 </View>
             </View>
         </>
