@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Image, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Rooms.styles';
 import { Button, Text } from '../../utils/Translate';
@@ -13,6 +13,7 @@ import { deleteRoomInController } from '../../controllers/RoomsController';
 import RoomsApiService from '../../services/api/RoomsApiService';
 import { useQuery } from '@apollo/client';
 import NoDataFound from '../../components/NoDataFound';
+import Share from '../Wallet/Share';
 
 const RoomSetting = ({ navigation, route }) => {
   const [selected, setSelected] = useState('Public');
@@ -86,6 +87,25 @@ const RoomSetting = ({ navigation, route }) => {
     setModalVisible(!modalVisible)
   }
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data._id}&type=${room_data.room_hash?"private":"public"}`
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
 
   return (
     <>
@@ -102,7 +122,7 @@ const RoomSetting = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             <View>
-              <Text style={[styles.TextMy1, {marginLeft:-50}]}>Settings</Text>
+              <Text style={[styles.TextMy1, { marginLeft: -50 }]}>Settings</Text>
             </View>
             <View>
               {/* <Button
@@ -148,7 +168,7 @@ const RoomSetting = ({ navigation, route }) => {
               <Button
                 title={'History'}
                 buttonStyle={{ backgroundColor: '#8D4AE2' }}
-                onPress={() => navigation.navigate('roomhistory', {room_data: room_data})}
+                onPress={() => navigation.navigate('roomhistory', { room_data: room_data })}
               />
             </View>
             <View style={styles.HistoryV2}>

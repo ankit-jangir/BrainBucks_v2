@@ -437,25 +437,28 @@ function MyDrawer() {
 export default function App() {
 
   const config = {
-    screens: {
-      Home: {
-        screens: {
-          Home: {
-            screens: {
-              Rooms: 'rooms',
-            }
-          }
-        }
+  screens: {
+    rooms: {
+      path: "rooms",
+      parse: {
+        id: (id) => `${id}`,
+        type: (type) => `${type}`
       },
-      RulesofParticipation: {
-        path: 'quiz',
-        parse: {
-          id: (id) => `${id}`,
-        },
+      screens: {
+        Explore: "public",
+        Private: "private",
+        MyRooms: "myrooms"
+      }
+    },
+    RulesofParticipation: {
+      path: 'quiz',
+      parse: {
+        id: (id) => `${id}`,
       },
     },
-  };
-
+    // ... other screen configurations
+  }
+};
   const linking = {
     prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://*.brainbucks.in'],
     config: config

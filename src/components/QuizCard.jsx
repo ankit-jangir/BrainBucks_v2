@@ -21,7 +21,8 @@ const QuizCard = ({
   btntxt,
   invitebtn,
   roomname,
-  declareTime
+  declareTime,
+  onShare
 }) => {
 
   return (
@@ -342,6 +343,7 @@ const QuizCard = ({
               containerStyle={{ flex: 1 }}
               buttonStyle={styles.roomEnterShareBtn}
               title={"Invite"}
+              onPress={onShare}
             />
           }
         </View>

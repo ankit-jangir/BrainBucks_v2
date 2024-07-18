@@ -82,3 +82,14 @@ async function requestUserPermission() {
     console.log('Authorization status:', authStatus);
   }
 }
+
+
+[
+  {
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.brainbucks.android",
+    "sha256_cert_fingerprints": ["SHA256: 36:A0:DF:D6:9B:AF:76:A1:DF:0F:DC:9C:3A:0D:D0:45:FB:DE:DF:25:06:BD:F3:DC:61:22:B3:AE:D5:14:AF:D7"]
+  }
+}]

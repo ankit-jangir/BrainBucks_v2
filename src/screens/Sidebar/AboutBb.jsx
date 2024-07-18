@@ -1,5 +1,5 @@
 import React, { useEffect,useCallback, useRef, useState} from 'react'
-import { ScrollView, View, TouchableOpacity, Image,  Linking, StyleSheet } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Image,  Linking, StyleSheet, Alert } from 'react-native';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { Button, Text } from '../../utils/Translate';
 import YoutubePlayer from "react-native-youtube-iframe";

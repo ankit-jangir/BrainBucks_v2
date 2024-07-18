@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   BackHandler,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -49,10 +50,10 @@ export default function StartExam({ navigation, route }) {
         clearTimeout(timeoutId.current)
       }
 
-      if(data.sch_time){
-        time = basic.getDateFromSchTime(data?.sch_time)- Date.now()
+      if (data.sch_time) {
+        time = basic.getDateFromSchTime(data?.sch_time) - Date.now()
         setRemainingTime(time)
-    }
+      }
       if (time > 0) {
         timeoutId.current = setTimeout(() => {
           setRemainingTime(basic.getDateFromSchTime(data?.sch_time) - Date.now())
@@ -86,6 +87,25 @@ export default function StartExam({ navigation, route }) {
     joinQuiz()
 
   }
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `https://brainbucks.in/quiz?id=${id}`
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   return (
     <>
@@ -211,6 +231,7 @@ export default function StartExam({ navigation, route }) {
                   </LinearGradient>
                 </TouchableOpacity>
                 <TouchableOpacity
+                 onPress={onShare}
                   style={{
                     width: '15%',
                     height: 45,

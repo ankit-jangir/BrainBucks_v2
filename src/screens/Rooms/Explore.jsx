@@ -13,8 +13,8 @@ import { joinPublicRoomInController } from '../../controllers/RoomsController'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 
-export default function Explore() {
-    const [search, setSearch] = useState('')
+export default function Explore({route}) {
+    const [search, setSearch] = useState(route.params.id || '' )
     const [rooms, setRooms] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)

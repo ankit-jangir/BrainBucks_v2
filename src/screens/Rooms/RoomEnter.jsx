@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image } from 'react-native'
+import { View, TouchableOpacity, Image, Share, Alert } from 'react-native'
 import React, { useState } from 'react'
 import styles from '../../styles/Rooms.styles'
 import { Button, Text } from '../../utils/Translate'
@@ -16,6 +16,25 @@ export default function RoomEnter({ navigation, route }) {
     const room_data = route.params.room_data;
     const [selected, setSelected] = useState('Quizzes')
     const type = route.params.type;
+
+    const onShare = async () => {
+        try {
+          const result = await Share.share({
+            message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data._id}&type=${room_data.room_hash?"private":"public"}`
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+      };
 
     return (
         <View style={styles.enterRoomMainContainer}>
@@ -70,6 +89,7 @@ export default function RoomEnter({ navigation, route }) {
                             buttonStyle={styles.roomEnterShareBtn}
                             titleStyle={{ fontSize: 12 }}
                             title={"Invite"}
+                            onPress={onShare}
                         />
                         <Text style={{ fontSize: 12, color:"white" }}>{room_data.room_hash ? "Private": "Public" }</Text>
                     </View>

@@ -17,6 +17,15 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function Rooms({ navigation, route }) {
 
+    const { id, type } = route.params || {};
+
+    useEffect(() => {
+        if (id && type) {
+            const screen = type === "public" ? "Explore" : type === "private" ? "Private" : "MyRooms";
+            navigation.navigate(screen, { id });
+        }
+    }, [id, type, navigation]);
+
     return (
         <>
             {/* <View style={{zIndex:20}}>
@@ -25,7 +34,14 @@ export default function Rooms({ navigation, route }) {
             <View style={styles.maincontainer}>
                 <View style={styles.topbtns}>
                     <TouchableOpacity
-                        onPress={() => navigation.openDrawer()}
+                        onPress={() => {
+                            try {
+                                navigation.openDrawer()
+                            } catch (err) {
+                                navigation.navigate("Splash")
+                            }
+                        }
+                        }
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -49,10 +65,13 @@ export default function Rooms({ navigation, route }) {
                             paddingHorizontal: 15
                         }} />
                 </View>
-                <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}>
-                    <Tab.Screen name="Explore" component={Explore} />
-                    <Tab.Screen name="Private" component={PrivateRooms} />
-                    <Tab.Screen name="My Rooms" component={MyRooms} />
+                <Tab.Navigator
+                    tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}
+                    initialRouteName={type === "public" ? "Explore" : type === "private" ? "Private" : "MyRooms"}
+                >
+                    <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} />
+                    <Tab.Screen name="Private" component={PrivateRooms} initialParams={{ id }} />
+                    <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }} />
                 </Tab.Navigator>
             </View>
         </>

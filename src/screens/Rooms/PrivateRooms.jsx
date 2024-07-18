@@ -7,9 +7,9 @@ import { ColorsConstant } from '../../constants/Colors.constant'
 import { joinPrivateRoomInController } from '../../controllers/RoomsController'
 import Toast from 'react-native-toast-message'
 
-export default function PrivateRooms() {
+export default function PrivateRooms({route}) {
 
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(route.params.id || '' )
 
     async function sendRequest() {
         // if(!search){
