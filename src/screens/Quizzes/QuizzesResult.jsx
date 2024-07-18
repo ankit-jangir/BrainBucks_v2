@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, B
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
@@ -323,7 +323,9 @@ export default function QuizzesResult({ navigation, }) {
                     ?
                     <ActivityIndicator size={25} color={ColorsConstant.Theme} />
                     :
-                    <FlatList
+                    <BottomSheetFlatList
+                    style={{maxHeight:520}}
+                    scrollEnabled
                       onEndReachedThreshold={0.8}
                       onEndReached={() => { getLeaderBoard(currentPage + 1) }}
                       data={score}
@@ -334,7 +336,7 @@ export default function QuizzesResult({ navigation, }) {
                               <Text style={styles.TextIn}>{index + 1}</Text>
                               <View style={styles.imgView}>
                                 <Image
-                                  source={{ uri: BLOBURL + item.image }}
+                                  source={item.image ? {uri: BLOBURL + item.image }:require("../../assets/img/nosay.png")}
                                   resizeMode="contain"
                                   style={styles.img}
                                 />
@@ -388,24 +390,27 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
   TextIn: {
     fontFamily: 'WorkSans-SemiBold',
     fontSize: 22,
-    color: '#000'
+    color: '#000',
+    paddingHorizontal:4,
   },
   imgView: {
     width: 60,
     height: 60,
-    borderRadius: 100,
-    flex: 0.18,
-    backgroundColor: '#f5f3f2'
+    borderRadius: 120,
+    // flex: 0.18,
+    backgroundColor: '#f5f3f2',
+    marginHorizontal:20
   },
   img: {
     width: 60,
     height: 60,
-    borderRadius: 100,
+    borderRadius: 120,
   },
   TotView: {
     width: 65,
     height: 65,
-    flex: 0.65,
+    // flex: 0.65,
+    flexGrow:1,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },

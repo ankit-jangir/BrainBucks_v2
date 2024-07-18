@@ -165,7 +165,7 @@ export default function RoomsScored({ navigation, route }) {
             <Text style={styles.text2}>Reward</Text>
           </TouchableOpacity>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.download}
             onPress={() => downloadPDF(data)}
           >
@@ -175,7 +175,7 @@ export default function RoomsScored({ navigation, route }) {
               resizeMode="contain"
               style={styles.img2}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View style={styles.View1Q}>
           <View style={styles.View2Q}>

@@ -278,7 +278,6 @@ export default function Wallet({ navigation }) {
               <NoDataFound message={"No Transactions yet"} action={getWalletData} actionText={"Load Again"} />
               :
               walletData.value.transactions.map((res, index) => (
-
                 <View key={res._id} style={styles.historyContainer}>
                   <TouchableOpacity onPress={() => { navigation.navigate('transactionDetails', { res: res }) }}>
                     <View style={styles.transactionEntry}>

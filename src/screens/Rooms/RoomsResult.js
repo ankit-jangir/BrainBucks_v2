@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Image, FlatList, StatusBar, Animated, Easing, B
 import { Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { StyleConstants } from '../../constants/Style.constant';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ActiveQuizApiService from '../../services/api/ActiveQuizApiService';
@@ -30,7 +30,7 @@ export default function RoomsResult({ navigation }) {
     try {
       setLoad(true);
       let res = await serv.viewResult(quiz_id)
-      console.log(res,"dharma");
+      console.log(res, "dharma");
       if (res.status === 1) {
         setMydata(res.topRank)
         setTopRank(res)
@@ -111,7 +111,7 @@ export default function RoomsResult({ navigation }) {
 
   return (
     <>
-    <View style={{zIndex:20}}><Toast/></View>
+      <View style={{ zIndex: 20 }}><Toast /></View>
       {
         isLoad ?
           <>
@@ -208,7 +208,7 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>: <View style={{flex:1}}></View>}
+                  </View> : <View style={{ flex: 1 }}></View>}
                   {mydata[0] ? <View style={styles.ManiDataV1} >
                     <View style={styles.modelViewData} >
                       {
@@ -231,7 +231,7 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>: <View style={{flex:1}}></View>}
+                  </View> : <View style={{ flex: 1 }}></View>}
                   {mydata[2] ? <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }} >
                     <View style={styles.modelViewData} >
                       {
@@ -254,7 +254,7 @@ export default function RoomsResult({ navigation }) {
                           <Text style={styles.DataText}>{0 + "/" + topRank?.totMarks}</Text>
                       }
                     </View>
-                  </View>: <View style={{flex:1}}></View>}
+                  </View> : <View style={{ flex: 1 }}></View>}
                 </Animated.View>
 
                 <View style={styles.MainDataV} >
@@ -270,7 +270,7 @@ export default function RoomsResult({ navigation }) {
                     </Animated.View>}
                   </View>
                   <View style={styles.ManiDataV1} >
-                   {mydata[2] && <Animated.View style={{ width: '100%', transform: [{ translateY: translationY3 }] }}>
+                    {mydata[2] && <Animated.View style={{ width: '100%', transform: [{ translateY: translationY3 }] }}>
                       <Image source={require('../../assets/img/rank3img.png')} resizeMode='center' style={styles.MainImg2} />
                     </Animated.View>}
                   </View>
@@ -280,7 +280,8 @@ export default function RoomsResult({ navigation }) {
             <>
               <BottomSheet index={0} snapPoints={snapPoints}>
                 <Text style={styles.containerHeadline}>Winner’s Leaderboard 🎉</Text>
-                <FlatList
+                <BottomSheetFlatList
+                  style={{ maxHeight: 520 }}
                   data={score}
                   renderItem={({ item, index }) => (
                     <View style={styles.contentContainer}>

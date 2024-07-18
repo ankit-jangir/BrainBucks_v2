@@ -20,7 +20,7 @@ export default function RoomEnter({ navigation, route }) {
     const onShare = async () => {
         try {
           const result = await Share.share({
-            message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data._id}&type=${room_data.room_hash?"private":"public"}`
+            message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data.room_name}&type=${room_data.room_hash?"private":"public"}`
           });
           if (result.action === Share.sharedAction) {
             if (result.activityType) {

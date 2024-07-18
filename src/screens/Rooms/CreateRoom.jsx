@@ -18,7 +18,7 @@ export default function CreateRoom({navigation}) {
         let type = selected==="Public"?1:0;
         let res = await createRoomInController(type,name,setErrorMessage,setLoading)
         if(res){
-            navigation.navigate('roomcreatedsuccess',{name:name})
+            navigation.navigate('roomcreatedsuccess',{name:res.room_name, roomhash:res.room_hash })
             setName("")
         }
     }
