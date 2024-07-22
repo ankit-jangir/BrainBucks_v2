@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import BackgroundTimer from 'react-native-background-timer';
+import { StackActions } from '@react-navigation/native';
 
 export default function QuestionsPaper({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -25,9 +26,6 @@ export default function QuestionsPaper({ navigation }) {
 
 
   const appState = useRef(AppState.currentState)
-
-  useEffect(() => {
-  }, [])
 
   useEffect(() => {
     getCurrentQuestion(currentQuestionIndex)
@@ -71,8 +69,8 @@ export default function QuestionsPaper({ navigation }) {
         handleSubmit(true)
       }
     }, 1000);
-    
-    return ()=>{BackgroundTimer.clearInterval(interval)}
+
+    return () => { BackgroundTimer.clearInterval(interval) }
   }
     , [])
 
@@ -113,6 +111,7 @@ export default function QuestionsPaper({ navigation }) {
     let time = autoSubmitted ? quizState.time : Math.floor(quizState.time - minute * 60 - timerCount)
     submitactiveQuiz(quizState.id, time, Toast).then((r) => {
       if (r) {
+        console.log(r.arr);
         backRef.current()
         setSubmitData(r.arr)
         setModalVisible1(true)
@@ -261,7 +260,7 @@ export default function QuestionsPaper({ navigation }) {
             <View style={styles.yesView}>
               <View style={styles.yesView1}>
                 <TouchableOpacity
-                  onPress={()=>{handleSubmit()}}
+                  onPress={() => { handleSubmit() }}
                   style={styles.yesView2}
                 >
                   <Text style={styles.textYes}>Yes</Text>
@@ -311,9 +310,14 @@ export default function QuestionsPaper({ navigation }) {
               </View>
               <TouchableOpacity onPress={() => {
                 backRef.current();
-                navigation.navigate('Home'), setModalVisible1(false)
+                navigation.dispatch(
+                  StackActions.replace('TriviaSubmit', {
+                    result: {arr: submitData},
+                    isActive:true
+                  }))
+                setModalVisible1(false)
               }} style={styles.continueTouchable} >
-                <Text style={styles.continueText}>Back To Home</Text>
+                <Text style={styles.continueText}>Go To Evaluation</Text>
               </TouchableOpacity>
             </View>
           </View>

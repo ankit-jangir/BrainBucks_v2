@@ -18,12 +18,22 @@ export default function CreatedRooms({ navigation }) {
     const [rooms, setRooms] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)
+    const [deleteRoomModalVisible,setDeleteBankModalVisible] = useState(false)
     const [search, setSearch] = useState("")
     const [modalVisible, setModalVisible] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
     const timeoutRef = useRef()
+    const [currentRoom, setCurrentRoom] = useState()
 
+
+
+    async function handleDeleteRoomClick(room){
+        setCurrentRoom(room)
+        setDeleteBankModalVisible(true)
+    }   
+    
     async function deleteRoom(room_id) {
+        setDeleteBankModalVisible(false)
         let res = await deleteRoomInController(room_id, Toast)
         if (res) {
             let newArr = rooms.filter((item, index) => item._id !== room_id)
@@ -115,7 +125,7 @@ export default function CreatedRooms({ navigation }) {
                                         </View>
                                         <View style={styles.roomContainerBtns}>
                                             <Button onPress={() => { navigation.navigate('roomenter', { type: 'created', room_data: item }) }} titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
-                                            <TouchableOpacity style={styles.exitview} onPress={() => { deleteRoom(item._id) }}>
+                                            <TouchableOpacity style={styles.exitview} onPress={() => { handleDeleteRoomClick(item) }}>
                                                 <Image style={styles.exitimg} source={require('../../assets/img/redbin.png')} />
                                                 <Text style={styles.exitbtn}>Delete Room</Text>
                                             </TouchableOpacity>
@@ -128,6 +138,26 @@ export default function CreatedRooms({ navigation }) {
             }
             <Modal visible={modalVisible} onDismiss={() => { setModalVisible(false) }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >
                 <LottieView source={require('../../assets/img/check.json')} autoPlay={true} style={{ width: 200, height: 200 }} />
+            </Modal>
+            <Modal
+                visible={deleteRoomModalVisible}
+                onDismiss={() => { setDeleteBankModalVisible(false) }}
+                contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >
+                    <View style={{backgroundColor:"#fff", width:300, minHeight:150, justifyContent:"space-around"}}>
+                        <Text style={{padding:20, textAlign:"center", fontSize:20, color:ColorsConstant.RedLight}}>Delete {currentRoom?.room_name} Room</Text>
+                        <View style={{justifyContent:"space-around", alignItems:"center", flexDirection:"row", marginBottom:20}}>
+                            <TouchableOpacity
+                            onPress={()=>{deleteRoom(currentRoom._id)}} 
+                            style={{backgroundColor:ColorsConstant.RedLight, paddingVertical:10, paddingHorizontal:20}}>
+                                <Text style={{color:"#fff"}}>Delete</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                            onPress={()=>{setDeleteBankModalVisible(false)}}
+                            style={{backgroundColor:ColorsConstant.GrayyColor, paddingVertical:10, paddingHorizontal:20}}>
+                                <Text style={{color:"#fff"}}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
             </Modal>
         </View>
     )

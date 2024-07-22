@@ -5,9 +5,9 @@ import basic from "../BasicServices";
 class CourseApiService {
 
 
-  async getFreeCourses() {
+  async getFreeCourses(page) {
     let token = await basic.getBearerToken()
-    let url = `${PRERECMICRO}/participant/course/get/free/courses`;
+    let url = `${PRERECMICRO}/participant/course/get/free/courses?page=${page}`;
     let headers = { "content-type": "application/json", authorization: token };
     let options = {
       method: "get",

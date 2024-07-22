@@ -10,6 +10,7 @@ import { BLOBURL } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
 import BasicServices from '../../services/BasicServices';
 import ChatSockService from '../../services/api/ChatSockService';
+import { setLoggedIn } from '../../..';
 
 export default function SignUpExam({ navigation, route }) {
   const [refresh, setRefresh] = useState(false)
@@ -40,6 +41,7 @@ export default function SignUpExam({ navigation, route }) {
         BasicServices.setJwt(res.token).then(() => {
           BasicServices.setId(res.user_id)
           ChatSockService.connect()
+          setLoggedIn(true)
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         })
       } else {

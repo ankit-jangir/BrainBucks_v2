@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, Image, View, StatusBar, Linking } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -119,6 +119,7 @@ import RoomsQuestions from './src/screens/Rooms/RoomsQuestions.js';
 import RoomsResult from './src/screens/Rooms/RoomsResult.js';
 import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
+import { setNavigation } from './index.js';
 
 
 
@@ -396,7 +397,7 @@ function MyTabs() {
             name="Reels"
             component={Reels}
             options={{
-              tabBarLabel: 'Brain Boosters',
+              tabBarLabel: 'Boosters',
               tabBarIcon: ({ focused, color }) => (
                 <View>
                   {focused ? (
@@ -436,38 +437,40 @@ function MyDrawer() {
 
 export default function App() {
 
+  const navRef = useRef()
+
   const config = {
-  screens: {
-    rooms: {
-      path: "rooms",
-      parse: {
-        id: (id) => `${id}`,
-        type: (type) => `${type}`
+    screens: {
+      rooms: {
+        path: "rooms",
+        parse: {
+          id: (id) => `${id}`,
+          type: (type) => `${type}`
+        },
+        screens: {
+          Explore: "public",
+          Private: "private",
+          MyRooms: "myrooms"
+        }
       },
-      screens: {
-        Explore: "public",
-        Private: "private",
-        MyRooms: "myrooms"
-      }
-    },
-    RulesofParticipation: {
-      path: 'quiz',
-      parse: {
-        id: (id) => `${id}`,
+      RulesofParticipation: {
+        path: 'quiz',
+        parse: {
+          id: (id) => `${id}`,
+        },
       },
-    },
-    // ... other screen configurations
-  }
-};
+      // ... other screen configurations
+    }
+  };
+  
   const linking = {
-    prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://*.brainbucks.in'],
+    prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://app.brainbucks.in'],
     config: config
   };
 
 
-
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer ref={navRef} onReady={()=>{setNavigation(navRef.current)}} linking={linking}>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>

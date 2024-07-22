@@ -9,6 +9,7 @@ import styles from '../styles/Home.styles';
 import HomeApiService from '../services/api/HomeApiService';
 import { useQuery } from '@tanstack/react-query';
 import { ColorsConstant } from '../constants/Colors.constant';
+import { useQuiz } from '../context/QuizPlayReducer';
 
 export default function HomeEnrolledQuizzes() {
 
@@ -20,22 +21,24 @@ export default function HomeEnrolledQuizzes() {
     const homeServ = new HomeApiService()
     const isFocused = useIsFocused()
 
-    useEffect(()=>{
-        refetch()
-    },[isFocused])
+    const {quizState, dispatch} = useQuiz()
 
-    const getEnrolledHomeQuizzes = async ()=>{
-        const enrolledQuizRes = await homeServ.getEnrolledQuizes(1,10)
+    useEffect(() => {
+        refetch()
+    }, [isFocused])
+
+    const getEnrolledHomeQuizzes = async () => {
+        const enrolledQuizRes = await homeServ.getEnrolledQuizes(1, 10)
         return enrolledQuizRes
     }
 
     const { data, isFetching, refetch } = useQuery({ queryKey: ['homeEnrolledQuiz'], queryFn: getEnrolledHomeQuizzes })
     const [enrolledQuizzes, setEnrolledQuizzes] = useState(data?.enrolled_quizes || [])
-    
 
-    useEffect(()=>{
+
+    useEffect(() => {
         setEnrolledQuizzes(data?.enrolled_quizes || [])
-    },[data])
+    }, [data])
 
 
 
@@ -60,45 +63,46 @@ export default function HomeEnrolledQuizzes() {
             <View style={{ flex: 1 }}>
                 {
                     isFetching
-                    ?
-                    <ActivityIndicator size={20} color={ColorsConstant.Theme}/>
-                    :
-                    (enrolledQuizzes?.length === 0)
                         ?
-                        <NoDataFound scale={0.7} message={"Not Enrolled in any quiz yet"} actionText={"Reload"} />
+                        <ActivityIndicator size={20} color={ColorsConstant.Theme} />
                         :
-                        <FlatList
-                            data={enrolledQuizzes}
-                            keyExtractor={item => item._id.toString()}
-                            renderItem={({ item }) => (
-                                <View
-                                    style={{
-                                        width: CARD_WIDTH,
-                                        margin: CARD_MARGIN,
-                                    }}>
-                                    <QuizCard
-                                        prize={item.reward}
-                                        fees={item.entryFees}
-                                        title={item.quiz_name}
-                                        date={item.sch_time}
-                                        image={{ uri: BLOBURL + item.banner }}
-                                        alotedslots={item.slot_aloted}
-                                        totalslots={item.slots}
-                                        type={'enrolled'}
-                                        onPress={() => {
-                                            navigation.navigate('StartExam', { id: item._id });
-                                        }}
-                                    />
-                                </View>
-                            )}
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            // snapToInterval={width}
-                            snapToAlignment="center"
-                            decelerationRate="fast"
-                            contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
-                        />
+                        (enrolledQuizzes?.length === 0)
+                            ?
+                            <NoDataFound scale={0.7} message={"Not Enrolled in any quiz yet"} actionText={"Reload"} />
+                            :
+                            <FlatList
+                                data={enrolledQuizzes}
+                                keyExtractor={item => item._id.toString()}
+                                renderItem={({ item }) => (
+                                    <View
+                                        style={{
+                                            width: CARD_WIDTH,
+                                            margin: CARD_MARGIN,
+                                        }}>
+                                        <QuizCard
+                                            prize={item.reward}
+                                            fees={item.entryFees}
+                                            title={item.quiz_name}
+                                            date={item.sch_time}
+                                            image={{ uri: BLOBURL + item.banner }}
+                                            alotedslots={item.slot_aloted}
+                                            totalslots={item.slots}
+                                            type={'enrolled'}
+                                            onPress={() => {
+                                                dispatch({type:"change", state:{id:item._id}})
+                                                navigation.navigate('StartExam', { id: item._id });
+                                            }}
+                                        />
+                                    </View>
+                                )}
+                                horizontal
+                                pagingEnabled
+                                showsHorizontalScrollIndicator={false}
+                                // snapToInterval={width}
+                                snapToAlignment="center"
+                                decelerationRate="fast"
+                                contentContainerStyle={{ paddingHorizontal: CARD_MARGIN }}
+                            />
                 }
             </View>
         </>

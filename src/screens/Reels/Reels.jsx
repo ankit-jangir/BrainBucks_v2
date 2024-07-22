@@ -35,8 +35,6 @@ const Reels = ({ navigation, route }) => {
     const [comment, setComment] = useState('')
     const firstReel = route?.params?.first_reel;
 
-    // console.log(route, "reel route");
-
     const reServ = new ReelsApiService()
     const timeoutRef = useRef()
     const scrollRef = useRef()
@@ -116,9 +114,7 @@ const Reels = ({ navigation, route }) => {
     }
 
     async function getReels(page = 1, again) {
-
         let func = setLoadingMore
-
         let res = await BasicServices.apiTryCatch(getReelsHelper(page, again), Toast, () => { func(true) }, () => { func(false) })
 
         if (res && res.reel) {
@@ -273,10 +269,10 @@ const Reels = ({ navigation, route }) => {
                 onStartShouldSetResponder={() => true}
                 onStartShouldSetResponderCapture={() => true}
             >
-                <View style={styles.tagsView}>
+                <View style={[styles.tagsView, {minHeight:40}]}>
                     {
                         tags.length === 0 ?
-                            <Text style={{color:"#000", paddingHorizontal:20}}>No Tags Found</Text>
+                            <Text style={{ color: "#000", paddingHorizontal: 20 }}>No Tags Found</Text>
                             :
                             tags.map((item, index) =>
                                 <TouchableOpacity
@@ -288,7 +284,8 @@ const Reels = ({ navigation, route }) => {
                                         {item.tag_name}
                                     </Text>
                                 </TouchableOpacity>
-                            )}
+                            )
+                    }
                 </View>
             </ScrollView>
             <>
@@ -315,7 +312,6 @@ const Reels = ({ navigation, route }) => {
                             snapToInterval={screenHeight * (85 / 100)}
                             keyExtractor={(item, index) => item._id + index}
                             onViewableItemsChanged={({ changed, viewableItems }) => {
-                                // if (!reels.includes(changed[0].item._id)) { setSeenReels([...seenReels, changed[0].item._id]) }
                                 setCurrentReel(viewableItems[0]?.item?._id + viewableItems[0]?.index);
                                 currentIndex.current = (viewableItems[0]?.index)
                                 setLoading(false)
@@ -323,11 +319,6 @@ const Reels = ({ navigation, route }) => {
                                 if (viewableItems[0] && viewableItems[0].index === reels.length - 1) {
                                     getReels(currentPage + 1)
                                 }
-                                // if (viewableItems[0] && viewableItems[0].index % 3 === 0) {
-                                //     let diff = reels.length - viewableItems[0].index
-                                //     if (diff === 3 || diff === 4);
-                                //     getReels(currentPage + 1)
-                                // }
                             }}
                             viewabilityConfig={{
                                 itemVisiblePercentThreshold: 50

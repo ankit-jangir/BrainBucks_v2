@@ -4,7 +4,7 @@ import { ColorsConstant } from '../constants/Colors.constant';
 
 const styles = StyleSheet.create({
     container: { 
-        flex: 1
+        flex: 1,
      },
     backBtnView: {
         position: 'absolute',
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     videoContainer: {
-        height: screenHeight * (85 / 100)
+        height: screenHeight * (85 / 100),
     },
     video: {
-        height: '100%',
+        flex:1
     },
     captionView: {
         position: 'absolute',
@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
     reelImage: {
         width: 30,
         height: 30,
-        borderRadius: 50
+        borderRadius: 50,
+        borderWidth:0.2,
+        borderColor:'gray'
     },
     reelName: {
         color: ColorsConstant.White,

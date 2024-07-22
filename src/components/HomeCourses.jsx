@@ -176,7 +176,7 @@ export default function HomeCourses() {
                                                 </Text>
 
                                                 <Text style={styles2.datatext1}>
-                                                    <Text style={styles2.datatext}>Attachment:</Text>{' '}
+                                                    <Text style={styles2.datatext}>Attachments:</Text>{' '}
                                                     {current?.attachment_count}
                                                 </Text>
                                             </View>

@@ -46,7 +46,7 @@ const Courses = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{ backgroundColor: 'white', height: screenHeight }}>
+      <View style={{ backgroundColor: 'white', flex:1 }}>
         {activeTab === 'Paid Courses' && (
           <PaidCourses navigation={navigation} data={DATA} />
         )}

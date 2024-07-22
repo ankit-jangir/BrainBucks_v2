@@ -16,6 +16,7 @@ import { StackActions } from "@react-navigation/native";
 
 export default function TriviaSubmit({ navigation, route }) {
   let arr = route.params.result.arr;
+  let isActive = route.params.isActive;
   let minutes = Math.floor(arr.submit_time_period/60)
   let seconds = Math.floor(arr.submit_time_period%60)
   if(minutes<10){minutes = "0"+minutes}
@@ -26,7 +27,7 @@ export default function TriviaSubmit({ navigation, route }) {
     <View style={[StyleConstants.safeArView, { paddingHorizontal: 0 }]}>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.View1}>Review, before Submission</Text>
+          <Text style={styles.View1}>Your Result:</Text>
         </View>
         <View style={styles.View2}>
           <View style={styles.View3}>
@@ -58,7 +59,7 @@ export default function TriviaSubmit({ navigation, route }) {
                 </Text>
               </View>
             </View>
-            <View style={styles.View7}>
+           {!isActive && <View style={styles.View7}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.dispatch(
@@ -76,7 +77,7 @@ export default function TriviaSubmit({ navigation, route }) {
                   <Text style={styles.View8}>View Result</Text>
                 </LinearGradient>
               </TouchableOpacity>
-            </View>
+            </View>}
             <View style={styles.View12}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("Home")}
@@ -89,7 +90,7 @@ export default function TriviaSubmit({ navigation, route }) {
         </View>
         <View style={styles.View10}>
           <View style={{ width: "80%" }}>
-            <Text style={styles.View11}>Quiz end in </Text>
+            <Text style={styles.View11}>Quiz submitted in </Text>
           </View>
         </View>
         <View style={styles.View15}>

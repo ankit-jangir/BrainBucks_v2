@@ -143,7 +143,7 @@ export default function QuizzesResultRewards({navigation, route}) {
           </View>
           <View style={styles.WalletView}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Wallet')}
+              onPress={() => navigation.navigate('wallet')}
               style={styles.Touchable1}>
               <Image
                 source={require('../../assets/img/wallet.png')}

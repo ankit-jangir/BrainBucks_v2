@@ -64,7 +64,7 @@ const Deposit = ({ navigation }) => {
         const session = new CFSession(
           res.payment_session_id,
           res.order_id,
-          CFEnvironment.PRODUCTION
+          CFEnvironment.SANDBOX
         );
 
         const paymentModes = new CFPaymentComponentBuilder()
@@ -151,7 +151,7 @@ const Deposit = ({ navigation }) => {
         <TextInput
           placeholderTextColor="gray"
           keyboardType="numeric"
-          placeholder="Type Here..."
+          placeholder="Click on any option below"
           style={[
             styles.inputs,
             errMsg && { borderWidth: 1, borderColor: 'red' },
@@ -166,6 +166,11 @@ const Deposit = ({ navigation }) => {
         )}
       </View>
       <View style={styles.quickAmountContainer}>
+      <TouchableOpacity
+          onPress={() => setAmount('1')}
+          style={styles.quickAmountButton}>
+          <Text style={styles.quickAmountText}>₹ 1</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setAmount('50')}
           style={styles.quickAmountButton}>

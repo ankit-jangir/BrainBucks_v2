@@ -171,6 +171,13 @@ const Sidebar = ({ navigation }) => {
           text="Refer & Earn"
         /> */}
         <MenuItem
+          action={() => { 
+            navigation.navigate("CustomerSupport")
+          }}
+          image={require('../../assets/img/support.png')}
+          text="Help & Support"
+        />
+        <MenuItem
           action={() => {
             navigation.closeDrawer()
             navigation.navigate('Reels')

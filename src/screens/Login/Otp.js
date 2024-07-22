@@ -12,6 +12,7 @@ import basic from "../../services/BasicServices";
 import { StackActions } from "@react-navigation/native";
 import ChatSockService from "../../services/api/ChatSockService";
 import BackgroundTimer from 'react-native-background-timer';
+import { setLoggedIn } from "../../..";
 
 
 export default function Otp({ navigation, route }) {
@@ -94,6 +95,7 @@ export default function Otp({ navigation, route }) {
                 console.log("JWT Token: ", response.token);
                 console.log("User id: ", response.user_id);
                 ChatSockService.connect()
+                setLoggedIn(true)
                 navigation.reset({ index: 0, routes: [{ name: "Home" }] });
             } else if (response.status === 2) {
                 setErrorMessage(null)

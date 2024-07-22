@@ -11,6 +11,7 @@ import basic from '../../services/BasicServices';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import Toast from 'react-native-toast-message';
 import ChatSockService from '../../services/api/ChatSockService';
+import { setLoggedIn } from '../../..';
 
 export default function Splash({ navigation }) {
   const [state, setstate] = useState({ checked: "en" });
@@ -27,27 +28,32 @@ export default function Splash({ navigation }) {
           try {
             res = await auth.getUserProfile();
             if (res.status === 1) {
-              console.log("jwt token: "+localobj.jwt);
+              console.log("jwt token: " + localobj.jwt);
               setCheckLang(res)
             } else {
               setCheckLang(null)
+              Toast.show({
+                type: 'error',
+                text1: "Check your network or login again"
+              })
             }
           } catch (err) {
             console.log("ERROR IN GETTING PROFILE", err.message)
             setCheckLang(null)
             Toast.show({
-              type:'error',
-              text1:"Check your network or login again"
+              type: 'error',
+              text1: "Check your network or login again"
             })
           }
           if (res && res.status === 1) {
+            setLoggedIn(true)
             navigation.reset({ index: 0, routes: [{ name: "Home" }] });
             ChatSockService.connect()
           } else {
             setCheckLang(null)
           }
         }
-        else{
+        else {
           setCheckLang(null)
         }
       } else {
@@ -57,7 +63,7 @@ export default function Splash({ navigation }) {
     try {
       getLang()
     } catch (er) {
-      console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message) 
+      console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message)
 
     }
   }, [])
@@ -102,9 +108,9 @@ export default function Splash({ navigation }) {
 
   return (
     <>
-    <View style={{zIndex:100}}>
-      <Toast/>
-    </View>
+      <View style={{ zIndex: 100 }}>
+        <Toast />
+      </View>
       <StatusBar barStyle='white-content' translucent={false} backgroundColor={ColorsConstant.Theme} />
       <SafeAreaView style={styles.safe}>
         <Animated.View style={styles.aniView}>

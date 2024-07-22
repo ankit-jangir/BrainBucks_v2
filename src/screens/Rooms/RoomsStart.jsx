@@ -116,16 +116,7 @@ export default function RoomsStart({ navigation, route }) {
   }
 
   function next() {
-    if (remainingTime > 0) {
-      Toast.show({
-        type: "info",
-        text1: `Wait till start time`
-      })
-      return;
-    }
-
     joinQuiz()
-
   }
 
   return (

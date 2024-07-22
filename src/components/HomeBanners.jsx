@@ -8,12 +8,19 @@ import { useQuery } from '@tanstack/react-query'
 import HomeApiService from '../services/api/HomeApiService'
 import { ActivityIndicator } from 'react-native-paper'
 import { ColorsConstant } from '../constants/Colors.constant'
+import { useIsFocused } from '@react-navigation/native'
 
 export default function HomeBanners({ setLoading }) {
 
   const homeServ = new HomeApiService()
-  const { data, isFetching } = useQuery({ queryKey: ['homeBanners'], queryFn: homeServ.getBanners })
+  const { data, isFetching, refetch } = useQuery({ queryKey: ['homeBanners'], queryFn: homeServ.getBanners })
   const banners = data?.banners || [];
+
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    refetch()
+  }, [isFocused])
 
   // useEffect(() => {
   //   console.log(isFetching);

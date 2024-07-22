@@ -81,9 +81,9 @@ export default function AllLiveQuizzes({ navigation, route }) {
         }
         else {
           if (page === 1)
-            setData(res.enrolledquizes)
+            setData(res.enrolled_quizes)
           else
-            setData([...data, ...res.enrolledquizes])
+            setData([...data, ...res.enrolled_quizes])
         }
       }
     }

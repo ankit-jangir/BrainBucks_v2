@@ -6,15 +6,15 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import {Text} from '../../utils/Translate';
-import React, {useEffect, useState} from 'react';
+import { Text } from '../../utils/Translate';
+import React, { useEffect, useState } from 'react';
 import NoDataFound from '../../components/NoDataFound';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import CourseApiService from '../../services/api/CourseApiService';
 import { BLOBURL } from '../../config/urls';
 
-const MyCourses = ({navigation}) => {
+const MyCourses = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const [courses, setCourses] = useState([])
   const [videos, setVideos] = useState({})
@@ -103,8 +103,8 @@ const MyCourses = ({navigation}) => {
     }
   }
 
-  async function playVideo(course_id, video_id){
-    navigation.navigate('videoplayer',{course_id:course_id, video_id:video_id})
+  async function playVideo(course_id, video_id) {
+    navigation.navigate('videoplayer', { course_id: course_id, video_id: video_id })
   }
 
   return (
@@ -118,7 +118,7 @@ const MyCourses = ({navigation}) => {
           :
           courses.length === 0
             ?
-            <NoDataFound action={getEnrolledCourses} actionText={"Load again"} message={"You haven't enrolled in any case yet"} />
+            <NoDataFound scale={0.9} message={"You haven't enrolled in any case yet"} />
             :
             courses.map(item =>
               <Accordion
@@ -146,21 +146,21 @@ const MyCourses = ({navigation}) => {
                         ?
                         <ActivityIndicator size={40} />
                         :
-                        <View style={{height:200}}>
+                        <View style={{ height: 200 }}>
                           <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
                         </View>
-                        )
+                    )
                     :
                     (
                       (videos[item._id].length === 0)
                         ?
-                        <View style={{height:200}}>
-                        <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
-                      </View>
-                      :
+                        <View style={{ height: 200 }}>
+                          <NoDataFound scale={0.5} message={"No Videos Found for this course"} action={() => { getVideoForParticularCourse(item._id) }} actionText={"Refresh"} />
+                        </View>
+                        :
                         videos[item._id].map((video, index) =>
                           <Accordion
-                          key={video._id}
+                            key={video._id}
                             containerStyle={{
                               backgroundColor: '#fff',
                               flexDirection: 'row',
@@ -181,7 +181,7 @@ const MyCourses = ({navigation}) => {
                             itemText={video.title}
                             icon={require('../../assets/img/play-button.png')}
                             onButtonPress={() => { playVideo(item._id, video._id) }}
-                            onExpand={()=>{getMaterialForParticularVideo(item._id, video._id)}}
+                            onExpand={() => { getMaterialForParticularVideo(item._id, video._id) }}
                           >
                             {
                               (!material[video._id])
@@ -191,59 +191,59 @@ const MyCourses = ({navigation}) => {
                                     ?
                                     <ActivityIndicator size={40} />
                                     : <View style={{ height: 200 }}>
-                                      <NoDataFound scale={0.5} message={"No Study Material Found for this Video"} action={() => { getMaterialForParticularVideo(item._id,video._id) }} actionText={"Refresh"} />
+                                      <NoDataFound scale={0.5} message={"No Study Material Found for this Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
                                     </View>
                                 )
-                                :(
-                                material[video._id].length===0
-                                ?
-                                <View style={{ height: 200 }}>
-                                      <NoDataFound scale={0.5} message={"No Study Material For This Video"} action={() => { getMaterialForParticularVideo(item._id,video._id) }} actionText={"Refresh"} />
+                                : (
+                                  material[video._id].length === 0
+                                    ?
+                                    <View style={{ height: 200 }}>
+                                      <NoDataFound scale={0.5} message={"No Study Material For This Video"} action={() => { getMaterialForParticularVideo(item._id, video._id) }} actionText={"Refresh"} />
                                     </View>
-                                : 
-                                <FlatList
+                                    :
+                                    <FlatList
                                       data={material[video._id]}
                                       renderItem={({ item, index }) => {
                                         return (
                                           <Pressable key={item._id}>
-                                          <View style={{ 
-                                                backgroundColor: '#fff',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                paddingHorizontal: 10,
-                                                paddingVertical: 8,
-                                                marginHorizontal: 10,
-                                                marginBottom: 4,
-                                                elevation: 4,
-                                                borderRadius: 5,
-                                                marginTop: index === 0 ? 5 : 0,
-                                             }}>
-                                            <View
-                                              style={{
-                                                flexDirection: 'row',
-                                                flex:1,
-                                                alignItems:'center'
-                                              }}>
-                                              <Text style={{ color: '#000', flex:1 }}>{item.title}</Text>
-                                            </View>
-                                            <View style={{ flexDirection: 'row' }}>
-                                              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                              <TouchableOpacity onPress={()=>{navigation.navigate('viewpdf',{pdf: item})}}>
-                                                  <Text
-                                                    style={{
-                                                      padding: 5,
-                                                      borderRadius: 5,
-                                                      backgroundColor: '#eee3fc',
-                                                      color: '#701DDB',
-                                                      fontSize:12,
-                                                      fontWeight:400
-                                                    }}>
-                                                    View Pdf
-                                                  </Text>
-                                                </TouchableOpacity>
+                                            <View style={{
+                                              backgroundColor: '#fff',
+                                              flexDirection: 'row',
+                                              justifyContent: 'space-between',
+                                              paddingHorizontal: 10,
+                                              paddingVertical: 8,
+                                              marginHorizontal: 10,
+                                              marginBottom: 4,
+                                              elevation: 4,
+                                              borderRadius: 5,
+                                              marginTop: index === 0 ? 5 : 0,
+                                            }}>
+                                              <View
+                                                style={{
+                                                  flexDirection: 'row',
+                                                  flex: 1,
+                                                  alignItems: 'center'
+                                                }}>
+                                                <Text style={{ color: '#000', flex: 1 }}>{item.title}</Text>
+                                              </View>
+                                              <View style={{ flexDirection: 'row' }}>
+                                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                                  <TouchableOpacity onPress={() => { navigation.navigate('viewpdf', { pdf: item }) }}>
+                                                    <Text
+                                                      style={{
+                                                        padding: 5,
+                                                        borderRadius: 5,
+                                                        backgroundColor: '#eee3fc',
+                                                        color: '#701DDB',
+                                                        fontSize: 12,
+                                                        fontWeight: 400
+                                                      }}>
+                                                      View Pdf
+                                                    </Text>
+                                                  </TouchableOpacity>
+                                                </View>
                                               </View>
                                             </View>
-                                          </View>
                                           </Pressable>
                                         )
                                       }}>

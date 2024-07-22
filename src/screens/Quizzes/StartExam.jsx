@@ -76,16 +76,7 @@ export default function StartExam({ navigation, route }) {
   }
 
   function next() {
-    if (remainingTime > 0) {
-      Toast.show({
-        type: "info",
-        text1: `Wait till ${data?.sch_time}`
-      })
-      return;
-    }
-
     joinQuiz()
-
   }
 
   const onShare = async () => {

@@ -93,3 +93,12 @@ async function requestUserPermission() {
     "sha256_cert_fingerprints": ["SHA256: 36:A0:DF:D6:9B:AF:76:A1:DF:0F:DC:9C:3A:0D:D0:45:FB:DE:DF:25:06:BD:F3:DC:61:22:B3:AE:D5:14:AF:D7"]
   }
 }]
+
+todos:
+1. Reels:
+  * Tags UI
+  * Sharing
+2. Deep Linking
+3. Deposit in Wallet
+4. Auto Refresh In Home
+5. Remove Quiz Join logic from frontend

@@ -1,8 +1,8 @@
 import { View, TouchableOpacity, Image, FlatList, Dimensions, ActivityIndicator } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BLOBURL } from '../config/urls'
 import { Text } from '../utils/Translate'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import NoDataFound from './NoDataFound'
 import styles from '../styles/Home.styles'
 import { screenWidth } from '../constants/Sizes.constant'
@@ -17,8 +17,14 @@ const HomeReels = () => {
     const CARD_WIDTH = width - 7 * CARD_MARGIN; // Subtract margins from total width
     const homeServ = new HomeApiService()
 
-    const { data, isFetching } = useQuery({ queryKey: ['homeReels'], queryFn: homeServ.getReels })
+    const { data, isFetching, refetch } = useQuery({ queryKey: ['homeReels'], queryFn: homeServ.getReels })
     const reels = (data?.reels || [])
+
+    const isFocused = useIsFocused()
+
+    useEffect(()=>{
+        refetch()
+    },[isFocused])
 
     return (
         <>
@@ -53,7 +59,9 @@ const HomeReels = () => {
                             data={reels}
                             keyExtractor={item => item._id.toString()}
                             renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => { navigation.navigate('Reels', { first_reel: item }) }}>
+                                <TouchableOpacity 
+                                style={{borderWidth:0.1, borderRadius:3}}
+                                onPress={() => { navigation.navigate('Reels', { first_reel: item }) }}>
                                     <Image
                                         style={{ width: screenWidth / 3, height: 200, borderRadius: 5, objectFit: 'cover' }}
                                         source={{ uri: BLOBURL + item.banner }}
