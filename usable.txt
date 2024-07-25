@@ -102,3 +102,4 @@ todos:
 3. Deposit in Wallet
 4. Auto Refresh In Home
 5. Remove Quiz Join logic from frontend
+6. Custom Notification Sound

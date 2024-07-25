@@ -120,6 +120,7 @@ import RoomsResult from './src/screens/Rooms/RoomsResult.js';
 import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
 import { setNavigation } from './index.js';
+import HomeReelPlayer from './src/screens/Home/HomeReelPlayer.jsx';
 
 
 
@@ -243,6 +244,7 @@ function MyStack() {
       <Stack.Screen name="RoomsResult" component={RoomsResult} />
       <Stack.Screen name="RoomsScored" component={RoomsScored} />
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
+      <Stack.Screen name='HomeReelPlayer' component={HomeReelPlayer}/>
     </Stack.Navigator>
   );
 }
