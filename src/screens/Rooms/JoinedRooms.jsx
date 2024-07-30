@@ -14,17 +14,19 @@ import Toast from 'react-native-toast-message'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
 import Clipboard from '@react-native-clipboard/clipboard'
+import { useRoom } from '../../utils/store'
+import { useIsFocused } from '@react-navigation/native'
 
 export default function JoinedRooms({ navigation }) {
     const [rooms, setRooms] = useState([])
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(2)
-    const [search, setSearch] = useState("")
     const [modalVisible, setModalVisible] = useState(false)
     const timeoutRef = useRef()
 
+    const isFocused = useIsFocused()
+
     let ras = new RoomsApiService();
 
+    const setCustomRoom = useRoom((state) => state.setCurrentRoom)
 
     let { loading, error, data, refetch } = useQuery(ras.Get_joined_rooms)
 
@@ -54,101 +56,86 @@ export default function JoinedRooms({ navigation }) {
 
         if (data && data.get_joined_rooms) {
 
-            if (data.get_joined_rooms.totalPages) {
-                setTotalPages(data.get_joined_rooms.totalPages)
-            }
-
-            if (currentPage === 1) {
-                if (data.get_joined_rooms.response) {
-                    setRooms(data.get_joined_rooms.response)
-                }
-            } else {
-                if (data.get_joined_rooms.response) {
-                    setRooms([...rooms, ...data.get_joined_rooms.response])
-                }
+            if (data.get_joined_rooms.response) {
+                setRooms(data.get_joined_rooms.response)
             }
         }
     }, [data])
 
     useEffect(() => {
-        setCurrentPage(1)
-    }, [search])
-
-    useEffect(() => {
-        if (currentPage <= totalPages) {
+        if (isFocused)
             refetch()
-        }
-    }, [currentPage])
+    }, [isFocused])
 
 
     return (
         <View style={styles.maincontainer}>
             {
-                loading
-                    ?
-                    <ActivityIndicator size={40} color={ColorsConstant.Theme} />
-                    :
-                    rooms.length === 0
-                        ?
-                        <NoDataFound scale={0.7} message={"No Rooms Joined Yet"} action={() => { }} actionText={"Load Again"} />
-                        :
-                        <FlatList
-                            data={rooms}
-                            keyExtractor={(item) => item._id}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={styles.roomContainer}>
-                                        <Text style={styles.roomNameText}>{item.room_name}</Text>
-                                        <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
-                                            <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
-                                        </View>
-                                        <View>
-                                            <View style={[styles2.textP, { flexDirection: "row", justifyContent: "auto", gap: 25, }]}>
-                                                <View
+                <FlatList
+                    refreshing={loading}
+                    onRefresh={() => { refetch() }}
+                    ListEmptyComponent={() => (
+                        <NoDataFound scale={0.7} message={"No Rooms Joined Yet"} />
+                    )}
+                    data={rooms}
+                    keyExtractor={(item) => item._id}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <View style={styles.roomContainer}>
+                                <Text style={styles.roomNameText}>{item.room_name}</Text>
+                                <View style={styles.memberHolder}>
+                                    <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                    <Text style={{ color: '#000', marginRight: 20 }}>{item.type}</Text>
+                                </View>
+                                <View>
+                                    <View style={[styles2.textP, { flexDirection: "row", justifyContent: "auto", gap: 25, }]}>
+                                        <View
+                                            style={[
+                                                styles2.Cview,
+                                                { justifyContent: 'center', alignItems: 'center', backgroundColor: "transparent" },
+                                            ]}>
+                                            <Text style={[styles2.textC, { color: "#000" }]}>Room hash: </Text>
+                                            <TouchableOpacity>
+                                                <Text
                                                     style={[
-                                                        styles2.Cview,
-                                                        { justifyContent: 'center', alignItems: 'center', backgroundColor: "transparent" },
+                                                        styles2.textC,
+                                                        { fontFamily: 'WorkSans-SemiBold', color: "#000" },
                                                     ]}>
-                                                    <Text style={[styles2.textC, { color: "#000" }]}>Room hash: </Text>
-                                                    <TouchableOpacity>
-                                                        <Text
-                                                            style={[
-                                                                styles2.textC,
-                                                                { fontFamily: 'WorkSans-SemiBold', color: "#000" },
-                                                            ]}>
-                                                            {item.room_hash ? item.room_hash : "NA"}
-                                                        </Text>
-                                                    </TouchableOpacity>
-                                                    {item.room_hash &&<TouchableOpacity
-                                                        onPress={() => {
-                                                            Clipboard.setString(item.room_hash)
-                                                        }}
-                                                    >
-                                                        <Image style={{ width: 15, height: 15, objectFit: "contain" }} source={require("../../assets/img/copyk.png")} />
-                                                    </TouchableOpacity>}
-                                                </View>
-                                            </View>
-
-
-
-                                        </View>
-                                        <View style={styles.roomContainerBtns}>
-                                            <Button
-                                                onPress={() => { navigation.navigate('roomenter', { type: 'joined', room_data: item }) }}
-                                                titleStyle={styles.enterbtn}
-                                                containerStyle={styles.enterbtncontainer}
-                                                title={"Enter Room"} />
-                                            <TouchableOpacity onPress={() => { exitRoom(item._id) }} style={styles.exitview}>
-                                                <Image style={styles.exitimg} source={require('../../assets/img/exit.png')} />
-                                                <Text style={styles.exitbtn}>Leave Room</Text>
+                                                    {item.room_hash ? item.room_hash : "NA"}
+                                                </Text>
                                             </TouchableOpacity>
+                                            {item.room_hash && <TouchableOpacity
+                                                onPress={() => {
+                                                    Clipboard.setString(item.room_hash)
+                                                }}
+                                            >
+                                                <Image style={{ width: 15, height: 15, objectFit: "contain" }} source={require("../../assets/img/copyk.png")} />
+                                            </TouchableOpacity>}
                                         </View>
                                     </View>
-                                )
 
-                            }}
-                        />
+
+
+                                </View>
+                                <View style={styles.roomContainerBtns}>
+                                    <Button
+                                        onPress={() => {
+                                            setCustomRoom(item)
+                                            navigation.navigate('roomenter', { type: 'joined' })
+                                        }}
+                                        titleStyle={styles.enterbtn}
+                                        containerStyle={styles.enterbtncontainer}
+                                        title={"Enter Room"} />
+                                    <TouchableOpacity onPress={() => { exitRoom(item._id) }} style={styles.exitview}>
+                                        <Image style={styles.exitimg} source={require('../../assets/img/exit.png')} />
+                                        <Text style={styles.exitbtn}>Leave Room</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )
+
+                    }}
+                />
 
             }
             <Modal visible={modalVisible} onDismiss={() => { setModalVisible(false) }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >

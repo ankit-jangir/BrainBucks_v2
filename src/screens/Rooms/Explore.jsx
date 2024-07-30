@@ -12,15 +12,17 @@ import RoomsApiService from '../../services/api/RoomsApiService'
 import { joinPublicRoomInController } from '../../controllers/RoomsController'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
+import { useIsFocused } from '@react-navigation/native'
 
-export default function Explore({route}) {
-    const [search, setSearch] = useState(route.params.id || '' )
+export default function Explore({ route }) {
+    const [search, setSearch] = useState(route.params.id || '')
     const [rooms, setRooms] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)
     const [modalVisible, setModalVisible] = useState(false)
     const timeoutRef = useRef();
 
+    const isFocused = useIsFocused()
 
     let ras = new RoomsApiService();
 
@@ -62,6 +64,7 @@ export default function Explore({route}) {
             }
 
             if (currentPage === 1) {
+                console.log(data.getPublicRoom.response);
                 if (data.getPublicRoom.response) {
                     setRooms(data.getPublicRoom.response)
                 }
@@ -74,8 +77,10 @@ export default function Explore({route}) {
     }, [data])
 
     useEffect(() => {
-        setCurrentPage(1)
-    }, [search])
+        if (isFocused) {
+            setCurrentPage(1)
+        }
+    }, [search, isFocused])
 
     useEffect(() => {
         if (currentPage <= totalPages) {
@@ -113,37 +118,38 @@ export default function Explore({route}) {
                         ?
                         <ActivityIndicator size={40} color={ColorsConstant.Theme} />
                         :
-                        rooms.length === 0
-                            ?
-                            <NoDataFound scale={0.7} message={"No Rooms Found"} action={() => { }} actionText={"Load Again"} />
-                            :
-                            <FlatList
-                                data={rooms}
-                                keyExtractor={(item) => item._id}
-                                onEndReached={() => {
-                                    if (currentPage <= totalPages) {
-                                        setCurrentPage(pre => pre + 1)
-                                    }
+                        <FlatList
+                            refreshing={loading}
+                            ListEmptyComponent={() => (
+                                <NoDataFound scale={0.7} message={"No Rooms Found"}/>
+                            )}
+                            onRefresh={()=>{setCurrentPage(1)}}
+                            data={rooms}
+                            keyExtractor={(item) => item._id}
+                            onEndReached={() => {
+                                if (currentPage <= totalPages) {
+                                    setCurrentPage(pre => pre + 1)
                                 }
-                                }
-                                onEndReachedThreshold={0.5}
-                                renderItem={({ item, index }) => {
-                                    return (
-                                        <View style={styles.roomContainer}>
-                                            <Text style={styles.roomNameText}>{item.room_name}</Text>
-                                            <View style={styles.memberHolder}>
-                                                <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
-                                                <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
-                                            </View>
-                                            <Button
-                                                onPress={() => {
-                                                    sendRequest(item._id)
-                                                }}
-                                                title={"Send Request"} />
+                            }
+                            }
+                            onEndReachedThreshold={0.5}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.roomContainer}>
+                                        <Text style={styles.roomNameText}>{item.room_name}</Text>
+                                        <View style={styles.memberHolder}>
+                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                            <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
                                         </View>
-                                    )
-                                }}
-                            />
+                                        <Button
+                                            onPress={() => {
+                                                sendRequest(item._id)
+                                            }}
+                                            title={"Send Request"} />
+                                    </View>
+                                )
+                            }}
+                        />
                 }
 
                 {loading && currentPage > 1 && <ActivityIndicator size={20} color={ColorsConstant.Theme} />}

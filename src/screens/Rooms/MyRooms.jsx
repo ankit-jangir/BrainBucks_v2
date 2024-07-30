@@ -14,8 +14,8 @@ export default function MyRooms({ navigation }) {
 
   return (
     <>
-      <View style={styles.roomContainer}>
-        <View style={styles2.container}>
+      <View style={[styles.roomContainer, {padding:0, borderRadius:0, marginVertical:0}]}>
+        <View style={[styles2.container, {margin:0, borderRadius:0,}]}>
           <TouchableOpacity
             style={[
               styles2.button1,

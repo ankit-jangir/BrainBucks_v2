@@ -10,7 +10,7 @@ import HomeApiService from '../services/api/HomeApiService'
 import { useQuery } from '@tanstack/react-query'
 import { ColorsConstant } from '../constants/Colors.constant'
 
-const HomeReels = () => {
+const HomeReels = ({ setParentModalVisible, setCurrentReel }) => {
     const navigation = useNavigation()
     const { width } = Dimensions.get('window');
     const CARD_MARGIN = 1; // Adjust this value as needed
@@ -22,9 +22,9 @@ const HomeReels = () => {
 
     const isFocused = useIsFocused()
 
-    useEffect(()=>{
+    useEffect(() => {
         refetch()
-    },[isFocused])
+    }, [isFocused])
 
     return (
         <>
@@ -48,35 +48,35 @@ const HomeReels = () => {
             <View style={{ flex: 1, margin: 20 }}>
                 {
                     isFetching
-                    ?
-                    <ActivityIndicator size={20} color={ColorsConstant.Theme}/>
-                    :
-                    (reels.length === 0)
                         ?
-                        <NoDataFound scale={0.7} message={"No Reels Found"} actionText={"Reload"} />
+                        <ActivityIndicator size={20} color={ColorsConstant.Theme} />
                         :
-                        <FlatList
-                            data={reels}
-                            keyExtractor={item => item._id.toString()}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity 
-                                style={{borderWidth:0.1, borderRadius:3}}
-                                onPress={() => { navigation.navigate('Reels', { first_reel: item }) }}>
-                                    <Image
-                                        style={{ width: screenWidth / 3, height: 200, borderRadius: 5, objectFit: 'cover' }}
-                                        source={{ uri: BLOBURL + item.banner }}
-                                        controls={false}
-                                    />
-                                </TouchableOpacity>
-                            )}
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            // snapToInterval={width}
-                            snapToAlignment="center"
-                            decelerationRate="fast"
-                            contentContainerStyle={{ paddingHorizontal: CARD_MARGIN, gap: 14 }}
-                        />
+                        (reels.length === 0)
+                            ?
+                            <NoDataFound scale={0.7} message={"No Reels Found"} actionText={"Reload"} />
+                            :
+                            <FlatList
+                                data={reels}
+                                keyExtractor={item => item._id.toString()}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        style={{ borderWidth: 0.1, borderRadius: 3 }}
+                                        onPress={() => { setCurrentReel(item), setParentModalVisible(true) }}>
+                                        <Image
+                                            style={{ width: screenWidth / 3, height: 200, borderRadius: 5, objectFit: 'cover' }}
+                                            source={{ uri: BLOBURL + item.banner }}
+                                            controls={false}
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                horizontal
+                                pagingEnabled
+                                showsHorizontalScrollIndicator={false}
+                                // snapToInterval={width}
+                                snapToAlignment="center"
+                                decelerationRate="fast"
+                                contentContainerStyle={{ paddingHorizontal: CARD_MARGIN, gap: 14 }}
+                            />
                 }
             </View>
         </>

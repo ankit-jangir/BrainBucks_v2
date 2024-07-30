@@ -64,7 +64,7 @@ const Deposit = ({ navigation }) => {
         const session = new CFSession(
           res.payment_session_id,
           res.order_id,
-          CFEnvironment.SANDBOX
+          CFEnvironment.PRODUCTION
         );
 
         const paymentModes = new CFPaymentComponentBuilder()

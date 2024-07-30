@@ -121,6 +121,7 @@ import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
 import { setNavigation } from './index.js';
 import HomeReelPlayer from './src/screens/Home/HomeReelPlayer.jsx';
+import messaging from '@react-native-firebase/messaging';
 
 
 
@@ -244,7 +245,7 @@ function MyStack() {
       <Stack.Screen name="RoomsResult" component={RoomsResult} />
       <Stack.Screen name="RoomsScored" component={RoomsScored} />
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
-      <Stack.Screen name='HomeReelPlayer' component={HomeReelPlayer}/>
+      <Stack.Screen name='HomeReelPlayer' component={HomeReelPlayer} />
     </Stack.Navigator>
   );
 }
@@ -441,6 +442,27 @@ export default function App() {
 
   const navRef = useRef()
 
+  useEffect(() => {
+    const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+      const url = remoteMessage.data?.link;
+      if (url) {
+        Linking.openURL(url);
+      }
+    });
+
+    messaging().getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          const url = remoteMessage.data?.link;
+          if (url) {
+            Linking.openURL(url);
+          }
+        }
+      });
+
+    return unsubscribe;
+  }, []);
+
   const config = {
     screens: {
       rooms: {
@@ -461,18 +483,24 @@ export default function App() {
           id: (id) => `${id}`,
         },
       },
+      reels: {
+        path: "reels",
+        parse: {
+          id: (id) => `${id}`
+        }
+      }
       // ... other screen configurations
     }
   };
-  
+
   const linking = {
     prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://app.brainbucks.in'],
-    config: config
+    config: config,
   };
 
 
   return (
-    <NavigationContainer ref={navRef} onReady={()=>{setNavigation(navRef.current)}} linking={linking}>
+    <NavigationContainer ref={navRef} onReady={() => { setNavigation(navRef.current) }} linking={linking}>
       <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
       <AddBankReducer>
         <WithdrawReducer>

@@ -11,6 +11,7 @@ import {
   Dimensions,
   FlatList,
   Modal,
+  BackHandler,
 } from 'react-native';
 import SearchBar from './SearchBar';
 import LottieView from 'lottie-react-native';
@@ -38,28 +39,42 @@ import HomeTriviaQuizzes from '../../components/HomeTriviaQuizzes';
 import HomeExams from '../../components/HomeExams';
 import HomeEnrolledQuizzes from '../../components/HomeEnrolledQuizzes';
 import HomeReels from '../../components/HomeReels';
+import HomeReelPlayer from './HomeReelPlayer';
 
 export default function Home({ navigation }) {
   const [refresh, setRefresh] = useState(false);
-  const { width } = Dimensions.get('window');
-  const CARD_MARGIN = 1; // Adjust this value as needed
-  const CARD_WIDTH = width - 7 * CARD_MARGIN; // Subtract margins from total width
   const [loading, setLoading] = useState(false)
-  const [homeData, setHomeData] = useState({})
-
+  const [isReelsPlaying, setReelsPlaying] = useState(false)
+  const [currentReel, setCurrentReel] = useState();
+  const backRef = useRef()
 
   const isFocused = useIsFocused()
-  const couServ = new CourseApiService()
-
 
   useEffect(() => {
     basic.getBearerToken().then(res => {
       console.log("jwt token: " + res);
     });
-  }, []);
+
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (isFocused) {
+      backRef.current = BackHandler.addEventListener('hardwareBackPress', () => {
+        if (isReelsPlaying) {
+          setReelsPlaying(false)
+          return true;
+        } else {
+          return false;
+        }
+      })
+    }
+
+    if (backRef.current) {
+      return () => backRef.current.remove()
+    }
+  }, [isReelsPlaying])
 
   const onRefresh = () => {
-    getHomeData(Toast, setRefresh, setHomeData)
   };
 
 
@@ -71,49 +86,55 @@ export default function Home({ navigation }) {
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
-      <SafeAreaView style={StyleConstants.safeArView}>
+      {
+        isReelsPlaying ?
+          <HomeReelPlayer setParentModalVisible={setReelsPlaying} firstReel={currentReel} />
+          :
+          <SafeAreaView style={StyleConstants.safeArView}>
 
-        <View>
-          <SearchBar />
-        </View>
-        {
-          loading ?
-            <View style={{ flex: 1 }}>
-              <LottieView autoPlay style={{ flex: 0.8, padding: 10 }} source={require("../../assets/img/homeloading.json")} />
-              <Text style={{ flex: 0.2, fontSize: 20, color: ColorsConstant.Theme, textAlign: 'center' }}>Loading...</Text>
+            <View>
+              <SearchBar />
             </View>
-            :
-            <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />}>
-              <View style={{ marginBottom: 20 }}>
-
-                {/* ********************************************Banners**************************************** */}
-                <HomeBanners />
-
-                {/* ********************************************courses**************************************** */}
-                <View>
-                  <HomeCourses />
+            {
+              loading ?
+                <View style={{ flex: 1 }}>
+                  <LottieView autoPlay style={{ flex: 0.8, padding: 10 }} source={require("../../assets/img/homeloading.json")} />
+                  <Text style={{ flex: 0.2, fontSize: 20, color: ColorsConstant.Theme, textAlign: 'center' }}>Loading...</Text>
                 </View>
+                :
+                <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />}>
+                  <View style={{ marginBottom: 20 }}>
 
-                {/* **********************************livequizes******************************* */}
-                <HomeActiveQuizzes />
+                    {/* ********************************************Banners**************************************** */}
+                    <HomeBanners />
 
-                {/* ******************************freeTrivia****************************** */}
-                <HomeTriviaQuizzes />
+                    {/* ********************************************courses**************************************** */}
+                    <View>
+                      <HomeCourses />
+                    </View>
 
-                {/* **********************************exam******************************* */}
-                <HomeExams />
+                    {/* **********************************livequizes******************************* */}
+                    <HomeActiveQuizzes />
 
-                {/* **********************************Enrolledquizes******************************* */}
-                <HomeEnrolledQuizzes />
+                    {/* ******************************freeTrivia****************************** */}
+                    <HomeTriviaQuizzes />
 
-                {/* **********************************Reels******************************* */}
-                <HomeReels />
+                    {/* **********************************exam******************************* */}
+                    <HomeExams />
 
-              </View>
-            </ScrollView>
-        }
+                    {/* **********************************Enrolledquizes******************************* */}
+                    <HomeEnrolledQuizzes />
 
-      </SafeAreaView>
+                    {/* **********************************Reels******************************* */}
+                    <HomeReels setCurrentReel={setCurrentReel} setParentModalVisible={setReelsPlaying} />
+
+                  </View>
+                </ScrollView>
+            }
+
+
+          </SafeAreaView>
+      }
     </>
   );
 }

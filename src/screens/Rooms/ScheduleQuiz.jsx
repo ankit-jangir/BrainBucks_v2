@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/client';
 import RoomsApiService from '../../services/api/RoomsApiService';
 import Toast from 'react-native-toast-message';
 import { BLOBURL } from '../../config/urls';
+import { useRoom } from '../../utils/store';
 
 export default function ScheduleQuiz({ navigation, route }) {
 
@@ -22,7 +23,7 @@ export default function ScheduleQuiz({ navigation, route }) {
     const [questionNum, setQuestionNum] = useState(0)
     const [selectedImage, setSelectedImage] = useState()
 
-    const room_data = route.params.room_data;
+    const room_data = useRoom(state=>state.currentRoom)
 
     const roomServ = new RoomsApiService()
 

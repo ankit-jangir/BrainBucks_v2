@@ -11,11 +11,12 @@ import RoomsApiService from '../../services/api/RoomsApiService'
 import Toast from 'react-native-toast-message'
 import { useIsFocused } from '@react-navigation/native'
 import { BLOBURL } from '../../config/urls'
+import { useRoom } from '../../utils/store'
 
 export default function LiveQuizzes({ navigation, route }) {
 
     const [liveQuizzes, setLiveQuizzes] = useState([])
-    const room_data = route.params.room_data;
+    const room_data = useRoom(state=>state.currentRoom)
 
     const isFocused = useIsFocused()
 

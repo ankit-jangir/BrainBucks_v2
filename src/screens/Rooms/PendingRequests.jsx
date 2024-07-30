@@ -11,14 +11,17 @@ import RoomsApiService from '../../services/api/RoomsApiService'
 import { joinPublicRoomInController, withdrawJoinRequestInController } from '../../controllers/RoomsController'
 import { Modal } from 'react-native-paper'
 import LottieView from 'lottie-react-native'
+import { useIsFocused } from '@react-navigation/native'
 
 
-export default function PendingRequests({navigation}) {
+export default function PendingRequests({ navigation }) {
     const [rooms, setRooms] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
-    const [totalPages, setTotalPages] = useState(2)
     const [modalVisible, setModalVisible] = useState(false)
+
     const timeoutRef = useRef();
+
+    const isFocused = useIsFocused()
 
 
     let ras = new RoomsApiService();
@@ -26,11 +29,11 @@ export default function PendingRequests({navigation}) {
     async function withdrawRequest(room_id) {
         let res = await withdrawJoinRequestInController(room_id, Toast)
         if (res) {
-            let newArr = rooms.filter((item)=>item._id!==room_id)
+            let newArr = rooms.filter((item) => item._id !== room_id)
             setRooms([...newArr])
 
             setModalVisible(true)
-            if(timeoutRef.current){
+            if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current)
             }
             timeoutRef.current = setTimeout(() => {
@@ -52,19 +55,7 @@ export default function PendingRequests({navigation}) {
 
         if (data && data.get_pending_rooms) {
 
-            if (data.get_pending_rooms.totalPages) {
-                setTotalPages(data.get_pending_rooms.totalPages)
-            }
-
-            if (currentPage === 1) {
-                if (data.get_pending_rooms.response) {
-                    setRooms(data.get_pending_rooms.response)
-                }
-            } else {
-                if (data.get_pending_rooms.response) {
-                    setRooms([...rooms, ...data.get_pending_rooms.response])
-                }
-            }
+            setRooms(data.get_pending_rooms.response)
         }
     }, [data])
 
@@ -73,8 +64,9 @@ export default function PendingRequests({navigation}) {
     // }, [search])
 
     useEffect(() => {
-            refetch()
-    }, [])
+        if(isFocused)
+        refetch()
+    }, [isFocused])
 
     // console.log(loading, error, (data?.get_pending_rooms?.response?.length), data?.get_pending_rooms?.totalPages)
 
@@ -99,50 +91,37 @@ export default function PendingRequests({navigation}) {
                     </TouchableOpacity>
                 </View>
             </View> */}
-            {
-                (loading && currentPage === 1)
-                    ?
-                    <ActivityIndicator size={40} color={ColorsConstant.Theme} />
-                    :
-                    rooms.length === 0
-                        ?
-                        <NoDataFound scale={0.7} message={"No Rooms Found"} action={() => { }} actionText={"Load Again"} />
-                        :
-                        <FlatList
-                            data={rooms}
-                            keyExtractor={(item) => item._id}
-                            onEndReached={() => {
-                                if (currentPage <= totalPages) {
-                                    setCurrentPage(pre => pre + 1)
-                                }
-                            }
-                            }
-                            onEndReachedThreshold={0.5}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={styles.roomContainer}>
-                                        <Text style={styles.roomNameText}>{item.room_name}</Text>
-                                        <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
-                                            <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
-                                        </View>
-                                        <Button
-                                            onPress={() => {
-                                                withdrawRequest(item._id)
-                                            }}
-                                            buttonStyle={{
-                                                backgroundColor:"rgb(255, 148, 112)",
-                                                margin:6,
-                                                borderRadius:10
-                                            }}
-                                            title={"Withdraw Request..."} />
-                                    </View>
-                                )
-                            }}
-                        />
-            }
-
-            {loading && currentPage > 1 && <ActivityIndicator size={20} color={ColorsConstant.Theme} />}
+            <FlatList
+                ListEmptyComponent={() => {
+                    return <NoDataFound scale={0.7} message={"No Rooms Found"} action={() => { }} actionText={"Load Again"} />
+                }}
+                showsVerticalScrollIndicator={false}
+                refreshing={loading}
+                onRefresh={() => { refetch() }}
+                data={rooms}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item, index }) => {
+                    return (
+                        <View style={styles.roomContainer}>
+                            <Text style={styles.roomNameText}>{item.room_name}</Text>
+                            <View style={styles.memberHolder}>
+                                <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
+                            </View>
+                            <Button
+                                onPress={() => {
+                                    withdrawRequest(item._id)
+                                }}
+                                buttonStyle={{
+                                    backgroundColor: "rgb(255, 148, 112)",
+                                    margin: 6,
+                                    borderRadius: 10
+                                }}
+                                title={"Withdraw Request..."} />
+                        </View>
+                    )
+                }}
+            />
             <Modal visible={modalVisible} onDismiss={() => { setModalVisible(false) }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', }} >
                 <LottieView source={require('../../assets/img/check.json')} autoPlay={true} style={{ width: 200, height: 200 }} />
             </Modal>

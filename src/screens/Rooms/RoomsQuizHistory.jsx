@@ -14,6 +14,7 @@ import { BLOBURL } from '../../config/urls'
 import RoomsApiService from '../../services/api/RoomsApiService'
 import { useIsFocused } from '@react-navigation/native'
 import { useQuery } from '@apollo/client'
+import { useRoom } from '../../utils/store'
 
 export default function RoomsQuizHistory({ navigation, route }) {
 
@@ -23,7 +24,7 @@ export default function RoomsQuizHistory({ navigation, route }) {
     const [refreshing, setRefreshing] = useState(false)
     const isFocused = useIsFocused()
 
-    const room_data = route.params.room_data;
+    const room_data = useRoom(state=>state.currentRoom)
     const roomServ = new RoomsApiService()
 
     const { quizState, dispatch } = useQuiz()

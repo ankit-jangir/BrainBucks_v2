@@ -46,9 +46,10 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 2,
     backgroundColor: 'white',
-    elevation: 5,
+    elevation: 2,
     gap: 10,
     paddingBottom: 14,
+    marginVertical:7
   },
   roomNameText: {
     fontSize: 20,

@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, Modal, Pressable, SafeAreaView, ScrollView, Share, TouchableHighlight, TouchableWithoutFeedback, View } from 'react-native'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import Video from 'react-native-video'
 import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
@@ -34,6 +34,7 @@ const Reels = ({ navigation, route }) => {
     const [comments, setComments] = useState([])
     const [comment, setComment] = useState('')
     const firstReel = route?.params?.first_reel;
+    const sharedId = route?.params?.id;
 
     const reServ = new ReelsApiService()
     const timeoutRef = useRef()
@@ -44,11 +45,17 @@ const Reels = ({ navigation, route }) => {
 
     //note:- page means the number of reels and currentReel is just the id of the reel currently playing
 
-
     useEffect(() => {
-        getTags()
-        getReels()
-    }, [])
+        if (sharedId) {
+            setReels([])
+            setCurrentPage(1)
+            getTags()
+            getReels()
+        } else {
+            getTags()
+            getReels()
+        }
+    }, [sharedId])
 
     useEffect(() => {
         isFocused ? setPaused(false) : setPaused(true)
@@ -106,6 +113,12 @@ const Reels = ({ navigation, route }) => {
                 let res = await reServ.getRandomReels(selectedTags, [firstReel._id])
                 return res
             }
+            else if (page === 1 && sharedId) {
+                let res = await reServ.getReelById(sharedId);
+                let res2 = await reServ.getRandomReels(selectedTags, [sharedId])
+                res2.reel = [res.reel, ...res2.reel]
+                return res2;
+            }
             else {
                 let seen = again ? [] : reels.map(item => item._id)
                 return await reServ.getRandomReels(selectedTags, seen)
@@ -125,7 +138,12 @@ const Reels = ({ navigation, route }) => {
             if (firstReel && page === 1) {
                 setReels([firstReel, ...reels, ...res.reel])
                 setCurrentReel(firstReel._id + "0")
-            } else {
+            }
+            else if (sharedId && page === 1) {
+                setReels([...res.reel])
+                setCurrentReel(sharedId + "0")
+            }
+            else {
                 setReels([...reels, ...res.reel])
                 if (page === 1) {
                     setCurrentReel(res?.reel[0]?._id + "0")
@@ -235,11 +253,37 @@ const Reels = ({ navigation, route }) => {
         }
     }
 
+    const onShare = async (reel_id) => {
+        try {
+            const result = await Share.share({
+                message: `https://brainbucks.in/reels?id=${reel_id}`
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            Alert.alert(error.message);
+        }
+    };
+
 
     return (
         <View style={styles.container}>
             <View style={{ zIndex: 200 }}><Toast /></View>
-            <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.backBtnView}>
+            <TouchableOpacity onPress={() => {
+                if (navigation.canGoBack()) {
+                    navigation.goBack()
+                }
+                else {
+                    navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+                }
+            }} style={styles.backBtnView}>
                 <Image style={styles.backBtn} source={require('../../assets/img/arrow-left.png')} />
             </TouchableOpacity>
             {
@@ -269,7 +313,7 @@ const Reels = ({ navigation, route }) => {
                 onStartShouldSetResponder={() => true}
                 onStartShouldSetResponderCapture={() => true}
             >
-                <View style={[styles.tagsView, {minHeight:40}]}>
+                <View style={[styles.tagsView, { minHeight: 40 }]}>
                     {
                         tags.length === 0 ?
                             <Text style={{ color: "#000", paddingHorizontal: 20 }}>No Tags Found</Text>
@@ -331,7 +375,7 @@ const Reels = ({ navigation, route }) => {
                                     >
                                         <MemoizedVideo currentReel={currentReel} index={index} item={item} paused={paused} />
                                         <MemoizedCaptionSection expendedCaptions={expendedCaptions} item={item} renderCaption={renderCaption} toggleExpand={toggleExpand} />
-                                        <MemoizedLikeCommentSection like={like} item={item} setModalVisible={setModalVisible} />
+                                        <MemoizedLikeCommentSection onShare={onShare} like={like} item={item} setModalVisible={setModalVisible} />
                                     </Pressable>
 
                                 )
@@ -423,7 +467,7 @@ const Reels = ({ navigation, route }) => {
             </Modal>
             {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
 
-        </View>
+        </View >
     )
 }
 
@@ -463,7 +507,7 @@ const MemoizedCaptionSection = memo(({ expendedCaptions, item, renderCaption, to
 })
 
 
-const MemoizedLikeCommentSection = memo(({ like, item, setModalVisible }) => {
+const MemoizedLikeCommentSection = memo(({ like, item, setModalVisible, onShare }) => {
     return (
         <LinearGradient colors={['rgba(0,0,0,0.3)', 'transparent']}
             start={{ x: 1, y: 0 }}
@@ -480,7 +524,7 @@ const MemoizedLikeCommentSection = memo(({ like, item, setModalVisible }) => {
                 <Text style={{ color: ColorsConstant.White }}>{item.commentsCount}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.likeItemContainer}>
+            <TouchableOpacity style={styles.likeItemContainer} onPress={() => { onShare(item._id) }}>
                 <Image source={require('../../assets/img/sharereel.png')} style={styles.likeIcon} />
                 <Text style={{ color: ColorsConstant.White }}>Share</Text>
             </TouchableOpacity>

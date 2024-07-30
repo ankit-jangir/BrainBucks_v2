@@ -8,12 +8,13 @@ import { MyTabBar } from './Rooms'
 import LiveQuizzes from './LiveQuizzes'
 import ScheduledQuizzes from './ScheduledQuizzes'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { useRoom } from '../../utils/store'
 
 const Tab = createMaterialTopTabNavigator()
 
 export default function RoomEnter({ navigation, route }) {
 
-    const room_data = route.params.room_data;
+    const room_data = useRoom(state=>state.currentRoom)
     const [selected, setSelected] = useState('Quizzes')
     const type = route.params.type;
 
@@ -51,9 +52,7 @@ export default function RoomEnter({ navigation, route }) {
                                 icon={<Image style={styles.histImg}
                                     source={require('../../assets/img/mail.png')} />
                                 }
-                                onPress={() => {navigation.navigate("RoomNotification",{
-                                    room_data:room_data
-                                })}}
+                                onPress={() => {navigation.navigate("RoomNotification")}}
                                 buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                                 title={"9+"}
                                 titleStyle={{ fontSize: 14 }}
@@ -64,8 +63,8 @@ export default function RoomEnter({ navigation, route }) {
                             icon={<Image style={styles.histImg}
                                 source={type === 'created' ? require('../../assets/img/setting.png') : require('../../assets/img/historywatch.png')} />
                             }
-                            onPress={() => { type==='created'? navigation.navigate('roomsetting', {room_data:room_data, type:type}):
-                            navigation.navigate('roomhistory', {room_data:room_data})
+                            onPress={() => { type==='created'? navigation.navigate('roomsetting', {type:type}):
+                            navigation.navigate('roomhistory')
                           }}
                             buttonStyle={{ backgroundColor: '#8D4AE2', alignItems: 'center', justifyContent: 'center', borderRadius: 15, paddingHorizontal: 20 }}
                             title={type === 'created' ? "Settings" : "History"}
@@ -111,7 +110,7 @@ export default function RoomEnter({ navigation, route }) {
                                         containerStyle={styles.enterbtncontainer}
                                         buttonStyle={{backgroundColor:'#0CBC8B'}}
                                         title={" + Schedule Quiz"}
-                                        onPress = {()=>{navigation.navigate('schedulquiz', {room_data: room_data})}}
+                                        onPress = {()=>{navigation.navigate('schedulquiz')}}
                                     />
                                 </View>
                                 :
@@ -142,8 +141,8 @@ export default function RoomEnter({ navigation, route }) {
 
             <View style={styles.secondEnter}>
                 <Tab.Navigator tabBar={props => <MyTabBar {...props} imgNeeded={false} width={100} />}>
-                    <Tab.Screen name="Live Quizzes" component={LiveQuizzes} initialParams={{room_data:room_data}} />
-                    <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} initialParams={{room_data:room_data}}  />
+                    <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
+                    <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes}  />
                 </Tab.Navigator>
 
             </View>

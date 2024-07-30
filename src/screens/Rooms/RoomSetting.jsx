@@ -14,6 +14,7 @@ import RoomsApiService from '../../services/api/RoomsApiService';
 import { useQuery } from '@apollo/client';
 import NoDataFound from '../../components/NoDataFound';
 import Share from '../Wallet/Share';
+import { useRoom } from '../../utils/store';
 
 const RoomSetting = ({ navigation, route }) => {
   const [selected, setSelected] = useState('Public');
@@ -27,7 +28,8 @@ const RoomSetting = ({ navigation, route }) => {
   const timeoutRef = useRef()
 
   let ras = new RoomsApiService();
-  const room_data = route.params.room_data;
+
+  let room_data = useRoom(state => state.currentRoom)
 
 
   let { loading, error, data, refetch } = useQuery(ras.GETROOMMEMBERS, {
@@ -90,7 +92,7 @@ const RoomSetting = ({ navigation, route }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data.room_name}&type=${room_data.room_hash?"private":"public"}`
+        message: `https://brainbucks.in/rooms?id=${room_data.room_hash ? room_data.room_hash : room_data.room_name}&type=${room_data.room_hash ? "private" : "public"}`
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -168,7 +170,7 @@ const RoomSetting = ({ navigation, route }) => {
               <Button
                 title={'History'}
                 buttonStyle={{ backgroundColor: '#8D4AE2' }}
-                onPress={() => navigation.navigate('roomhistory', { room_data: room_data })}
+                onPress={() => navigation.navigate('roomhistory')}
               />
             </View>
             <View style={styles.HistoryV2}>
@@ -246,7 +248,7 @@ const RoomSetting = ({ navigation, route }) => {
                 :
                 <FlatList
                   data={members}
-                  keyExtractor={item => item.id}
+                  keyExtractor={item => item._id}
                   renderItem={({ item }) => (
                     <View>
                       <View style={styles.container1}>

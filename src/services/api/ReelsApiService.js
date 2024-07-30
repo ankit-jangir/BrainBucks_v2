@@ -134,6 +134,19 @@ class ReelsApiService{
         return response.data;
     }
 
+    async getReelById(reel_id){
+        let token = await basic.getBearerToken()
+        let url = `${NOTIFYMICRO}/participants/reels/get/reels/by/id?reel_id=${reel_id}`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let options = {
+            method: "get",
+            headers: headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
 }
 
 export default ReelsApiService;

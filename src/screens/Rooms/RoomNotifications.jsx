@@ -11,10 +11,11 @@ import { Modal } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import NoDataFound from '../../components/NoDataFound';
 import { StyleSheet } from 'react-native';
+import { useRoom } from '../../utils/store';
 
 export default function RoomNotifications({ navigation, route }) {
 
-    let room_data = route.params.room_data;
+    let room_data = useRoom(state=>state.currentRoom)
     const [requests, setRequests] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(2)

@@ -35,11 +35,6 @@ const PaidCourses = () => {
   const [buycourses, setbuyCourses] = useState([]);
   const serv = new CourseApiService();
 
-
-  const onRefresh = () => {
-    getData()
-  };
-
   useEffect(() => {
     getData()
   }, [])
