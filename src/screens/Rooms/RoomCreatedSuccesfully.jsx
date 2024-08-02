@@ -3,6 +3,7 @@ import React from 'react'
 import styles from '../../styles/Rooms.styles'
 import { Button, Text } from '../../utils/Translate'
 import { ColorsConstant } from '../../constants/Colors.constant'
+import { APPURL } from '../../config/urls'
 
 export default function RoomCreatedSuccesfully({ navigation, route }) {
     let roomname = route.params.name;
@@ -10,7 +11,7 @@ export default function RoomCreatedSuccesfully({ navigation, route }) {
     const onShare = async () => {
         try {
           const result = await Share.share({
-            message: `https://brainbucks.in/rooms?id=${roomhash?roomhash:roomname}&type=${roomhash?"private":"public"}`
+            message: `${APPURL}/rooms?id=${roomhash?roomhash:roomname}&type=${roomhash?"private":"public"}`
           });
           if (result.action === Share.sharedAction) {
             if (result.activityType) {

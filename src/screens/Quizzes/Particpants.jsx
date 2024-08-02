@@ -52,6 +52,9 @@ export default function Participants({ participants }) {
     <View style={styles.container}>
       <FlatList
         data={data}
+        onEndReached={()=>{
+          getRewards(currentPage+1)
+        }}
         renderItem={({ item, index }) => (
           <ParticipantItem data={item} index={index} />
         )}

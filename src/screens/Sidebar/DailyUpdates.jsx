@@ -21,13 +21,15 @@ import Toast from 'react-native-toast-message';
 import { screenWidth } from '../../constants/Sizes.constant';
 import { AUTHMICRO, QUIZMICRO } from '../../config/urls';
 
-export default function DailyUpdate({ navigation }) {
+export default function DailyUpdate() {
   const isFocused = useIsFocused();
   const [isLoad, setLoad] = useState(false);
   const [blog, setBlog] = useState([]);
   const [blogCount, setBlogCount] = useState(2);
   const [index, setIndex] = useState(1);
   const [Name, setName] = useState('');
+
+  const navigation = useNavigation()
 
   useEffect(() => {
     GetName();
@@ -72,7 +74,7 @@ export default function DailyUpdate({ navigation }) {
       })
       .catch(error => {
         console.error(error)
-          // Toast.show({ type: "error", text1: "Something went wrong." })
+        // Toast.show({ type: "error", text1: "Something went wrong." })
       }).finally(() => setLoad(false))
 
   };
@@ -95,7 +97,13 @@ export default function DailyUpdate({ navigation }) {
       <View style={styles.Hview}>
         <View style={styles.Hview1}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              if (navigation.canGoBack()) {
+                navigation.goBack()
+              } else {
+                navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+              }
+            }}
             style={styles.THead}>
             <Image
               source={require('../../assets/img/arrows.png')}

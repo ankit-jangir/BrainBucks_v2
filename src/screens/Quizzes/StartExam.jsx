@@ -23,14 +23,14 @@ import styles from '../../styles/StartExam.styles';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { getactiveDetails, joinactiveQuiz } from '../../controllers/ActiveQuizController';
 import Toast from 'react-native-toast-message';
-import { BLOBURL } from '../../config/urls';
+import { APPURL, BLOBURL } from '../../config/urls';
 import { LinearProgress } from '@rneui/themed';
 import basic from '../../services/BasicServices';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function StartExam({ navigation, route }) {
+export default function StartExam({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false)
   const { quizState, dispatch } = useQuiz()
@@ -39,7 +39,10 @@ export default function StartExam({ navigation, route }) {
   let timeoutId = useRef()
   const [remainingTime, setRemainingTime] = useState(1000)
 
+  const navigation = useNavigation()
+
   useEffect(() => {
+    dispatch({type:"change", state:{id: id}})
     getactiveDetails(id, Toast, setData, setLoading, dispatch)
   }, [])
 
@@ -82,7 +85,7 @@ export default function StartExam({ navigation, route }) {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `https://brainbucks.in/quiz?id=${id}`
+        message: `${APPURL}/quiz?id=${id}`
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -111,7 +114,13 @@ export default function StartExam({ navigation, route }) {
               <ImageBackground
                 source={{ uri: BLOBURL + data?.image }}
                 style={{ flex: 1 }}>
-                <TouchableOpacity onPress={() => navigation.goBack()}
+                <TouchableOpacity onPress={() => {
+                  if(navigation.canGoBack()){
+                    navigation.goBack()
+                  }else{
+                    navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+                  }
+                }}
                   style={styles.InsufficientTouchable1}>
                   <Image
                     source={require('../../assets/img/arrows.png')}

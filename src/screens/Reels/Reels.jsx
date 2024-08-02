@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import BasicServices from '../../services/BasicServices';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
-import { BLOBURL } from '../../config/urls';
+import { APPURL, BLOBURL } from '../../config/urls';
 import { Text, TextInput } from '../../utils/Translate';
 import styles2 from '../../styles/Saved.styles';
 import styles from '../../styles/Reels.styles';
@@ -256,7 +256,7 @@ const Reels = ({ navigation, route }) => {
     const onShare = async (reel_id) => {
         try {
             const result = await Share.share({
-                message: `https://brainbucks.in/reels?id=${reel_id}`
+                message: `${APPURL}/reels?id=${reel_id}`
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {

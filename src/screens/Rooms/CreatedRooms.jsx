@@ -25,6 +25,8 @@ export default function CreatedRooms({ navigation }) {
     const [currentRoom, setCurrentRoom] = useState()
     const isFocused = useIsFocused()
 
+    const setRoom = useRoom(state=>state.setCurrentRoom)
+
     async function handleDeleteRoomClick(room) {
         setCurrentRoom(room)
         setDeleteBankModalVisible(true)
@@ -121,7 +123,7 @@ export default function CreatedRooms({ navigation }) {
                                 </View>
                                 <View style={styles.roomContainerBtns}>
                                     <Button onPress={() => {
-                                        setCurrentRoom(item)
+                                        setRoom(item)
                                         navigation.navigate('roomenter', { type: 'created' })
                                     }} titleStyle={styles.enterbtn} containerStyle={styles.enterbtncontainer} title={"Enter Room"} />
                                     <TouchableOpacity style={styles.exitview} onPress={() => { handleDeleteRoomClick(item) }}>

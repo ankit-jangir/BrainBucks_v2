@@ -25,6 +25,8 @@ export default function ScheduleQuiz({ navigation, route }) {
 
     const room_data = useRoom(state=>state.currentRoom)
 
+    console.log(room_data);
+
     const roomServ = new RoomsApiService()
 
     const { loading, error, data, refetch } = useQuery(roomServ.GETEXAMCATEGORIES, {

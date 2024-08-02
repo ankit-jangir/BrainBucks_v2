@@ -64,7 +64,7 @@ export default function Explore({ route }) {
             }
 
             if (currentPage === 1) {
-                console.log(data.getPublicRoom.response);
+                // console.log(data.getPublicRoom.response);
                 if (data.getPublicRoom.response) {
                     setRooms(data.getPublicRoom.response)
                 }

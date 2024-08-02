@@ -15,6 +15,7 @@ import { useQuery } from '@apollo/client';
 import NoDataFound from '../../components/NoDataFound';
 import Share from '../Wallet/Share';
 import { useRoom } from '../../utils/store';
+import { APPURL } from '../../config/urls';
 
 const RoomSetting = ({ navigation, route }) => {
   const [selected, setSelected] = useState('Public');
@@ -92,7 +93,7 @@ const RoomSetting = ({ navigation, route }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: `https://brainbucks.in/rooms?id=${room_data.room_hash ? room_data.room_hash : room_data.room_name}&type=${room_data.room_hash ? "private" : "public"}`
+        message: `${APPURL}/rooms?id=${room_data.room_hash ? room_data.room_hash : room_data.room_name}&type=${room_data.room_hash ? "private" : "public"}`
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

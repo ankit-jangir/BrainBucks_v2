@@ -96,6 +96,7 @@ export default function ScheduleQuizTime({ navigation, route }) {
 
         let helperFunc = () => {
             return async () => {
+                console.log(obj, obj2);
                 let res = await roomServ.createQuiz({ ...obj, ...obj2 })
                 return res;
             }

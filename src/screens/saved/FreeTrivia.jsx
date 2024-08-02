@@ -11,7 +11,7 @@ import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import QuizCard from '../../components/QuizCard';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 
@@ -20,15 +20,17 @@ const FreeTrivia = () => {
   const saved = new SavedApiService();
 
   const { idState, dispatch } = useCurrentId();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [LoadingMore, setLoadingMore] = useState();
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
   const [trivia, setTrivia] = useState([]);
 
+  const isFocused = useIsFocused()
+
   useEffect(() => {
     getTriviaQuizzes();
-  }, []);
+  }, [isFocused]);
 
   async function getTriviaQuizzes(page) {
     if (!page) {
@@ -75,40 +77,40 @@ const FreeTrivia = () => {
         <Toast />
       </View>
       <View style={{ backgroundColor: 'white', padding: 10 }}>
-        {loading ? (
-          <ActivityIndicator color={ColorsConstant.Theme} size={35} />
-        ) : trivia.length === 0 ? (
-          <View style={{width:screenWidth, height:screenHeight}}>
-            <NoDataFound
-              message={'No Quizzes Found'}
-            />
-          </View>
-        ) : (
-          <FlatList
-            data={trivia}
-            onEndReached={() => { getTriviaQuizzes(currentPage + 1) }}
-            onEndReachedThreshold={0.6}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => {
-              return (
-                <QuizCard
-                  title={item.quiz_name}
-                  image={{ uri: BLOBURL + item.banner }}
-                  prize={item.reward}
-                  date={item.sch_time}
-                  time={item.sch_time}
-                  totalslots={item.slots}
-                  alotedslots={item.slot_aloted}
-                  minper={item.min_reward_per}
-                  type={'trivia'}
-                  onPress={() => {
-                    navigation.navigate('FreeRulesParticipation', { id: item._id })
-                  }}
-                />
-              )
-            }}
-          />
-        )}
+
+        <FlatList
+          ListEmptyComponent={() =>
+          (<NoDataFound
+            scale={0.8}
+            message={'No Quizzes Found'}
+          />)
+          }
+          maxToRenderPerBatch={7}
+          data={trivia}
+          onRefresh={() => { getTriviaQuizzes() }}
+          refreshing={loading}
+          onEndReached={() => { getTriviaQuizzes(currentPage + 1) }}
+          onEndReachedThreshold={0.6}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => {
+            return (
+              <QuizCard
+                title={item.quiz_name}
+                image={{ uri: BLOBURL + item.banner }}
+                prize={item.reward}
+                date={item.sch_time}
+                time={item.sch_time}
+                totalslots={item.slots}
+                alotedslots={item.slot_aloted}
+                minper={item.min_reward_per}
+                type={'trivia'}
+                onPress={() => {
+                  navigation.navigate('FreeRulesParticipation', { id: item._id })
+                }}
+              />
+            )
+          }}
+        />
         {LoadingMore && <ActivityIndicator size={30} style={{ height: 60 }} />}
 
       </View>

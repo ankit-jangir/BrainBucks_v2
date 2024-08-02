@@ -12,16 +12,19 @@ import Toast from 'react-native-toast-message';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { BLOBURL } from '../../config/urls';
 import BasicServices from '../../services/BasicServices';
+import { useNavigation } from '@react-navigation/native';
 
-export default function QuizzesResult({ navigation, }) {
+export default function QuizzesResult({ route }) {
   const [isLoad, setLoad] = useState(false)
   const [isLoad2, setLoad2] = useState(true)
   const [mydata, setMydata] = useState([])
   const [topRank, setTopRank] = useState({ totMarks: 0 })
   const [score, setScore] = useState([])
 
+  const navigation = useNavigation()
+
   const { quizState, dispatch } = useQuiz()
-  const quiz_id = quizState.id
+  const quiz_id = quizState.id ? quizState.id : route?.params?.id
 
   const snapPoints = useMemo(() => ['10%', '20%', '70%'], []);
 
@@ -32,7 +35,18 @@ export default function QuizzesResult({ navigation, }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(2)
 
+  console.log("On result page")
+
   useEffect(() => {
+    // console.log(route);
+    if (route && route.params && route.params.id) {
+      try {
+        dispatch({ type: 'change', state: { id: route.params.id } })
+      }
+      catch (e) {
+        console.log("error>>>", e);
+      }
+    }
     getLeaderBoard();
   }, []);
 
@@ -55,7 +69,6 @@ export default function QuizzesResult({ navigation, }) {
       }
       let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
       if (res) {
-        console.log(res);
         setTotalPages(res.totalPages)
         if (page === 1)
           setScore(res.winners)
@@ -160,7 +173,14 @@ export default function QuizzesResult({ navigation, }) {
               <View style={styles.HeaderView1}>
                 <View style={{ flex: 0.40, }}>
                   <View style={styles.HeaderView2}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.HeaderTouchable}>
+                    <TouchableOpacity onPress={() => {
+                      if (navigation.canGoBack()) {
+                        navigation.goBack()
+                      }
+                      else {
+                        navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+                      }
+                    }} style={styles.HeaderTouchable}>
                       <Image source={require('../../assets/img/arrows.png')} resizeMode='center' tintColor={'#fff'} style={{ width: 25, height: 25 }} />
                     </TouchableOpacity>
 
@@ -324,8 +344,8 @@ export default function QuizzesResult({ navigation, }) {
                     <ActivityIndicator size={25} color={ColorsConstant.Theme} />
                     :
                     <BottomSheetFlatList
-                    style={{maxHeight:520}}
-                    scrollEnabled
+                      style={{ maxHeight: 520 }}
+                      scrollEnabled
                       onEndReachedThreshold={0.8}
                       onEndReached={() => { getLeaderBoard(currentPage + 1) }}
                       data={score}
@@ -336,7 +356,7 @@ export default function QuizzesResult({ navigation, }) {
                               <Text style={styles.TextIn}>{index + 1}</Text>
                               <View style={styles.imgView}>
                                 <Image
-                                  source={item.image ? {uri: BLOBURL + item.image }:require("../../assets/img/nosay.png")}
+                                  source={item.image ? { uri: BLOBURL + item.image } : require("../../assets/img/nosay.png")}
                                   resizeMode="contain"
                                   style={styles.img}
                                 />
@@ -391,7 +411,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     fontFamily: 'WorkSans-SemiBold',
     fontSize: 22,
     color: '#000',
-    paddingHorizontal:4,
+    paddingHorizontal: 4,
   },
   imgView: {
     width: 60,
@@ -399,7 +419,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     borderRadius: 120,
     // flex: 0.18,
     backgroundColor: '#f5f3f2',
-    marginHorizontal:20
+    marginHorizontal: 20
   },
   img: {
     width: 60,
@@ -410,7 +430,7 @@ const ls = StyleConstants, s = StyleConstants, styles = StyleSheet.create({
     width: 65,
     height: 65,
     // flex: 0.65,
-    flexGrow:1,
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },

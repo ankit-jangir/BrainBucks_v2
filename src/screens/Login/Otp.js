@@ -106,6 +106,7 @@ export default function Otp({ navigation, route }) {
                 )
             }
             else {
+                // console.log(response);
                 setErrorMessage("*" + response.Backend_Error)
             }
 

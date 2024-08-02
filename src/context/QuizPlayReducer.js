@@ -21,10 +21,8 @@ const QuizPlayReducer = ({ children }) => {
     },)
 
     function quizReducer(state, action) {
-        // console.log(state, action);
         switch (action.type) {
             case 'change': {
-                console.log('updating', { ...state, ...action.state });
                 return { ...state, ...action.state }
             }
             case 'empty': {
@@ -55,7 +53,7 @@ export default QuizPlayReducer
 
 /**
  * 
- * this function gives an object ({quizState, dispath}) where dispatch is a function that takes input ({type, state})
+ * this function gives an object ({quizState, dispatch}) where dispatch is a function that takes input ({type, state})
  * the idState object has {id:'', total:1, question: {}, ans:0} in it 
  * @returns returns result of useContext(QuizPlayContext)
  */

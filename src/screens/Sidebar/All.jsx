@@ -38,6 +38,7 @@ const All = ({ navigation, order }) => {
         setLoadingMore(true)
       }
       let res = await history.getFullHistory(order, page);
+      console.log(res);
       if (res.status === 1) {
         setAllWin(res.properquizes)
         setTotalPages(res.totalpages)

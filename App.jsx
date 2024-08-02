@@ -131,10 +131,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyStack() {
-  useEffect(() => {
-    onAppBootstrap();
-  }, []);
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -443,24 +439,7 @@ export default function App() {
   const navRef = useRef()
 
   useEffect(() => {
-    const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-      const url = remoteMessage.data?.link;
-      if (url) {
-        Linking.openURL(url);
-      }
-    });
-
-    messaging().getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          const url = remoteMessage.data?.link;
-          if (url) {
-            Linking.openURL(url);
-          }
-        }
-      });
-
-    return unsubscribe;
+    onAppBootstrap();
   }, []);
 
   const config = {
@@ -488,15 +467,61 @@ export default function App() {
         parse: {
           id: (id) => `${id}`
         }
+      },
+      QuizzesResult: {
+        path: "quizresult",
+        parse: {
+          id: (id) => `${id}`
+        }
+      },
+      StartExam: {
+        path: "quizstart",
+        parse: {
+          id: (id) => `${id}`
+        }
+      },
+      dailyupdates: {
+        path: "daily"
       }
-      // ... other screen configurations
     }
   };
 
   const linking = {
-    prefixes: ['brainbucks://', 'https://brainbucks.in', 'https://app.brainbucks.in'],
+    prefixes: ['brainbucks://', 'https://app.brainbucks.in'],
     config: config,
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (typeof url === 'string') {
+        return url;
+      }
+      //getInitialNotification: When the application is opened from a quit state.
+      const message = await messaging().getInitialNotification();
+      const deeplinkURL = message?.data?.link;
+      if (typeof deeplinkURL === 'string') {
+        return deeplinkURL;
+      }
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({ url }) => listener(url);
+
+      // Listen to incoming links from deep linking
+      const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+
+      //onNotificationOpenedApp: When the application is running, but in the background.
+      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+        const url = remoteMessage?.data?.link;
+        if (typeof url === 'string') {
+          listener(url)
+        }
+      });
+
+      return () => {
+        linkingSubscription.remove();
+        unsubscribe();
+      };
+    },
   };
+
 
 
   return (

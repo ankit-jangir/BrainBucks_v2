@@ -9,6 +9,7 @@ import LiveQuizzes from './LiveQuizzes'
 import ScheduledQuizzes from './ScheduledQuizzes'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { useRoom } from '../../utils/store'
+import { APPURL } from '../../config/urls'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -21,7 +22,7 @@ export default function RoomEnter({ navigation, route }) {
     const onShare = async () => {
         try {
           const result = await Share.share({
-            message: `https://brainbucks.in/rooms?id=${room_data.room_hash?room_data.room_hash:room_data.room_name}&type=${room_data.room_hash?"private":"public"}`
+            message: `${APPURL}/rooms?id=${room_data.room_hash?room_data.room_hash:room_data.room_name}&type=${room_data.room_hash?"private":"public"}`
           });
           if (result.action === Share.sharedAction) {
             if (result.activityType) {
