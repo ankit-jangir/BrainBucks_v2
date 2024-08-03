@@ -55,7 +55,6 @@ export default function JoinedRooms({ navigation }) {
         }
 
         if (data && data.get_joined_rooms) {
-
             if (data.get_joined_rooms.response) {
                 setRooms(data.get_joined_rooms.response)
             }

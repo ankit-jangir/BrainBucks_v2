@@ -7,7 +7,7 @@ import { useQuiz } from '../../context/QuizPlayReducer';
 import Toast from 'react-native-toast-message';
 import BasicServices from '../../services/BasicServices';
 
-export default function Participants({ participants }) {
+export default function Participants({ participants, id }) {
 
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -24,7 +24,8 @@ export default function Participants({ participants }) {
 
   function getDataHelper(page) {
     return async () => {
-      let res = await quizServ.getActiveQuizParticipants(quizState.id, page);
+      let quizId = quizState.id || id
+      let res = await quizServ.getActiveQuizParticipants(quizId, page);
       return res;
     }
   }

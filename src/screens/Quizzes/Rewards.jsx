@@ -29,7 +29,7 @@ const ParticipantsData = ({ item, index }) => {
     );
 };
 
-export default function Rewards({ rewards }) {
+export default function Rewards({ id }) {
 
     const [loading, setLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -47,6 +47,7 @@ export default function Rewards({ rewards }) {
 
     function getDataHelper(page) {
         return async () => {
+            let quizId = quizState.id || id
           let res = await quizServ.getActiveQuizRewards(quizState.id, page);
           return res;
         }

@@ -251,6 +251,7 @@ export default function StartExam({ route }) {
             <View style={{ flex: 1 }}>
               <Roomsrules
                 rulesList={data.rules ? data?.rules : []}
+                route={route}
               />
             </View>
           </View>
@@ -259,7 +260,7 @@ export default function StartExam({ route }) {
   );
 }
 
-const Roomsrules = ({ rulesList }) => {
+const Roomsrules = ({ rulesList, route }) => {
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
@@ -278,11 +279,11 @@ const Roomsrules = ({ rulesList }) => {
         }}>
         <Tab.Screen name="Participants">
           {props => (
-            <Particpants {...props}></Particpants>
+            <Particpants {...props} id={route?.params?.id}></Particpants>
           )}
         </Tab.Screen>
         <Tab.Screen name="Rewards">
-          {props => <Rewards {...props} ></Rewards>}
+          {props => <Rewards {...props} id={route?.params?.id} ></Rewards>}
         </Tab.Screen>
         <Tab.Screen name="Rules">
           {props => <Rules {...props} rulesList={rulesList}></Rules>}

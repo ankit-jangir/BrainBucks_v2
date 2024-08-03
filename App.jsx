@@ -497,6 +497,7 @@ export default function App() {
       //getInitialNotification: When the application is opened from a quit state.
       const message = await messaging().getInitialNotification();
       const deeplinkURL = message?.data?.link;
+      console.log(deeplinkURL);
       if (typeof deeplinkURL === 'string') {
         return deeplinkURL;
       }
@@ -510,6 +511,7 @@ export default function App() {
       //onNotificationOpenedApp: When the application is running, but in the background.
       const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
         const url = remoteMessage?.data?.link;
+        console.log(url);
         if (typeof url === 'string') {
           listener(url)
         }

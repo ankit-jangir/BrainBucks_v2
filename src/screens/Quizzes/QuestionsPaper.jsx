@@ -21,6 +21,7 @@ export default function QuestionsPaper({ navigation }) {
   const [submitData, setSubmitData] = useState({})
   const [submitText, setSubmitText] = useState("Submit Quiz")
   const backRef = useRef()
+  const intervalRef = useRef()
 
   let question = quizState.question
 
@@ -50,9 +51,10 @@ export default function QuestionsPaper({ navigation }) {
     let min = (Math.floor(quizState.time / 60));
     let tmc = Math.floor(quizState.time % 60);
 
-    const interval = BackgroundTimer.setInterval(() => {
+    intervalRef.current = BackgroundTimer.setInterval(() => {
       if (Object.keys(submitData).length !== 0) {
-        clearInterval(interval)
+        if (intervalRef.current)
+          clearInterval(intervalRef.current)
         return;
       }
       if (tmc > 0) {
@@ -64,13 +66,14 @@ export default function QuestionsPaper({ navigation }) {
         setMinute(m => m - 1);
         setTimerCount(59);
       } else {
-        BackgroundTimer.clearInterval(interval)
+        if (intervalRef.current)
+          BackgroundTimer.clearInterval(intervalRef.current)
         Toast.show({ type: "info", text1: "Time's up. Submitting..." })
         handleSubmit(true)
       }
     }, 1000);
 
-    return () => { BackgroundTimer.clearInterval(interval) }
+    return () => { if (intervalRef.current) BackgroundTimer.clearInterval(intervalRef.current) }
   }
     , [])
 
@@ -116,6 +119,8 @@ export default function QuestionsPaper({ navigation }) {
         setSubmitData(r.arr)
         setModalVisible1(true)
         setModalVisible(false)
+        if (intervalRef.current)
+          BackgroundTimer.clearInterval(intervalRef.current)
       }
     })
   }
@@ -312,8 +317,8 @@ export default function QuestionsPaper({ navigation }) {
                 backRef.current();
                 navigation.dispatch(
                   StackActions.replace('TriviaSubmit', {
-                    result: {arr: submitData},
-                    isActive:true
+                    result: { arr: submitData },
+                    isActive: true
                   }))
                 setModalVisible1(false)
               }} style={styles.continueTouchable} >
