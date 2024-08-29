@@ -10,7 +10,7 @@ import { ColorsConstant } from '../../constants/Colors.constant'
 export default function CreateRoom({navigation}) {
 
     const [name, setName] = useState('')
-    const [selected, setSelected] = useState("Public")
+    const [selected, setSelected] = useState("Private")
     const [errorMessage, setErrorMessage] = useState("")
     const [loading, setLoading] = useState(false);
 
@@ -40,9 +40,9 @@ export default function CreateRoom({navigation}) {
                     </View>
 
                     <View>
-                        <Text style={styles.createRoomOptionText}>Select Room Type</Text>
+                        <Text style={styles.createRoomOptionText}>Room Type</Text>
                         <View style={[styles2.container, { marginHorizontal: 0 }]}>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 style={[
                                     styles2.button1,
                                     selected === 'Public' ? { backgroundColor: '#701DDB' } : { backgroundColor: 'rgba(239, 239, 239, 1)' },
@@ -56,7 +56,7 @@ export default function CreateRoom({navigation}) {
                                 ]}>
                                     Public
                                 </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <TouchableOpacity
                                 style={[
                                     styles2.button,

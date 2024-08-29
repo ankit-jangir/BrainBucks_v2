@@ -34,7 +34,7 @@ export default function SignUpExam({ navigation, route }) {
     }
     setDisabled(true)
     try {
-      let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams))
+      let res = await auth.registerUser(route.params.phone, route.params.name, route.params.gender, Array.from(selectedExams), route.params.otp)
       if (res.status === 1) {
         console.log("User id: ", res.user_id);
         console.log("JWT TOKEN: ", res.token);

@@ -55,6 +55,7 @@ export default function HomeExams() {
                     <NoDataFound scale={0.7} message={"No Exam found"} actionText={"Reload"} />
                     :
                     <FlatList
+                    style={{paddingHorizontal:10}}
                         data={exams}
                         keyExtractor={item => item._id.toString()}
                         renderItem={({ item }) => (

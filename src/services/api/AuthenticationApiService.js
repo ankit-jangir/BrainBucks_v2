@@ -43,7 +43,7 @@ class AuthenticationApiService {
     return response.data;
   }
 
-  async registerUser(phone, name, gender, category) {
+  async registerUser(phone, name, gender, category, otp) {
     phone = "+91" + phone;
     let local = await basic.getLocalObject();
     let fcm = local.fcm
@@ -56,6 +56,7 @@ class AuthenticationApiService {
         gender: gender,
         category: category,
         fcm_key: fcm,
+        otp:otp
       },
     });
     if (response.data.status === 1) {

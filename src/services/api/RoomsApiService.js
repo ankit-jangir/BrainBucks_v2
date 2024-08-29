@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NOTIFYMICRO, QUIZMICRO, ROOMURL } from '../../config/urls';
+import { AUTHMICRO, NOTIFYMICRO, QUIZMICRO, ROOMURL } from '../../config/urls';
 import basic from '../BasicServices'
 import { gql, useQuery } from '@apollo/client';
 
@@ -254,7 +254,6 @@ class RoomsApiService {
     }
 
     async joinPrivateRoom(room_hash) {
-        console.log(room_hash);
         let token = await basic.getBearerToken()
         let url = `${ROOMURL}/participant/room/join/in/private/room`
         let headers = { "content-type": "application/json", "authorization": token }
@@ -514,6 +513,62 @@ class RoomsApiService {
 
         let token = await basic.getBearerToken()
         let url = `${ROOMURL}/participant/room/quiz/view/result/of/quiz`
+        let headers = { "content-type": "application/json", "authorization": token }
+        data = JSON.stringify(data)
+        let options = {
+            method: "post",
+            headers: headers,
+            data: data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async checkEligibilityForPublicRoom(){
+        let data = {};
+
+        let token = await basic.getBearerToken()
+        let url = `${AUTHMICRO}/auth/room/client/verify/for/public/room/eligiblity/otp`
+        let headers = { "content-type": "application/json", "authorization": token }
+        data = JSON.stringify(data)
+        let options = {
+            method: "post",
+            headers: headers,
+            data: data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async sendOtpToMail(email){
+        let data = {
+            email:email
+        };
+
+        let token = await basic.getBearerToken()
+        let url = `${AUTHMICRO}/auth/room/client/send/otp/to/mail/for/registor`
+        let headers = { "content-type": "application/json", "authorization": token }
+        data = JSON.stringify(data)
+        let options = {
+            method: "post",
+            headers: headers,
+            data: data,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async verifyOtp(email, otp){
+        let data = {
+            email: email,
+            otp:otp
+        };
+
+        let token = await basic.getBearerToken()
+        let url = `${AUTHMICRO}/auth/room/client/verify/otp/to/mail/for/registor`
         let headers = { "content-type": "application/json", "authorization": token }
         data = JSON.stringify(data)
         let options = {

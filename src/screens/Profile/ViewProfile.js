@@ -168,7 +168,7 @@ export default function ViewProfile({ navigation, route }) {
             onPress={() => {
               /*Url()*/
             }}
-            style={{ width: '100%', paddingHorizontal: 10, marginBottom: 10 }}>
+            style={{ width: '100%', paddingHorizontal: 10, marginBottom: 35 }}>
             <ImageBackground
               source={require('../../assets/img/background2.png')}
               resizeMode="contain"
@@ -196,7 +196,7 @@ export default function ViewProfile({ navigation, route }) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Help and Support</Text>
               </View>
-              <Image style={{ height: 30, width: 40, objectFit: 'contain', marginRight: 10, tintColor: 'black' }} source={require('../../assets/img/arrowtoright.png')} />
+              <Image style={styles.arrowToRight} source={require('../../assets/img/arrowtoright.png')} />
             </TouchableOpacity>
           </View>
           <View style={styles.HelpView}>
@@ -215,7 +215,7 @@ export default function ViewProfile({ navigation, route }) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Privacy Policy</Text>
               </View>
-              <Image style={{ height: 30, width: 40, objectFit: 'contain', marginRight: 10, tintColor: 'black' }} source={require('../../assets/img/arrowtoright.png')} />
+              <Image style={styles.arrowToRight} source={require('../../assets/img/arrowtoright.png')} />
             </TouchableOpacity>
           </View>
           <View style={styles.HelpView}>
@@ -234,10 +234,10 @@ export default function ViewProfile({ navigation, route }) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>Rules & Regulations</Text>
               </View>
-              <Image style={{ height: 30, width: 40, objectFit: 'contain', marginRight: 10, tintColor: 'black' }} source={require('../../assets/img/arrowtoright.png')} />
+              <Image style={styles.arrowToRight} source={require('../../assets/img/arrowtoright.png')} />
             </TouchableOpacity>
           </View>
-          <View style={styles.HelpView}>
+          <View style={[styles.HelpView, {marginBottom:30}]}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('AboutBB')
@@ -253,7 +253,7 @@ export default function ViewProfile({ navigation, route }) {
               <View style={styles.SupportV}>
                 <Text style={styles.TextSupport}>About Brain Bucks</Text>
               </View>
-              <Image style={{ height: 30, width: 40, objectFit: 'contain', marginRight: 10, tintColor: 'black' }} source={require('../../assets/img/arrowtoright.png')} />
+              <Image style={styles.arrowToRight} source={require('../../assets/img/arrowtoright.png')} />
             </TouchableOpacity>
           </View>
         </View>

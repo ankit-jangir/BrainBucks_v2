@@ -95,7 +95,7 @@ export default function CustomerSupport({ navigation }) {
                   <Text style={styles.TextAva}>Available from Mon-Sat ( 10:00 am - 6:00 pm )</Text>
                 </View>
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:5}} />
+              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
 
             </TouchableOpacity>
           </View>
@@ -111,7 +111,7 @@ export default function CustomerSupport({ navigation }) {
                   <Text style={styles.TextAva}>Available 24*7</Text>
                 </View>
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:5}} />
+              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
 
             </TouchableOpacity>
           </View>
@@ -124,7 +124,7 @@ export default function CustomerSupport({ navigation }) {
                 <Text style={styles.TextTalk}>Get Chat Support</Text>
                 
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:5}} />
+              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
 
             </TouchableOpacity>
           </View>

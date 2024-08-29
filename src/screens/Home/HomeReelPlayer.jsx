@@ -499,7 +499,7 @@ const MemoizedLikeCommentSection = memo(({ like, item, setModalVisible, onShare 
         <Text style={{ color: ColorsConstant.White }}>{item.commentsCount}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.likeItemContainer} onPress={()=>{onShare(item._id)}}>
+      <TouchableOpacity style={styles.likeItemContainer} onPress={() => { onShare(item._id) }}>
         <Image source={require('../../assets/img/sharereel.png')} style={styles.likeIcon} />
         <Text style={{ color: ColorsConstant.White }}>Share</Text>
       </TouchableOpacity>

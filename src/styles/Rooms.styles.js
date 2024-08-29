@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
   topbtns: {
     flexDirection: 'row',
     padding: 14,
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap:110
   },
   tabBarLabelHolder: {
     flexDirection: 'row',

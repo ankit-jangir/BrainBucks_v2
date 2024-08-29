@@ -188,3 +188,42 @@ export async function scoreCardInController(quiz_id, toast){
 
     return res;
 }
+
+export async function CheckEligibilityForPublicRoom(toast, setLoading) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.checkEligibilityForPublicRoom()
+        },
+        toast,
+        ()=>{setLoading(true)},
+        ()=>{setLoading(false)}
+    )
+    
+    return res;
+}
+
+export async function SendOTPToMail(email, toast, setMailLoading) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.sendOtpToMail(email)
+        },
+        toast,
+        ()=>{setMailLoading(true)},
+        ()=>{setMailLoading(false)}
+    )
+    
+    return res;
+}
+
+export async function verifyOTP(email, otp, toast, setOtpLoading) {
+    let res = await BasicServices.apiTryCatch(
+        async () => {
+            return await roomServ.verifyOtp(email, otp)
+        },
+        toast,
+        ()=>{setOtpLoading(true)},
+        ()=>{setOtpLoading(false)}
+    )
+    
+    return res;
+}

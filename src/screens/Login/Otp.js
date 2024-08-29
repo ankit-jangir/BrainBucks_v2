@@ -101,7 +101,8 @@ export default function Otp({ navigation, route }) {
                 setErrorMessage(null)
                 navigation.dispatch(
                     StackActions.replace("SignupName", {
-                        phone: phone
+                        phone: phone,
+                        otp:otp
                     })
                 )
             }

@@ -22,13 +22,15 @@ async function apiTryCatch(func, toast, beforeAll, afterAll) {
         if (beforeAll)
             beforeAll()
         let res = await func()
+        console.log(res);
+        
         if (res.status === 1 || res.status==="ok") {
             return res;
         }
         else {
             toast.show({
                 type: 'error',
-                text1: res.Backend_Error?res.Backend_Error:res.error
+                text1: res.Backend_Error ||  res.message || res.error
             })
             return false;
         }

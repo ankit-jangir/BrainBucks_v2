@@ -437,6 +437,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
     fontWeight:"600"
+  },
+  arrowToRight:{
+    height: 25, width: 30, objectFit: 'contain', marginRight: 15, tintColor: 'black'
   }
 
 })
