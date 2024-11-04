@@ -108,11 +108,6 @@ export default function Home({ navigation }) {
                     {/* ********************************************Banners**************************************** */}
                     <HomeBanners />
 
-                    {/* ********************************************courses**************************************** */}
-                    <View>
-                      <HomeCourses />
-                    </View>
-
                     {/* **********************************livequizes******************************* */}
                     <HomeActiveQuizzes />
 
@@ -124,6 +119,12 @@ export default function Home({ navigation }) {
 
                     {/* **********************************Enrolledquizes******************************* */}
                     <HomeEnrolledQuizzes />
+
+
+                    {/* ********************************************courses**************************************** */}
+                    <View>
+                      <HomeCourses />
+                    </View>
 
                     {/* **********************************Reels******************************* */}
                     <HomeReels setCurrentReel={setCurrentReel} setParentModalVisible={setReelsPlaying} />

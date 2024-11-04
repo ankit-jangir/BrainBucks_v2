@@ -22,7 +22,7 @@ axios.interceptors.response.use(function (response) {
     setLoggedIn(false)
     navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
   }
-  if(response.data.Backend_Error && response.data.Backend_Error.includes("sufficient balance")){
+  if(response.data.Backend_Error && (response.data.Backend_Error.includes("sufficient balance")|| response.data.Backend_Error.includes("sufficent balance"))){
     navigation.navigate("wallet")
   }
   return response;
