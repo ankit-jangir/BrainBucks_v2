@@ -3649,7 +3649,7 @@ __metadata:
     react-native-tab-view: ^3.5.2
     react-native-toast-message: ^2.2.0
     react-native-vector-icons: ^10.1.0
-    react-native-video: ^6.4.1
+    react-native-video: ^6.16.0
     react-native-webview: ^13.10.5
     react-native-youtube-iframe: ^2.3.0
     react-test-renderer: 18.2.0
@@ -9492,13 +9492,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-video@npm:^6.4.1":
-  version: 6.4.1
-  resolution: "react-native-video@npm:6.4.1"
+"react-native-video@npm:^6.16.0":
+  version: 6.16.0
+  resolution: "react-native-video@npm:6.16.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: a8532d2785f4c935dedb12d36604b851ca26eb0481f8e0a5a91ffd9e14a42d1f6a78a048ed6f9455726fe58b34be642f54554e26d16c05c32ba8f37e08f80baf
+  checksum: edbe695abc34677eb2c6141998ac30cb37fc787539895d4e7d02cfeea0ed8780114ea568d51b87aef830bfb6322620795d07e790cae3745c5f29e7848f902613
   languageName: node
   linkType: hard
 
