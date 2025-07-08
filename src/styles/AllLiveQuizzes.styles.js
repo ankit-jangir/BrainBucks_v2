@@ -8,46 +8,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
     },
-    header: {
-      width: '100%',
-      height: 70,
-      alignItems: 'center',
-      borderBottomWidth: 1,
-      borderBottomColor: '#EFEFEF',
-    },
-    headerContent: {
-      flexDirection: 'row',
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    backButton: {
-      flex: 0.15,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 4,
-      width: 50,
-      height: 50,
-      borderColor: ColorsConstant.BlurWhite,
-      borderWidth: 1,
-      borderRadius: 100,
-    },
-    backButtonImage: {
-      width: 20,
-      height: 20,
-    },
-    headerTitleContainer: {
-      flex: 0.8,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      paddingLeft: 20,
-    },
-    headerTitle: {
-      fontSize: 20,
-      fontFamily: 'WorkSans-SemiBold',
-      color: '#000',
-      fontWeight: '600',
-    },
     quizContainer: {
       backgroundColor: '#ffffff',
       margin: 7,
@@ -294,8 +254,8 @@ const styles = StyleSheet.create({
       },
       RulesLott:
       {
-          width: 150,
-          height: 150,
+          width: 140,
+          height: 140,
           backgroundColor: 'transparent',
       },
       RegisteredT:
@@ -307,8 +267,9 @@ const styles = StyleSheet.create({
       RegisteredV:
       {
           flexDirection: "row",
-          justifyContent: 'space-around',
+          justifyContent:"center",
           alignItems: "center",
+          gap:10
       },
       RegisteredV1:
       {
@@ -316,19 +277,19 @@ const styles = StyleSheet.create({
           height: 50,
           alignItems: 'center',
           justifyContent: "center",
-          marginLeft:20
+          // marginLeft:20
       },
       RegisteredImg:
       {
-          width: 35,
-          height: 35
+          width: 45,
+          height: 45
       },
       RulesName:
       {
-          width: "100%",
-          height: 50,
-          alignItems: 'center',
-          justifyContent: 'center'
+          // width: "100%",
+          // // height: 50,
+          // alignItems: 'center',
+          // justifyContent: 'center'
       },
       NameText:
       {
@@ -340,13 +301,13 @@ const styles = StyleSheet.create({
       continueTouchable:
       {
           width: '100%',
-          height: 60,
+          height: 50,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#EFF5FF",
           borderRadius: 10,
-          marginTop: 10
+      marginVertical:10
       },
       continueText:
       {

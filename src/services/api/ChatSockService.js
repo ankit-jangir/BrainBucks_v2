@@ -125,24 +125,4 @@ class ChatSockService {
 }
 
 
-// async function createTicket(){
-//     try{
-//         let res = await chatServ.createTicket(title)
-//         if(res.status===1){
-//         }else{
-//             Toast.show({
-//                 type:"info",
-//                 text1:res.Backend_Error
-//             })
-//         }
-//     }catch(err){
-//         console.log("Error in creating ticket", err);
-//         Toast.show({
-//             type:'error',
-//             text1:"Something went wrong"
-//         })
-//     }
-// }
-
-
 export default ChatSockService;

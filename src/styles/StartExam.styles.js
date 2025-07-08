@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     categoryText:
     {
       fontFamily: 'WorkSans-SemiBold',
-      fontSize: 16,
-      width: "90%"
+      fontSize: 18,
+      color:'#2E2E2E'
     },
     EnteryV:
     {
@@ -159,14 +159,15 @@ const styles = StyleSheet.create({
     {
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      gap:10
     },
     EnteryFeesText:
     {
       fontFamily: "WorkSans-Regular",
-      fontSize: 13,
-      color: ColorsConstant.GrayyColor,
-      flex: 0.40
+      fontSize: 16,
+      color: '#7E7E7E',
+      // flex: 0.40
     },
     EnteryV2:
     {
@@ -177,8 +178,8 @@ const styles = StyleSheet.create({
     },
     EnteryImg:
     {
-      width: 20,
-      height: 20,
+      width: 15,
+      height: 15,
     },
     EnteryFeesBText:
     {
@@ -231,7 +232,9 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       alignItems: 'center',
       justifyContent: 'center',
-      paddingLeft: 10
+      paddingLeft: 10,
+      marginBottom:10
+      
     },
     TotalSlotsBtext:
     {
@@ -242,19 +245,16 @@ const styles = StyleSheet.create({
     TotalSlotsVi2:
     {
       width: "100%",
-      height: 40,
-      justifyContent: "center"
-    },
-    TotalSlotsVi3:
-    {
-      height: 10,
-      backgroundColor: 'whitesmoke',
-      borderRadius: 10
+      justifyContent: "center",
+      // margin:10
+      // marginHorizontal:10
+      
     },
     StartExamV:
     {
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      marginTop:20
     },
     StartExamLiner:
     {

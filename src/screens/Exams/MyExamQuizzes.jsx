@@ -11,13 +11,14 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { Text } from '../../utils/Translate';
 import styles from '../../styles/AllLiveQuizzes.styles';
-import Header from '../Home/Header';
 import SavedApiService from '../../services/api/SavedApiService';
 import basic from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
+import Header from '../../components/Header';
+import MainHeader from '../../components/MainHeader';
 export default function MyExamQuizzes({ navigation, route }) {
   const [live, setLive] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -72,11 +73,11 @@ export default function MyExamQuizzes({ navigation, route }) {
     <>
       <View style={{ zIndex: 200 }}><Toast /></View>
       <View style={styles.container}>
-        <Header
-          title="My Exam Quizzes"
+        <MainHeader
+          name={"My Exam Quizzes"}
           leftIcon={{
             type: 'image',
-            source: require('../../assets/img/arrow-left.png'), // provide the image source
+            source: require('../../assets/img/backq.png'), // provide the image source
             onPress: () => {
               navigation.goBack()
             },
@@ -116,7 +117,7 @@ export default function MyExamQuizzes({ navigation, route }) {
                 alotedslots={item.slot_aloted}
                 type={'active'}
                 onPress={() => {
-                  navigation.navigate('RulesofParticipation', { id: item._id });
+                  navigation.navigate('QuizDetails', { id: item._id });
                 }}
               />
               }
@@ -214,7 +215,7 @@ const ExamDetail = (props) => {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-          props.navigation.navigate('RulesofParticipation');
+          props.navigation.navigate('QuizDetails');
         }}>
         <LinearGradient
           start={{ x: 0.0, y: 0.25 }}

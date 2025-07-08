@@ -22,17 +22,10 @@ const WithdrawMoney = ({navigation}) => {
         navigation.navigate('withdrawOtp')
 
       }else{
-        Toast.show({
-          type:"error",
-          text1:res.Backend_Error
-        })
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     }catch(err){
       console.log("ERROR in withdraw money send otp: ", err.message)
-      // Toast.show({
-      //   type:'error',
-      //   text1:'Something went wrong'
-      // })
     }finally{
       setLoading(false)
     }
@@ -46,7 +39,7 @@ const WithdrawMoney = ({navigation}) => {
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('withdraw')}>
           <Image
-            source={require('../../assets/img/back.png')}
+            source={require('../../assets/img/backq.png')}
             style={styles.backImage}
           />
         </TouchableOpacity>

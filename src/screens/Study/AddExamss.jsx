@@ -5,6 +5,7 @@ import OnlineClasses from './OnlineClasses';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/Studymaterials.styles';
+import MainHeader from '../../components/MainHeader';
 
 
 export default function StudyMaterials({ navigation }) {
@@ -12,22 +13,16 @@ export default function StudyMaterials({ navigation }) {
  
   return (
     <View style={StyleConstants.safeArView}>
-    <View style={styles.Hview}>
-    <View style={styles.Hview1}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.THead}>
-        <Image
-          source={require('../../assets/img/arrows.png')}
-          resizeMode="contain"
-          style={{width: 20, height: 20}}
-        />
-      </TouchableOpacity>
-      <View style={styles.ViewMy}>
-        <Text style={styles.TextMy}>Study Materials</Text>
-      </View>
-    </View>
-  </View>
+   <MainHeader
+                    name={"Study Materials"}
+                    leftIcon={{
+                      type: 'image',
+                      source: require('../../assets/img/backq.png'), // provide the image source
+                      onPress: () => {
+                        handleBackPress()
+                      },
+                    }}
+                  />
 
       {/* <View style={styles.container}>
         <TouchableOpacity

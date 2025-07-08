@@ -3,66 +3,99 @@ import {
   StyleSheet,
   View,
   Text,
-  Linking,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
-import { Header as HeaderRNE, Icon } from '@rneui/themed';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Image } from '@rneui/base';
 
-const Header = (props) => {
-  const docsNavigate = () => {
-    Linking.openURL(`https://reactnativeelements.com/docs/${props.view}`);
-  };
-
-  const playgroundNavigate = () => {
-    Linking.openURL(`https://@rneui/themed.js.org/#/${props.view}`);
-  };
-
+const Header = ({
+  title = 'Welcome',
+  leftIcon,
+  rightIcon,
+  backgroundColor = '#f7f7f7',
+  titleColor = '#000',
+}) => {
   return (
-    <SafeAreaProvider>
-      <HeaderRNE
-        leftComponent={
-          <Image source={require('../assets/img/menu.png')} tintColor={"white"} style={{height:25,width:25}} />
-        }
-        rightComponent={
-          <View style={styles.headerRight}>
-            <Image source={require('../assets/img/homedark.png')} tintColor={"white"} style={{height:25,width:25}} />
-          </View>
-        }
-        centerComponent={{ text: 'Header', style: styles.heading }}
-        containerStyle={styles.headerContainer} 
-      />
-    </SafeAreaProvider>
+    <View style={[styles.container, { backgroundColor }]}>
+      <View style={styles.header}>
+        {/* Left Icon */}
+        {leftIcon ? (
+          <TouchableOpacity
+            onPress={leftIcon.onPress}
+            style={styles.iconButton}
+          >
+            <Image
+              source={leftIcon.source}
+              style={[styles.icon, leftIcon.style]}
+              tintColor={leftIcon.tintColor || '#000'}
+            />
+          </TouchableOpacity>
+        ) : <View style={styles.iconPlaceholder} />}
+
+        {/* Title */}
+        <View style={styles.titleContainer}>
+          <Text style={[styles.titleText, { color: titleColor }]}>
+            {title}
+          </Text>
+        </View>
+
+        {/* Right Icon */}
+        {rightIcon ? (
+          <TouchableOpacity
+            onPress={rightIcon.onPress}
+            style={styles.iconButton}
+          >
+            <Image
+              source={rightIcon.source}
+              style={[styles.icon, rightIcon.style]}
+              tintColor={rightIcon.tintColor || '#000'}
+            />
+          </TouchableOpacity>
+        ) : <View style={styles.iconPlaceholder} />}
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
+    backgroundColor: '#f7f7f7',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Platform.OS === 'ios' ? 14 : 10,
+    paddingHorizontal: 12,
+  },
+  iconButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#610ECD', 
-    marginBottom: 10,
-    width: '100%',
-    paddingVertical: 15,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 25,
+    width: 40,
+    height: 40,
   },
-  heading: {
-    color: 'white',
-    fontSize: 22,
-    fontWeight: 'bold',
+  icon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
   },
-  headerRight: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 5,
+  iconPlaceholder: {
+    width: 40,
+    height: 40,
   },
-  subheaderText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  titleText: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
   },
 });
 

@@ -43,7 +43,7 @@ class AuthenticationApiService {
     return response.data;
   }
 
-  async registerUser(phone, name, gender, category, otp) {
+  async registerUser(phone, name, gender, category, otp,referralCode) {
     phone = "+91" + phone;
     let local = await basic.getLocalObject();
     let fcm = local.fcm
@@ -56,7 +56,8 @@ class AuthenticationApiService {
         gender: gender,
         category: category,
         fcm_key: fcm,
-        otp:otp
+        otp:otp,
+        refer_id:referralCode,
       },
     });
     if (response.data.status === 1) {
@@ -136,6 +137,33 @@ class AuthenticationApiService {
     const response = await axios(options);
     return response.data;
   }
+
+
+
+
+async getReferCode() {
+    try {
+      let bearer = await basic.getBearerToken();
+      const response = await axios.get(`${AUTHMICRO}/auth/participant/refer-code`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearer,
+        }
+      });
+
+      if (response.data.status === '001') {
+        return response.data.data; // Return only refer code
+      } else {
+        console.warn("Refer code fetch failed:", response.data);
+        return null;
+      }
+    } catch (error) {
+      console.error("getReferCode error:", error);
+      return null;
+    }
+  }
+
+
 }
 
 export default AuthenticationApiService;

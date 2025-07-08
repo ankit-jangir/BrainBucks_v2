@@ -53,7 +53,7 @@ const TransctionDetails = ({ navigation, route }) => {
               navigation.goBack();
             }}>
             <Image
-              source={require('../../assets/img/back.png')}
+              source={require('../../assets/img/backq.png')}
               style={styles.backImage}
             />
           </TouchableOpacity>

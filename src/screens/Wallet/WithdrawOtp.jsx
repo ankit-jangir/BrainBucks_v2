@@ -31,10 +31,7 @@ export default function WithdrawOtp({ navigation, route }) {
         try {
             let response = await wallServ.sendOtp()
             if (response.status === 1) {
-                Toast.show({
-                    type: "success",
-                    text1: "Otp sent succesfully"
-                })
+                ToastAndroid.show('Otp sent succesfully', ToastAndroid.SHORT);
                 if (response.otp) {
                     ToastAndroid.show(response.otp + "", ToastAndroid.LONG)
                 }

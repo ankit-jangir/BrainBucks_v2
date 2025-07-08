@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, ActivityIndicator, FlatList, RefreshControl } from 'react-native';
+import { StyleSheet, View, Dimensions, ActivityIndicator, FlatList, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import HistoryApiService from '../../services/api/HistoryApiService';
 import Toast from 'react-native-toast-message';
@@ -43,17 +43,10 @@ const All = ({ navigation, order }) => {
         setTotalPages(res.totalpages)
         setCurrentPage(page)
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+   ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting All history data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading(false);
       setLoadingMore(false)
@@ -100,10 +93,7 @@ const All = ({ navigation, order }) => {
                         dispatch({ type: 'change', state: { id: item._id } })
                         item.is_active ? navigation.navigate("QuizzesResult") : navigation.navigate("resultreward")
                       }else{
-                        Toast.show({
-                          type:"info",
-                          text1:"Wait for result declaration"
-                        })
+                       ToastAndroid.show("Wait for result declaration", ToastAndroid.SHORT);
                       }
                     }
                     }

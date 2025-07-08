@@ -8,6 +8,7 @@ import {
   StatusBar,
   BackHandler,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import {Text} from '../../utils/Translate';
 import {ActivityIndicator} from 'react-native-paper';
@@ -34,17 +35,11 @@ export default function QuizzesResultRewards({navigation, route}) {
       if (res.status === 1) {
         setData(res);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+
       }
     } catch (err) {
       console.log('Error while getting earned data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoad(false);
     }

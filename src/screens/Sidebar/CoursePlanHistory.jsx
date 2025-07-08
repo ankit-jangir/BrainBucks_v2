@@ -5,7 +5,8 @@ import {
   RefreshControl,
   Text as BBText,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -16,7 +17,8 @@ import {Text} from '../../utils/Translate';
 import CourseApiService from '../../services/api/CourseApiService';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import MainHeader from '../../components/MainHeader';
 
 export default function CoursePlanHistory({navigation}) {
   const [livequiz, setLivequiz] = useState([]);
@@ -25,7 +27,7 @@ export default function CoursePlanHistory({navigation}) {
   const [isData, setData] = useState(false);
   const course = new CourseApiService();
   const onRefresh = () => {
-    CoursePlanHistorys()
+    CoursePlanHistorys();
   };
 
   useEffect(() => {
@@ -39,20 +41,13 @@ export default function CoursePlanHistory({navigation}) {
       if (res.status === 1) {
         setLivequiz(res.transactions);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log(
         'Error in fetching study material for a paln history course: ',
         err.message,
       );
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoad(false);
     }
@@ -70,25 +65,19 @@ export default function CoursePlanHistory({navigation}) {
 
   return (
     <>
-      <View style={{zIndex:1}}>
+      <View style={{zIndex: 1}}>
         <Toast />
       </View>
-      <View style={styles.Hview}>
-      <View style={styles.Hview1}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.THead}>
-          <Image
-            source={require('../../assets/img/arrows.png')}
-            resizeMode="contain"
-            style={{width: 20, height: 20}}
-          />
-        </TouchableOpacity>
-        <View style={styles.ViewMy}>
-          <Text style={styles.TextMy}>Course Plan History</Text>
-        </View>
-      </View>
-    </View>
+      <MainHeader
+        name={'Course Plan History'}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'), // provide the image source
+          onPress: () => {
+            navigation.goBack();
+          },
+        }}
+      />
       {load ? (
         <ActivityIndicator size={24} color={'#2188E7'} />
       ) : livequiz.length === 0 ? (
@@ -105,94 +94,88 @@ export default function CoursePlanHistory({navigation}) {
           showsVerticalScrollIndicator={false}
           style={{flex: 1, backgroundColor: 'white'}}>
           {livequiz.map(res => {
-            
             return (
-              
-                <View
+              <View
                 key={res._id}
+                style={{
+                  borderWidth: 0.3,
+                  borderColor: '#d9d5ca',
+                  margin: 12,
+                  borderRadius: 10,
+                  elevation: 10,
+                  padding: 5,
+                  backgroundColor: 'white',
+                }}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  <Text
+                    style={{
+                      color: '#e3b51e',
+                      fontSize: 21,
+                      fontWeight: '600',
+                    }}>
+                    {res.course_name}{' '}
+                  </Text>
+                </View>
+                <View
                   style={{
-                    borderWidth: 0.3,
-                    borderColor: '#d9d5ca',
-                    margin: 12,
-                    borderRadius: 10,
-                    elevation: 10,
-                    padding: 5,
-                    backgroundColor: 'white',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    padding: 10,
                   }}>
-                  <View
-                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        fontWeight: '400',
+                      }}>
+                      Purchase Time :
+                    </Text>
+                    <Text style={{color: 'gray'}}>{res.registor_time}</Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        fontWeight: '400',
+                      }}>
+                      Expiry Time:{' '}
+                    </Text>
+                    <Text style={{color: 'gray'}}>{res.expire_time}</Text>
+                  </View>
+                </View>
+                <View style={{padding: 10}}>
+                  <View>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontSize: 16,
+                        fontWeight: '400',
+                      }}>
+                      Price: <Text style={{color: 'gray'}}>{res.amount}</Text>{' '}
+                    </Text>
+                  </View>
+                  <View>
                     <Text
                       style={{
                         color: '#e3b51e',
-                        fontSize: 21,
-                        fontWeight: '600',
+                        fontSize: 16,
+                        fontWeight: '400',
                       }}>
-                      {res.course_name}{' '}
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 16,
+                          fontWeight: '400',
+                        }}>
+                        Instructor Name:{' '}
+                      </Text>{' '}
+                      {res.instructor_name}{' '}
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      padding: 10,
-                    }}>
-                    <View>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontSize: 16,
-                          fontWeight: '400',
-                        }}>
-                        Purchase Time :
-                      </Text>
-                      <Text style={{color: 'gray'}}>
-                        {res.registor_time}
-                      </Text>
-                    </View>
-                    <View>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontSize: 16,
-                          fontWeight: '400',
-                        }}>
-                        Expiry Time:{' '}
-                      </Text>
-                      <Text style={{color: 'gray'}}>{res.expire_time}</Text>
-                    </View>
-                  </View>
-                  <View style={{padding: 10}}>
-                    <View>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontSize: 16,
-                          fontWeight: '400',
-                        }}>
-                        Price:{' '}
-                        <Text style={{color: 'gray'}}>{res.amount}</Text>{' '}
-                      </Text>
-                    </View>
-                    <View>
-                      <Text
-                        style={{
-                          color: '#e3b51e',
-                          fontSize: 16,
-                          fontWeight: '400',
-                        }}>
-                        <Text
-                          style={{
-                            color: 'black',
-                            fontSize: 16,
-                            fontWeight: '400',
-                          }}>
-                          Instructor Name:{' '}
-                        </Text>{' '}
-                        {res.instructor_name}{' '}
-                      </Text>
-                    </View>
-                  </View>
                 </View>
+              </View>
             );
           })}
         </ScrollView>
@@ -208,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: ColorsConstant.LightGray,
-    backgroundColor:"white"
+    backgroundColor: 'white',
   },
   Hview1: {
     flexDirection: 'row',
@@ -238,6 +221,4 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
   },
-}
-
-)
+});

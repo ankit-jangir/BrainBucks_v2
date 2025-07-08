@@ -6,6 +6,7 @@ import {
   Image,
   ActivityIndicator,
   StyleSheet,
+  ToastAndroid,
 } from "react-native";
 import { StyleConstants } from "../../constants/Style.constant";
 import { Text } from "../../utils/Translate";
@@ -30,17 +31,10 @@ export default function RoomsScored({ navigation, route }) {
       if (res.status === 1) {
         setData(res.answer_sheet);
       } else {
-        Toast.show({
-          type: "error",
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show( res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log("Error while getting earned data", err.message);
-      // Toast.show({
-      //   type: "error",
-      //   text1: "Something went wrong",
-      // });
     } finally {
       setLoad(false);
     }
@@ -115,17 +109,10 @@ export default function RoomsScored({ navigation, route }) {
         'Content-Type': 'application/json',
       }, JSON.stringify({ html: htmlContent }))
       .then((res) => {
-        Toast.show({
-          type: 'success',
-          text1: 'PDF Downloaded Successfully!',
-        });
+        ToastAndroid.show( "PDF Downloaded Successfully!", ToastAndroid.SHORT);
       })
       .catch((errorMessage, statusCode) => {
         console.log('Error:', errorMessage);
-        // Toast.show({
-        //   type: 'error',
-        //   text1: 'Failed to download PDF',
-        // });
       });
   };
 
@@ -142,7 +129,7 @@ export default function RoomsScored({ navigation, route }) {
                 onPress={() => navigation.goBack()}
                 style={styles.mainviewtouc}
               >
-                <Image source={require('../../assets/img/back.png')} />
+                <Image source={require('../../assets/img/backq.png')} />
               </TouchableOpacity>
             </View>
             <View style={{ alignItems: "center" }}>

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, BackHandler } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { ColorsConstant } from '../../constants/Colors.constant'
 import { TextInput } from '../../utils/Translate'
@@ -73,17 +73,9 @@ export default function Chat({ navigation, route }) {
                     scrollRef.current.scrollToEnd()
                 }
             } else {
-                Toast.show({
-                    type: "info",
-                    text1: res.Backend_Error
-                })
+             ToastAndroid.show( res.Backend_Error, ToastAndroid.SHORT);
             }
         } catch (err) {
-            console.log("Error in creating ticket", err);
-            // Toast.show({
-            //     type: 'error',
-            //     text1: "Something went wrong"
-            // })
         }
     }
 
@@ -109,8 +101,8 @@ export default function Chat({ navigation, route }) {
                             borderColor: '#F5F5F5',
                         }}>
                         <Image
-                            source={require('../../assets/img/back.png')}
-                            style={{ height: 50, width: 50 }}></Image>
+                            source={require('../../assets/img/backq.png')}
+                            style={{ height: 30, width: 30 }}></Image>
                     </TouchableOpacity>
                     <View style={styles.examView}>
                         <Text style={styles.textMy}>Chat Support</Text>

@@ -29,7 +29,10 @@ export default NoDataFound;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
+    width:'100%',
+    paddingVertical:20
+
   },
   animationContainer: {
     width: '100%',
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
   Text1: {
     color: 'black',
     marginVertical:10,
-    fontSize:22,
+    fontSize:14,
     textAlign:'center',
     padding:2
   },

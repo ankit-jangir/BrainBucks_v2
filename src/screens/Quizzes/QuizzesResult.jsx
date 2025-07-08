@@ -87,20 +87,14 @@ export default function QuizzesResult({ route }) {
         setMydata(res.topRank)
         setTopRank(res)
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+      ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
         // setMydata(res?.topRank)
         // setTopRank(res)
         // setScore(res?.scoreboard)
       }
     } catch (err) {
       console.log('Error while getting Quizz Result data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
+
     } finally {
       setLoad(false);
     }

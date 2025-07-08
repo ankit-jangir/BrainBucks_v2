@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Modal,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text } from '../../utils/Translate';
@@ -46,11 +47,8 @@ export default function RoomsDetails({ navigation, route }) {
 
     const details = data.view_detail_of_roomquiz;
 
-    if(details.error){
-      Toast.show({
-        type:'error',
-        text1:details.error
-      })      
+    if(details.error){    
+      ToastAndroid.show(details.error, ToastAndroid.SHORT);
       return;
     }
 

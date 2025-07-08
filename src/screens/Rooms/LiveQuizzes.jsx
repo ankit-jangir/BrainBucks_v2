@@ -1,4 +1,4 @@
-import { View, FlatList } from 'react-native'
+import { View, FlatList, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator } from 'react-native'
 import { ColorsConstant } from '../../constants/Colors.constant'
@@ -33,10 +33,8 @@ export default function LiveQuizzes({ navigation, route }) {
 
     useEffect(() => {
         if (data?.live_quizes.error) {
-            Toast.show({
-                type: 'error',
-                text1: data?.live_quizes.error
-            })
+             ToastAndroid.show(data?.live_quizes.error, ToastAndroid.SHORT);
+
             return;
         }
 

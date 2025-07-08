@@ -102,7 +102,7 @@ import { StyleConstants } from '../constants/Style.constant';
     color: ColorsConstant.White,
   },
   RightArrow: {
-    width: "100%",
+    width: "80%",
     height: 20
   },
   OtpView: {
@@ -254,8 +254,10 @@ inputView1: {
   fontSize: 16,
   width: "100%",
   textAlign: "justify",
-  paddingLeft: 20,
-  color: ColorsConstant.AshGray
+  paddingLeft: 15,
+  color: ColorsConstant.AshGray,
+  backgroundColor:'#e6e6e6',
+  borderRadius:7,
 },
 TouchView: {
   width: '100%',

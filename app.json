@@ -1,4 +1,9 @@
 {
   "name": "Brainbucks",
-  "displayName": "Brainbucks"
+  "displayName": "Brainbucks",
+  "extra": {
+    "eas": {
+      "projectId": "f8ab01e8-fb60-4b7f-a728-a3fbaa945327"
+    }
+  }
 }

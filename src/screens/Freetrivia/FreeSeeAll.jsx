@@ -3,9 +3,9 @@ import { ScrollView, View, TouchableOpacity, Image,StyleSheet, RefreshControl } 
 import { ActivityIndicator } from 'react-native-paper';
 import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
-import Header from '../Home/Header';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import {LinearProgress} from '@rneui/themed';
+import MainHeader from '../../components/MainHeader';
 export default function FreeSeeAll(props) {
   const [isData, setData] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -56,12 +56,11 @@ export default function FreeSeeAll(props) {
   return (
     <>
       <View style={StyleConstants.safeArView}>
-        {/* <Header title={"Free Trivias"} /> */}
-        <Header
-          title="Free Trivias"
+        <MainHeader
+          name={"Free Trivias"}
           leftIcon={{
             type: 'image',
-            source: require('../../assets/img/arrow-left.png'), // provide the image source
+            source: require('../../assets/img/backq.png'), // provide the image source
             onPress: () => {
               handleBackPress()
             },

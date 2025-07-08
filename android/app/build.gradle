@@ -89,8 +89,8 @@ android {
         applicationId "com.brainbucks.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "1.1.12"
+        versionCode 16
+        versionName "1.1.14"
     }
     signingConfigs {
         debug {
@@ -100,13 +100,13 @@ android {
             keyPassword 'android'
         }
         release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
+        if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+            storeFile file(MYAPP_UPLOAD_STORE_FILE)
+            storePassword MYAPP_UPLOAD_STORE_PASSWORD
+            keyAlias MYAPP_UPLOAD_KEY_ALIAS
+            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
         }
+    }
     }
     buildTypes {
         debug {
@@ -125,7 +125,8 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    
+    implementation 'androidx.core:core-ktx:1.12.0' 
+    implementation 'com.cashfree.pg:api:2.0.0'
     implementation platform('com.google.firebase:firebase-bom:33.0.0')
     implementation 'com.google.firebase:firebase-analytics'
 

@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import styles from '../../styles/Sidebar.styles';
 import BasicServices from '../../services/BasicServices';
@@ -48,15 +49,11 @@ const Sidebar = ({ navigation }) => {
           }
           setTotalPlayed(res.totalquizplayed);
         } else {
-          Toast.show({ type: 'error', text1: res.Backend_Error });
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
         }
       });
     } catch (err) {
       console.log('Error in Fetching User Profile', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something Went Wrong',
-      // });
     }
   }, [status]);
 
@@ -72,17 +69,11 @@ const Sidebar = ({ navigation }) => {
           });
         });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: response.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+      
       }
     } catch (err) {
       console.log('Error in Logging out', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something Went Wrong',
-      // });
     } finally {
       navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
       setLoggingOut(false);
@@ -93,14 +84,14 @@ const Sidebar = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         {/* <Toast /> */}
-        <View style={styles.headerContent}>
+        {/* <View style={styles.headerContent}>
           <Text style={styles.welcomeText}>Welcome</Text>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.closeButton}>
             <Text style={{ color: '#000' }}>X</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.profileSection}>
           <Image
             source={{ uri: image1 }}
@@ -125,6 +116,7 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => {
             navigation.navigate('dailyupdates');
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/dailyupdate.png')}
           text="Daily Updates"
@@ -132,6 +124,7 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => {
             navigation.navigate('RulesRegulations');
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/rulesregulation.png')}
           text="Rules & Regulations"
@@ -139,6 +132,7 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => {
             navigation.navigate('privacypolice');
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/privacypolicy.png')}
           text="Privacy Policy"
@@ -154,17 +148,19 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => {
             navigation.navigate('myhistory');
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/historyimg.png')}
           text="History"
         />
-        <MenuItem
+        {/* <MenuItem
           action={() => {
             navigation.navigate('coursesplanhistory');
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/ebook.png')}
           text="Course Plan History"
-        />
+        /> */}
         {/* <MenuItem
           action={() => { }}
           image={require('../../assets/img/audit.png')}
@@ -173,6 +169,7 @@ const Sidebar = ({ navigation }) => {
         <MenuItem
           action={() => { 
             navigation.navigate("CustomerSupport")
+            navigation.closeDrawer();
           }}
           image={require('../../assets/img/support.png')}
           text="Help & Support"
@@ -187,7 +184,7 @@ const Sidebar = ({ navigation }) => {
           text="Brain Boosters"
         />
         <MenuItem
-          action={() => { navigation.navigate("saved") }}
+          action={() => { navigation.navigate("saved"), navigation.closeDrawer(); }}
           image={require('../../assets/img/heart.png')}
           text="My Exams"
         />

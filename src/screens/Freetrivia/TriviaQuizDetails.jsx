@@ -17,6 +17,7 @@ import { BLOBURL } from '../../config/urls';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import { useQuiz } from '../../context/QuizPlayReducer';
 import { StackActions } from '@react-navigation/native';
+import MainHeader from '../../components/MainHeader';
 
 export default function FreeRulesParticipation({ navigation, route }) {
 
@@ -42,22 +43,16 @@ export default function FreeRulesParticipation({ navigation, route }) {
         <Toast />
       </View>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}>
-              <Image
-                source={require('../../assets/img/arrows.png')}
-                resizeMode="contain"
-                style={styles.backButtonImage}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Text style={styles.headerTitle}>Quiz Details</Text>
-            </View>
-          </View>
-        </View>
+ <MainHeader
+          name={"Quiz Details"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.goBack()
+            },
+          }}
+        />
         {
           refresh ?
             <ActivityIndicator style={{ flex: 1 }} color={ColorsConstant.Theme} size={40} />

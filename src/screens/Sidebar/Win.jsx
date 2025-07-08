@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, Dimensions, ActivityIndicator, FlatList } from 'react-native';
+import { Image, StyleSheet, Text, View, Dimensions, ActivityIndicator, FlatList, ToastAndroid } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
 import HistoryApiService from '../../services/api/HistoryApiService';
@@ -94,10 +94,7 @@ const Win = ({ navigation, order }) => {
                           dispatch({ type: 'change', state: { id: item._id } })
                           navigation.navigate("QuizzesResult")
                         }else{
-                          Toast.show({
-                            type:"info",
-                            text1:"Wait for result declaration"
-                          })
+                          ToastAndroid.show("Wait for result declaration", ToastAndroid.SHORT);
                         }
                       }
                       }

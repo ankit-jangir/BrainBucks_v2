@@ -11,6 +11,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Text} from '../../utils/Translate';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/AllLiveQuizzes.styles';
+import Header from '../../components/Header';
+import MainHeader from '../../components/MainHeader';
 
 export default function EnrolledQuizesSeelAll({navigation}) {
   const [live, setLive] = useState([]);
@@ -60,23 +62,16 @@ export default function EnrolledQuizesSeelAll({navigation}) {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}>
-              <Image
-                source={require('../../assets/img/arrows.png')}
-                resizeMode="contain"
-                style={styles.backButtonImage}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Text style={styles.headerTitle}>Enrolled Quizzes</Text>
-            </View>
-          </View>
-        </View>
-
+        <MainHeader
+          name={"Enrolled Quizzes"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'),
+            onPress: () => {
+              navigation.goBack();
+            },
+          }}
+        />
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
@@ -90,7 +85,7 @@ export default function EnrolledQuizesSeelAll({navigation}) {
   );
 }
 
-const LiveQuizz = (props) => {
+const LiveQuizz = props => {
   return (
     <View style={styles.quizContainer}>
       <View style={styles.quizHeader}>
@@ -172,7 +167,7 @@ const LiveQuizz = (props) => {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-            props.navigation.navigate('StartExam');
+          props.navigation.navigate('StartExam');
         }}>
         <LinearGradient
           start={{x: 0.0, y: 0.25}}

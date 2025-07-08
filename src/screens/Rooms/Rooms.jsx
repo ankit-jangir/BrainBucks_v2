@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image } from 'react-native'
+import { View, TouchableOpacity, Image, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
@@ -39,13 +39,13 @@ export default function Rooms({ navigation, route }) {
 
     async function verifyOtp() {
         if(otp.trim().length!==6){
-            Toast.show({ text1: "Enter A Valid OTP", type: "error" })
+              ToastAndroid.show('Enter A Valid OTP', ToastAndroid.SHORT);
             return;
         }
         let res = await verifyOTP(email, otp, Toast, setOtpLoading)
         
         if(res.status===1){
-            Toast.show({type:"success", text1:res.message})
+            ToastAndroid.show(res.message, ToastAndroid.SHORT);
             setOtpModalVisible(false)
             setOtp('')
             setEmail('')
@@ -56,7 +56,7 @@ export default function Rooms({ navigation, route }) {
         let mailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
 
         if (email.trim().length === 0 || !mailRegex.test(email)) {
-            Toast.show({ text1: "Please Enter a valid email", type: "error" })
+            ToastAndroid.show('Please Enter a valid email', ToastAndroid.SHORT);
             return;
         }
         let res = await SendOTPToMail(email, Toast, setMailLoading)

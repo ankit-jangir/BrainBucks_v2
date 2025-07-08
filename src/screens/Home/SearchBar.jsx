@@ -1,45 +1,54 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   TouchableOpacity,
-  TextInput,
-  Share,
   Text,
   Image,
   StyleSheet,
+  TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import styles from '../../styles/Home.styles'
+
 
 export default function SearchBar() {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.MainView}>
+    <View style={styles.mainHeader}>
+      {/* Hamburger Icon */}
       <TouchableOpacity
         onPress={() => navigation.openDrawer()}
-        style={styles.TouchImage}>
-        <View style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
-          <Image
-            source={require('../../assets/img/drawerr.png')}
-            style={{ height: 25, width: 25 }}></Image>
-        </View>
-      </TouchableOpacity>
-      <View style={{ justifyContent: 'center', alignItems: 'flex-start' }}>
+        style={styles.iconWrapper}>
         <Image
-          source={require('../../assets/img/bbcolorlogo.png')}
-          style={{width:140, height:30, objectFit:'contain'}}></Image>
-      </View>
-      <View style={styles.BellView}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('wallet')}
-          style={{ alignItems: 'center' }}>
+          source={require('../../assets/img/burgerbar.png')}
+          style={styles.iconImage}
+        />
+      </TouchableOpacity>
+
+      {/* Search Box */}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ExamSearchScreen')}
+        style={styles.searchBox}>
+        <Image
+          source={require('../../assets/img/search.png')}
+          style={styles.searchIcon}
+        />
+        <Text style={styles.searchPlaceholder}>Search for Exams</Text>
+      </TouchableOpacity>
+
+      {/* Bell Icon with Notification */}
+      {/* <TouchableOpacity onPress={() => console.log('Notifications')}>
+        <View style={styles.bellWrapper}>
           <Image
-            source={require('../../assets/img/walletblack.png')}
-            style={{ height: 25, width: 25 }}></Image>
-        </TouchableOpacity>
-      </View>
+            source={require('../../assets/img/notification.png')}
+            style={styles.bellIcon}
+          />
+         
+        </View>
+      </TouchableOpacity> */}
     </View>
   );
 }
+
 

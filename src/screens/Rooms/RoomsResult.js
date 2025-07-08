@@ -36,17 +36,10 @@ export default function RoomsResult({ navigation }) {
         setTopRank(res)
         setScore(res.scoreboard)
       } else {
-        Toast.show({
-          type: 'info',
-          text1: "Seems like you did not play the quiz",
-        });
+         ToastAndroid.show("Seems like you did not play the quiz", ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting earned data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoad(false);
     }

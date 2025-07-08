@@ -440,7 +440,39 @@ const styles = StyleSheet.create({
   },
   arrowToRight:{
     height: 25, width: 30, objectFit: 'contain', marginRight: 15, tintColor: 'black'
-  }
+  },
+   card: {
+    marginTop: 10,
+    backgroundColor: '#F5F7FA',
+    padding: 10,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
+    marginHorizontal: 10,
+  },
+  title: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 10,
+    fontWeight: '600',
+  },
+  codeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+  },
+  referCode: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: 'bold',
+    letterSpacing: 1,
+  },
 
 })
 
