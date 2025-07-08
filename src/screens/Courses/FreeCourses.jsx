@@ -6,72 +6,79 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
+  ToastAndroid,
 } from 'react-native';
-import { Text } from '../../utils/Translate';
-import React, { useEffect, useState } from 'react';
+import {Text} from '../../utils/Translate';
+import React, {useEffect, useState} from 'react';
 import NoDataFound from '../../components/NoDataFound';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import CourseApiService from '../../services/api/CourseApiService';
-import { BLOBURL } from '../../config/urls';
-import { Image } from 'react-native';
+import {BLOBURL} from '../../config/urls';
+import {Image} from 'react-native';
 import BasicServices from '../../services/BasicServices';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
 
-const FreeCourses = ({ navigation }) => {
+const FreeCourses = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState([]);
   const [videos, setVideos] = useState({});
   const [material, setMaterial] = useState({});
   const [loading2, setLoading2] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(2)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [data, setData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(2);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [data, setData] = useState([]);
 
   const serv = new CourseApiService();
 
   const onRefresh = () => {
-    getData()
+    getData();
   };
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
 
   function getDataHelper(page) {
     return async () => {
       let res = await serv.getFreeCourses(page);
       return res;
-    }
+    };
   }
 
   async function getData(page) {
     if (!page) {
-      page = 1
+      page = 1;
     }
     if (page <= totalPages) {
-      setCurrentPage(page)
-      let func = (type) => {
+      setCurrentPage(page);
+      let func = type => {
         setLoadingMore(type);
         setLoading2(type);
-      }
+      };
       if (page === 1) {
-        func = (type) => {
-          setLoading(type)
-          setLoading2(type)
-        }
+        func = type => {
+          setLoading(type);
+          setLoading2(type);
+        };
       }
-      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      let res = await BasicServices.apiTryCatch(
+        getDataHelper(page),
+        Toast,
+        () => {
+          func(true);
+        },
+        () => {
+          func(false);
+        },
+      );
       if (res) {
-        setTotalPages(res.totalPages)
-        if (page === 1)
-          setData(res.data)
-        else
-          setData([...data, ...res.data])
+        setTotalPages(res.totalPages);
+        if (page === 1) setData(res.data);
+        else setData([...data, ...res.data]);
       }
     }
-
   }
 
   async function getVideoForParticularCourse(course_id) {
@@ -80,20 +87,13 @@ const FreeCourses = ({ navigation }) => {
       let res = await serv.getVideos(course_id);
       if (res.status === 1) {
         setVideos(old => {
-          return { ...old, [course_id]: res.videos };
+          return {...old, [course_id]: res.videos};
         });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in fetching videos for free courses: ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading2(false);
     }
@@ -105,23 +105,16 @@ const FreeCourses = ({ navigation }) => {
       let res = await serv.getStudyMaterial(course_id, video_id);
       if (res.status === 1) {
         setMaterial(old => {
-          return { ...old, [video_id]: res.study_materials };
+          return {...old, [video_id]: res.study_materials};
         });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log(
         'Error in fetching study material for a free course: ',
         err.message,
       );
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading2(false);
     }
@@ -135,25 +128,24 @@ const FreeCourses = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{maxHeight:"100%"}}>
-      <View style={{ zIndex: 100 }}>
+    <SafeAreaView style={{maxHeight: '100%'}}>
+      <View style={{zIndex: 100}}>
         <Toast />
       </View>
       {loading ? (
         <ActivityIndicator size={40} />
       ) : data.length === 0 ? (
-        <View style={{ height: "100%" }}>
-          <NoDataFound
-            scale={0.8}
-            message={'No Courses Found'}
-          />
+        <View style={{height: '100%'}}>
+          <NoDataFound scale={0.8} message={'No Courses Found'} />
         </View>
       ) : (
         <FlatList
           data={data}
           onEndReachedThreshold={0.8}
-          onEndReached={() => { getData(currentPage + 1) }}
-          renderItem={({ item }) => {
+          onEndReached={() => {
+            getData(currentPage + 1);
+          }}
+          renderItem={({item}) => {
             let course = item;
             return (
               <Accordion
@@ -171,12 +163,12 @@ const FreeCourses = ({ navigation }) => {
                   elevation: 4,
                 }}
                 itemText={item.cou_name}
-                icon={{ uri: BLOBURL + item.banner }}>
+                icon={{uri: BLOBURL + item.banner}}>
                 {!videos[item._id] ? (
                   loading2 ? (
                     <ActivityIndicator size={40} />
                   ) : (
-                    <View style={{ height: 200 }}>
+                    <View style={{height: 200}}>
                       <NoDataFound
                         scale={0.5}
                         message={'No Videos Found for this course'}
@@ -184,7 +176,7 @@ const FreeCourses = ({ navigation }) => {
                     </View>
                   )
                 ) : videos[item._id].length === 0 ? (
-                  <View style={{ height: 200 }}>
+                  <View style={{height: 200}}>
                     <NoDataFound
                       scale={0.5}
                       message={'No Videos Found for this course'}
@@ -194,7 +186,7 @@ const FreeCourses = ({ navigation }) => {
                   <FlatList
                     data={videos[item._id]}
                     key={item => item._id}
-                    renderItem={({ item, index }) => {
+                    renderItem={({item, index}) => {
                       let video = item;
                       return (
                         <Accordion
@@ -227,15 +219,17 @@ const FreeCourses = ({ navigation }) => {
                             loading2 ? (
                               <ActivityIndicator size={40} />
                             ) : (
-                              <View style={{ height: 200 }}>
+                              <View style={{height: 200}}>
                                 <NoDataFound
                                   scale={0.5}
-                                  message={'No Study Material Found for this Video'}
+                                  message={
+                                    'No Study Material Found for this Video'
+                                  }
                                 />
                               </View>
                             )
                           ) : material[video._id].length === 0 ? (
-                            <View style={{ height: 200 }}>
+                            <View style={{height: 200}}>
                               <NoDataFound
                                 scale={0.5}
                                 message={'No Study Material For This Video'}
@@ -244,7 +238,7 @@ const FreeCourses = ({ navigation }) => {
                           ) : (
                             <FlatList
                               data={material[video._id]}
-                              renderItem={({ item, index }) => {
+                              renderItem={({item, index}) => {
                                 return (
                                   <Pressable key={item._id}>
                                     <View
@@ -276,11 +270,11 @@ const FreeCourses = ({ navigation }) => {
                                           }}
                                           resizeMode="contain"
                                         />
-                                        <Text style={{ color: '#000', flex: 1 }}>
+                                        <Text style={{color: '#000', flex: 1}}>
                                           {item.title}
                                         </Text>
                                       </View>
-                                      <View style={{ flexDirection: 'row' }}>
+                                      <View style={{flexDirection: 'row'}}>
                                         <View
                                           style={{
                                             justifyContent: 'center',
@@ -313,18 +307,19 @@ const FreeCourses = ({ navigation }) => {
                               }}></FlatList>
                           )}
                         </Accordion>
-                      )
+                      );
                     }}
                   />
                 )}
               </Accordion>
-            )
-          }
-          }
+            );
+          }}
         />
       )}
       <View>
-        {loadingMore && <ActivityIndicator size={25} color={ColorsConstant.Theme} />}
+        {loadingMore && (
+          <ActivityIndicator size={25} color={ColorsConstant.Theme} />
+        )}
       </View>
     </SafeAreaView>
   );

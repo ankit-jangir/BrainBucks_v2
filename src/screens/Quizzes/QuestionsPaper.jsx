@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, AppState } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, AppState, ToastAndroid } from 'react-native';
 import { Image } from 'react-native-elements';
 import LottieView from 'lottie-react-native';
 import { getactiveQuestion, submitactiveQuiz, updateAnswer } from '../../controllers/ActiveQuizController';
@@ -68,7 +68,8 @@ export default function QuestionsPaper({ navigation }) {
       } else {
         if (intervalRef.current)
           BackgroundTimer.clearInterval(intervalRef.current)
-        Toast.show({ type: "info", text1: "Time's up. Submitting..." })
+         ToastAndroid.show("Time's up. Submitting...", ToastAndroid.SHORT);
+
         handleSubmit(true)
       }
     }, 1000);

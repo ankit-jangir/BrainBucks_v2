@@ -1,12 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import { Text, Image, View, StatusBar, Linking } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
-import { getHeaderTitle } from '@react-navigation/elements';
-import { NavigationContainer, useIsFocused, useNavigation } from '@react-navigation/native';
+import React, {useEffect, useRef} from 'react';
+import {
+  Text,
+  Image,
+  View,
+  StatusBar,
+  Linking,
+  StyleSheet,
+  Animated,
+} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createStackNavigator} from '@react-navigation/stack';
+import {getHeaderTitle} from '@react-navigation/elements';
+import {
+  NavigationContainer,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Sidebar from './src/screens/Home/Sidebar';
 import Wallet from './src/screens/Wallet/Wallet';
 import Study from './src/screens/Study/Study';
@@ -50,7 +62,7 @@ import Challenges from './src/screens/saved/Challenges';
 import FreeTrivia from './src/screens/saved/FreeTrivia';
 import PaymentPopup from './src/screens/Wallet/PaymentPopup';
 import AllLiveQuizzes from './src/screens/Quizzes/AllLiveQuizzes';
-import RulesofParticipation from './src/screens/Quizzes/QuizDetails';
+import QuizDetails from './src/screens/Quizzes/QuizDetails';
 import StartExam from './src/screens/Quizzes/StartExam';
 import Rules from './src/screens/Quizzes/Rules';
 import Rewards from './src/screens/Quizzes/Rewards';
@@ -106,7 +118,7 @@ import ScheduleQuiz from './src/screens/Rooms/ScheduleQuiz';
 import ScheduleQuizTime from './src/screens/Rooms/ScheduleQuizTime';
 import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfullyQuiz';
 import RoomSetting from './src/screens/Rooms/RoomSetting';
-import { ColorsConstant } from './src/constants/Colors.constant';
+import {ColorsConstant} from './src/constants/Colors.constant';
 import GraphQLProvider from './src/context/GraphQLProvider';
 import RoomNotifications from './src/screens/Rooms/RoomNotifications';
 import RoomsAnimations from './src/screens/Rooms/RoomsAnimations';
@@ -119,13 +131,14 @@ import RoomsQuestions from './src/screens/Rooms/RoomsQuestions.js';
 import RoomsResult from './src/screens/Rooms/RoomsResult.js';
 import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
-import { setNavigation } from './index.js';
+import {setNavigation} from './index.js';
 import HomeReelPlayer from './src/screens/Home/HomeReelPlayer.jsx';
 import messaging from '@react-native-firebase/messaging';
-
-
-
-
+import SignupReferral from './src/screens/Login/SignupReferral.jsx';
+import {KeyboardProvider} from 'react-native-keyboard-controller';
+import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { useReferralListener } from './src/hooks/useReferralListener.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -150,6 +163,7 @@ function MyStack() {
       <Stack.Screen name="SignupName" component={SignupName} />
       <Stack.Screen name="SignupGender" component={SignupGender} />
       <Stack.Screen name="SignUpExam" component={SignUpExam} />
+      <Stack.Screen name="SignupReferral" component={SignupReferral} />
       <Stack.Screen name="ViewProfile" component={ViewProfile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="StudyExam" component={StudyExam} />
@@ -167,7 +181,7 @@ function MyStack() {
       <Stack.Screen name="withdrawOtp" component={WithdrawOtp} />
       <Stack.Screen name="addbanksucessfully" component={AddBankSucessfully} />
       <Stack.Screen name="withdrawReq" component={WithdrawReq} />
-      <Stack.Screen name="deposit" component={Deposit} />
+      <Stack.Screen name="Deposit" component={Deposit} />
       <Stack.Screen name="dailyupdates" component={DailyUpdates} />
       <Stack.Screen name="transactionDetails" component={TransctionDetails} />
       <Stack.Screen name="withdrawMoney" component={WithdrawMoney} />
@@ -180,21 +194,36 @@ function MyStack() {
       <Stack.Screen name="ExamDetail" component={ExamDetail} />
       <Stack.Screen name="paymentpopup" component={PaymentPopup} />
       <Stack.Screen name="AllLiveQuizzes" component={AllLiveQuizzes} />
-      <Stack.Screen name='QuestionsPaper' component={QuestionsPaper} />
-      <Stack.Screen name="RulesofParticipation" component={RulesofParticipation} />
+      <Stack.Screen name="QuestionsPaper" component={QuestionsPaper} />
+      <Stack.Screen name="QuizDetails" component={QuizDetails} />
       <Stack.Screen name="StartExam" component={StartExam} />
       <Stack.Screen name="Rules" component={Rules} />
       <Stack.Screen name="Rewards" component={Rewards} />
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
-      <Stack.Screen name="ActiveQuizzJoinAnimation" component={ActiveQuizzJoinAnimation} />
+      <Stack.Screen
+        name="ActiveQuizzJoinAnimation"
+        component={ActiveQuizzJoinAnimation}
+      />
       <Stack.Screen name="FreeTriviaStarExam" component={FreeTriviaStarExam} />
-      <Stack.Screen name="FreeRulesParticipation" component={FreeRulesParticipation} />
-      <Stack.Screen name="TriviaAnimationQuizz" component={TriviaAnimationQuizz} />
+      <Stack.Screen
+        name="FreeRulesParticipation"
+        component={FreeRulesParticipation}
+      />
+      <Stack.Screen
+        name="TriviaAnimationQuizz"
+        component={TriviaAnimationQuizz}
+      />
       <Stack.Screen name="TriviaSubmit" component={TriviaSubmit} />
-      <Stack.Screen name="TriviaQuestionPaper" component={TriviaQuestionPaper} />
-      <Stack.Screen name="TriviaSubmitConfirmation" component={TriviaSubmitConfirmation} />
+      <Stack.Screen
+        name="TriviaQuestionPaper"
+        component={TriviaQuestionPaper}
+      />
+      <Stack.Screen
+        name="TriviaSubmitConfirmation"
+        component={TriviaSubmitConfirmation}
+      />
       <Stack.Screen name="resultreward" component={ResultRewards} />
       <Stack.Screen name="TriviaScoreCard" component={TriviaScoreCard} />
       <Stack.Screen name="QuizCard" component={QuizCard} />
@@ -204,32 +233,50 @@ function MyStack() {
       <Stack.Screen name="viewpdf" component={ViewPdf} />
       <Stack.Screen name="addExamss" component={AddExamss} />
       <Stack.Screen name="MyExamQuizzes" component={MyExamQuizzes} />
-      <Stack.Screen name='myexams' component={MyExams} />
-      <Stack.Screen name='search' component={Search} />
-      <Stack.Screen name="Notification" options={
-        { title: 'Notification' }
-      } component={Notification} />
-      <Stack.Screen name='chat' component={Chat} />
-      <Stack.Screen name='support' component={Support} />
+      <Stack.Screen name="myexams" component={MyExams} />
+      <Stack.Screen name="search" component={Search} />
+      <Stack.Screen
+        name="Notification"
+        options={{title: 'Notification'}}
+        component={Notification}
+      />
+      <Stack.Screen name="chat" component={Chat} />
+      <Stack.Screen name="support" component={Support} />
       <Stack.Screen name="AboutBB" component={AboutBb} />
       <Stack.Screen name="CustomerSupport" component={CustomerSupport} />
       <Stack.Screen name="ScoreCard" component={ScoreCard} />
       <Stack.Screen name="WinnerBoardLive" component={WinnerBoard} />
       <Stack.Screen name="QuizzesResult" component={QuizzesResult} />
-      <Stack.Screen name="QuizzesResultRewards" component={QuizzesResultRewards} />
-      <Stack.Screen name='reels' component={Reels} options={{ gestureEnabled: false }} />
-      <Stack.Screen name='rooms' component={Rooms} />
-      <Stack.Screen name='createroom' component={CreateRoom} />
-      <Stack.Screen name='roomcreatedsuccess' component={RoomCreatedSuccesfully} />
-      <Stack.Screen name='roomenter' component={RoomEnter} />
-      <Stack.Screen name='roomhistory' component={RoomsQuizHistory} />
-      <Stack.Screen name='createlivequiz' component={CreateLiveQuiz} />
-      <Stack.Screen name='createliveslots' component={CreateLiveSlots} />
-      <Stack.Screen name='createquizsuccesfully' component={CreatedQuizSuccesfully} />
-      <Stack.Screen name='schedulquiz' component={ScheduleQuiz} />
-      <Stack.Screen name='schedulquiztime' component={ScheduleQuizTime} />
-      <Stack.Screen name='scheduledsuccessfullyQuiz' component={ScheduledSuccessfullyQuiz} />
-      <Stack.Screen name='roomsetting' component={RoomSetting} />
+      <Stack.Screen
+        name="QuizzesResultRewards"
+        component={QuizzesResultRewards}
+      />
+      <Stack.Screen
+        name="reels"
+        component={Reels}
+        options={{gestureEnabled: false}}
+      />
+      <Stack.Screen name="rooms" component={Rooms} />
+      <Stack.Screen name="createroom" component={CreateRoom} />
+      <Stack.Screen
+        name="roomcreatedsuccess"
+        component={RoomCreatedSuccesfully}
+      />
+      <Stack.Screen name="roomenter" component={RoomEnter} />
+      <Stack.Screen name="roomhistory" component={RoomsQuizHistory} />
+      <Stack.Screen name="createlivequiz" component={CreateLiveQuiz} />
+      <Stack.Screen name="createliveslots" component={CreateLiveSlots} />
+      <Stack.Screen
+        name="createquizsuccesfully"
+        component={CreatedQuizSuccesfully}
+      />
+      <Stack.Screen name="schedulquiz" component={ScheduleQuiz} />
+      <Stack.Screen name="schedulquiztime" component={ScheduleQuizTime} />
+      <Stack.Screen
+        name="scheduledsuccessfullyQuiz"
+        component={ScheduledSuccessfullyQuiz}
+      />
+      <Stack.Screen name="roomsetting" component={RoomSetting} />
       <Stack.Screen name="RoomNotification" component={RoomNotifications} />
       <Stack.Screen name="Roomanmations" component={RoomsAnimations} />
       <Stack.Screen name="Roomdetails" component={RoomsDetails} />
@@ -241,23 +288,9 @@ function MyStack() {
       <Stack.Screen name="RoomsResult" component={RoomsResult} />
       <Stack.Screen name="RoomsScored" component={RoomsScored} />
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
-      <Stack.Screen name='HomeReelPlayer' component={HomeReelPlayer} />
+      <Stack.Screen name="HomeReelPlayer" component={HomeReelPlayer} />
+      <Stack.Screen name="ExamSearchScreen" component={ExamSearchScreen} />
     </Stack.Navigator>
-  );
-}
-
-
-const getHeader = ({ navigation, route, options, back }) => {
-  const title = getHeaderTitle(options, route.name);
-
-  return (
-    <MyHeader
-      title={title}
-      leftButton={
-        back ? <MyBackButton onPress={navigation.goBack} /> : undefined
-      }
-      style={options.headerStyle}
-    />
   );
 }
 
@@ -266,168 +299,215 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 13, paddingBottom: 5 },
-          tabBarStyle: { height: 60, backgroundColor: 'white' },
+          tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
+          tabBarStyle: {
+            height: 64,
+            backgroundColor: 'white',
+            paddingBottom: 0,
+          },
           tabBarShowLabel: true,
           headerShown: false,
-          tabBarActiveTintColor: ColorsConstant.Theme,
+          tabBarActiveTintColor: '#701DDB',
         }}>
-        <>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarIcon: ({ focused, color }) => (
-                <View>
-                  {focused ? (
-                    <Image
-                      source={require('./src/assets/img/homedark.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.Theme}
-                    />
-                  ) : (
-                    <Image
-                      source={require('./src/assets/img/homenormal.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  )}
-                </View>
-              ),
-            }}
-          />
-          {/* <Tab.Screen
-            name="Saved"
-            component={Saved}
-            options={{
-              tabBarLabel: 'Categories',
-              tabBarIcon: ({ focused, color }) => (
-                <View>
-                  {focused ? (
-                    <Image
-                      source={require('./src/assets/img/bookmarkblack.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.Theme}
-                    />
-                  ) : (
-                    <Image
-                      source={require('./src/assets/img/bookmark.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  )}
-                </View>
-              ),
-            }}
-          /> */}
-          {/* <Tab.Screen style={{position:'relative ',}} name="Room" component={Rooms} options={{ tabBarLabelStyle:{ fontSize:12, paddingBottom:5 }, 'tabBarLabel':"Rooms", 'tabBarIcon':( ({focused, color}) => (
-            <View style={{position:"absolute", justifyContent:"center", bottom:8, alignItems:"center", flex:1, justifyContent:'center', alignItems:'center',backgroundColor:  focused ? '#475B9F' : "#F6F8FF" ,borderRadius:100,borderColor:'#ECECEC',borderWidth:1}}> 
-                   <View style={{ borderRadius:100, height:60, width:60, justifyContent:'center', alignItems:'center',}}>
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarLabel: 'Home',
+            tabBarIcon: ({focused}) => {
+              const scale = useRef(new Animated.Value(1)).current;
+
+              useEffect(() => {
+                Animated.spring(scale, {
+                  toValue: focused ? 1.2 : 1,
+                  useNativeDriver: true,
+                }).start();
+              }, [focused]);
+
+              return (
+                <Animated.View
+                  style={[
+                    styles.tabIconWrapper,
+                    focused && styles.activeTabBorder,
+                    {transform: [{scale}]},
+                  ]}>
+                  <Image
+                    source={require('./src/assets/img/hut.png')}
+                    style={[
+                      styles.iconStyle,
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
+                    ]}
+                    resizeMode="contain"
+                  />
+                </Animated.View>
+              );
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Study"
+          component={Study}
+          options={{
+            tabBarLabel: 'Study',
+            tabBarIcon: ({focused}) => {
+              const scale = useRef(new Animated.Value(1)).current;
+
+              useEffect(() => {
+                Animated.spring(scale, {
+                  toValue: focused ? 1.2 : 1,
+                  useNativeDriver: true,
+                }).start();
+              }, [focused]);
+
+              return (
+                <Animated.View
+                  style={[
+                    styles.tabIconWrapper,
+                    focused && styles.activeTabBorder,
+                    {transform: [{scale}]},
+                  ]}>
+                  <Image
+                    source={
+                      focused
+                        ? require('./src/assets/img/bookmarkblack.png')
+                        : require('./src/assets/img/bookmark.png')
+                    }
+                    style={[
+                      styles.iconStyle,
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
+                    ]}
+                    resizeMode="contain"
+                  />
+                </Animated.View>
+              );
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Rooms"
+          component={Rooms}
+          options={{
+            tabBarLabel: 'Rooms',
+            tabBarIcon: ({focused}) => {
+              const scale = useRef(new Animated.Value(1)).current;
+
+              useEffect(() => {
+                Animated.spring(scale, {
+                  toValue: focused ? 1.15 : 1,
+                  useNativeDriver: true,
+                }).start();
+              }, [focused]);
+
+              return (
+                <Animated.View
+                  style={[styles.roomsWrapper, {transform: [{scale}]}]}>
+                  <View
+                    style={[
+                      styles.roomCircle,
                       {
-                        focused ? (<Image source={require('./assets/roomimgwhite.png')} resizeMode='contain' style={{width:30,height:30}} />) : 
-                        (<Image source={require('./assets/roomimg.png')} resizeMode='contain' style={{width:35,height:35}} />)
-                      }
-                   </View>
-                   <View style={{position:'absolute',top:50,width:"100%",height:20,backgroundColor:'red',justifyContent:"center",alignItems:'center',borderRadius:3}}>
-                     <Text style={{fontFamily:"WorkSans-Regular",fontSize:12,color:'#fff'}}>New</Text>
-                   </View>
-              </View>   
-          ))}}/> */}
-
-          <Tab.Screen
-            style={{ position: 'relative ' }}
-            name="Courses"
-            component={Courses}
-            options={{
-              // tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
-              tabBarLabel: 'Courses',
-              tabBarIcon: ({ focused, color }) => (
-                <View>
-                  {focused ? (
-                    <Image
-                      source={require('./src/assets/img/roomimgwhite.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.Theme}
-                    />
-                  ) : (
-                    <Image
-                      source={require('./src/assets/img/roomimg.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.AshGray}
-
-                    />
-                  )}
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Rooms"
-            component={Rooms}
-            options={{
-              tabBarLabel: 'Rooms',
-              tabBarIcon: ({ focused, color }) => (
-                <View>
-                  {focused ? (
+                        backgroundColor: focused ? '#701DDB' : '#F6F8FF',
+                      },
+                    ]}>
                     <Image
                       source={require('./src/assets/img/roomsimgs.png')}
                       resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.Theme}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        tintColor: focused ? '#fff' : '#475B9F',
+                      }}
                     />
-                  ) : (
-                    <Image
-                      source={require('./src/assets/img/roomsimgs.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.AshGray}
-                    />
-                  )}
-                </View>
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Reels"
-            component={Reels}
-            options={{
-              tabBarLabel: 'Boosters',
-              tabBarIcon: ({ focused, color }) => (
-                <View>
-                  {focused ? (
-                    <Image
-                      source={require('./src/assets/img/resume.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.Theme}
-                    />
-                  ) : (
-                    <Image
-                      source={require('./src/assets/img/resume.png')}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                      tintColor={ColorsConstant.AshGray}
-                    />
-                  )}
-                </View>
-              ),
-            }}
-          />
-        </>
+                  </View>
+                  <View style={styles.newLabel}>
+                    <Text style={styles.newLabelText}>New</Text>
+                  </View>
+                </Animated.View>
+              );
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Saved"
+          component={Saved}
+          options={{
+            tabBarLabel: 'Saved',
+            tabBarIcon: ({focused}) => {
+              const scale = useRef(new Animated.Value(1)).current;
+
+              useEffect(() => {
+                Animated.spring(scale, {
+                  toValue: focused ? 1.2 : 1,
+                  useNativeDriver: true,
+                }).start();
+              }, [focused]);
+
+              return (
+                <Animated.View
+                  style={[
+                    styles.tabIconWrapper,
+                    focused && styles.activeTabBorder,
+                    {transform: [{scale}]},
+                  ]}>
+                  <Image
+                    source={require('./src/assets/img/heart.png')}
+                    style={[
+                      styles.iconStyle,
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
+                    ]}
+                    resizeMode="contain"
+                  />
+                </Animated.View>
+              );
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Wallet"
+          component={Wallet}
+          options={{
+            tabBarLabel: 'Wallet',
+            tabBarIcon: ({focused}) => {
+              const scale = useRef(new Animated.Value(1)).current;
+
+              useEffect(() => {
+                Animated.spring(scale, {
+                  toValue: focused ? 1.2 : 1,
+                  useNativeDriver: true,
+                }).start();
+              }, [focused]);
+
+              return (
+                <Animated.View
+                  style={[
+                    styles.tabIconWrapper,
+                    focused && styles.activeTabBorder,
+                    {transform: [{scale}]},
+                  ]}>
+                  <Image
+                    source={require('./src/assets/img/wallet.png')}
+                    style={[
+                      styles.iconStyle,
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
+                    ]}
+                    resizeMode="contain"
+                  />
+                </Animated.View>
+              );
+            },
+          }}
+        />
       </Tab.Navigator>
     </SafeAreaProvider>
   );
 }
-
 function MyDrawer() {
   return (
     <Drawer.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{headerShown: false}}
       drawerContent={props => <Sidebar {...props} />}>
       <Drawer.Screen name="Home" component={MyTabs} />
     </Drawer.Navigator>
@@ -435,9 +515,8 @@ function MyDrawer() {
 }
 
 export default function App() {
-
-  const navRef = useRef()
-
+  const navRef = useRef();
+useReferralListener(); 
   useEffect(() => {
     onAppBootstrap();
   }, []);
@@ -445,49 +524,61 @@ export default function App() {
   const config = {
     screens: {
       rooms: {
-        path: "rooms",
+        path: 'rooms',
         parse: {
-          id: (id) => `${id}`,
-          type: (type) => `${type}`
+          id: id => `${id}`,
+          type: type => `${type}`,
         },
         screens: {
-          Explore: "public",
-          Private: "private",
-          MyRooms: "myrooms"
-        }
+          Explore: 'public',
+          Private: 'private',
+          MyRooms: 'myrooms',
+        },
       },
-      RulesofParticipation: {
+      // ssssss
+      Signup: {
+        path: 'signup',
+      },
+      SignupReferral: {
+        path: 'signup/:referralCode?',
+        parse: {
+          referralCode: code => `${code}`,
+        },
+      },
+
+      // ssss
+      QuizDetails: {
         path: 'quiz',
         parse: {
-          id: (id) => `${id}`,
+          id: id => `${id}`,
         },
       },
       reels: {
-        path: "reels",
+        path: 'reels',
         parse: {
-          id: (id) => `${id}`
-        }
+          id: id => `${id}`,
+        },
       },
       QuizzesResult: {
-        path: "quizresult",
+        path: 'quizresult',
         parse: {
-          id: (id) => `${id}`
-        }
+          id: id => `${id}`,
+        },
       },
       StartExam: {
-        path: "quizstart",
+        path: 'quizstart',
         parse: {
-          id: (id) => `${id}`
-        }
+          id: id => `${id}`,
+        },
       },
       dailyupdates: {
-        path: "daily"
-      }
-    }
+        path: 'daily',
+      },
+    },
   };
 
   const linking = {
-    prefixes: ['brainbucks://', 'https://app.brainbucks.in'],
+    prefixes: ['brainbucks://', 'https://brainbucks.in'],
     config: config,
     async getInitialURL() {
       const url = await Linking.getInitialURL();
@@ -503,7 +594,7 @@ export default function App() {
       }
     },
     subscribe(listener) {
-      const onReceiveURL = ({ url }) => listener(url);
+      const onReceiveURL = ({url}) => listener(url);
 
       // Listen to incoming links from deep linking
       const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
@@ -513,7 +604,7 @@ export default function App() {
         const url = remoteMessage?.data?.link;
         console.log(url);
         if (typeof url === 'string') {
-          listener(url)
+          listener(url);
         }
       });
 
@@ -524,22 +615,73 @@ export default function App() {
     },
   };
 
-
-
   return (
-    <NavigationContainer ref={navRef} onReady={() => { setNavigation(navRef.current) }} linking={linking}>
-      <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
-      <AddBankReducer>
-        <WithdrawReducer>
-          <IdReducer>
-            <QuizPlayReducer>
-              <GraphQLProvider>
-                <MyStack />
-              </GraphQLProvider>
-            </QuizPlayReducer>
-          </IdReducer>
-        </WithdrawReducer>
-      </AddBankReducer>
-    </NavigationContainer>
+    <KeyboardProvider>
+    
+      <NavigationContainer
+        ref={navRef}
+        onReady={() => {
+          setNavigation(navRef.current);
+        }}
+        linking={linking}>
+        
+        <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
+        <AddBankReducer>
+          <WithdrawReducer>
+            <IdReducer>
+              <QuizPlayReducer>
+                <GraphQLProvider>
+                  <MyStack />
+                </GraphQLProvider>
+              </QuizPlayReducer>
+            </IdReducer>
+          </WithdrawReducer>
+        </AddBankReducer>
+      </NavigationContainer>
+    </KeyboardProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    width: 18,
+    height: 18,
+  },
+  tabIconWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+  },
+  activeTabBorder: {
+    borderTopWidth: 2,
+    borderTopColor: '#701DDB',
+    borderRadius: 2,
+    // marginTop: -2,
+  },
+  roomsWrapper: {
+    alignItems: 'center',
+    marginTop: -40,
+  },
+  roomCircle: {
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#ECECEC',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  newLabel: {
+    position: 'absolute',
+    bottom: -8,
+    backgroundColor: '#D92828',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  newLabelText: {
+    color: 'white',
+    fontSize: 8,
+    fontWeight: '600',
+  },
+});

@@ -1,25 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, View, TouchableOpacity, Image, Linking, TextInput, StatusBar, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  ScrollView,
+  View,
+  TouchableOpacity,
+  Image,
+  Linking,
+  TextInput,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import LottieView from 'lottie-react-native';
-import { Text } from '../../utils/Translate';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {Text} from '../../utils/Translate';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import MainHeader from '../../components/MainHeader';
 
-export default function CustomerSupport({ navigation }) {
-
+export default function CustomerSupport({navigation}) {
   const [number, setNumber] = useState('989 654 52365');
   const [email, setEmail] = useState('Support@brainbucks.in');
 
   useEffect(() => {
     getDetails();
-  }, [])
+  }, []);
 
   const getDetails = () => {
     var requestOptions = {
       method: 'POST',
-      redirect: 'follow'
+      redirect: 'follow',
     };
 
-    fetch("https://brainbucks.in/api/user/customer-support", requestOptions)
+    fetch('https://brainbucks.in/api/user/customer-support', requestOptions)
       .then(response => response.json())
       .then(result => {
         setNumber(result.supportContact.value);
@@ -27,54 +36,46 @@ export default function CustomerSupport({ navigation }) {
         console.log(result);
       })
       .catch(error => console.log('error', error));
-  }
+  };
 
   const dialCall = () => {
     let phoneNumber = '';
     if (Platform.OS === 'android') {
       phoneNumber = 'tel:${' + number + '}';
-    }
-    else {
+    } else {
       phoneNumber = 'telprompt:${' + number + '}';
     }
     Linking.openURL(phoneNumber);
   };
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
+
   return (
     <>
       <View style={styles.safeArView}>
-        <StatusBar barStyle={'dark-content'} translucent={false} backgroundColor={'transparent'} />
-        <View style={styles.Hview}>
-        <View style={styles.Hview1}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.THead}>
-            <Image
-              source={require('../../assets/img/arrows.png')}
-              resizeMode="contain"
-              style={{width: 20, height: 20}}
-            />
-          </TouchableOpacity>
-          <View style={styles.ViewMy}>
-            <Text style={styles.TextMy}>Support</Text>
-          </View>
-        </View>
-      </View>
+        <StatusBar
+          barStyle={'dark-content'}
+          translucent={false}
+          backgroundColor={'transparent'}
+        />
+        <MainHeader
+          name="CustomerSupport"
+          leftIcon={{
+            source: require('../../assets/img/backq.png'),
+            onPress: () => navigation.goBack(), // wrap in an arrow function
+          }}
+        />
 
-        <ScrollView style={{ flex: 1, }}>
-          <View style={styles.GotView} >
-            <View style={styles.GotView1} >
-              <View style={styles.SomeView} >
+        <ScrollView style={{flex: 1}}>
+          <View style={styles.GotView}>
+            <View style={styles.GotView1}>
+              <View style={styles.SomeView}>
                 <Text style={styles.TextGot}>Got, some issues ?</Text>
               </View>
-              <View style={styles.WEView} >
+              <View style={styles.WEView}>
                 <Text style={styles.TextWE}>We are here to Help</Text>
               </View>
             </View>
           </View>
-          <View style={styles.lotiView} >
+          <View style={styles.lotiView}>
             <LottieView
               autoPlay
               style={styles.lotiImage}
@@ -82,56 +83,92 @@ export default function CustomerSupport({ navigation }) {
             />
           </View>
 
-          <View style={styles.TalkView} >
-            <TouchableOpacity onPress={() => { dialCall() }} style={styles.TalkView1} >
-              <View style={styles.IconView} >
-              <Image source={require('../../assets/img/support.png')} resizeMode='contain' style={{height:35,width:35}} />
-
+          <View style={styles.TalkView}>
+            <TouchableOpacity
+              onPress={() => {
+                dialCall();
+              }}
+              style={styles.TalkView1}>
+              <View style={styles.IconView}>
+                <Image
+                  source={require('../../assets/img/support.png')}
+                  resizeMode="contain"
+                  style={{height: 35, width: 35}}
+                />
               </View>
 
-              <View style={styles.GetView} >
+              <View style={styles.GetView}>
                 <Text style={styles.TextTalk}>Talk to our Representative</Text>
-                <View style={{ width: '70%' }} >
-                  <Text style={styles.TextAva}>Available from Mon-Sat ( 10:00 am - 6:00 pm )</Text>
+                <View style={{width: '70%'}}>
+                  <Text style={styles.TextAva}>
+                    Available from Mon-Sat ( 10:00 am - 6:00 pm )
+                  </Text>
                 </View>
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
-
+              <Image
+                source={require('../../assets/img/right-arrows.png')}
+                tintColor={'black'}
+                resizeMode="contain"
+                style={{height: 30, width: 30, marginRight: 15}}
+              />
             </TouchableOpacity>
           </View>
 
-          <View style={styles.TalkView} >
-            <TouchableOpacity onPress={() => { Linking.openURL('mailto:' + email) }} style={styles.TalkView1} >
-              <View style={styles.IconView} >
-              <Image source={require('../../assets/img/email.png')} resizeMode='contain' style={{height:30,width:30}} />
+          <View style={styles.TalkView}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL('mailto:' + email);
+              }}
+              style={styles.TalkView1}>
+              <View style={styles.IconView}>
+                <Image
+                  source={require('../../assets/img/email.png')}
+                  resizeMode="contain"
+                  style={{height: 30, width: 30}}
+                />
               </View>
-              <View style={styles.GetView} >
+              <View style={styles.GetView}>
                 <Text style={styles.TextTalk}>Get Email Support</Text>
-                <View style={{ width: '70%' }} >
+                <View style={{width: '70%'}}>
                   <Text style={styles.TextAva}>Available 24*7</Text>
                 </View>
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
-
+              <Image
+                source={require('../../assets/img/right-arrows.png')}
+                tintColor={'black'}
+                resizeMode="contain"
+                style={{height: 30, width: 30, marginRight: 15}}
+              />
             </TouchableOpacity>
           </View>
-          <View style={styles.TalkView} >
-            <TouchableOpacity style={styles.TouchView} onPress={()=>{navigation.navigate('support')}}>
-              <View style={styles.IconView} >
-                <Image source={require('../../assets/img/message.png')} resizeMode='contain' style={styles.MsgPic} />
+          <View style={styles.TalkView}>
+            <TouchableOpacity
+              style={styles.TouchView}
+              onPress={() => {
+                navigation.navigate('support');
+              }}>
+              <View style={styles.IconView}>
+                <Image
+                  source={require('../../assets/img/message.png')}
+                  resizeMode="contain"
+                  style={styles.MsgPic}
+                />
               </View>
-              <View style={styles.GetView} >
+              <View style={styles.GetView}>
                 <Text style={styles.TextTalk}>Get Chat Support</Text>
-                
               </View>
-              <Image source={require('../../assets/img/arrowtoright.png')} tintColor={"black"} resizeMode='contain' style={{height:30,width:30,marginRight:15}} />
-
+              <Image
+                source={require('../../assets/img/right-arrows.png')}
+                tintColor={'black'}
+                resizeMode="contain"
+                style={{height: 30, width: 30, marginRight: 15}}
+              />
             </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
     </>
-  )
+  );
 }
 const styles = StyleSheet.create({
   GotView: {
@@ -142,81 +179,83 @@ const styles = StyleSheet.create({
   },
   GotView1: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   SomeView: {
     width: '100%',
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   TextGot: {
-    fontFamily: "WorkSans-Medium",
+    // fontFamily: 'WorkSans-Medium',
+    fontFamily: 'Noto Sans Devanagari',
     fontSize: 20,
-    color: ColorsConstant.Black
+    color: ColorsConstant.Black,
   },
   WEView: {
     width: '70%',
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   TextWE: {
-    fontFamily: "WorkSans-Medium",
-    fontSize: 36,
-    color: ColorsConstant.Black
+    fontFamily: 'WorkSans-Medium',
+    fontSize: 30,
+    color: ColorsConstant.Black,
   },
   lotiView: {
     flex: 1,
     alignItems: 'center',
   },
   TalkView: {
-    width: "100%",
+    width: '100%',
     height: 80,
     paddingHorizontal: 10,
-    marginBottom: 15
+    marginBottom: 15,
   },
   TalkView1: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: ColorsConstant.Black,
+    // borderColor: '#FFF4F4',
     borderRadius: 15,
     justifyContent: 'space-around',
-    alignItems: "center"
+    alignItems: 'center',
   },
   IconView: {
     width: 40,
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 0.20
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 0.2,
   },
   GetView: {
-    flex: 0.80,
+    flex: 0.8,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
   TextTalk: {
     fontSize: 18,
-    fontFamily: "WorkSans-Medium",
-    color:ColorsConstant.Black
+    fontFamily: 'WorkSans-Medium',
+    color: ColorsConstant.Black,
   },
   TextAva: {
     fontSize: 12,
-    fontFamily: "WorkSans-Regular",
-    color: ColorsConstant.lightWhite
+    fontFamily: 'WorkSans-Regular',
+    color: ColorsConstant.lightWhites,
   },
   TouchView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#000',
     borderRadius: 15,
     justifyContent: 'space-around',
-    alignItems: "center",
-    backgroundColor: ColorsConstant.LightColor
+    alignItems: 'center',
+    backgroundColor: ColorsConstant.LightColor,
   },
   TextCome: {
     fontSize: 12,
-    fontFamily: "WorkSans-Regular",
-    color: ColorsConstant.RedLight
+    fontFamily: 'WorkSans-Regular',
+    color: ColorsConstant.RedLight,
   },
   lotiImage: {
     width: 200,
@@ -225,46 +264,10 @@ const styles = StyleSheet.create({
   },
   MsgPic: {
     width: 30,
-    height: 30
+    height: 30,
   },
   safeArView: {
     flex: 1,
-    backgroundColor: ColorsConstant.White
-},
-Hview: {
-    width: '100%',
-    height: 65,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: ColorsConstant.LightGray,
-    backgroundColor:"white"
+    backgroundColor: ColorsConstant.White,
   },
-  Hview1: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  THead: {
-    flex: 0.15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 4,
-    width: 50,
-    height: 50,
-    borderColor: ColorsConstant.LightWhite,
-    borderWidth: 1,
-    borderRadius: 100,
-  },
-  ViewMy: {
-    flex: 0.8,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    paddingLeft: 20,
-  },
-   TextMy: {
-    fontSize: 20,
-    fontFamily: 'WorkSans-SemiBold',
-    color: '#000',
-  },
-})
+});

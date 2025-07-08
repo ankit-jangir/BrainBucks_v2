@@ -64,10 +64,7 @@ export default function RoomsStart({ navigation, route }) {
     const details = data.view_detail_of_roomquiz;
 
     if (details.error) {
-      Toast.show({
-        type: 'error',
-        text1: details.error
-      })
+       ToastAndroid.show(details.error, ToastAndroid.SHORT);
       return;
     }
 

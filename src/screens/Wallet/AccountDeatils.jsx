@@ -5,6 +5,7 @@ import { useAddBank } from '../../context/AddBankReducer';
 import WalletApiService from '../../services/api/WalletApiService';
 import Toast from 'react-native-toast-message';
 import { ActivityIndicator } from 'react-native';
+import MainHeader from '../../components/MainHeader';
 
 const AccountDetails = ({navigation}) => {
 
@@ -24,17 +25,10 @@ async function next(){
       }
       navigation.navigate('bankotp')
     }else{
-      Toast.show({
-        type:'error',
-        text1:res.Backend_Error
-      })
+      ToastAndroid.show( res.Backend_Error, ToastAndroid.SHORT);
     }
   }catch(err){
     console.log("Errir in dispatching in accounddetails: ",err);
-    // Toast.show({
-    //   type:'error',
-    //   text1:"Something went wrong"
-    // })
   }finally{
     setLoading(false)
   }
@@ -42,20 +36,22 @@ async function next(){
 
 
   return (
+
+    <>
+        <MainHeader
+          name={"Bank Account Details"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.goBack()
+            },
+          }}
+        />
     <View style={styles.container}>
       <View style={{zIndex:100}}>
       <Toast/>
-      </View>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("addbank")}>
-          <Image
-            source={require('../../assets/img/back.png')}
-            style={styles.backImage}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Bank Account Details</Text>
-      </View>
-      
+      </View>    
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Name of Bank</Text>
         <View style={styles.bankInfo}>
@@ -90,6 +86,8 @@ async function next(){
         {isLoading?<ActivityIndicator size={25}/>:<Text style={styles.addButtonText}>Add Account</Text>}
       </TouchableOpacity>
     </View>
+    </>
+
   );
 };
 
@@ -98,52 +96,60 @@ export default AccountDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F8F9FB',
+    paddingHorizontal: 16,
+    paddingTop: 10,
   },
   header: {
     flexDirection: 'row',
-    padding: 10,
     alignItems: 'center',
-    borderBottomWidth: 0.2,
-    borderBottomColor: 'gray',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   backImage: {
-    height: 45,
-    width: 45,
-    marginRight: 8,
+    height: 40,
+    width: 40,
+    marginRight: 12,
   },
   headerText: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#333',
   },
   infoContainer: {
-    margin: 10,
-    paddingTop: 20,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 1,
   },
   label: {
-    color: '#2E2E2E',
-    fontSize: 16,
+    color: '#888',
+    fontSize: 14,
+    marginBottom: 6,
+    fontWeight: '500',
   },
   bankInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 10,
   },
   bankImage: {
-    height: 30,
-    width: 30,
+    height: 28,
+    width: 28,
   },
   bankName: {
-    color: '#2E2E2E',
-    fontSize: 23,
+    color: '#111',
+    fontSize: 18,
     paddingLeft: 10,
+    fontWeight: '600',
   },
   value: {
-    color: '#2E2E2E',
-    fontSize: 23,
-    paddingTop: 5,
+    color: '#111',
+    fontSize: 18,
+    fontWeight: '600',
   },
   addButton: {
     position: 'absolute',
@@ -151,15 +157,15 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     backgroundColor: '#701DDB',
-    padding: 10,
-    borderRadius: 10,
+    paddingVertical: 14,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 5,
   },
   addButtonText: {
     color: 'white',
-    fontSize: 21,
-    borderWidth:1,
-    borderColor:'transparent'
+    fontSize: 18,
+    fontWeight: '700',
   },
 });

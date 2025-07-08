@@ -9,55 +9,36 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
-import {NavigationContainer, useIsFocused} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ActivityIndicator} from 'react-native-paper';
 import {Text} from '../../utils/Translate';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import MainHeader from '../../components/MainHeader';
 
 export default function RulesRegulations() {
- 
   const navigation = useNavigation();
- 
 
- 
-
-  
   return (
     <>
       <SafeAreaView style={styles.safeArView}>
-      
-      <View style={styles.Hview}>
-      <View style={styles.Hview1}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.THead}>
-          <Image
-            source={require('../../assets/img/arrows.png')}
-            resizeMode="contain"
-            style={{width: 20, height: 20}}
-          />
-        </TouchableOpacity>
-        <View style={styles.ViewMy}>
-          <Text style={styles.TextMy}>Rules</Text>
-        </View>
-      </View>
-    </View>
+        <MainHeader
+          name="Rules"
+          leftIcon={{
+            source: require('../../assets/img/backq.png'),
+            onPress: () => navigation.goBack(), // wrap in an arrow function
+          }}
+        />
+
         <View style={styles.safeArView}>
           <View style={styles.BBview}>
             <Text style={styles.textBr}>Brainbucks Quiz Rules and Terms :</Text>
           </View>
-          <ScrollView
-            style={styles.viewS}
-            >
+          <ScrollView style={styles.viewS}>
             <View style={styles.rulesv}>
               {/*<View style={{flex:0.10}}>
                   <Text>{index+1}.</Text>
                 </View>*/}
-              <View style={{flex: 1,backgroundColor:"white"}}>
-                <Text style={{color:"black",fontWeight:"600",fontSize:17}}>
+              <View style={{flex: 1, backgroundColor: 'white'}}>
+                <Text style={{color: 'black', fontWeight: '600', fontSize: 17}}>
                   Rules to know before participating in any quiz in Brain Bucks
                   App
                 </Text>
@@ -203,29 +184,6 @@ export default function RulesRegulations() {
             </View>
           </ScrollView>
         </View>
-
-        {/* <View style={styles.checkV}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 10,
-              paddingHorizontal: 20,
-              backgroundColor:"white"
-            }}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img/check-mark.png')}
-                style={{height: 20, width: 20}}
-              />
-            </TouchableOpacity>
-            <Text style={styles.textHer}>
-              I hereby agree to the{' '}
-              <Text style={styles.textRule}>Rules & Regulations</Text> of the
-              Brain Bucks app
-            </Text>
-          </View>
-        </View> */}
       </SafeAreaView>
     </>
   );
@@ -234,47 +192,54 @@ export default function RulesRegulations() {
 const styles = StyleSheet.create({
   safeArView: {
     flex: 1,
-    backgroundColor:'White',
+    backgroundColor: 'White',
   },
   BBview: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    backgroundColor:"white"
-  },
-  textBr: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: 'black',
-  },
-  viewS: {
-    backgroundColor:'White',
-    flex:1
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    backgroundColor: 'white',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#E0E0E0',
   },
   rulesv: {
-    padding: 12,
+    paddingHorizontal: 18,
+    paddingTop: 10,
+    paddingBottom: 30,
     flex: 1,
     flexDirection: 'row',
-    backgroundColor:"white"
+    backgroundColor: 'white',
   },
+
+  viewS: {
+    backgroundColor: 'White',
+    flex: 1,
+  },
+  textBr: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#222',
+    fontFamily: 'WorkSans-SemiBold',
+  },
+  textValue1: {
+    fontSize: 15.5,
+    lineHeight: 24,
+    paddingTop: 10,
+    color: '#4B4B4B',
+    fontFamily: 'WorkSans-Regular',
+  },
+
   textValue: {
     fontSize: 15,
     fontWeight: '400',
   },
-  textValue1: {
-    fontSize: 15,
-    fontWeight: '400',
-    paddingTop: 10,
-    color:'#000',
-    fontFamily: 'WorkSans-Medium',
 
-  },
   checkV: {
     alignItems: 'center',
     width: '100%',
     height: 80,
     borderTopColor: 'whitesmoke',
     borderTopWidth: 0.5,
-    backgroundColor:"white"
+    backgroundColor: 'white',
   },
   textHer: {
     fontSize: 16,
@@ -295,7 +260,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: ColorsConstant.LightGray,
-    backgroundColor:"white"
+    backgroundColor: 'white',
   },
   Hview1: {
     flexDirection: 'row',
@@ -325,6 +290,4 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
   },
-}
-
-)
+});

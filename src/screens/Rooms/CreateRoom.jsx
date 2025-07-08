@@ -28,7 +28,7 @@ export default function CreateRoom({navigation}) {
             <View style={{ zIndex: 20 }}><Toast /></View>
             <View style={{ paddingVertical: 10, paddingHorizontal:20 }}>
                 <TouchableOpacity onPress={()=>navigation.goBack()} style={[styles.backimg, { padding: 20 }]}>
-                    <Image style={styles.backimg} source={require('../../assets/img/arrow-left.png')} />
+                    <Image style={styles.backimg} source={require('../../assets/img/backq.png')} />
                 </TouchableOpacity>
             </View>
 

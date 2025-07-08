@@ -26,7 +26,7 @@ const WithdrawReq = ({ navigation }) => {
       <View style={styles.header}>
         <TouchableOpacity onPress={goback}>
           <Image
-            source={require('../../assets/img/back.png')}
+            source={require('../../assets/img/backq.png')}
             style={styles.backImage}
           />
         </TouchableOpacity>

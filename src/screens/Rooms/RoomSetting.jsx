@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Image, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Rooms.styles';
 import { Button, Text } from '../../utils/Translate';
@@ -41,10 +41,7 @@ const RoomSetting = ({ navigation, route }) => {
 
   useEffect(() => {
     if (data?.get_enrl_participants_of_quiz.error) {
-      Toast.show({
-        type: 'error',
-        text1: data?.get_enrl_participants_of_quiz.error
-      })
+      ToastAndroid.show(data?.get_enrl_participants_of_quiz.error, ToastAndroid.SHORT);
       return;
     }
 
@@ -80,7 +77,7 @@ const RoomSetting = ({ navigation, route }) => {
   async function deleteRoom() {
     let res = await deleteRoomInController(room_data._id, Toast)
     if (res) {
-      Toast.show({ type: "success", text1: "Room Deleted Successfully" })
+      ToastAndroid.show('Room Deleted Successfully', ToastAndroid.SHORT);
       navigation.pop(2)
     }
   }

@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToastAndroid } from "react-native";
 
 async function setLocalObject(brainBucksObject) {
     try { await AsyncStorage.setItem("brainbucksobject", JSON.stringify(brainBucksObject)) }
@@ -28,10 +29,7 @@ async function apiTryCatch(func, toast, beforeAll, afterAll) {
             return res;
         }
         else {
-            toast.show({
-                type: 'error',
-                text1: res.Backend_Error ||  res.message || res.error
-            })
+            ToastAndroid.show(res.Backend_Error ||  res.message || res.error, ToastAndroid.SHORT);
             return false;
         }
     } catch (err) {

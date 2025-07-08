@@ -6,6 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Text } from '../../utils/Translate';
@@ -58,17 +59,10 @@ const Quizze = () => {
         else { setQuizze([...Quizes, ...res.active_quizes]) }
         setCurrentPage(page)
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting Saved exam data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoadingMore(false)
       setLoading(false)
@@ -106,7 +100,7 @@ const Quizze = () => {
                 totalslots={item.slots}
                 alotedslots={item.slot_aloted}
                 type={'active'}
-                onPress={() => { navigation.navigate('RulesofParticipation', { id: item._id }); }}
+                onPress={() => { navigation.navigate('QuizDetails', { id: item._id }); }}
               />
             )
           }}

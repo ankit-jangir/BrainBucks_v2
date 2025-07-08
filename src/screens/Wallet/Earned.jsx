@@ -52,28 +52,6 @@ const Earned = () => {
 
   }
 
-  // async function getEarnedData(page) {
-  //   try {
-  //     setLoading(true)
-  //     let res = await wallet.getEarnedMoney(page)
-  //     if (res.status === 1) {
-  //       setEarned(res.mashup)
-  //     } else {
-  //       Toast.show({
-  //         type: 'error',
-  //         text1: res.Backend_Error
-  //       })
-  //     }
-  //   } catch (err) {
-  //     console.log("Error while getting earned data", err.message);
-  //     // Toast.show({
-  //     //   type: 'error',
-  //     //   text1: "Something went wrong"
-  //     // })
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
 
   return (
     <>

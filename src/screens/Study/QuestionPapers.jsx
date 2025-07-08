@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Linking,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import {Text} from '../../utils/Translate';
 import {ColorsConstant} from '../../constants/Colors.constant';
@@ -18,8 +19,9 @@ import StudyApiService from '../../services/api/StudyApiService';
 import Toast from 'react-native-toast-message';
 import {useCurrentId} from '../../context/IdReducer';
 import NoDataFound from '../../components/NoDataFound';
-import { BLOBURL } from '../../config/urls';
+import {BLOBURL} from '../../config/urls';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import MainHeader from '../../components/MainHeader';
 export default function QuestionPaperList({navigation, route}) {
   const pdf_id = route.params.pdf_id;
   const saved = new StudyApiService();
@@ -32,11 +34,8 @@ export default function QuestionPaperList({navigation, route}) {
   }, []);
 
   const downloadPDF = (url, title) => {
-    Toast.show({
-      type:'info',
-      text1:"Downloading..."
-    })
-    const source = BLOBURL+ url;
+    ToastAndroid.show('Downloading...', ToastAndroid.SHORT);
+    const source = BLOBURL + url;
     let dirs = ReactNativeBlobUtil.fs.dirs;
     ReactNativeBlobUtil.config({
       fileCache: true,
@@ -45,26 +44,18 @@ export default function QuestionPaperList({navigation, route}) {
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
-        title:title,
+        title: title,
         description: 'Brainbucks pdf downloaded',
         mime: 'application/pdf',
       },
     })
       .fetch('GET', source)
-      .then((res)=>{
-        Toast.show({
-          type:'success',
-          text1:"Download Succesful"
-        })
+      .then(res => {
+        ToastAndroid.show('Download Succesful', ToastAndroid.SHORT);
       })
-      .catch((err) => {
-        console.log('Pdf Download Error -> ', err)
-        // Toast.show({
-        //   type:'error',
-        //   text1:"Download Failed."
-        // })
-      }
-    )
+      .catch(err => {
+        console.log('Pdf Download Error -> ', err);
+      });
   };
 
   async function viewPdf() {
@@ -75,17 +66,10 @@ export default function QuestionPaperList({navigation, route}) {
       if (res.status === 1) {
         setViewPdf(res.data);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting Saved exam data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setloading(false);
     }
@@ -93,26 +77,20 @@ export default function QuestionPaperList({navigation, route}) {
 
   return (
     <>
-      <View style={{zIndex:1}}>
+      <View style={{zIndex: 1}}>
         <Toast />
       </View>
       <View style={StyleConstants.safeArView}>
-        <View style={styles.mainView}>
-          <View style={styles.mainView1}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.touchView}>
-              <Image
-                source={require('../../assets/img/arrows.png')}
-                style={{width: 20, height: 15}}
-              />
-            </TouchableOpacity>
-            <View style={styles.QView}>
-              <Text style={styles.textQ}>Question Papers</Text>
-            </View>
-          </View>
-        </View>
-
+        <MainHeader
+          name={'Question Papers'}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              handleBackPress();
+            },
+          }}
+        />
         <View style={styles.inputV}>
           <View style={styles.inputV1}>
             <View style={styles.inputv2}>
@@ -149,15 +127,22 @@ export default function QuestionPaperList({navigation, route}) {
                           <Text style={styles.textQue}>{res.display_name}</Text>
                         </View>
                         <View style={{flexDirection: 'row'}}>
-                       
-                          <TouchableOpacity style={{paddingRight: 15}} onPress={()=>{navigation.navigate('viewpdf',{pdf: res})}} >
+                          <TouchableOpacity
+                            style={{paddingRight: 15}}
+                            onPress={() => {
+                              navigation.navigate('viewpdf', {pdf: res});
+                            }}>
                             <Image
                               source={require('../../assets/img/pdf.png')}
                               style={{height: 30, width: 30}}
                               resizeMode="contain"
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity style={{paddingRight: 8}} onPress={()=>{downloadPDF(res.filename, res.display_name)}}>
+                          <TouchableOpacity
+                            style={{paddingRight: 8}}
+                            onPress={() => {
+                              downloadPDF(res.filename, res.display_name);
+                            }}>
                             <Image
                               source={require('../../assets/img/downloading.png')}
                               style={{height: 30, width: 30}}

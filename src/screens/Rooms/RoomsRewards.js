@@ -39,10 +39,6 @@ export default function RoomsRewards({navigation, route}) {
       }
     } catch (err) {
       console.log('Error while getting Reward in rooms ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoad(false);
     }

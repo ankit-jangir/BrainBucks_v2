@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,17 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ToastAndroid,
 } from 'react-native';
 import Accordion from '../../components/Accordion';
 import Toast from 'react-native-toast-message';
 import NoDataFound from '../../components/NoDataFound';
 import CourseApiService from '../../services/api/CourseApiService';
-import { BLOBURL } from '../../config/urls';
-import { Modal } from 'react-native-paper';
-import { Button, Image } from 'react-native-elements';
+import {BLOBURL} from '../../config/urls';
+import {Modal} from 'react-native-paper';
+import {Button, Image} from 'react-native-elements';
 import BasicServices from '../../services/BasicServices';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
 
 const PaidCourses = () => {
   const [loading, setLoading] = useState(false);
@@ -26,54 +27,59 @@ const PaidCourses = () => {
   const [videos, setVideos] = useState({});
   const [material, setMaterial] = useState({});
   const [loading2, setLoading2] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(2)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [data, setData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(2);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [current, setCurrent] = useState();
   const [buycourses, setbuyCourses] = useState([]);
   const serv = new CourseApiService();
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
 
   function getDataHelper(page) {
     return async () => {
       let res = await serv.getPaidCourses(page);
       return res;
-    }
+    };
   }
 
   async function getData(page) {
     if (!page) {
-      page = 1
+      page = 1;
     }
     if (page <= totalPages) {
-      setCurrentPage(page)
-      let func = (type) => {
+      setCurrentPage(page);
+      let func = type => {
         setLoadingMore(type);
         setLoading2(type);
-      }
+      };
       if (page === 1) {
-        func = (type) => {
-          setLoading(type)
-          setLoading2(type)
-        }
+        func = type => {
+          setLoading(type);
+          setLoading2(type);
+        };
       }
-      let res = await BasicServices.apiTryCatch(getDataHelper(page), Toast, () => { func(true) }, () => { func(false) })
+      let res = await BasicServices.apiTryCatch(
+        getDataHelper(page),
+        Toast,
+        () => {
+          func(true);
+        },
+        () => {
+          func(false);
+        },
+      );
       if (res) {
-        setTotalPages(res.totalPages)
-        if (page === 1)
-          setData(res.data)
-        else
-          setData([...data, ...res.data])
+        setTotalPages(res.totalPages);
+        if (page === 1) setData(res.data);
+        else setData([...data, ...res.data]);
       }
     }
-
   }
-
 
   async function buyCourse() {
     try {
@@ -81,28 +87,17 @@ const PaidCourses = () => {
       let res = await serv.buyCourse(current._id);
       if (res.status === 1) {
         setModalVisible(false);
-        Toast.show({
-          type: 'success',
-          text1: 'course bought successfully',
-        });
+        ToastAndroid.show('course bought successfully', ToastAndroid.SHORT);
       } else {
         console.log(res);
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in fetching videos for paid courses: ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading2(false);
     }
   }
-
 
   async function getVideoForParticularCourse(course_id) {
     try {
@@ -110,20 +105,13 @@ const PaidCourses = () => {
       let res = await serv.getVideos(course_id);
       if (res.status === 1) {
         setVideos(old => {
-          return { ...old, [course_id]: res.videos };
+          return {...old, [course_id]: res.videos};
         });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in fetching videos for paid courses: ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading2(false);
     }
@@ -135,49 +123,41 @@ const PaidCourses = () => {
       let res = await serv.getStudyMaterial(course_id, video_id);
       if (res.status === 1) {
         setMaterial(old => {
-          return { ...old, [video_id]: res.study_materials };
+          return {...old, [video_id]: res.study_materials};
         });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log(
         'Error in fetching study material for a paid course: ',
         err.message,
       );
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading2(false);
     }
   }
 
   return (
-    <SafeAreaView style={{ maxHeight: "100%" }}>
-      <View style={{ zIndex: 100 }}>
+    <SafeAreaView style={{maxHeight: '100%'}}>
+      <View style={{zIndex: 100}}>
         <Toast />
       </View>
       {loading ? (
         <ActivityIndicator size={40} />
       ) : data.length === 0 ? (
-        <View style={{ height: "100%" }}>
-          <NoDataFound
-            scale={0.8}
-            message={'No Courses Found'}
-          />
+        <View style={{height: '100%'}}>
+          <NoDataFound scale={0.8} message={'No Courses Found'} />
         </View>
       ) : (
         <>
           <FlatList
             data={data}
             onEndReachedThreshold={0.8}
-            onEndReached={() => { getData(currentPage + 1) }}
-            renderItem={({ item, index }) => {
+            onEndReached={() => {
+              getData(currentPage + 1);
+            }}
+            renderItem={({item, index}) => {
               let course = item;
               return (
                 <Accordion
@@ -197,11 +177,11 @@ const PaidCourses = () => {
                     borderRadius: 5,
                     marginTop: 10,
                     elevation: 2,
-                    margin: 5
+                    margin: 5,
                   }}
                   buttonText={'Buy Now'}
                   itemText={item.cou_name}
-                  icon={{ uri: BLOBURL + item.banner }}
+                  icon={{uri: BLOBURL + item.banner}}
                   onButtonPress={() => {
                     setCurrent(item), setModalVisible(true);
                   }}>
@@ -209,7 +189,7 @@ const PaidCourses = () => {
                     loading2 ? (
                       <ActivityIndicator size={40} />
                     ) : (
-                      <View style={{ height: 200 }}>
+                      <View style={{height: 200}}>
                         <NoDataFound
                           scale={0.5}
                           message={'No Videos Found for this course'}
@@ -217,7 +197,7 @@ const PaidCourses = () => {
                       </View>
                     )
                   ) : videos[item._id].length === 0 ? (
-                    <View style={{ height: 200 }}>
+                    <View style={{height: 200}}>
                       <NoDataFound
                         scale={0.5}
                         message={'No Videos Found for this course'}
@@ -226,8 +206,8 @@ const PaidCourses = () => {
                   ) : (
                     <FlatList
                       data={videos[item._id]}
-                      renderItem={({ item, index }) => {
-                        let video = item
+                      renderItem={({item, index}) => {
+                        let video = item;
                         return (
                           <Accordion
                             key={item._id}
@@ -251,27 +231,32 @@ const PaidCourses = () => {
                             itemText={item.title}
                             icon={require('../../assets/img/play-button.png')}
                             onButtonPress={() => {
-                              Toast.show({
-                                type: 'info',
-                                text1: 'Buy the course to watch the video',
-                              });
+                              ToastAndroid.show(
+                                'Buy the course to watch the video',
+                                ToastAndroid.SHORT,
+                              );
                             }}
                             onExpand={() => {
-                              getMaterialForParticularVideo(course._id, item._id);
+                              getMaterialForParticularVideo(
+                                course._id,
+                                item._id,
+                              );
                             }}>
                             {!material[item._id] ? (
                               loading2 ? (
                                 <ActivityIndicator size={40} />
                               ) : (
-                                <View style={{ height: 200 }}>
+                                <View style={{height: 200}}>
                                   <NoDataFound
                                     scale={0.5}
-                                    message={'No Study Material Found for this Video'}
+                                    message={
+                                      'No Study Material Found for this Video'
+                                    }
                                   />
                                 </View>
                               )
                             ) : material[item._id].length === 0 ? (
-                              <View style={{ height: 200 }}>
+                              <View style={{height: 200}}>
                                 <NoDataFound
                                   scale={0.5}
                                   message={'No Study Material For This Video'}
@@ -281,7 +266,7 @@ const PaidCourses = () => {
                               <FlatList
                                 data={material[item._id]}
                                 keyExtractor={item => item._id}
-                                renderItem={({ item, index }) => {
+                                renderItem={({item, index}) => {
                                   return (
                                     <Pressable>
                                       <View
@@ -306,14 +291,19 @@ const PaidCourses = () => {
                                           }}>
                                           <Image
                                             source={require('../../assets/img/pdf.png')}
-                                            style={{ height: 20, width: 20, marginRight: 4 }}
+                                            style={{
+                                              height: 20,
+                                              width: 20,
+                                              marginRight: 4,
+                                            }}
                                             resizeMode="contain"
                                           />
-                                          <Text style={{ color: '#000', flex: 1 }}>
+                                          <Text
+                                            style={{color: '#000', flex: 1}}>
                                             {item.title}
                                           </Text>
                                         </View>
-                                        <View style={{ flexDirection: 'row' }}>
+                                        <View style={{flexDirection: 'row'}}>
                                           <View
                                             style={{
                                               justifyContent: 'center',
@@ -321,11 +311,10 @@ const PaidCourses = () => {
                                             }}>
                                             <TouchableOpacity
                                               onPress={() => {
-                                                Toast.show({
-                                                  type: 'info',
-                                                  text1:
-                                                    'Buy the course to see the material',
-                                                });
+                                                ToastAndroid.show(
+                                                  'Buy the course to see the material',
+                                                  ToastAndroid.SHORT,
+                                                );
                                               }}>
                                               <Text
                                                 style={{
@@ -347,14 +336,13 @@ const PaidCourses = () => {
                                 }}></FlatList>
                             )}
                           </Accordion>
-                        )
+                        );
                       }}
                     />
                   )}
                 </Accordion>
-              )
-            }
-            }
+              );
+            }}
           />
         </>
       )}
@@ -370,12 +358,12 @@ const PaidCourses = () => {
         {loading2 ? (
           <ActivityIndicator size={35} />
         ) : (
-          <View style={{ flex: 1, }}>
+          <View style={{flex: 1}}>
             <View style={styles.modalView}>
-              <View style={{ height: 150, width: '100%', objfit: 'cover' }}>
+              <View style={{height: 150, width: '100%', objfit: 'cover'}}>
                 <Image
-                  source={{ uri: BLOBURL + current?.banner }}
-                  style={{ height: '100%', width: '100%' }}
+                  source={{uri: BLOBURL + current?.banner}}
+                  style={{height: '100%', width: '100%'}}
                   resizeMode="contain"
                 />
               </View>
@@ -392,14 +380,19 @@ const PaidCourses = () => {
               <View
                 style={[
                   styles.mainv,
-                  { alignItems: 'center', justifyContent: 'center', gap: 10, paddingTop: 5 },
+                  {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 10,
+                    paddingTop: 5,
+                  },
                 ]}>
                 <Text style={styles.datatext}>
                   Price:
                   <Text
                     style={[
                       styles.datatext1,
-                      { textDecorationLine: 'line-through', fontSize: 14 },
+                      {textDecorationLine: 'line-through', fontSize: 14},
                     ]}>
                     {' '}
                     ₹ {current?.amount}
@@ -416,7 +409,7 @@ const PaidCourses = () => {
                     },
                   ]}>
                   {' '}
-                  <Text style={[styles.datatext, { fontSize: 12 }]}>
+                  <Text style={[styles.datatext, {fontSize: 12}]}>
                     Duration:
                   </Text>{' '}
                   {current?.Duration}
@@ -480,7 +473,9 @@ const PaidCourses = () => {
           </View>
         )}
       </Modal>
-        {loadingMore && <ActivityIndicator size={25} color={ColorsConstant.Theme} />}
+      {loadingMore && (
+        <ActivityIndicator size={25} color={ColorsConstant.Theme} />
+      )}
     </SafeAreaView>
   );
 };
@@ -536,5 +531,5 @@ export const styles = StyleSheet.create({
     fontFamily: 'Work Sans',
     color: 'black',
   },
-  datatext1: { color: 'gray' },
+  datatext1: {color: 'gray'},
 });

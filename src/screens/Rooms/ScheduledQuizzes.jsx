@@ -1,4 +1,4 @@
-import { FlatList, View } from 'react-native'
+import { FlatList, ToastAndroid, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/NoDataFound'
 import { ActivityIndicator } from 'react-native'
@@ -31,10 +31,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
 
     useEffect(() => {
         if (data?.schedule_quizes.error) {
-            Toast.show({
-                type: 'error',
-                text1: data?.schedule_quizes.error
-            })
+             ToastAndroid.show(data?.schedule_quizes.error, ToastAndroid.SHORT);
             return;
         }
 

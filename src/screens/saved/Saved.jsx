@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   View,
@@ -11,34 +11,34 @@ import {
   ToastAndroid,
   StyleSheet,
 } from 'react-native';
-import { Text } from '../../utils/Translate';
-import { StyleConstants } from '../../constants/Style.constant';
+import {Text} from '../../utils/Translate';
+import {StyleConstants} from '../../constants/Style.constant';
 import styles from '../../styles/Saved.styles';
 import SavedApiService from '../../services/api/SavedApiService';
 import Toast from 'react-native-toast-message';
-import { BLOBURL } from '../../config/urls';
+import {BLOBURL} from '../../config/urls';
 import StudyApiService from '../../services/api/StudyApiService';
 import NoDataFound from '../../components/NoDataFound';
-import { ColorsConstant } from '../../constants/Colors.constant';
-import { useCurrentId } from '../../context/IdReducer';
-import { useIsFocused } from '@react-navigation/native';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import {useCurrentId} from '../../context/IdReducer';
+import {useIsFocused} from '@react-navigation/native';
 
-export default function Saved({ navigation }) {
+export default function Saved({navigation}) {
   const [refresh, setRefresh] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [search, setSearch] = useState('');
   const [loading, setloading] = useState();
   const [SavedExam, setExamData] = useState([]);
   const [otherExams, setOtherExams] = useState([]);
-  const [selectedExams, setSelectedExams] = useState(new Set([]))
-  const { idState, dispatch } = useCurrentId()
-  const focused = useIsFocused()
+  const [selectedExams, setSelectedExams] = useState(new Set([]));
+  const {idState, dispatch} = useCurrentId();
+  const focused = useIsFocused();
 
   const saved = new SavedApiService();
   const study = new StudyApiService();
   useEffect(() => {
     getSavedExams();
-    loadOtherExams()
+    loadOtherExams();
   }, [focused]);
 
   async function getSavedExams() {
@@ -48,17 +48,10 @@ export default function Saved({ navigation }) {
       if (res.status === 1) {
         setExamData(res.data);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting Saved exam data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setloading(false);
     }
@@ -71,69 +64,52 @@ export default function Saved({ navigation }) {
       if (res.status === 1) {
         setOtherExams(res.exams);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in fetching not enrolled exams ', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something Went Wrong',
-      // });
     } finally {
       setloading(false);
     }
   }
 
   function selectExam(id) {
-    setSelectedExams((prev) => {
-      let temp = new Set(prev)
-      temp.has(id) ? temp.delete(id) : temp.add(id)
+    setSelectedExams(prev => {
+      let temp = new Set(prev);
+      temp.has(id) ? temp.delete(id) : temp.add(id);
       return temp;
-    })
+    });
   }
 
   async function addExams() {
     if (selectedExams.size === 0) {
-      Toast.show({
-        type: "error",
-        text1: "Select atleast one exam to add"
-      })
+      ToastAndroid.show('Select atleast one exam to add', ToastAndroid.SHORT);
       return;
     }
 
     try {
-      let arr = Array.from(selectedExams)
-      let response = await study.enrollInExam(arr)
+      let arr = Array.from(selectedExams);
+      let response = await study.enrollInExam(arr);
       if (response.status === 1) {
-        let nextOtherArr = otherExams.filter(item => !selectedExams.has(item._id))
-        setOtherExams(nextOtherArr)
-        setSelectedExams(new Set([]))
-        getSavedExams()
+        let nextOtherArr = otherExams.filter(
+          item => !selectedExams.has(item._id),
+        );
+        setOtherExams(nextOtherArr);
+        setSelectedExams(new Set([]));
+        getSavedExams();
       } else {
-        Toast.show({
-          type: "info",
-          text1: response.Backend_Error
-        })
+        ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log("Error in adding exams: ", error.message);
-      // Toast.show({
-      //   type: "info",
-      //   text1: "Something Went Wrong"
-      // })
+      console.log('Error in adding exams: ', error.message);
     }
-
   }
   return (
     <>
-      <View style={{ zIndex: 1 }}>
+      <View style={{zIndex: 1}}>
         <Toast />
-
       </View>
-      <View style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -152,12 +128,12 @@ export default function Saved({ navigation }) {
                 <Image
                   source={require('../../assets/img/down-arrow.png')}
                   resizeMode="contain"
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </TouchableOpacity>
               <View style={styles.viewExam}>
                 <View style={styles.examview}>
-                  <View style={{ flex: 4 }}></View>
+                  <View style={{flex: 4}}></View>
                   <View style={styles.addview}>
                     <Text style={styles.textAdd}>Add Exam</Text>
                     <TouchableOpacity style={styles.EList1} onPress={addExams}>
@@ -168,11 +144,11 @@ export default function Saved({ navigation }) {
               </View>
               <View style={styles.loadview}>
                 <View style={styles.loadview1}>
-                  <TouchableOpacity style={{ flex: 0.1 }}>
+                  <TouchableOpacity style={{flex: 0.1}}>
                     <Image
                       source={require('../../assets/img/search.png')}
                       resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
+                      style={{width: 20, height: 20}}
                     />
                   </TouchableOpacity>
                   <TextInput
@@ -189,7 +165,7 @@ export default function Saved({ navigation }) {
               </View>
               <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={{ width: '100%' }}>
+                style={{width: '100%'}}>
                 {loading ? (
                   <ActivityIndicator color={ColorsConstant.Theme} size={35} />
                 ) : otherExams.length === 0 ? (
@@ -199,48 +175,66 @@ export default function Saved({ navigation }) {
                     actionText={'Reload'}
                   />
                 ) : (
-                  otherExams.map((item) => {
-                    if (item.category_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+                  otherExams.map(item => {
+                    if (
+                      item.category_name
+                        .toLocaleLowerCase()
+                        .includes(search.toLocaleLowerCase())
+                    )
                       return (
                         <View key={item._id} style={styles.EListss}>
                           <View style={styles.EListss1}>
                             <View style={styles.ItmView}>
                               <Image
-                                source={{ uri: BLOBURL + item.image }}
-
+                                source={{uri: BLOBURL + item.image}}
                                 resizeMode="contain"
-                                style={{ width: 50, height: 50, borderRadius: 10 }}
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 10,
+                                }}
                               />
                             </View>
                             <View style={styles.ItmView1}>
-                              <Text style={styles.ItmText}>{item.category_name}</Text>
+                              <Text style={styles.ItmText}>
+                                {item.category_name}
+                              </Text>
                             </View>
 
                             <View style={styles.viewSS}>
                               <TouchableOpacity
-                                onPress={() => { selectExam(item._id) }}
+                                onPress={() => {
+                                  selectExam(item._id);
+                                }}
                                 style={{
                                   width: 45,
                                   height: 45,
-                                  backgroundColor: selectedExams.has(item._id) ? ColorsConstant.Theme : "#EFEFEF",
+                                  backgroundColor: selectedExams.has(item._id)
+                                    ? ColorsConstant.Theme
+                                    : '#EFEFEF',
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                   borderRadius: 50,
                                 }}>
-                                {
-                                  selectedExams.has(item._id)
-                                    ?
-                                    <Text key={"selected"} style={{ color: '#fff', fontSize: 15 }}>✓</Text>
-                                    :
-                                    <Text key={"nonselected"} style={{ color: '#000', fontSize: 15 }}>+</Text>
-                                }
+                                {selectedExams.has(item._id) ? (
+                                  <Text
+                                    key={'selected'}
+                                    style={{color: '#fff', fontSize: 15}}>
+                                    ✓
+                                  </Text>
+                                ) : (
+                                  <Text
+                                    key={'nonselected'}
+                                    style={{color: '#000', fontSize: 15}}>
+                                    +
+                                  </Text>
+                                )}
                               </TouchableOpacity>
                             </View>
                           </View>
                         </View>
-                      )
+                      );
                   })
-
                 )}
               </ScrollView>
             </View>
@@ -256,16 +250,16 @@ export default function Saved({ navigation }) {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginHorizontal: 4,
-                  borderWidth: 1,
-                  borderRadius: 100,
                   width: 40,
                   height: 40,
                   borderColor: '#F5F5F5',
                 }}>
                 <Image
                   source={require('../../assets/img/backcopy.png')}
-                  style={{ height: 20, width: 20 }}></Image>
+                  style={{height: 20, width: 20}}></Image>
               </TouchableOpacity>
+            </View>
+
               <View style={styles.examView}>
                 <Text style={styles.textMy}>My Exams</Text>
               </View>
@@ -278,37 +272,40 @@ export default function Saved({ navigation }) {
                   <Text style={styles.textAdd1}>+Add</Text>
                 </TouchableOpacity>
               </View>
-            </View>
           </View>
-          <ScrollView >
-
-            {
-              loading ?
-                <ActivityIndicator color={ColorsConstant.Theme} size={35} /> :
-                SavedExam.length === 0 ?
-                  <NoDataFound message={"No Data Found"} action={getSavedExams} actionText={"Reload"} /> :
-
-                  SavedExam.map(res => {
-                    return (
-                      <View key={res._id} style={{ flex: 1, padding: 15 }}>
-                        <View style={styles.liveVIew}>
-                          <View style={styles.liveVIew1}>
-                            <View style={styles.liveVIew2}>
-                              <View style={styles.cateView}>
-                                <Image
-                                  source={{ uri: BLOBURL + res.image }}
-                                  style={{
-                                    height: 45,
-                                    width: 45,
-                                    borderRadius: 100,
-                                    objectFit: 'cover',
-                                  }}></Image>
-                              </View>
-                              <View style={styles.cateName}>
-                                <Text style={styles.cateName1}>{res.category_name}</Text>
-                              </View>
-                            </View>
-                            {/* <View style={styles.ActiveView}>
+          <ScrollView>
+            {loading ? (
+              <ActivityIndicator color={ColorsConstant.Theme} size={35} />
+            ) : SavedExam.length === 0 ? (
+              <NoDataFound
+                message={'No Data Found'}
+                action={getSavedExams}
+                actionText={'Reload'}
+              />
+            ) : (
+              SavedExam.map(res => {
+                return (
+                  <View key={res._id} style={{flex: 1, padding: 15}}>
+                    <View style={styles.liveVIew}>
+                      <View style={styles.liveVIew1}>
+                        <View style={styles.liveVIew2}>
+                          <View style={styles.cateView}>
+                            <Image
+                              source={{uri: BLOBURL + res.image}}
+                              style={{
+                                height: 45,
+                                width: 45,
+                                borderRadius: 100,
+                                objectFit: 'cover',
+                              }}></Image>
+                          </View>
+                          <View style={styles.cateName}>
+                            <Text style={styles.cateName1}>
+                              {res.category_name}
+                            </Text>
+                          </View>
+                        </View>
+                        {/* <View style={styles.ActiveView}>
                               <View style={styles.ActiveView1}>
                                 <View style={{ flex: 0.7 }}>
                                   <View style={styles.ActiveView2}>
@@ -350,24 +347,47 @@ export default function Saved({ navigation }) {
                                 </Text>
                               </View>
                             </View> */}
-                            <View style={{ flexDirection: 'row', gap: 20, paddingVertical:20 }}>
-                              <TouchableOpacity
-                                onPress={() => { dispatch({ type: 'change', idState: { id: res._id } }), navigation.navigate('ExamDetail') }}
-                                style={styles.viewBtnQuiz}>
-                                <Text style={styles.textDetails}>Quizzes</Text>
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                onPress={() => { dispatch({ type: 'change', idState: { id: res._id } }), navigation.navigate('StudyMaterials') }}
-                                style={styles.viewBtnMaterial}
-                              >
-                                <Text style={[styles.textDetails, {color:ColorsConstant.AshGray}]}>Study Material</Text>
-                              </TouchableOpacity>
-                            </View>
-                          </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            gap: 20,
+                            paddingVertical: 0,
+                          }}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              dispatch({
+                                type: 'change',
+                                idState: {id: res._id},
+                              }),
+                                navigation.navigate('ExamDetail');
+                            }}
+                            style={styles.viewBtnQuiz}>
+                            <Text style={styles.textDetails}>Quizzes</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => {
+                              dispatch({
+                                type: 'change',
+                                idState: {id: res._id},
+                              }),
+                                navigation.navigate('StudyMaterials');
+                            }}
+                            style={styles.viewBtnMaterial}>
+                            <Text
+                              style={[
+                                styles.textDetails,
+                                {color: ColorsConstant.AshGray},
+                              ]}>
+                              Study Material
+                            </Text>
+                          </TouchableOpacity>
                         </View>
                       </View>
-                    );
-                  })}
+                    </View>
+                  </View>
+                );
+              })
+            )}
           </ScrollView>
         </View>
       </View>

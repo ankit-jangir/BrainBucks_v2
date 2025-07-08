@@ -1,8 +1,6 @@
 import {
   StyleSheet,
   View,
-  Image,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import React, { useState } from 'react';
@@ -10,127 +8,144 @@ import { Button, Text, TextInput } from '../../utils/Translate';
 import WalletApiService from '../../services/api/WalletApiService';
 import { useAddBank } from '../../context/AddBankReducer';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import MainHeader from '../../components/MainHeader';
 
 const AddBankAccount = ({ navigation }) => {
+  const [errMsg, setErrMsg] = useState();
+  const [loading, setLoading] = useState(false);
+  const { addBankState, dispatch } = useAddBank();
+  const wallServ = new WalletApiService();
 
-  const [errMsg, setErrMsg] = useState()
-  const [loading, setLoading] = useState(false)
-
-  const { addBankState, dispatch } = useAddBank()
-
-  const wallServ = new WalletApiService()
-  let inputstyle = [styles.inputs, errMsg && { borderWidth: 1, borderColor: "#ff0000",}]
+  let inputstyle = [styles.inputs, errMsg && { borderColor: '#FF3B30' }];
 
   function addIfsc(text) {
     if (text.length <= 11) {
-      dispatch({ type: "details", bankDetails: { 'ifsc': text.trim() } })
+      dispatch({ type: 'details', bankDetails: { ifsc: text.trim() } });
     }
   }
 
   async function next() {
-    setErrMsg(null)
-    if (!addBankState.bankName.trim() || !addBankState.holderName.trim() || !addBankState.accnum.trim() || !addBankState.ifsc) {
-      setErrMsg("All fields are mandatory")
-      return
+    setErrMsg(null);
+    if (
+      !addBankState.bankName.trim() ||
+      !addBankState.holderName.trim() ||
+      !addBankState.accnum.trim() ||
+      !addBankState.ifsc
+    ) {
+      setErrMsg('All fields are mandatory');
+      return;
     }
 
     if (addBankState.accnum.length < 11 || addBankState.accnum.length > 16) {
-      setErrMsg("Account number length must be between 11-16")
-      return
+      setErrMsg('Account number length must be between 11-16');
+      return;
     }
 
     if (addBankState.ifsc.length !== 11) {
-      setErrMsg("IFSC code must be 11 characters long")
-      return
+      setErrMsg('IFSC code must be 11 characters long');
+      return;
     }
 
     try {
-      setLoading(true)
-      let ifscres = await wallServ.checkIfsc(addBankState.ifsc.toLocaleUpperCase());
+      setLoading(true);
+      let ifscres = await wallServ.checkIfsc(addBankState.ifsc.toUpperCase());
       if (ifscres.data.IFSC) {
-        navigation.navigate('AccountDeatils')
+        navigation.navigate('AccountDeatils');
       } else {
-        console.log("Something went wrong in ifsc checking. response from api:  ", ifscres)
+        console.log('Something went wrong in IFSC checking: ', ifscres);
       }
     } catch (err) {
-      console.log("ERROR IN Fetching bank by ifsc code ", err.message);
-      setErrMsg("Enter a valid IFSC code. No bank found with given IFSC code")
+      console.log('ERROR in fetching IFSC: ', err.message);
+      setErrMsg('Enter a valid IFSC code. No bank found with given IFSC code');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
-
-
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('addbankDetails')}>
-          <Image
-            source={require('../../assets/img/back.png')}
-            style={styles.backImage}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Add Bank Account</Text>
-      </View>
-      <ScrollView style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Enter Bank Name</Text>
-          <TextInput placeholder="Enter Bank Name" value={addBankState.bankName} onChangeText={(text) => { dispatch({ type: "details", bankDetails: { 'bankName': text } }) }} style={inputstyle} />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Beneficiary Name</Text>
-          <TextInput 
-            placeholder="Name of Account Holder"
-            style={inputstyle}
-            value={addBankState.holderName}
-            onChangeText={(text) => { dispatch({ type: "details", bankDetails: { 'holderName': text } }) }}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Account Number</Text>
-          <TextInput
-            placeholder="Enter 16 Digit Account number"
-            style={inputstyle}
-            value={addBankState.accnum}
-            inputMode='numeric'
-            keyboardType='numeric'
-            onChangeText={text => { (text.length <= 16 && /^\d*$/.test(text)) && dispatch({ type: "details", bankDetails: { 'accnum': text } }) }}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>IFSC Code</Text>
-          <TextInput
-            placeholder="Enter 11 character IFSC Code"
-            style={inputstyle}
-            value={addBankState.ifsc}
-            onChangeText={addIfsc}
-            autoCapitalize='characters'
-          />
-        </View>
-        {errMsg && <Text style={styles.errmsg} key={errMsg}>*{errMsg}</Text>}
-
-      </ScrollView>
-      {/* <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => {
-          navigation.navigate('AccountDeatils');
-        }}>
-        <Text style={styles.addButtonText}>Add Account</Text>
-      </TouchableOpacity> */}
-      <Button
-        onPress={next}
-        title="Add Account"
-        loading={loading}
-        titleStyle={styles.addButtonText}
-        buttonStyle={styles.addButton}
-        containerStyle={styles.addButtonContainer}
-        loadingProps={{
-          size: 25,
-          color: '#fff',
+      <MainHeader
+        name={'Add Bank Account'}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'),
+          onPress: () => navigation.goBack(),
         }}
       />
+
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.formCard}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Enter Bank Name</Text>
+            <TextInput
+              placeholder="Enter Bank Name"
+              value={addBankState.bankName}
+              onChangeText={(text) =>
+                dispatch({ type: 'details', bankDetails: { bankName: text } })
+              }
+              style={inputstyle}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Beneficiary Name</Text>
+            <TextInput
+              placeholder="Name of Account Holder"
+              style={inputstyle}
+              value={addBankState.holderName}
+              onChangeText={(text) =>
+                dispatch({ type: 'details', bankDetails: { holderName: text } })
+              }
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Account Number</Text>
+            <TextInput
+              placeholder="Enter 16 Digit Account number"
+              style={inputstyle}
+              value={addBankState.accnum}
+              inputMode="numeric"
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                text.length <= 16 &&
+                /^\d*$/.test(text) &&
+                dispatch({ type: 'details', bankDetails: { accnum: text } })
+              }
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>IFSC Code</Text>
+            <TextInput
+              placeholder="Enter 11 character IFSC Code"
+              style={inputstyle}
+              value={addBankState.ifsc}
+              onChangeText={addIfsc}
+              autoCapitalize="characters"
+            />
+          </View>
+
+          {errMsg && (
+            <Text style={styles.errmsg} key={errMsg}>
+              * {errMsg}
+            </Text>
+          )}
+        </View>
+
+        {/* ✅ BUTTON INSIDE SCROLLVIEW */}
+        <View style={styles.addButtonWrapper}>
+          <Button
+            onPress={next}
+            title="Add Account"
+            loading={loading}
+            titleStyle={styles.addButtonText}
+            buttonStyle={styles.addButton}
+            containerStyle={{ width: '100%', alignItems: 'center' }}
+            loadingProps={{ size: 25, color: '#fff' }}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -140,81 +155,72 @@ export default AddBankAccount;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F7F7F7',
   },
-  header: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    padding: 15,
-    alignItems: 'center',
-    borderBottomWidth: 0.2,
-    borderBottomColor: 'gray',
-    // marginBottom: 20,
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 50,
   },
-  backImage: {
-    height: 45,
-    width: 45,
-    marginRight: 8,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: 'black',
-    fontFamily:"Work Sans"
-
-  },
-  formContainer: {
-    marginTop: 20,
-    paddingHorizontal: 10,
-    marginBottom: 80
+  formCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
   },
   inputContainer: {
-    marginTop: 30,
+    marginTop: 20,
   },
   inputLabel: {
-    color: '#2E2E2E',
-    fontWeight: '400',
-    fontSize: 18,
-    fontFamily:"Work Sans"
-
+    color: '#333',
+    fontWeight: '500',
+    fontSize: 16,
+    marginBottom: 6,
+    fontFamily: 'Work Sans',
   },
   inputs: {
-    borderColor: 'gray',
+    borderColor: '#D1D5DB',
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 8,
-    marginTop: 10,
-    fontSize: 17,
-    fontFamily:"Work Sans",
-    color:ColorsConstant.Black
-
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    fontSize: 16,
+    fontFamily: 'Work Sans',
+    color: ColorsConstant.Black,
+    backgroundColor: '#FAFAFA',
   },
-  addButtonContainer: {
-    width: '100%',
-    position: 'absolute',
-    bottom: 10,
-    left: 0,
-    right: 0,
-    justifyContent: 'center',
+  addButtonWrapper: {
+    marginTop: 30,
+    marginBottom: 40,
     alignItems: 'center',
   },
   addButton: {
     backgroundColor: '#701DDB',
-    padding: 10,
+    paddingVertical: 14,
     borderRadius: 10,
-    width: '90%'
+    width: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: 5,
   },
   addButtonText: {
     color: 'white',
-    fontSize: 21,
-    fontFamily:"Work Sans"
-
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    fontFamily: 'Work Sans',
   },
   errmsg: {
     fontSize: 14,
-    color: 'red',
-    marginTop: 13,
-    fontFamily:"Work Sans"
-
-  }
+    color: '#FF3B30',
+    marginTop: 16,
+    fontFamily: 'Work Sans',
+    paddingHorizontal: 5,
+  },
 });

@@ -23,10 +23,11 @@ axios.interceptors.response.use(function (response) {
     navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
   }
   if(response.data.Backend_Error && (response.data.Backend_Error.includes("sufficient balance")|| response.data.Backend_Error.includes("sufficent balance"))){
-    navigation.navigate("wallet")
+    navigation.navigate("Deposit")
   }
   return response;
 }
 );
 
 AppRegistry.registerComponent(appName, () => App);
+// 

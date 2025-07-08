@@ -128,7 +128,7 @@ export default function MyExamQuizzes({navigation,route}) {
       <TouchableOpacity
         style={styles.registerButtonContainer}
         onPress={() => {
-            navigation.navigate('RulesofParticipation');
+            navigation.navigate('QuizDetails');
         }}>
         <LinearGradient
           start={{x: 0.0, y: 0.25}}

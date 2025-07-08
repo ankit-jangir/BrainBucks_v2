@@ -1,59 +1,82 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, StatusBar, ScrollView, BackHandler } from 'react-native';
-import { Image } from 'react-native-elements';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  StatusBar,
+  ScrollView,
+  BackHandler,
+  ToastAndroid,
+} from 'react-native';
+import {Image} from 'react-native-elements';
 import LottieView from 'lottie-react-native';
-import { useCurrentId } from '../../context/IdReducer';
-import { getQuestion, getTriviaQuestion, submitTriviaQuiz, updateAnswer } from '../../controllers/TriviaQuizController';
+import {useCurrentId} from '../../context/IdReducer';
+import {
+  getQuestion,
+  getTriviaQuestion,
+  submitTriviaQuiz,
+  updateAnswer,
+} from '../../controllers/TriviaQuizController';
 import Toast from 'react-native-toast-message';
-import { useQuiz } from '../../context/QuizPlayReducer';
-import { BLOBURL } from '../../config/urls';
-import { screenWidth } from '../../constants/Sizes.constant';
-import { StackActions } from '@react-navigation/native';
+import {useQuiz} from '../../context/QuizPlayReducer';
+import {BLOBURL} from '../../config/urls';
+import {screenWidth} from '../../constants/Sizes.constant';
+import {StackActions} from '@react-navigation/native';
 import BackgroundTimer from 'react-native-background-timer';
 
 const ColorsConstant = {
   White: '#FFFFFF',
-  Black: '#000000'
+  Black: '#000000',
 };
 
-export default function TriviaQuestionPaper({ navigation }) {
+export default function TriviaQuestionPaper({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [timerCount, setTimerCount] = useState(30);
   const [minute, setMinute] = useState(6);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
-  const [selectedOption, setSelectedOption] = useState(0)
-  const { quizState, dispatch } = useQuiz()
-  const [submitText, setSubmitText] = useState("Submit quiz")
-  const backRef = useRef()
-  const intervalRef = useRef()
+  const [selectedOption, setSelectedOption] = useState(0);
+  const {quizState, dispatch} = useQuiz();
+  const [submitText, setSubmitText] = useState('Submit quiz');
+  const backRef = useRef();
+  const intervalRef = useRef();
 
-  let question = quizState.question
+  let question = quizState.question;
 
   useEffect(() => {
-    getCurrentQuestion(currentQuestionIndex)
-  }, [currentQuestionIndex])
+    getCurrentQuestion(currentQuestionIndex);
+  }, [currentQuestionIndex]);
 
   async function getCurrentQuestion(page) {
-    await getTriviaQuestion(quizState.id, page, Toast, dispatch, setSelectedOption)
+    await getTriviaQuestion(
+      quizState.id,
+      page,
+      Toast,
+      dispatch,
+      setSelectedOption,
+    );
   }
 
   useEffect(() => {
-    setMinute(Math.floor(quizState.time / 60))
-    setTimerCount(Math.floor(quizState.time % 60))
-    backRef.current = navigation.addListener('beforeRemove', (e) => {
+    setMinute(Math.floor(quizState.time / 60));
+    setTimerCount(Math.floor(quizState.time % 60));
+    backRef.current = navigation.addListener('beforeRemove', e => {
       e.preventDefault();
-    })
+    });
 
-    return () => { backRef.current() }
-  }, [])
+    return () => {
+      backRef.current();
+    };
+  }, []);
 
   useEffect(() => {
-    let min = (Math.floor(quizState.time / 60));
+    let min = Math.floor(quizState.time / 60);
     let tmc = Math.floor(quizState.time % 60);
 
-    setMinute(min)
-    setTimerCount(tmc)
+    setMinute(min);
+    setTimerCount(tmc);
 
     intervalRef.current = BackgroundTimer.setInterval(() => {
       if (tmc > 0) {
@@ -66,173 +89,232 @@ export default function TriviaQuestionPaper({ navigation }) {
         setTimerCount(59);
       } else {
         if (intervalRef.current)
-          BackgroundTimer.clearInterval(intervalRef.current)
-        Toast.show({ type: "info", text1: "Time's up. Submitting..." })
-        handleSubmit(true)
+          BackgroundTimer.clearInterval(intervalRef.current);
+        ToastAndroid.show("Time's up. Submitting...", ToastAndroid.SHORT);
+
+        handleSubmit(true);
       }
     }, 1000);
 
-    return () => {if(intervalRef.current)BackgroundTimer.clearInterval(intervalRef.current)};
+    return () => {
+      if (intervalRef.current)
+        BackgroundTimer.clearInterval(intervalRef.current);
+    };
   }, []);
 
-  const handleOptionPress = (optionIndex) => {
+  const handleOptionPress = optionIndex => {
     setSelectedOption(optionIndex + 1);
   };
 
   const handleSaveNext = () => {
     if (currentQuestionIndex < quizState.total) {
-      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast).then(() =>
-        setCurrentQuestionIndex(currentQuestionIndex + 1)
-      )
+      updateAnswer(
+        quizState.id,
+        currentQuestionIndex,
+        selectedOption,
+        Toast,
+      ).then(() => setCurrentQuestionIndex(currentQuestionIndex + 1));
     } else {
-      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast)
-      setModalVisible(true)
+      updateAnswer(quizState.id, currentQuestionIndex, selectedOption, Toast);
+      setModalVisible(true);
     }
-  }
+  };
 
   const handleClear = () => {
-    setSelectedOption(0)
-    updateAnswer(quizState.id, currentQuestionIndex, 0, Toast)
-  }
+    setSelectedOption(0);
+    updateAnswer(quizState.id, currentQuestionIndex, 0, Toast);
+  };
 
   const handleNext = () => {
     if (currentQuestionIndex < quizState.total) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
-  }
+  };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 1) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
-  }
+  };
 
-  const handleSubmit = (autoSubmmited) => {
+  const handleSubmit = autoSubmmited => {
     console.log(quizState.time, minute, timerCount, autoSubmmited);
-    let time = autoSubmmited ? quizState.time : Math.floor(quizState.time - minute * 60 - timerCount)
-    submitTriviaQuiz(quizState.id, time, Toast).then((r) => {
+    let time = autoSubmmited
+      ? quizState.time
+      : Math.floor(quizState.time - minute * 60 - timerCount);
+    submitTriviaQuiz(quizState.id, time, Toast).then(r => {
       if (r) {
-        backRef.current()
-        setModalVisible(false)
-        if(intervalRef.current){
-          BackgroundTimer.clearInterval(intervalRef.current)
+        backRef.current();
+        setModalVisible(false);
+        if (intervalRef.current) {
+          BackgroundTimer.clearInterval(intervalRef.current);
         }
         navigation.dispatch(
           StackActions.replace('TriviaSubmit', {
-            result: r
-          }))
+            result: r,
+          }),
+        );
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
-      <View style={{ zIndex: 200 }}>
+      <View style={{zIndex: 200}}>
         <Toast />
       </View>
       <View style={styles.container}>
         <StatusBar
-          barStyle={"white-content"}
+          barStyle={'white-content'}
           translucent={false}
-          backgroundColor={"#2E2E2E"}
+          backgroundColor={'#2E2E2E'}
         />
         <View style={styles.quitView1}>
           <View style={styles.quitView2}>
             <TouchableOpacity
               onPress={() => {
-                setSubmitText("Quit from quiz")
-                setModalVisible(!modalVisible)
+                setSubmitText('Quit from quiz');
+                setModalVisible(!modalVisible);
               }}
-              style={styles.quitView3}
-            >
+              style={styles.quitView3}>
               <Text style={styles.textQuite}>Quit</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.Daview}>
-            <Text style={styles.textMinut}>{minute} : {timerCount < 10 ? "0" + timerCount : timerCount}</Text>
+            <Text style={styles.textMinut}>
+              {minute} : {timerCount < 10 ? '0' + timerCount : timerCount}
+            </Text>
           </View>
 
-
-          <TouchableOpacity onPress={() => {
-            setSubmitText("Submit quiz")
-            setModalVisible(!modalVisible)
-          }
-          } style={{
-            backgroundColor: "#2E2E2E",
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setSubmitText('Submit quiz');
+              setModalVisible(!modalVisible);
+            }}
+            style={{
+              backgroundColor: '#2E2E2E',
+            }}>
             {/* Placeholder for score */}
             <Text style={styles.textQuite}>Submit</Text>
           </TouchableOpacity>
-
-
         </View>
 
         <View style={styles.quitView}>
           <TouchableOpacity onPress={handlePrevious}>
             <View style={styles.quitView2}>
               <View style={styles.Daview}>
-                <Image key={1 === currentQuestionIndex ? '#a9a9a9prev' : "#000prev"} source={require('../../assets/img/backcopy.png')} tintColor={1 === currentQuestionIndex ? '#a9a9a9' : "#000"} style={{ width: 20, height: 20, }} />
-                <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, 1 !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Previous</Text>
+                <Image
+                  key={1 === currentQuestionIndex ? '#a9a9a9prev' : '#000prev'}
+                  source={require('../../assets/img/backcopy.png')}
+                  tintColor={1 === currentQuestionIndex ? '#a9a9a9' : '#000'}
+                  style={{width: 20, height: 20}}
+                />
+                <Text
+                  style={[
+                    {fontFamily: 'inter', fontWeight: 'bold'},
+                    1 !== currentQuestionIndex
+                      ? {color: '#000'}
+                      : {color: '#a9a9a9'},
+                  ]}>
+                  Previous
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
 
           <View style={{}}>
             {/* Placeholder for score */}
-            <Text style={{ color: "#000", fontFamily: "Work Sans", fontSize: 14, fontWeight: '500' }}>{currentQuestionIndex}/{quizState.total}</Text>
+            <Text
+              style={{
+                color: '#000',
+                fontFamily: 'Work Sans',
+                fontSize: 14,
+                fontWeight: '500',
+              }}>
+              {currentQuestionIndex}/{quizState.total}
+            </Text>
           </View>
 
           <TouchableOpacity onPress={handleNext}>
             <View style={styles.Daview}>
-              <Text style={[{ fontFamily: 'inter', fontWeight: "bold" }, quizState.total !== currentQuestionIndex ? { color: '#000' } : { color: "#a9a9a9" }]}>Next</Text>
-              <Image key={1 === currentQuestionIndex ? '#a9a9a9next' : "#000next"} source={require('../../assets/img/right-arr.png')} tintColor={quizState.total === currentQuestionIndex && '#a9a9a9'} style={{ width: 20, height: 20, }} />
+              <Text
+                style={[
+                  {fontFamily: 'inter', fontWeight: 'bold'},
+                  quizState.total !== currentQuestionIndex
+                    ? {color: '#000'}
+                    : {color: '#a9a9a9'},
+                ]}>
+                Next
+              </Text>
+              <Image
+                key={1 === currentQuestionIndex ? '#a9a9a9next' : '#000next'}
+                source={require('../../assets/img/right-arr.png')}
+                tintColor={
+                  quizState.total === currentQuestionIndex && '#a9a9a9'
+                }
+                style={{width: 20, height: 20}}
+              />
             </View>
           </TouchableOpacity>
         </View>
 
-
         <ScrollView>
-          <View style={styles.questionContainer} key={JSON.stringify(question.question)}>
-            {
-              question.is_ques_img
-                ?
-                <>
-                  <Text key={question.question} style={styles.questionText}>
-                    {question?.question}
-                  </Text>
-
-                  <View style={{ width: "100%", height: 180 }}>
-                    <Image style={{ width: "100%", height: 150, objectFit: 'contain' }} resizeMode='contain' source={{ uri: BLOBURL + question.question_url }} />
-                  </View>
-                </>
-                :
+          <View
+            style={styles.questionContainer}
+            key={JSON.stringify(question.question)}>
+            {question.is_ques_img ? (
+              <>
                 <Text key={question.question} style={styles.questionText}>
                   {question?.question}
                 </Text>
-            }
-            {[question?.option1, question?.option2, question?.option3, question?.option4].map((option, index) => (
+
+                <View style={{width: '100%', height: 180}}>
+                  <Image
+                    style={{width: '100%', height: 150, objectFit: 'contain'}}
+                    resizeMode="contain"
+                    source={{uri: BLOBURL + question.question_url}}
+                  />
+                </View>
+              </>
+            ) : (
+              <Text key={question.question} style={styles.questionText}>
+                {question?.question}
+              </Text>
+            )}
+            {[
+              question?.option1,
+              question?.option2,
+              question?.option3,
+              question?.option4,
+            ].map((option, index) => (
               <TouchableOpacity
-                key={option + "" + index}
-                style={[styles.optionButton, selectedOption === index + 1 && styles.selectedOption]}
-                onPress={() => handleOptionPress(index)}
-              >
-                {
-                  question.is_opt_img
-                    ?
-                    <>
-                      <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "}</Text>
-                      <Image style={{ width: '100%', objectFit: 'contain', height: 150 }} resizeMode='contain' source={{ uri: BLOBURL + option }} />
-                    </>
-                    :
-                    <Text style={styles.optionText}>{'(' + String.fromCharCode(97 + index) + ") "} {option}</Text>
-                }
+                key={option + '' + index}
+                style={[
+                  styles.optionButton,
+                  selectedOption === index + 1 && styles.selectedOption,
+                ]}
+                onPress={() => handleOptionPress(index)}>
+                {question.is_opt_img ? (
+                  <>
+                    <Text style={styles.optionText}>
+                      {'(' + String.fromCharCode(97 + index) + ') '}
+                    </Text>
+                    <Image
+                      style={{width: '100%', objectFit: 'contain', height: 150}}
+                      resizeMode="contain"
+                      source={{uri: BLOBURL + option}}
+                    />
+                  </>
+                ) : (
+                  <Text style={styles.optionText}>
+                    {'(' + String.fromCharCode(97 + index) + ') '} {option}
+                  </Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
-
-
       </View>
       <View style={styles.navigationContainer}>
         <TouchableOpacity style={styles.navButton} onPress={handleClear}>
@@ -243,22 +325,19 @@ export default function TriviaQuestionPaper({ navigation }) {
         </TouchableOpacity>
       </View>
 
-
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
-        }}
-      >
+        }}>
         <TouchableOpacity
           onPress={() => setModalVisible(!modalVisible)}
-          style={styles.modalTouh}
-        >
+          style={styles.modalTouh}>
           <View style={styles.mView}>
             <Image
-              source={require("../../assets/img/file.png")}
+              source={require('../../assets/img/file.png')}
               style={styles.emoji}
             />
             <View style={styles.viewQ}>
@@ -269,8 +348,7 @@ export default function TriviaQuestionPaper({ navigation }) {
               <View style={styles.yesView1}>
                 <TouchableOpacity
                   onPress={() => handleSubmit()}
-                  style={styles.yesView2}
-                >
+                  style={styles.yesView2}>
                   <Text style={styles.textYes}>Yes</Text>
                 </TouchableOpacity>
               </View>
@@ -278,8 +356,7 @@ export default function TriviaQuestionPaper({ navigation }) {
               <View style={styles.viewNo}>
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
-                  style={styles.touchNo}
-                >
+                  style={styles.touchNo}>
                   <Text style={styles.textNo}>No</Text>
                 </TouchableOpacity>
               </View>
@@ -294,32 +371,38 @@ export default function TriviaQuestionPaper({ navigation }) {
         </TouchableOpacity>
       </Modal>
 
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible1}
-      >
+      <Modal animationType="slide" transparent={true} visible={modalVisible1}>
         <TouchableOpacity style={styles.RulesTouchable2}>
-          <View style={styles.RulesPV2} >
+          <View style={styles.RulesPV2}>
             <View style={styles.RulesPV3}>
-              <Text style={styles.RulesText} >Congratulations !!</Text>
+              <Text style={styles.RulesText}>Congratulations !!</Text>
               <LottieView
                 autoPlay
                 style={styles.RulesLott}
                 source={require('../../assets/img/upvote.json')}
               />
-              <Text style={styles.RegisteredT} >Quiz Successfully Submit ! </Text>
-              <View style={styles.RegisteredV} >
+              <Text style={styles.RegisteredT}>
+                Quiz Successfully Submit !{' '}
+              </Text>
+              <View style={styles.RegisteredV}>
                 <View style={styles.RulesName}>
                   {/* {console.log(message,"MESSAGE")} */}
-                  <Text style={{ color: '#000', fontFamily: 'inter', textAlign: 'center', }}>message</Text>
+                  <Text
+                    style={{
+                      color: '#000',
+                      fontFamily: 'inter',
+                      textAlign: 'center',
+                    }}>
+                    message
+                  </Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => {
-                backRef.current();
-                navigation.navigate('Home'), setModalVisible1(false)
-              }} style={styles.continueTouchable} >
+              <TouchableOpacity
+                onPress={() => {
+                  backRef.current();
+                  navigation.navigate('Home'), setModalVisible1(false);
+                }}
+                style={styles.continueTouchable}>
                 <Text style={styles.continueText}>Back To Home</Text>
               </TouchableOpacity>
             </View>
@@ -331,58 +414,53 @@ export default function TriviaQuestionPaper({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  continueText:
-  {
+  continueText: {
     fontFamily: 'WorkSans-Medium',
     fontSize: 20,
-    color: "#2188E7"
+    color: '#2188E7',
   },
-  continueText1:
-  {
+  continueText1: {
     fontFamily: 'WorkSans-Regular',
     fontSize: 14,
-    color: "#DC1111",
-    paddingTop: 8
+    color: '#DC1111',
+    paddingTop: 8,
   },
-  continueText1:
-  {
+  continueText1: {
     fontFamily: 'WorkSans-Regular',
     fontSize: 14,
-    color: "#DC1111",
-    paddingTop: 8
+    color: '#DC1111',
+    paddingTop: 8,
   },
-  continueTouchable:
-  {
+  continueTouchable: {
     width: '100%',
     height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#EFF5FF",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EFF5FF',
     borderRadius: 10,
-    marginTop: 30
+    marginTop: 30,
   },
-  NameText:
-  {
+  NameText: {
     fontFamily: 'WorkSans-SemiBold',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   modalTouh: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 0,
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: 'rgba(0,0,0,0.2)',
     paddingHorizontal: 20,
   },
   mView: {
-    width: "100%",
+    width: '100%',
     height: 400,
     margin: 20,
     borderRadius: 10,
     padding: 35,
-    alignItems: "center",
+    alignItems: 'center',
     shadowColor: ColorsConstant.Black,
     backgroundColor: ColorsConstant.White,
     paddingHorizontal: 20,
@@ -392,90 +470,90 @@ const styles = StyleSheet.create({
     height: 80,
   },
   viewQ: {
-    width: "100%",
+    width: '100%',
     marginTop: 20,
   },
   qText: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: 'WorkSans-Regular',
     fontSize: 20,
-    textAlign: "center",
-    color: '#000'
+    textAlign: 'center',
+    color: '#000',
   },
   yesView: {
-    width: "100%",
-    flexDirection: "row",
+    width: '100%',
+    flexDirection: 'row',
     height: 70,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginTop: 20,
   },
   yesView1: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   yesView2: {
     width: 130,
     height: 50,
-    backgroundColor: "#129C73",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#129C73',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
   },
   textYes: {
-    fontFamily: "WorkSans-SemiBold",
+    fontFamily: 'WorkSans-SemiBold',
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
     color: ColorsConstant.White,
   },
   viewNo: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-end",
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   touchNo: {
     width: 130,
     height: 50,
-    backgroundColor: "#D92828",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#D92828',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
   },
   textNo: {
-    fontFamily: "WorkSans-SemiBold",
+    fontFamily: 'WorkSans-SemiBold',
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
     color: ColorsConstant.White,
   },
   YourText: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: 'WorkSans-Regular',
     fontSize: 14,
-    textAlign: "center",
-    color: "#D92828",
+    textAlign: 'center',
+    color: '#D92828',
   },
   quitView: {
     flex: 1,
     backgroundColor: ColorsConstant.White,
   },
   quitView1: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
   },
   quitView2: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   quitView3: {
-    flexDirection: "row",
-    width: "70%",
+    flexDirection: 'row',
+    width: '70%',
     height: 35,
-    backgroundColor: "#FFFFFF10",
+    backgroundColor: '#FFFFFF10',
     borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textQuite: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: 'WorkSans-Medium',
     fontSize: 16,
     color: ColorsConstant.White,
     fontWeight: 'bold',
@@ -483,17 +561,16 @@ const styles = StyleSheet.create({
   },
   DaView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   textMinut: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: 'WorkSans-Medium',
     fontSize: 20,
     color: ColorsConstant.White,
   },
-  RulesTouchable:
-  {
+  RulesTouchable: {
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 0,
@@ -501,85 +578,73 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     width: 50,
     height: 50,
-    borderColor: ColorsConstant.LightGray
+    borderColor: ColorsConstant.LightGray,
   },
-  RulesTouchable1:
-  {
+  RulesTouchable1: {
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-  RulesPText:
-  {
+  RulesPText: {
     fontFamily: 'WorkSans-SemiBold',
     fontSize: 22,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
-  RulesTouchable2:
-  {
+  RulesTouchable2: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 0,
     backgroundColor: 'rgba(0,0,0,0.2)',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
-  RulesPV2:
-  {
-    width: "100%",
+  RulesPV2: {
+    width: '100%',
     height: 400,
     margin: 20,
     borderRadius: 10,
     padding: 35,
-    alignItems: "center",
+    alignItems: 'center',
     shadowColor: ColorsConstant.Black,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
   },
-  RulesPV3:
-  {
-    width: "100%",
+  RulesPV3: {
+    width: '100%',
     flex: 1,
-    alignItems: "center"
+    alignItems: 'center',
   },
-  RulesText:
-  {
-    fontFamily: "WorkSans-SemiBold",
+  RulesText: {
+    fontFamily: 'WorkSans-SemiBold',
     fontSize: 24,
-    color: '#000'
+    color: '#000',
   },
-  RulesLott:
-  {
+  RulesLott: {
     width: 150,
     height: 150,
     backgroundColor: 'transparent',
   },
-  RegisteredT:
-  {
-    fontFamily: "WorkSans-Medium",
+  RegisteredT: {
+    fontFamily: 'WorkSans-Medium',
     fontSize: 16,
-    color: '#000'
+    color: '#000',
   },
-  RegisteredV:
-  {
-    flexDirection: "row",
+  RegisteredV: {
+    flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: "center",
+    alignItems: 'center',
   },
-  RegisteredV1:
-  {
+  RegisteredV1: {
     width: 50,
     height: 50,
     alignItems: 'center',
-    justifyContent: "center",
+    justifyContent: 'center',
   },
-  RegisteredImg:
-  {
+  RegisteredImg: {
     width: 35,
-    height: 35
+    height: 35,
   },
-  RulesName:
-  {
-    width: "100%",
+  RulesName: {
+    width: '100%',
     // height:80,
     // margin:"auto",
     // marginRight:25
@@ -593,8 +658,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#2E2E2E',
-    paddingHorizontal: 20
-
+    paddingHorizontal: 20,
   },
   quitView: {
     flexDirection: 'row',
@@ -602,11 +666,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(243, 243, 243, 1)',
     paddingHorizontal: 20,
-    paddingVertical: 15
-
+    paddingVertical: 15,
   },
-  quitView2: {
-  },
+  quitView2: {},
   quitView3: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -621,8 +683,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: "#fff"
-
+    color: '#fff',
   },
   translateButton: {
     flexDirection: 'row',
@@ -644,14 +705,13 @@ const styles = StyleSheet.create({
   questionContainer: {
     marginBottom: 20,
     marginHorizontal: 20,
-    marginTop: 25
+    marginTop: 25,
   },
   questionText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: "#000"
-
+    color: '#000',
   },
   optionButton: {
     padding: 15,
@@ -665,13 +725,12 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: "#000"
-
+    color: '#000',
   },
   navigationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10
+    marginBottom: 10,
   },
   navButton: {
     flex: 1,

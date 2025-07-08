@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     profileName: {
       fontFamily: "WorkSans-SemiBold",
       fontSize: 22,
-      color:'rgba(138, 140, 148, 1)'
+      color:'rgb(12, 12, 12)'
     },
     profileLink: {
       fontFamily: "WorkSans-Regular",
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     menuItem: {
       flexDirection: 'row',
       alignItems: "center",
-      paddingVertical: 15,
+      paddingVertical: 10,
     },
     menuItemIcon: {
       width: 30,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     menuItemText: {
       marginLeft: 15,
       fontFamily: "WorkSans-Medium",
-      fontSize: 16,
+      fontSize: 15,
       color: 'gray'
     },
     logoutView:{

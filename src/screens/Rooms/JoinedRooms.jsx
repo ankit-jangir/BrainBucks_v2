@@ -1,4 +1,4 @@
-import { View, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, FlatList, Image, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles/Rooms.styles'
 import styles2 from '../../styles/Saved.styles'
@@ -47,10 +47,7 @@ export default function JoinedRooms({ navigation }) {
 
     useEffect(() => {
         if (data?.get_joined_rooms.error) {
-            Toast.show({
-                type: 'error',
-                text1: data?.get_joined_rooms.error
-            })
+             ToastAndroid.show(data?.get_joined_rooms.error, ToastAndroid.SHORT);
             return;
         }
 

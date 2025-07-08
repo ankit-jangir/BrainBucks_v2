@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image, ActivityIndicator, FlatList, KeyboardAvoidingView } from 'react-native'
+import { View, TouchableOpacity, Image, ActivityIndicator, FlatList, KeyboardAvoidingView, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from '../Home/SearchBar'
 import styles from '../../styles/Rooms.styles'
@@ -50,10 +50,8 @@ export default function Explore({ route }) {
 
     useEffect(() => {
         if (data?.getPublicRoom.error) {
-            Toast.show({
-                type: 'error',
-                text1: data?.getPublicRoom.error
-            })
+             ToastAndroid.show(data?.getPublicRoom.error, ToastAndroid.SHORT);
+
             return;
         }
 

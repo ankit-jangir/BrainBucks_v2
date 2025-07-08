@@ -1,6 +1,7 @@
 import {
   View,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import SavedApiService from '../../services/api/SavedApiService';
@@ -54,17 +55,10 @@ const FreeTrivia = () => {
         setCurrentPage(page)
 
       } else {
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting Saved exam data', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoadingMore(false)
       setLoading(false)

@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   LetsView2: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent:'space-between'
   },
   textLets: {
     fontFamily: "WorkSans-Bold",
@@ -78,10 +79,11 @@ const styles = StyleSheet.create({
     borderColor: ColorsConstant.uncheckedcolor,
     marginTop: 5,
     height: 50,
+    backgroundColor:'#9856EB'
   },
   inputview91: {
     flex: 0.25,
-    borderRadius: 6,
+    borderRadius: 14,
     backgroundColor: ColorsConstant.InputbgColor,
     borderColor: ColorsConstant.uncheckedcolor,
     width: 50,
@@ -89,8 +91,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 48,
     orderRadius: 6,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
+    // borderTopRightRadius: 0,
+    // borderBottomRightRadius: 0,
   },
   text91: {
     color: ColorsConstant.White,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     padding: 0,
-    backgroundColor: ColorsConstant.Theme2nd,
+    // backgroundColor: ColorsConstant.Theme2nd,
     borderRadius: 6,
   },
   textinputt: {
@@ -121,7 +123,10 @@ const styles = StyleSheet.create({
   checboxview: {
     width: "100%",
     height: 50,
-    marginTop: 20
+    marginTop: 25,
+    alignItems:'center',
+    justifyContent:'center',
+    
   },
   checboxview2: {
     flexDirection: "row",
@@ -159,139 +164,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000'
   },
-  imgView: {
-    width: "100%",
-    height: 300,
-    justifyContent: "flex-end"
+ imgView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 150,
   },
   imgView2: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   girlimg: {
-    width: "100%",
-    height: 150
-  },
-
-
-  // ///////////////////////////////////SignupGender///////////////////////////////////////////////////////
-
-  mainView: {
-    width: '100%',
-    height: 280,
-    backgroundColor: ColorsConstant.Theme,
-  },
-  mainView1: {
-    flex: 1,
-    paddingTop: 10,
-    paddingHorizontal: 30,
-  },
-  mainView2: {
-    width: '100%',
-    height: 150,
-    justifyContent: 'center',
-  },
-  mainView3: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    //   flex: 1,
-  },
-  WelcomeText: {
-    fontFamily: 'WorkSans-Bold',
-    fontSize: 26,
-    textAlign: 'left',
-    color: ColorsConstant.White,
-  },
-  ArrowPic: {
-    width: 40,
-    height: 15,
-    marginHorizontal: 24,
-  },
-  HandPic: {
-    width: 20,
-    height: 20,
-    position: 'relative',
-  },
-  LookView: {
-    flex: 1,
-    height: 100,
-    flexDirection: 'row',
-    marginTop: 0,
-  },
-  LooksText: {
-    fontSize: 18,
-    fontFamily: 'WorkSans-Medium',
-    color: ColorsConstant.White,
-    marginTop: 10
-  },
-  lottiView: {
-    width: 300,
-    height: 150,
-    backgroundColor: 'transparent',
-  },
-  letView: {
-    width: '90%',
-    height: 120,
-    justifyContent: 'center',
-  },
-  TextEach: {
-    fontFamily: 'WorkSans-Bold',
-    fontSize: 30,
-    color: ColorsConstant.AshGray,
-  },
-  viewIam: {
     width: '100%',
     height: 150,
   },
-  TextIam: {
-    fontFamily: 'WorkSans-Regular',
-    fontSize: 20,
-    color: ColorsConstant.AshGray,
-    paddingBottom: 10,
-  },
-  GenderView: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  TouchView: {
-    width: '100%',
-    justifyContent: 'center',
-    alignContent: 'center',
-    backgroundColor: 'rgba(112, 29, 219, 1)',
-    borderRadius: 10,
-    height: 50,
-    marginTop: 30
-  },
-  btntex: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontFamily: 'WorkSans-Regular',
-    color: '#fff'
-  },
-  girlPic: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  genderButton: {
-    width: 80,
-    height: 80,
-    alignItems: 'center',
-    borderRadius: 100,
-    backgroundColor: 'whitesmoke',
-    justifyContent: 'flex-end',
-    borderWidth: 1,
-  },
-  btn: {
-    width: 100,
-    height: 100,
-    color: '#000',
-  },
-
-
 
   // **********************************************signupexam*********************************************
   plus: {

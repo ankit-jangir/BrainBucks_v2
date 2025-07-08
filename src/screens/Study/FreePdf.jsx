@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity, Text, ActivityIndicator, ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook from react-navigation
 import styles  from '../../styles/Studymaterials.styles';
 import StudyApiService from '../../services/api/StudyApiService';
@@ -27,17 +27,10 @@ const FreePdf = () => {
       if(res.status===1){
         setFreepdf(res.send_data)
       }else{
-        Toast.show({
-          type: 'error',
-          text1: res.Backend_Error,
-        });
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error while getting list of pdfs', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     }finally{
       setloading(false)
     }

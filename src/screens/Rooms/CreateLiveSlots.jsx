@@ -27,7 +27,7 @@ export default function CreateLiveSlots({ navigation }) {
         <View style={[styles.enterRoomMainContainer, { padding: 15 }]}>
             <View style={styles.backandhistory}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.backimg, { padding: 20, backgroundColor: '#8D4AE2' }]}>
-                    <Image style={[styles.backimg]} resizeMethod='contain' tintColor={"white"} source={require('../../assets/img/arrow-left.png')} />
+                    <Image style={[styles.backimg]} resizeMethod='contain' tintColor={"white"} source={require('../../assets/img/backq.png')} />
                 </TouchableOpacity>
                 <Image style={{ height: 170, width: 200, }} resizeMethod='contain' source={require('../../assets/img/axeimg.png')} />
             </View>

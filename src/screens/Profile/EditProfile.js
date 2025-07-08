@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -14,18 +14,18 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { ColorsConstant } from '../../constants/Colors.constant';
-import { StyleConstants } from '../../constants/Style.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import {StyleConstants} from '../../constants/Style.constant';
 import styles from '../../styles/ViewProfile.styles';
-import { Button, Text } from '../../utils/Translate';
+import {Button, Text} from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
-import { Overlay } from '@rneui/themed';
+import {Overlay} from '@rneui/themed';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import { useIsFocused } from '@react-navigation/native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { BLOBURL } from '../../config/urls';
+import {useIsFocused} from '@react-navigation/native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {BLOBURL} from '../../config/urls';
 
-export default function EditProfile({ navigation, route }) {
+export default function EditProfile({navigation, route}) {
   const genders = [
     {
       gen: 'Boy',
@@ -43,7 +43,7 @@ export default function EditProfile({ navigation, route }) {
   const [isNameEditable, setNameEditable] = useState(false);
   const [isNumberEditable, setNumberEditable] = useState(false);
   const [image1, setImage1] = useState(
-    'https://img.freepik.com/premium-vector/user-profile-icon-avatar-person-icon-profile-symbol-neutral-gender-silhouette-circle-button-avatar-photo-vector-illustration-stock-image_797523-1722.jpg?w=360'
+    'https://img.freepik.com/premium-vector/user-profile-icon-avatar-person-icon-profile-symbol-neutral-gender-silhouette-circle-button-avatar-photo-vector-illustration-stock-image_797523-1722.jpg?w=360',
   );
 
   const [user, setUser] = useState(route.params.userData);
@@ -69,23 +69,16 @@ export default function EditProfile({ navigation, route }) {
             setImage1(BLOBURL + res.user_details.image);
           }
         } else {
-          Toast.show({
-            type: 'error',
-            text1: res.Backend_Error,
-          });
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
         }
       });
     } catch (err) {
       console.log('Error in Fetching Profile in Edit Profile', err.message);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong. Try again later',
-      // });
     }
   }, []);
 
   function setGender(gender) {
-    setUser({ ...user, gender: gender });
+    setUser({...user, gender: gender});
   }
 
   async function save() {
@@ -112,19 +105,13 @@ export default function EditProfile({ navigation, route }) {
         if (selectedImage) {
           let imguploadres = await auth.uploadProfile(selectedImage);
           if (imguploadres.status !== 1) {
-            Toast.show({
-              type: 'error',
-              text1: imguploadres.Backend_Error,
-            });
+            ToastAndroid.show(imguploadres.Backend_Error, ToastAndroid.SHORT);
             return;
           }
         } else if (isDeleting) {
           let imguploadres = await auth.uploadProfile('remove');
           if (imguploadres.status !== 1) {
-            Toast.show({
-              type: 'error',
-              text1: imguploadres.Backend_Error,
-            });
+            ToastAndroid.show(imguploadres.Backend_Error, ToastAndroid.SHORT);
             return;
           } else {
             setImage1(
@@ -133,22 +120,12 @@ export default function EditProfile({ navigation, route }) {
             setIsDeleting(false);
           }
         }
-        Toast.show({
-          type: 'success',
-          text1: 'Profile Updated Succesfully',
-        });
+        ToastAndroid.show('Profile Updated Succesfully', ToastAndroid.SHORT);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: resp.Backend_Error,
-        });
+        ToastAndroid.show(resp.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in updating profile', err);
-      // Toast.show({
-      //   type: 'error',
-      //   text1: 'Something went wrong',
-      // });
     } finally {
       setLoading(false);
     }
@@ -191,7 +168,7 @@ export default function EditProfile({ navigation, route }) {
 
   function onNameChange(text) {
     setNameErrorMessage(null);
-    setUser({ ...user, name: text });
+    setUser({...user, name: text});
   }
 
   function onNameBlur() {
@@ -211,10 +188,10 @@ export default function EditProfile({ navigation, route }) {
     launchCamera(options, res => {
       if (res.errorCode) {
         console.log('Camera launch error', res.errorMessage);
-        Toast.show({
-          type: 'error',
-          text1: 'Error in opening the Camera. Check your Permissions',
-        });
+        ToastAndroid.show(
+          'Error in opening the Camera. Check your Permissions',
+          ToastAndroid.SHORT,
+        );
       } else if (!res.didCancel) {
         setSelectedImage(res.assets[0]);
         setPicVisible(false);
@@ -234,10 +211,11 @@ export default function EditProfile({ navigation, route }) {
     launchImageLibrary(options, res => {
       if (res.errorCode) {
         console.log('Gallery launch error', res.errorMessage);
-        Toast.show({
-          type: 'error',
-          text1: 'Error in opening the gallery. Check your Permissions',
-        });
+
+        ToastAndroid.show(
+          'Error in opening the gallery. Check your Permissions',
+          ToastAndroid.SHORT,
+        );
       } else if (!res.didCancel) {
         setSelectedImage(res.assets[0]);
         setPicVisible(false);
@@ -257,10 +235,10 @@ export default function EditProfile({ navigation, route }) {
         first &&
         (first === '6' || first === '7' || first === '8' || first === '9')
       ) {
-        setUser({ ...user, phone: '+91' + text });
+        setUser({...user, phone: '+91' + text});
         return;
       } else if (!first) {
-        setUser({ ...user, phone: '+91' + text });
+        setUser({...user, phone: '+91' + text});
       } else {
         setNumErrorMessage('Mobile number must be valid');
       }
@@ -272,7 +250,7 @@ export default function EditProfile({ navigation, route }) {
   return (
     <>
       <SafeAreaView style={StyleConstants.safeArView}>
-        <View style={{ zIndex: 100 }}>
+        <View style={{zIndex: 100}}>
           <Toast />
         </View>
         <View style={styles.Saveview}>
@@ -282,7 +260,7 @@ export default function EditProfile({ navigation, route }) {
               style={StyleConstants.H2Nd}>
               <Image
                 source={require('../../assets/img/arrows.png')}
-                style={{ height: 20, width: 20 }}
+                style={{height: 20, width: 20}}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={save} style={styles.touchArrow}>
@@ -297,11 +275,11 @@ export default function EditProfile({ navigation, route }) {
 
         <ScrollView>
           <View style={styles.Cview}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <View style={styles.Cview1}>
                 <View style={styles.Cview2}>
                   <Image
-                    source={{ uri: selectedImage ? selectedImage.uri : image1 }}
+                    source={{uri: selectedImage ? selectedImage.uri : image1}}
                     resizeMode="contain"
                     style={styles.ProfileImg}
                   />
@@ -313,7 +291,7 @@ export default function EditProfile({ navigation, route }) {
               onPress={() => {
                 setPicVisible(true);
               }}
-              style={{ width: '100%', marginVertical: 10 }}>
+              style={{width: '100%', marginVertical: 10}}>
               <Text style={styles.textChnage}>Change Picture</Text>
             </TouchableOpacity>
             <View style={styles.TextName}>
@@ -324,7 +302,7 @@ export default function EditProfile({ navigation, route }) {
               <View
                 style={[
                   styles.inputView,
-                  nameErrorMessage && { borderColor: 'red', borderWidth: 1 },
+                  nameErrorMessage && {borderColor: 'red', borderWidth: 1},
                 ]}>
                 <TextInput
                   onBlur={onNameBlur}
@@ -338,7 +316,7 @@ export default function EditProfile({ navigation, route }) {
                 />
                 {
                   <TouchableOpacity
-                    style={{ padding: 10 }}
+                    style={{padding: 10}}
                     onPress={() => {
                       editName();
                     }}>
@@ -364,7 +342,7 @@ export default function EditProfile({ navigation, route }) {
               <View
                 style={[
                   styles.inputView,
-                  numErrorMessage && { borderColor: 'red', borderWidth: 1 },
+                  numErrorMessage && {borderColor: 'red', borderWidth: 1},
                 ]}>
                 <TextInput
                   onBlur={onNumberBlur}
@@ -378,7 +356,7 @@ export default function EditProfile({ navigation, route }) {
                   placeholderTextColor={'gray'}
                 />
                 {
-                  <TouchableOpacity style={{ padding: 10 }} onPress={editNumber}>
+                  <TouchableOpacity style={{padding: 10}} onPress={editNumber}>
                     <Image
                       style={styles.penciledit}
                       source={require('../../assets/img/pencil.png')}
@@ -428,7 +406,7 @@ export default function EditProfile({ navigation, route }) {
         <Overlay
           animationType="slide"
           isVisible={picVisible}
-          backdropStyle={{ position: 'relative' }}
+          backdropStyle={{position: 'relative'}}
           overlayStyle={styles.overlayBox}
           onBackdropPress={() => setPicVisible(!picVisible)}>
           <View style={styles.chooseoptionview}>
@@ -471,7 +449,7 @@ export default function EditProfile({ navigation, route }) {
 
 const SelectGender = props => {
   return (
-    <View style={{ alignItems: 'center' }}>
+    <View style={{alignItems: 'center'}}>
       <TouchableOpacity
         onPress={() => {
           props.setGender(props.item.gen);
@@ -486,7 +464,7 @@ const SelectGender = props => {
           borderWidth: 1,
           borderColor:
             props?.user?.gender?.toLocaleLowerCase() ==
-              props?.item?.gen?.toLocaleLowerCase()
+            props?.item?.gen?.toLocaleLowerCase()
               ? '#12D95B'
               : ColorsConstant.White,
         }}>
@@ -494,7 +472,7 @@ const SelectGender = props => {
           <Image
             source={props.item.image}
             resizeMode="contain"
-            style={{ width: 60, height: 60, borderRadius: 100 }}
+            style={{width: 60, height: 60, borderRadius: 100}}
             uncheckedColor={'#DBDBDB'}
             color={ColorsConstant.White}
             value={props.item.gen}
@@ -509,7 +487,7 @@ const SelectGender = props => {
             props?.user?.gender === props?.item?.gen ? '#12D95B' : '#8A8C94',
           paddingTop: 5,
         }}>
-        {props.item.gen === "No Say" ? "Other" : props.item.gen}
+        {props.item.gen === 'No Say' ? 'Other' : props.item.gen}
       </Text>
     </View>
   );

@@ -32,18 +32,12 @@ export default function Splash({ navigation }) {
               setCheckLang(res)
             } else {
               setCheckLang(null)
-              Toast.show({
-                type: 'error',
-                text1: "Check your network or login again"
-              })
+             ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
             }
           } catch (err) {
             console.log("ERROR IN GETTING PROFILE", err.message)
             setCheckLang(null)
-            Toast.show({
-              type: 'error',
-              text1: "Check your network or login again"
-            })
+             ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
           }
           if (res && res.status === 1) {
             setLoggedIn(true)
