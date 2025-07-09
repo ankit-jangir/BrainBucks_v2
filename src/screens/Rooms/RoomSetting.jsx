@@ -2,11 +2,7 @@ import { ActivityIndicator, Alert, FlatList, Image, ToastAndroid, TouchableOpaci
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Rooms.styles';
 import { Button, Text } from '../../utils/Translate';
-import styles2 from '../../styles/Studymaterials.styles';
-import CreatedRooms from './CreatedRooms';
-import JoinedRooms from './JoinedRooms';
 import { ColorsConstant } from '../../constants/Colors.constant';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 import { Overlay } from '@rneui/themed';
 import Toast from 'react-native-toast-message';
 import { deleteRoomInController } from '../../controllers/RoomsController';
