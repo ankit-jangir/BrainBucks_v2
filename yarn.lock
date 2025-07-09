@@ -4299,7 +4299,8 @@ __metadata:
     react-native-background-timer: ^2.4.1
     react-native-blob-util: ^0.19.9
     react-native-cashfree-pg-sdk: ^2.1.12
-    react-native-element-dropdown: ^2.12.1
+    react-native-dropdown-select-list: ^2.0.5
+    react-native-element-dropdown: ^2.12.4
     react-native-elements: ^3.4.3
     react-native-gesture-handler: 2.18.1
     react-native-image-picker: ^7.1.2
@@ -10038,7 +10039,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-element-dropdown@npm:^2.12.1":
+"react-native-dropdown-select-list@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-native-dropdown-select-list@npm:2.0.5"
+  checksum: bbf3f05cceae402aab122a83026521da3125e25a1bead5cb2a739316788a8980fc86229c6144cbce9ea6ab58e91a3d7291e41de9a9715ca9e980c05af81486c3
+  languageName: node
+  linkType: hard
+
+"react-native-element-dropdown@npm:^2.12.4":
   version: 2.12.4
   resolution: "react-native-element-dropdown@npm:2.12.4"
   dependencies:

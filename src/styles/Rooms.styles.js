@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 14,
     alignItems: 'center',
-    gap:110
+    gap: 110,
   },
   tabBarLabelHolder: {
     flexDirection: 'row',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     gap: 10,
     paddingBottom: 14,
-    marginVertical:7
+    marginVertical: 7,
   },
   roomNameText: {
     fontSize: 20,
@@ -149,10 +149,11 @@ const styles = StyleSheet.create({
 
   // Enter Room Style
   enterRoomMainContainer: {
-    flex: 1,
+    flexGrow: 1, // ScrollView ko support karega
     width: '100%',
     backgroundColor: '#701DDB',
     paddingTop: 20,
+    paddingBottom: 30, // Keyboard overlap prevent
   },
   backRoomEnterImg: {
     height: 14,
@@ -244,27 +245,28 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
   },
-
   proceedbtn: {
     padding: 14,
     textAlign: 'center',
     backgroundColor: '#fff',
     borderRadius: 10,
-    marginBottom: 50,
+    marginTop: 10,
+    marginBottom: 60,
   },
   flexCenter: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
+    width: '100%',
   },
   centerBox: {
     borderRadius: 8,
     backgroundColor: '#212236',
-    height: 400,
     width: '100%',
     padding: 20,
-    margin: 20,
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'space-evenly',
+    gap: 20, // form fields ke beech gap
   },
   createLiveText: {
     fontSize: 20,
@@ -274,8 +276,10 @@ const styles = StyleSheet.create({
   },
   //dropdown styles:
   dropdownExam: {
-    marginBottom: 20,
-    backgroundColor: '#212236',
+    marginBottom: 15,
+    backgroundColor: '#282940',
+    borderRadius: 4,
+    paddingHorizontal:10
   },
   dropdownlabel: {
     color: '#A1A2AD',
@@ -283,7 +287,7 @@ const styles = StyleSheet.create({
   },
   ddexaminputSearchStyle: {
     color: '#A1A2AD',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     fontSize: 14,
   },
   ddexamselectedTextStyle: {
@@ -297,6 +301,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 7,
   },
+
   ddExamItemContainerStyle: {
     color: '#A1A2AD',
     borderRadius: 4,
@@ -304,7 +309,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginHorizontal: 4,
     marginVertical: 1,
-    borderRadius: 4,
     backgroundColor: '#282940',
   },
   ddItemTextStyle: {
@@ -315,15 +319,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#282940',
     color: '#A1A2AD',
     borderRadius: 4,
-    width:"100%",
+    width: '100%',
     paddingHorizontal: 10,
+    height: 48,
+    marginBottom: 5,
   },
   TimeConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   miniumT: {
-    paddingBottom: 8,
+    // paddingBottom: 4,
     textAlign: 'right',
     fontSize: 12,
     color: '#A1A2AD',
@@ -340,10 +347,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 4,
-    gap: 10,
+    // gap: 10,
   },
   st: {
-    paddingBottom: 8,
+    paddingBottom: 4,
     color: '#A1A2AD',
   },
 
@@ -353,10 +360,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#701DDB',
   },
-  createLiveText1: {
+  createLiveText: {
     fontSize: 20,
     color: '#fff',
+    width: '80%',
     textAlign: 'center',
+    // marginBottom: 10,
   },
   SbiContainerm: {
     backgroundColor: 'white',

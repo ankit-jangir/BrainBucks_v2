@@ -7,19 +7,21 @@ import {
   ToastAndroid,
   Linking,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
 import {Text, TextInput} from '../../utils/Translate';
 import {Button} from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import {Dropdown} from 'react-native-element-dropdown';
 
 export default function Signup({navigation}) {
   const [phone, setPhone] = useState('');
+  const [userType, setUserType] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
@@ -39,6 +41,12 @@ export default function Signup({navigation}) {
     }
 
     setNumberDone(true);
+
+    if (userType === '') {
+      setErrorMessage('*Please select user type');
+      return;
+    }
+
     if (!checked) {
       setErrorMessage('*You must accept the terms and conditions');
       return;
@@ -56,6 +64,7 @@ export default function Signup({navigation}) {
         }
         navigation.navigate('Otp', {
           phone: phone,
+          userType: userType, // true or false
         });
       } else {
         setErrorMessage('*' + resposne.Backend_Error);
@@ -67,6 +76,11 @@ export default function Signup({navigation}) {
       setLoading(false);
     }
   }
+
+  const userTypes = [
+    {label: 'Educator', value: 'educator'},
+    {label: 'Student', value: 'student'},
+  ];
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
@@ -82,15 +96,15 @@ export default function Signup({navigation}) {
             </View>
 
             <View style={styles.container}>
-              <View style={[styles.LetsView,{marginTop:20}]}>
+              <View style={[styles.LetsView, {marginTop: 20}]}>
                 <View style={styles.LetsView2}>
-                  <View style={{}}>
+                  <View>
                     <Text style={styles.textLets}> Let’s Crack Exams,</Text>
                     <View style={styles.togetherview}>
                       <Text style={styles.texttogether}> Together👋 </Text>
                     </View>
                   </View>
-                  <View style={{}}>
+                  <View>
                     <Image
                       source={require('../../assets/img/arrowtoright.png')}
                       resizeMode="contain"
@@ -100,8 +114,7 @@ export default function Signup({navigation}) {
                 </View>
               </View>
 
-              <View
-                style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
+              <View style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
                 <View
                   style={[
@@ -133,6 +146,55 @@ export default function Signup({navigation}) {
                   {errorMessage}
                 </Text>
               )}
+
+              <Text style={[styles.textEnter, {marginTop: 10}]}>
+                Select User Type
+              </Text>
+
+           <Dropdown
+  style={{
+    backgroundColor: '#A269EB',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+    marginTop: 5,
+  }}
+  placeholderStyle={{color: '#fff'}}
+  selectedTextStyle={{color: '#fff'}}
+  iconColor="#fff"
+  data={userTypes}
+  maxHeight={200}
+  labelField="label"
+  valueField="value"
+  placeholder="Select user type"
+  value={userType === true ? 'educator' : userType === false ? 'student' : ''}
+  onChange={item => {
+    const isEducator = item.value === 'educator';
+    setUserType(isEducator); // 👈 true or false
+    setErrorMessage(null);
+  }}
+  flatListProps={{
+    contentContainerStyle: {
+      backgroundColor: '#A269EB',
+    },
+  }}
+  renderItem={item => {
+    const isSelected =
+      (userType === true && item.value === 'educator') ||
+      (userType === false && item.value === 'student');
+    return (
+      <View
+        style={{
+          paddingVertical: 12,
+          paddingHorizontal: 16,
+          backgroundColor: isSelected ? 'red' : '#A269EB',
+        }}>
+        <Text style={{color: '#fff'}}>{item.label}</Text>
+      </View>
+    );
+  }}
+/>
+
 
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
@@ -219,7 +281,6 @@ export default function Signup({navigation}) {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
-      {/* This image stays fixed at bottom */}
       <View
         style={[
           styles.imgView,

@@ -26,28 +26,38 @@ export default function Otp({navigation, route}) {
   const [otp, setOtp] = useState();
   const [loading, setLoading] = useState(false);
   const [seconds, setSeconds] = useState(59);
-  const [minute, setMinute] = useState(0);
   const [errorMessage, setErrorMessage] = useState();
   const auth = new AuthenticationApiService();
-  let phone = route.params.phone;
+  const {phone, userType} = route.params;
+
+  let timerRef = null;
+
+  const startOTPTimer = () => {
+    setSeconds(59);
+    if (timerRef) {
+      BackgroundTimer.clearInterval(timerRef);
+    }
+    timerRef = BackgroundTimer.setInterval(() => {
+      setSeconds(prev => {
+        if (prev > 1) {
+          return prev - 1;
+        } else {
+          BackgroundTimer.clearInterval(timerRef);
+          setErrorMessage('OTP Expired. Please Resend');
+          return 0;
+        }
+      });
+    }, 1000);
+  };
 
   useEffect(() => {
-    setSeconds(59);
-    let sec = 59;
-    const interval = BackgroundTimer.setInterval(() => {
-      if (sec > 0) {
-        sec = sec - 1;
-        setSeconds(p => p - 1);
-      } else {
-        setSeconds(0);
-        BackgroundTimer.clearInterval(interval);
-        setErrorMessage('OTP Expired. Please Resend');
-      }
-    }, 1000);
+    startOTPTimer();
     return () => {
-      BackgroundTimer.clearInterval(interval);
+      if (timerRef) {
+        BackgroundTimer.clearInterval(timerRef);
+      }
     };
-  }, [minute]);
+  }, []);
 
   function otpChanged(value) {
     setErrorMessage('');
@@ -61,7 +71,7 @@ export default function Otp({navigation, route}) {
       let response = await auth.sendOtp(phone);
       if (response.status === 1) {
         ToastAndroid.show('Otp sent successfully', ToastAndroid.SHORT);
-        setMinute(Math.random());
+        startOTPTimer(); // ⏱️ Restart timer here
       } else {
         setErrorMessage('*' + response.Backend_Error);
       }
@@ -87,10 +97,11 @@ export default function Otp({navigation, route}) {
     try {
       setErrorMessage(null);
       setLoading(true);
-      let response = await auth.verifyOtpAndRegister(phone, otp);
+      let response = await auth.verifyOtpAndRegister(phone, otp, userType);
       if (response.status === 1) {
         await basic.setJwt(response.token);
         await basic.setId(response.user_id);
+
         ChatSockService.connect();
         setLoggedIn(true);
         navigation.reset({index: 0, routes: [{name: 'Home'}]});
@@ -99,6 +110,7 @@ export default function Otp({navigation, route}) {
           StackActions.replace('SignupName', {
             phone: phone,
             otp: otp,
+            userType: userType,
           }),
         );
       } else {
@@ -152,9 +164,11 @@ export default function Otp({navigation, route}) {
             </View>
 
             <View style={styles.otpMetaRow}>
-              {errorMessage && (
+            <View style={{flex:0.7}}>
+                {errorMessage && (
                 <Text style={styles.errorText}>{errorMessage}</Text>
               )}
+            </View>
               <Text style={styles.validityText}>
                 OTP Valid For: 00:{seconds > 9 ? seconds : '0' + seconds}
               </Text>
@@ -184,18 +198,16 @@ export default function Otp({navigation, route}) {
               </TouchableOpacity>
             </View>
           </View>
-
-         
         </View>
-         <View style={styles.bottomImageContainer}>
-            <Image
-              source={require('../../assets/img/Girl.png')}
-              resizeMode="contain"
-              style={styles.bottomImage}
-            />
-          </View>
+
+        <View style={styles.bottomImageContainer}>
+          <Image
+            source={require('../../assets/img/Girl.png')}
+            resizeMode="contain"
+            style={styles.bottomImage}
+          />
+        </View>
       </SafeAreaView>
-      
     </>
   );
 }
@@ -213,18 +225,15 @@ const styles = StyleSheet.create({
     width: 250,
   },
   containerCard: {
-  backgroundColor: '#701DDB',
-  borderTopLeftRadius: 100,
-  paddingTop: 40,
-  paddingHorizontal: 20,
-},
-
-cardContent: {
-  paddingHorizontal: 10,
-  flexGrow: 1,
-  // minHeight: Dimensions.get('window').height * 0.55,
-},
-
+    backgroundColor: '#701DDB',
+    borderTopLeftRadius: 100,
+    paddingTop: 40,
+    paddingHorizontal: 20,
+  },
+  cardContent: {
+    paddingHorizontal: 10,
+    flexGrow: 1,
+  },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -249,8 +258,6 @@ cardContent: {
     width: 50,
     height: 50,
     borderRadius: 10,
-    // borderWidth: 1,
-    // borderColor: '#fff',
     marginHorizontal: 5,
     backgroundColor: '#9856EB',
     justifyContent: 'center',
@@ -309,16 +316,15 @@ cardContent: {
     color: ColorsConstant.TermColor,
     marginLeft: 4,
   },
- bottomImageContainer: {
-  backgroundColor: '#701DDB',
-  width: '100%',
-  alignItems: 'center',
-},
-bottomImage: {
-  width: '100%',
-  height: undefined,
-  aspectRatio: 1.5, // Adjust as per actual image shape
-  resizeMode: 'contain',
-},
-
+  bottomImageContainer: {
+    backgroundColor: '#701DDB',
+    width: '100%',
+    alignItems: 'center',
+  },
+  bottomImage: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1.5,
+    resizeMode: 'contain',
+  },
 });

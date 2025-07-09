@@ -1,167 +1,150 @@
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ToastAndroid,
-} from 'react-native';
-import React, {useEffect, useId, useState} from 'react';
+import { ActivityIndicator, Alert, FlatList, Image, ToastAndroid, TouchableOpacity, View, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/Rooms.styles';
+import { Button, Text } from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import { Overlay } from '@rneui/themed';
 import Toast from 'react-native-toast-message';
-import {Text} from '../../utils/Translate';
-import {useQuiz} from '../../context/QuizPlayReducer';
-import HistoryApiService from '../../services/api/HistoryApiService';
-import BasicServices from '../../services/BasicServices';
-import QuizCard from '../../components/QuizCard';
-import NoDataFound from '../../components/NoDataFound';
-import {ActivityIndicator} from 'react-native';
-import {ColorsConstant} from '../../constants/Colors.constant';
-import {BLOBURL} from '../../config/urls';
+import { deleteRoomInController } from '../../controllers/RoomsController';
 import RoomsApiService from '../../services/api/RoomsApiService';
-import {useIsFocused} from '@react-navigation/native';
-import {useQuery} from '@apollo/client';
-import {useRoom} from '../../utils/store';
+import { useQuery } from '@apollo/client';
+import NoDataFound from '../../components/NoDataFound';
+import Share from '../Wallet/Share';
+import { useRoom } from '../../utils/store';
+import { APPURL } from '../../config/urls';
+import MainHeader from '../../components/MainHeader';
 
-export default function RoomsQuizHistory({navigation, route}) {
-  const [quizzes, setQuizzes] = useState([]);
-  const [totalPages, setTotalPages] = useState(2);
+const RoomSetting = ({ navigation }) => {
+  const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [refreshing, setRefreshing] = useState(false);
-  const isFocused = useIsFocused();
+  const [totalPages, setTotalPages] = useState(2);
+  const [members, setMembers] = useState([]);
 
+  const ras = new RoomsApiService();
   const room_data = useRoom(state => state.currentRoom);
-  const roomServ = new RoomsApiService();
 
-  const {quizState, dispatch} = useQuiz();
-
-  let {loading, error, data, refetch} = useQuery(roomServ.GETHISTORYQUIZES, {
-    variables: {
-      room_id: room_data._id,
-      page: currentPage,
-    },
+  const { loading, data, refetch } = useQuery(ras.GETROOMMEMBERS, {
+    variables: { room_id: room_data._id, page: currentPage }
   });
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [isFocused]);
-
-  useEffect(() => {
-    if (data?.history_quizes.error) {
-      ToastAndroid.show(data?.history_quizes.error, ToastAndroid.SHORT);
+    if (data?.get_enrl_participants_of_quiz?.error) {
+      ToastAndroid.show(data.get_enrl_participants_of_quiz.error, ToastAndroid.SHORT);
       return;
     }
-
-    if (data && data.history_quizes) {
-      if (data.history_quizes.totalPages) {
-        setTotalPages(data.history_quizes.totalPages);
-      }
-
-      if (currentPage === 1) {
-        if (data.history_quizes.response) {
-          setQuizzes(data.history_quizes.response);
-        }
-      } else {
-        if (data.history_quizes.response) {
-          setQuizzes([...quizzes, ...data.history_quizes.response]);
-        }
-      }
+    if (data?.get_enrl_participants_of_quiz) {
+      const { totalPages, response } = data.get_enrl_participants_of_quiz;
+      setTotalPages(totalPages || 2);
+      setMembers(currentPage === 1 ? response || [] : [...members, ...(response || [])]);
     }
   }, [data]);
 
-  useEffect(() => {
-    if (currentPage <= totalPages) {
-      refetch();
+  useEffect(() => { setCurrentPage(1); }, []);
+  useEffect(() => { if (currentPage <= totalPages) refetch(); }, [currentPage]);
+
+  const deleteRoom = async () => {
+    let res = await deleteRoomInController(room_data._id, Toast);
+    if (res) {
+      ToastAndroid.show('Room Deleted Successfully', ToastAndroid.SHORT);
+      navigation.pop(2);
     }
-  }, [currentPage]);
+  };
+
+  const toggleOverlay = () => setVisible(!visible);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `${APPURL}/rooms?id=${room_data.room_hash || room_data.room_name}&type=${room_data.room_hash ? 'private' : 'public'}`
+      });
+      if (result.action === Share.dismissedAction) return;
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   return (
-    <>
-      <View style={{zIndex: 1}}>
-        <Toast />
-      </View>
-      <View style={styles.maincontainer}>
-        <View style={styles.Hview}>
-          <View style={styles.Hview1}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.THead}>
-              <Image
-                source={require('../../assets/img/backq.png')}
-                resizeMode="contain"
-                style={{width: 20, height: 20}}
-              />
-            </TouchableOpacity>
-            <View style={styles.ViewMy}>
-              <Text style={styles.TextMy}>Quiz History</Text>
-            </View>
-          </View>
+    <View style={{ flex: 1, backgroundColor: ColorsConstant.White }}>
+      <MainHeader
+        name="Settings"
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'),
+          onPress: () => navigation.goBack()
+        }}
+      />
+
+      <ScrollView contentContainerStyle={{ padding: 16 }}>
+        <Text style={styles.label}>Room Name</Text>
+        <View style={styles.roomInfoBox}>
+          <Text style={styles.roomName}>{room_data.room_name}</Text>
         </View>
 
-        {loading && currentPage === 1 ? (
-          <ActivityIndicator size={40} color={ColorsConstant.Theme} />
-        ) : quizzes.length === 0 ? (
-          <NoDataFound
-            message={'No Data Found'}
-            action={() => {}}
-            actionText={'Refresh'}
-          />
-        ) : (
-          <FlatList
-            onRefresh={() => {
-              if (currentPage === 1) {
-                setCurrentPage(totalPages + 1);
-                setTimeout(() => {
-                  setCurrentPage(1);
-                }, 300);
-              } else {
-                setCurrentPage(1);
-              }
-            }}
-            refreshing={refreshing}
-            onEndReached={() => {
-              currentPage <= totalPages && setCurrentPage(currentPage + 1);
-            }}
-            onEndReachedThreshold={0.6}
-            data={quizzes}
-            keyExtractor={item => item._id.toString()}
-            renderItem={({item}) => {
-              return (
-                <QuizCard
-                  title={item.category_name}
-                  prize={item.prize}
-                  type={'active'}
-                  minper={item.min_reward_per}
-                  totalslots={item.slots}
-                  alotedslots={item.slot_aloted}
-                  image={
-                    item.image
-                      ? {uri: BLOBURL + item.image}
-                      : require('../../assets/img/bbimg.png')
-                  }
-                  fees={item.entryFees}
-                  date={item.sch_time}
-                  onPress={() => {
-                    if (item.is_res_dec) {
-                      dispatch({type: 'change', state: {id: item._id}});
-                      navigation.navigate('RoomsResult');
-                    } else {
-                       ToastAndroid.show('Result is not declared yet', ToastAndroid.SHORT);
-                    }
-                  }}
-                  btntxt={
-                    item.is_res_dec ? 'View Result' : 'Declaration Pending'
-                  }
-                  roomname={room_data?.room_name}
-                  declareTime={item.crontab_result_time}
-                />
-              );
-            }}
-          />
-        )}
-        {loading && currentPage > 1 && (
-          <ActivityIndicator size={25} style={{height: 30}} />
-        )}
-      </View>
-    </>
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.historyButton} onPress={() => navigation.navigate('roomhistory')}>
+            <Image source={require('../../assets/img/time2.png')} style={styles.actionIcon} />
+            <Text style={styles.historyText}>History</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.deleteButton} onPress={deleteRoom}>
+            <Image source={require('../../assets/img/redbin.png')} style={styles.actionIcon} />
+            <Text style={styles.deleteText}>Delete Room</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Button
+          onPress={onShare}
+          icon={<Image style={styles.shareIcon} source={require('../../assets/img/whatsapp.png')} />}
+          buttonStyle={styles.inviteBtn}
+          titleStyle={styles.inviteBtnText}
+          title="Invite Participants"
+        />
+
+        <View style={styles.roomTypeRow}>
+          <Text style={styles.label}>Room Type:</Text>
+          <Text style={styles.roomType}>{room_data.room_hash ? 'Private' : 'Public'}</Text>
+        </View>
+
+        <View style={{ marginTop: 20 }}>
+          <Text style={styles.memberText1}>
+            Members: <Text style={styles.memberCount}>{room_data.enrolled_participants_count}</Text>
+          </Text>
+
+          {loading ? (
+            <ActivityIndicator size={30} color={ColorsConstant.Theme} style={{ marginTop: 20 }} />
+          ) : members.length === 0 ? (
+            <NoDataFound scale={0.8} message="No Members Found" />
+          ) : (
+            <FlatList
+              data={members}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <View style={styles.memberCard}>
+                  <Image source={require('../../assets/img/boy.png')} style={styles.memberImage} />
+                  <View style={styles.memberInfo}>
+                    <Text style={styles.memberName}>{item.name}</Text>
+                    {item.isCurrentUser && <Text style={styles.meTag}>Me</Text>}
+                  </View>
+                </View>
+              )}
+            />
+          )}
+        </View>
+      </ScrollView>
+
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+        <View style={styles.logoutView}>
+          <Text style={styles.welcomeText}>
+            Kick out <Text style={styles.highlightText}>Vikaram Singhvi</Text> from <Text style={styles.highlightText}>IAS Warriors</Text>
+          </Text>
+          <View style={styles.logoutbuttons}>
+            <Button title="Yes" buttonStyle={styles.logoutyesbutton} titleStyle={styles.logoutButtonText} onPress={() => {}} />
+            <Button title="No" buttonStyle={styles.logoutyesbutton} titleStyle={styles.logoutButtonText} onPress={toggleOverlay} />
+          </View>
+        </View>
+      </Overlay>
+    </View>
   );
-}
+};
+
+export default RoomSetting;
