@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   Image,
@@ -144,6 +144,44 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyStack() {
+
+   const [referCode, setReferCode] = useState(null);
+
+  // Function to handle incoming URLs
+  const handleDeepLink = async ({ url }) => {
+    if (url) {
+      // URL se parameters extract karna
+      const params = new URLSearchParams(url.split('?')[1]);
+      const id = params.get('id'); // 'id' parameter se referCode nikalna
+      if (id) {
+        console.log('Extracted referCode:', id);
+        setReferCode(id); // State mein store karna
+        // AsyncStorage mein save karna
+        try {
+          await AsyncStorage.setItem('referCode', id);
+          console.log('referCode saved to AsyncStorage:', id);
+        } catch (error) {
+          console.error('Error saving referCode:', error);
+        }
+      }
+    }
+  };
+
+  
+  // Deep link listeners setup
+  useEffect(() => {
+    // App already open hai aur link se aaya
+    Linking.addEventListener('url', handleDeepLink);
+    // App band tha aur link se khula
+    Linking.getInitialURL().then((url) => {
+      if (url) handleDeepLink({ url });
+    });
+
+    return () => {
+      // Cleanup listener
+      Linking.removeAllListeners('url');
+    };
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -151,7 +189,7 @@ function MyStack() {
         gestureEnabled: true,
         gestureDirection: 'horizontal',
       }}>
-      <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="Splash" component={Splash} initialParams={{ referCode }} />
       <Stack.Screen name="signup" component={SingUp} />
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="Home" component={MyDrawer} />
@@ -614,6 +652,9 @@ useReferralListener();
       };
     },
   };
+
+
+  
 
   return (
     <KeyboardProvider>

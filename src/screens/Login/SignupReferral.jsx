@@ -18,16 +18,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getReferralCode } from '../../hooks/useReferralListener';
 
 export default function SignupReferral({navigation, route}) {
-  const [referralCode, setReferralCode] = useState('');
+  const [referCode, setReferCode] = useState(route.params?.referCode || '');
+  // Add other signup fields as needed
 
-
+  // Check AsyncStorage for referCode on mount
   useEffect(() => {
-    (async () => {
-      const savedCode = await getReferralCode();
-      if (savedCode) {
-        setReferralCode(savedCode); // 👈 Auto-fill refer code
+    const getStoredReferCode = async () => {
+      try {
+        const storedCode = await AsyncStorage.getItem('referCode');
+        if (storedCode && !referCode) {
+          setReferCode(storedCode); // Agar route se nahi mila, toh AsyncStorage se lo
+          console.log('Retrieved referCode from AsyncStorage:', storedCode);
+        }
+      } catch (error) {
+        console.error('Error retrieving referCode:', error);
       }
-    })();
+    };
+    getStoredReferCode();
   }, []);
 
 

@@ -19,7 +19,7 @@ import styles from '../../styles/ViewProfile.styles';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import {useIsFocused} from '@react-navigation/native';
-import {BLOBURL} from '../../config/urls';
+import {APPURL, BLOBURL} from '../../config/urls';
 import {Overlay} from '@rneui/themed';
 import {Button} from '../../utils/Translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -94,49 +94,75 @@ export default function ViewProfile({navigation, route}) {
   }, [isFocused]);
 
 
+// const onShare = async () => {
+//   if (!referCode) {
+//     ToastAndroid.show(
+//       'Unable to get referral code. Please try again later.',
+//       ToastAndroid.SHORT
+//     );
+//     return;
+//   }
+
+//   try {
+//     // ✅ Get short dynamic link from Firebase
+//     const dynamicLink = await generateDynamicLink(referCode);
+
+//     if (!dynamicLink) {
+//       ToastAndroid.show('Failed to generate referral link', ToastAndroid.SHORT);
+//       return;
+//     }
+
+//     const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
+
+// Hey! I’ve been using this awesome app called BrainBucks where you earn real rewards by participating in fun quizzes! 🏆📱
+
+// 👉 My Referral Code: ${referCode}
+
+// 📲 Download now using this link:
+// ${dynamicLink}
+
+// The referral code will be applied automatically on install. Let’s earn together! 🚀`;
+
+//     const result = await Share.share({ message });
+
+//     if (result.action === Share.sharedAction) {
+//       console.log('Referral link shared successfully');
+//     } else if (result.action === Share.dismissedAction) {
+//       console.log('Referral share dismissed');
+//     }
+//   } catch (error) {
+//     Alert.alert('Error', error.message);
+//   }
+// };
+
+
 const onShare = async () => {
-  if (!referCode) {
-    ToastAndroid.show(
-      'Unable to get referral code. Please try again later.',
-      ToastAndroid.SHORT
-    );
-    return;
-  }
-
   try {
-    // ✅ Get short dynamic link from Firebase
-    const dynamicLink = await generateDynamicLink(referCode);
-
-    if (!dynamicLink) {
-      ToastAndroid.show('Failed to generate referral link', ToastAndroid.SHORT);
-      return;
-    }
-
-    const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
+    const result = await Share.share({
+      message: `🎉 Earn Rewards with BrainBucks! 🧠💰
 
 Hey! I’ve been using this awesome app called BrainBucks where you earn real rewards by participating in fun quizzes! 🏆📱
 
 👉 My Referral Code: ${referCode}
 
 📲 Download now using this link:
-${dynamicLink}
+${APPURL}/Splash?id=${referCode}
 
-The referral code will be applied automatically on install. Let’s earn together! 🚀`;
-
-    const result = await Share.share({ message });
-
+The referral code will be applied automatically on install. Let’s earn together! 🚀`,
+    });
     if (result.action === Share.sharedAction) {
-      console.log('Referral link shared successfully');
+      if (result.activityType) {
+        // Shared with activity type of result.activityType
+      } else {
+        // Shared
+      }
     } else if (result.action === Share.dismissedAction) {
-      console.log('Referral share dismissed');
+      // Dismissed
     }
   } catch (error) {
-    Alert.alert('Error', error.message);
+    Alert.alert(error.message);
   }
 };
-
-
-
 
 
   const copyToClipboard = () => {
