@@ -145,40 +145,26 @@ const Tab = createBottomTabNavigator();
 
 function MyStack() {
 
-   const [referCode, setReferCode] = useState(null);
+  const [referCode, setReferCode] = useState(null);
 
-  // Function to handle incoming URLs
   const handleDeepLink = async ({ url }) => {
     if (url) {
-      // URL se parameters extract karna
       const params = new URLSearchParams(url.split('?')[1]);
-      const id = params.get('id'); // 'id' parameter se referCode nikalna
+      const id = params.get('id');
       if (id) {
         console.log('Extracted referCode:', id);
-        setReferCode(id); // State mein store karna
-        // AsyncStorage mein save karna
-        try {
-          await AsyncStorage.setItem('referCode', id);
-          console.log('referCode saved to AsyncStorage:', id);
-        } catch (error) {
-          console.error('Error saving referCode:', error);
-        }
+        setReferCode(id);
       }
     }
   };
 
-  
-  // Deep link listeners setup
   useEffect(() => {
-    // App already open hai aur link se aaya
     Linking.addEventListener('url', handleDeepLink);
-    // App band tha aur link se khula
     Linking.getInitialURL().then((url) => {
       if (url) handleDeepLink({ url });
     });
 
     return () => {
-      // Cleanup listener
       Linking.removeAllListeners('url');
     };
   }, []);

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,63 +12,69 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {StyleConstants} from '../../constants/Style.constant';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { StyleConstants } from '../../constants/Style.constant';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getReferralCode } from '../../hooks/useReferralListener';
 
-export default function SignupReferral({navigation, route}) {
-  const [referCode, setReferCode] = useState(route.params?.referCode || '');
-  // Add other signup fields as needed
+export default function SignupReferral({ navigation, route }) {
+  const [referralCode, setReferralCode] = useState('');
 
-  // Check AsyncStorage for referCode on mount
   useEffect(() => {
-    const getStoredReferCode = async () => {
-      try {
-        const storedCode = await AsyncStorage.getItem('referCode');
-        if (storedCode && !referCode) {
-          setReferCode(storedCode); // Agar route se nahi mila, toh AsyncStorage se lo
-          console.log('Retrieved referCode from AsyncStorage:', storedCode);
+    (async () => {
+      // Check if referCode is passed via route params (from deep link)
+      const routeReferCode = route.params?.referCode;
+      if (routeReferCode) {
+        setReferralCode(routeReferCode); // Pre-fill from route params
+        // Save to AsyncStorage for consistency
+        try {
+          await AsyncStorage.setItem('referCode',-routeReferCode);
+          console.log('referCode saved from route:', routeReferCode);
+        } catch (error) {
+          console.error('Error saving referCode:', error);
         }
-      } catch (error) {
-        console.error('Error retrieving referCode:', error);
+      } else {
+        // Try to get referCode from AsyncStorage (in case link was handled earlier)
+        const savedCode = await getReferralCode();
+        if (savedCode) {
+          setReferralCode(savedCode); // Pre-fill from AsyncStorage
+          console.log('referCode retrieved from AsyncStorage:', savedCode);
+        }
       }
-    };
-    getStoredReferCode();
-  }, []);
-
+    })();
+  }, [route.params?.referCode]);
 
   const next = () => {
     navigation.navigate('SignupGender', {
       ...route.params,
-      referralCode: referralCode,
+      referralCode: referralCode || '', // Pass referralCode, even if empty
     });
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ColorsConstant.White }}>
       <StatusBar
         barStyle="light-content"
         translucent={false}
         backgroundColor={ColorsConstant.Theme}
       />
-
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}
+      >
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             {/* Header Section */}
             <View style={styles.topSection}>
               <TouchableOpacity
                 onPress={() => navigation?.goBack()}
-                style={styles.backButton}>
+                style={styles.backButton}
+              >
                 <Image
                   source={require('../../assets/img/backcopy.png')}
                   style={styles.backIcon}
                 />
               </TouchableOpacity>
-
               <View style={styles.headerContent}>
                 <View style={styles.welcomeRow}>
                   <Text style={styles.welcomeText}>Welcome{'\n'}Buddy 👋</Text>
@@ -78,13 +84,10 @@ export default function SignupReferral({navigation, route}) {
                     style={styles.arrowIcon}
                   />
                 </View>
-
                 <Text style={styles.subText}>
                   Looks like you’ve got a{'\n'}referral code!
                 </Text>
               </View>
-
-              {/* Bottom Image */}
               <View style={styles.imageWrapper}>
                 <Image
                   source={require('../../assets/img/wlname.png')}
@@ -93,11 +96,9 @@ export default function SignupReferral({navigation, route}) {
                 />
               </View>
             </View>
-
             {/* Form Section */}
             <View style={styles.formSection}>
               <Text style={styles.title}>Let’s use your referral</Text>
-
               <Text style={styles.label}>Referral Code</Text>
               <View style={styles.inputContainer}>
                 <TextInput
@@ -108,7 +109,6 @@ export default function SignupReferral({navigation, route}) {
                   style={styles.input}
                 />
               </View>
-
               <TouchableOpacity onPress={next} style={styles.nextButton}>
                 <Text style={styles.nextButtonText}>Next</Text>
               </TouchableOpacity>
