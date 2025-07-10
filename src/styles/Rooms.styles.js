@@ -6,38 +6,49 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: ColorsConstant.White,
   },
-  topbar: {
-    flexDirection: 'row',
-    padding: 10,
-    width: '80%',
-  },
-  topbtns: {
-    flexDirection: 'row',
-    padding: 14,
-    alignItems: 'center',
-    gap: 110,
-  },
-  tabBarLabelHolder: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 30,
-  },
-  tabBarLabelLogo: {
-    width: 20,
-    height: 20,
-    objectFit: 'contain',
-    tintColor: ColorsConstant.GrayyColor,
-  },
-  tabBarLabel: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    textAlign: 'center',
-    color: ColorsConstant.GrayyColor,
-  },
-  roomstext: {
-    color: ColorsConstant.Black,
-    fontSize: 20,
-  },
+ 
+ topbtns: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 16,
+  paddingTop: 12,
+  paddingBottom: 8,
+  backgroundColor: ColorsConstant.White,
+  zIndex: 100, // Ensure it's above the tab view
+},
+
+roomstext: {
+  color: ColorsConstant.Black,
+  fontSize: 24,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
+
+actionContainer: {
+  position: 'absolute',
+  top: 36, // adjust to appear below the icon
+  right: 0,
+  backgroundColor: 'white',
+  borderRadius: 10,
+  elevation: 5,
+  padding: 6,
+  zIndex: 999,
+  width: 160,
+},
+
+actionButton: {
+  backgroundColor: ColorsConstant.Primary,
+  borderRadius: 8,
+  marginVertical: 4,
+  paddingVertical: 8,
+},
+
+actionTitle: {
+  fontSize: 14,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
 
   // Explore style
   roomContainer: {

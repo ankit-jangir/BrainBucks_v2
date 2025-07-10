@@ -407,7 +407,7 @@ function MyTabs() {
                     style={[
                       styles.roomCircle,
                       {
-                        backgroundColor: focused ? '#701DDB' : '#F6F8FF',
+                        backgroundColor: focused ? '#475B9F' : '#F6F8FF',
                       },
                     ]}>
                     <Image
