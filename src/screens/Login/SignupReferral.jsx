@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { StyleConstants } from '../../constants/Style.constant';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getReferralCode } from '../../hooks/useReferralListener';
@@ -21,39 +20,41 @@ export default function SignupReferral({ navigation, route }) {
   const [referralCode, setReferralCode] = useState('');
 
   useEffect(() => {
-    (async () => {
-      console.log('Route params:', route.params); // Debug: Check route params
-      // Check if referCode is passed via route params (from deep link)
-      const routeReferCode = route.params?.referCode;
-      if (routeReferCode) {
-        setReferralCode(routeReferCode); // Pre-fill from route params
-        // Save to AsyncStorage for consistency
-        try {
-          await AsyncStorage.setItem('referCode', routeReferCode); // Fixed typo
-          console.log('referCode saved from route:', routeReferCode);
-        } catch (error) {
-          console.error('Error saving referCode:', error);
-        }
+  const getReferralCodeAsync = async () => {
+    try {
+      let code = route.params?.referralCode;
+      if (code) {
+        setReferralCode(code);
+        await AsyncStorage.setItem('referralCode', code);
+        console.log('Referral code from params:', code);
       } else {
-        // Try to get referCode from AsyncStorage
-        try {
-          const savedCode = await getReferralCode();
-          console.log('Retrieved from getReferralCode:', savedCode);
-          if (savedCode) {
-            setReferralCode(savedCode); // Pre-fill from AsyncStorage
+        code = await getReferralCode();
+        if (code) {
+          setReferralCode(code);
+          await AsyncStorage.setItem('referralCode', code);
+          console.log('Referral code from useReferralListener:', code);
+        } else {
+          const storedCode = await AsyncStorage.getItem('referralCode');
+          if (storedCode) {
+            setReferralCode(storedCode);
+            console.log('Referral code from AsyncStorage:', storedCode);
+          } else {
+            console.log('No referral code found');
           }
-        } catch (error) {
-          console.error('Error retrieving referCode:', error);
         }
       }
-    })();
-  }, [route.params?.referCode]);
+    } catch (err) {
+      console.log('Error fetching referral code:', err.message);
+    }
+  };
+  getReferralCodeAsync();
+}, [route.params?.referralCode]);
 
   const next = () => {
     console.log('Navigating to SignupGender with referralCode:', referralCode);
     navigation.navigate('SignupGender', {
       ...route.params,
-      referralCode: referralCode || '', // Pass referralCode, even if empty
+      referralCode: referralCode || '',
     });
   };
 
@@ -70,7 +71,6 @@ export default function SignupReferral({ navigation, route }) {
       >
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
-            {/* Header Section */}
             <View style={styles.topSection}>
               <TouchableOpacity
                 onPress={() => navigation?.goBack()}
@@ -102,7 +102,6 @@ export default function SignupReferral({ navigation, route }) {
                 />
               </View>
             </View>
-            {/* Form Section */}
             <View style={styles.formSection}>
               <Text style={styles.title}>Let’s use your referral</Text>
               <Text style={styles.label}>Referral Code</Text>

@@ -146,7 +146,7 @@ Hey! I’ve been using this awesome app called BrainBucks where you earn real re
 👉 My Referral Code: ${referCode}
 
 📲 Download now using this link:
-${APPURL}/Splash?id=${referCode}
+${APPURL}/SignupReferral?referralCode=${referCode}
 
 The referral code will be applied automatically on install. Let’s earn together! 🚀`,
     });

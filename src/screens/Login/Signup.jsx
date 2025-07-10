@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -12,19 +12,19 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
-import {Text, TextInput} from '../../utils/Translate';
-import {Button} from '../../utils/Translate';
+import { Text, TextInput } from '../../utils/Translate';
+import { Button } from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 
-export default function Signup({navigation,route}) {
+export default function Signup({ navigation, route }) {
   const [phone, setPhone] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const [numberDone, setNumberDone] = useState(false);
-
+  const referralCode = route.params?.referCode;
   async function next() {
     setErrorMessage(null);
     if (phone.length === 0) {
@@ -56,7 +56,7 @@ export default function Signup({navigation,route}) {
         }
         navigation.navigate('Otp', {
           phone: phone,
-          referCode: route.params?.referCode 
+          referCode: referralCode
         },);
       } else {
         setErrorMessage('*' + resposne.Backend_Error);
@@ -70,20 +70,20 @@ export default function Signup({navigation,route}) {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
-      <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ColorsConstant.White }}>
+      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.bbView}>
               <Image
                 source={require('../../assets/img/bbcolorlogo.png')}
                 resizeMode="contain"
-                style={{width: 250}}
+                style={{ width: 250 }}
               />
             </View>
 
             <View style={styles.container}>
-              <View style={[styles.LetsView,{marginTop:20}]}>
+              <View style={[styles.LetsView, { marginTop: 20 }]}>
                 <View style={styles.LetsView2}>
                   <View style={{}}>
                     <Text style={styles.textLets}> Let’s Crack Exams,</Text>
@@ -102,12 +102,12 @@ export default function Signup({navigation,route}) {
               </View>
 
               <View
-                style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
+                style={{ width: '100%', paddingHorizontal: 1, marginTop: 15 }}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
                 <View
                   style={[
                     styles.inputView,
-                    errorMessage && !numberDone && {borderColor: 'red'},
+                    errorMessage && !numberDone && { borderColor: 'red' },
                   ]}>
                   <View style={styles.inputview91}>
                     <Text style={styles.text91}>+ 91</Text>
@@ -177,9 +177,9 @@ export default function Signup({navigation,route}) {
                           terms & conditions{' '}
                         </Text>
                       </TouchableOpacity>
-                      <View style={{marginTop: -6}}>
+                      <View style={{ marginTop: -6 }}>
                         <Text
-                          style={{color: ColorsConstant.White, fontSize: 10}}>
+                          style={{ color: ColorsConstant.White, fontSize: 10 }}>
                           and
                         </Text>
                       </View>
@@ -191,7 +191,7 @@ export default function Signup({navigation,route}) {
                         }}>
                         <Text style={styles.textTerm}>Privacy policy</Text>
                       </TouchableOpacity>
-                      <View style={{marginTop: -6}}>
+                      <View style={{ marginTop: -6 }}>
                         <Text style={styles.textBrain}> Of Brain Bucks.</Text>
                       </View>
                     </Text>

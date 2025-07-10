@@ -30,7 +30,7 @@ export default function Otp({navigation, route}) {
   const [errorMessage, setErrorMessage] = useState();
   const auth = new AuthenticationApiService();
   let phone = route.params.phone;
-
+const referralCode = route.params?.referCode;
   useEffect(() => {
     setSeconds(59);
     let sec = 59;
@@ -99,7 +99,7 @@ export default function Otp({navigation, route}) {
           StackActions.replace('SignupName', {
             phone: phone,
             otp: otp,
-            referCode: route.params?.referCode 
+            referCode: referralCode
           }),
         );
       } else {
