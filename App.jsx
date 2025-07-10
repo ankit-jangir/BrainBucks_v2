@@ -144,16 +144,23 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyStack() {
+ const [referCode, setReferCode] = useState(null);
 
-  const [referCode, setReferCode] = useState(null);
-
+  // Deep link handler
   const handleDeepLink = async ({ url }) => {
+    console.log('Received URL:', url);
     if (url) {
       const params = new URLSearchParams(url.split('?')[1]);
       const id = params.get('id');
       if (id) {
         console.log('Extracted referCode:', id);
         setReferCode(id);
+        try {
+          await AsyncStorage.setItem('referCode', id);
+          console.log('referCode saved to AsyncStorage:', id);
+        } catch (error) {
+          console.error('Error saving referCode:', error);
+        }
       }
     }
   };
@@ -163,10 +170,7 @@ function MyStack() {
     Linking.getInitialURL().then((url) => {
       if (url) handleDeepLink({ url });
     });
-
-    return () => {
-      Linking.removeAllListeners('url');
-    };
+    return () => Linking.removeAllListeners('url');
   }, []);
   return (
     <Stack.Navigator
@@ -176,16 +180,16 @@ function MyStack() {
         gestureDirection: 'horizontal',
       }}>
       <Stack.Screen name="Splash" component={Splash} initialParams={{ referCode }} />
-      <Stack.Screen name="signup" component={SingUp} />
-      <Stack.Screen name="Otp" component={Otp} />
+      <Stack.Screen name="signup" component={SingUp} initialParams={{ referCode }} />
+      <Stack.Screen name="Otp" component={Otp} initialParams={{ referCode }} />
       <Stack.Screen name="Home" component={MyDrawer} />
       <Stack.Screen name="wallet" component={Wallet} />
       <Stack.Screen name="study" component={Study} />
       <Stack.Screen name="saved" component={Saved} />
       <Stack.Screen name="SearchBar" component={SearchBar} />
       <Stack.Screen name="videoplayer" component={VideoPlayer} />
-      <Stack.Screen name="SignupName" component={SignupName} />
-      <Stack.Screen name="SignupGender" component={SignupGender} />
+      <Stack.Screen name="SignupName" component={SignupName} initialParams={{ referCode }}/>
+      <Stack.Screen name="SignupGender" component={SignupGender} initialParams={{ referCode }} />
       <Stack.Screen name="SignUpExam" component={SignUpExam} />
       <Stack.Screen name="SignupReferral" component={SignupReferral} />
       <Stack.Screen name="ViewProfile" component={ViewProfile} />

@@ -18,7 +18,7 @@ import {Text, TextInput} from '../../utils/Translate';
 import {Button} from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 
-export default function Signup({navigation}) {
+export default function Signup({navigation,route}) {
   const [phone, setPhone] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -56,7 +56,8 @@ export default function Signup({navigation}) {
         }
         navigation.navigate('Otp', {
           phone: phone,
-        });
+          referCode: route.params?.referCode 
+        },);
       } else {
         setErrorMessage('*' + resposne.Backend_Error);
       }

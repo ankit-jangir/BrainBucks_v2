@@ -99,6 +99,7 @@ export default function Otp({navigation, route}) {
           StackActions.replace('SignupName', {
             phone: phone,
             otp: otp,
+            referCode: route.params?.referCode 
           }),
         );
       } else {

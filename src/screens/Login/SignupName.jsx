@@ -32,6 +32,7 @@ export default function SignupName({navigation, route}) {
     navigation.navigate('SignupReferral', {
       ...route.params,
       name: name,
+      referCode: route.params?.referCode 
     });
   }
 

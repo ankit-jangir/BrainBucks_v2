@@ -13,7 +13,7 @@ import Toast from 'react-native-toast-message';
 import ChatSockService from '../../services/api/ChatSockService';
 import { setLoggedIn } from '../../..';
 
-export default function Splash({ navigation }) {
+export default function Splash({ navigation,route }) {
   const [state, setstate] = useState({ checked: "en" });
   const [checklang, setCheckLang] = useState({ i: 'a' })
   const auth = new AuthenticationApiService()
@@ -70,7 +70,7 @@ export default function Splash({ navigation }) {
   function setLanguageAndProceed() {
     console.log("Setting language to ", state.checked);
     setSavedLanguage(state.checked).then(() => {
-      navigation.navigate('signup')
+      navigation.navigate('signup',{ referCode: route.params?.referCode })
     })
   }
 

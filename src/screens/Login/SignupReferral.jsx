@@ -22,29 +22,35 @@ export default function SignupReferral({ navigation, route }) {
 
   useEffect(() => {
     (async () => {
+      console.log('Route params:', route.params); // Debug: Check route params
       // Check if referCode is passed via route params (from deep link)
       const routeReferCode = route.params?.referCode;
       if (routeReferCode) {
         setReferralCode(routeReferCode); // Pre-fill from route params
         // Save to AsyncStorage for consistency
         try {
-          await AsyncStorage.setItem('referCode',-routeReferCode);
+          await AsyncStorage.setItem('referCode', routeReferCode); // Fixed typo
           console.log('referCode saved from route:', routeReferCode);
         } catch (error) {
           console.error('Error saving referCode:', error);
         }
       } else {
-        // Try to get referCode from AsyncStorage (in case link was handled earlier)
-        const savedCode = await getReferralCode();
-        if (savedCode) {
-          setReferralCode(savedCode); // Pre-fill from AsyncStorage
-          console.log('referCode retrieved from AsyncStorage:', savedCode);
+        // Try to get referCode from AsyncStorage
+        try {
+          const savedCode = await getReferralCode();
+          console.log('Retrieved from getReferralCode:', savedCode);
+          if (savedCode) {
+            setReferralCode(savedCode); // Pre-fill from AsyncStorage
+          }
+        } catch (error) {
+          console.error('Error retrieving referCode:', error);
         }
       }
     })();
   }, [route.params?.referCode]);
 
   const next = () => {
+    console.log('Navigating to SignupGender with referralCode:', referralCode);
     navigation.navigate('SignupGender', {
       ...route.params,
       referralCode: referralCode || '', // Pass referralCode, even if empty
