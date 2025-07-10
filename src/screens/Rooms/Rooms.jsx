@@ -101,9 +101,11 @@ export default function Rooms({navigation, route}) {
   <Text style={styles.roomstext}>Rooms</Text>
 
   <View style={{position: 'relative'}}>
-    <TouchableOpacity onPress={() => setShowActions(prev => !prev)}>
-      <Icon name="plus" size={28} color={ColorsConstant.Primary} />
-    </TouchableOpacity>
+   <TouchableOpacity
+  onPress={() => setShowActions(prev => !prev)}
+  style={styles.actionToggleButton}>
+  <Text style={styles.actionToggleText}>+ Action</Text>
+</TouchableOpacity>
 
     {showActions && (
       <View style={styles.actionContainer}>
@@ -129,7 +131,9 @@ export default function Rooms({navigation, route}) {
     )}
   </View>
 </View>
-        <Tab.Navigator
+    
+       <Tab.Navigator
+       style={{marginTop:25}}
           tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}
           initialRouteName={
             type === 'public'

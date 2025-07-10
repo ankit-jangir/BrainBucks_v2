@@ -6,13 +6,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: ColorsConstant.White,
   },
+  actionToggleButton: {
+  backgroundColor: '#701DDB',
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+  borderRadius: 5,
+},
+
+actionToggleText: {
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
+
  
  topbtns: {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
   paddingHorizontal: 16,
-  paddingTop: 12,
+  paddingTop: 16,
   paddingBottom: 8,
   backgroundColor: ColorsConstant.White,
   zIndex: 100, // Ensure it's above the tab view
@@ -32,7 +46,7 @@ actionContainer: {
   backgroundColor: 'white',
   borderRadius: 10,
   elevation: 5,
-  padding: 6,
+  padding: 10,
   zIndex: 999,
   width: 160,
 },
@@ -126,17 +140,18 @@ actionTitle: {
   backimg: {
     width: 20,
     height: 20,
-    borderRadius: 50,
-    borderWidth: 0.2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  createroomtext: {
-    color: ColorsConstant.Black,
-    fontSize: 24,
-    fontFamily: 'WorkSans-Regular',
-    fontWeight: '500',
-  },
+createroomtext: {
+  color: ColorsConstant.Black,
+  fontSize: 24,
+  fontFamily: 'WorkSans-SemiBold', 
+  fontWeight: '600',              
+  lineHeight: 24,                  
+  letterSpacing: 0,
+},
+
   createroomimg: {
     margin: 'auto',
   },

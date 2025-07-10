@@ -14,6 +14,7 @@ import {Button, Text, TextInput} from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
 import {createRoomInController} from '../../controllers/RoomsController';
 import {ColorsConstant} from '../../constants/Colors.constant';
+import CreateRoomSvg from '../../assets/img/Rectangle.svg';
 
 export default function CreateRoom({navigation}) {
   const [name, setName] = useState('');
@@ -65,10 +66,7 @@ export default function CreateRoom({navigation}) {
             <Text style={styles.createroomtext}>
               Create Room & Compete with your Friends
             </Text>
-            <Image
-              style={styles.createroomimg}
-              source={require('../../assets/img/createroom.png')}
-            />
+           <CreateRoomSvg width={100} height={100} style={styles.createroomimg} />
 
             <View>
               <Text style={styles.createRoomOptionText}>Room Type</Text>
