@@ -466,10 +466,10 @@ function MyTabs() {
         />
 
         <Tab.Screen
-          name="Wallet"
-          component={Wallet}
+          name="ViewProfile"
+          component={ViewProfile}
           options={{
-            tabBarLabel: 'Wallet',
+            tabBarLabel: 'Profile',
             tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
@@ -488,7 +488,7 @@ function MyTabs() {
                     {transform: [{scale}]},
                   ]}>
                   <Image
-                    source={require('./src/assets/img/wallet.png')}
+                    source={require('./src/assets/img/usera.png')}
                     style={[
                       styles.iconStyle,
                       {tintColor: focused ? '#701DDB' : '#7E7E7E'},
