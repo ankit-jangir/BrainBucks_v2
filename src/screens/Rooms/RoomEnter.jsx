@@ -51,29 +51,32 @@ export default function RoomEnter({navigation, route}) {
               source={require('../../assets/img/backq.png')}
             />
           </TouchableOpacity>
+
           <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            {type === 'created' && (
-              <Button
-                icon={
-                  <Image
-                    style={styles.histImg}
-                    source={require('../../assets/img/mail.png')}
-                  />
-                }
-                onPress={() => {
-                  navigation.navigate('RoomNotification');
-                }}
-                buttonStyle={{
-                  backgroundColor: '#8D4AE2',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 15,
-                  paddingHorizontal: 20,
-                }}
-                title={'9+'}
-                titleStyle={{fontSize: 14}}
-              />
-            )}
+            {/* 
+    {type === 'created' && (
+      <Button
+        icon={
+          <Image
+            style={styles.histImg}
+            source={require('../../assets/img/mail.png')}
+          />
+        }
+        onPress={() => {
+          navigation.navigate('RoomNotification');
+        }}
+        buttonStyle={{
+          backgroundColor: '#8D4AE2',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 15,
+          paddingHorizontal: 20,
+        }}
+        title={'9+'}
+        titleStyle={{ fontSize: 14 }}
+      />
+    )} 
+    */}
 
             <Button
               icon={

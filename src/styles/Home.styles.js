@@ -153,7 +153,7 @@ badgeText: {
     backgroundColor: 'transparent',
   },
   ReferCard: {
-    width: '95%',
+    width: '95%', 
     paddingHorizontal: 0,
     marginBottom: 10,
     alignItems: 'center',

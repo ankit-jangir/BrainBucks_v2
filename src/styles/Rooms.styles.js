@@ -6,38 +6,63 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: ColorsConstant.White,
   },
-  topbar: {
-    flexDirection: 'row',
-    padding: 10,
-    width: '80%',
-  },
-  topbtns: {
-    flexDirection: 'row',
-    padding: 14,
-    alignItems: 'center',
-    gap:110
-  },
-  tabBarLabelHolder: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 30,
-  },
-  tabBarLabelLogo: {
-    width: 20,
-    height: 20,
-    objectFit: 'contain',
-    tintColor: ColorsConstant.GrayyColor,
-  },
-  tabBarLabel: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    textAlign: 'center',
-    color: ColorsConstant.GrayyColor,
-  },
-  roomstext: {
-    color: ColorsConstant.Black,
-    fontSize: 20,
-  },
+  actionToggleButton: {
+  backgroundColor: '#701DDB',
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+  borderRadius: 5,
+},
+
+actionToggleText: {
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
+
+ 
+ topbtns: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 16,
+  paddingTop: 16,
+  paddingBottom: 8,
+  backgroundColor: ColorsConstant.White,
+  zIndex: 100, // Ensure it's above the tab view
+},
+
+roomstext: {
+  color: ColorsConstant.Black,
+  fontSize: 24,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
+
+actionContainer: {
+  position: 'absolute',
+  top: 36, // adjust to appear below the icon
+  right: 0,
+  backgroundColor: 'white',
+  borderRadius: 10,
+  elevation: 5,
+  padding: 10,
+  zIndex: 999,
+  width: 160,
+},
+
+actionButton: {
+  backgroundColor: ColorsConstant.Primary,
+  borderRadius: 8,
+  marginVertical: 4,
+  paddingVertical: 8,
+},
+
+actionTitle: {
+  fontSize: 14,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
 
   // Explore style
   roomContainer: {
@@ -49,7 +74,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     gap: 10,
     paddingBottom: 14,
-    marginVertical:7
+    marginVertical: 7,
   },
   roomNameText: {
     fontSize: 20,
@@ -115,17 +140,18 @@ const styles = StyleSheet.create({
   backimg: {
     width: 20,
     height: 20,
-    borderRadius: 50,
-    borderWidth: 0.2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  createroomtext: {
-    color: ColorsConstant.Black,
-    fontSize: 24,
-    fontFamily: 'WorkSans-Regular',
-    fontWeight: '500',
-  },
+createroomtext: {
+  color: ColorsConstant.Black,
+  fontSize: 24,
+  fontFamily: 'WorkSans-SemiBold', 
+  fontWeight: '600',              
+  lineHeight: 24,                  
+  letterSpacing: 0,
+},
+
   createroomimg: {
     margin: 'auto',
   },
@@ -149,10 +175,11 @@ const styles = StyleSheet.create({
 
   // Enter Room Style
   enterRoomMainContainer: {
-    flex: 1,
+    flexGrow: 1, // ScrollView ko support karega
     width: '100%',
     backgroundColor: '#701DDB',
     paddingTop: 20,
+    paddingBottom: 30, // Keyboard overlap prevent
   },
   backRoomEnterImg: {
     height: 14,
@@ -244,27 +271,28 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
   },
-
   proceedbtn: {
     padding: 14,
     textAlign: 'center',
     backgroundColor: '#fff',
     borderRadius: 10,
-    marginBottom: 50,
+    marginTop: 10,
+    marginBottom: 60,
   },
   flexCenter: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
+    width: '100%',
   },
   centerBox: {
     borderRadius: 8,
     backgroundColor: '#212236',
-    height: 400,
     width: '100%',
     padding: 20,
-    margin: 20,
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'space-evenly',
+    gap: 20, // form fields ke beech gap
   },
   createLiveText: {
     fontSize: 20,
@@ -274,8 +302,10 @@ const styles = StyleSheet.create({
   },
   //dropdown styles:
   dropdownExam: {
-    marginBottom: 20,
-    backgroundColor: '#212236',
+    marginBottom: 15,
+    backgroundColor: '#282940',
+    borderRadius: 4,
+    paddingHorizontal:10
   },
   dropdownlabel: {
     color: '#A1A2AD',
@@ -283,7 +313,7 @@ const styles = StyleSheet.create({
   },
   ddexaminputSearchStyle: {
     color: '#A1A2AD',
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     fontSize: 14,
   },
   ddexamselectedTextStyle: {
@@ -297,6 +327,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 7,
   },
+
   ddExamItemContainerStyle: {
     color: '#A1A2AD',
     borderRadius: 4,
@@ -304,7 +335,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginHorizontal: 4,
     marginVertical: 1,
-    borderRadius: 4,
     backgroundColor: '#282940',
   },
   ddItemTextStyle: {
@@ -315,15 +345,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#282940',
     color: '#A1A2AD',
     borderRadius: 4,
-    width:"100%",
+    width: '100%',
     paddingHorizontal: 10,
+    height: 48,
+    marginBottom: 5,
   },
   TimeConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   miniumT: {
-    paddingBottom: 8,
+    // paddingBottom: 4,
     textAlign: 'right',
     fontSize: 12,
     color: '#A1A2AD',
@@ -340,10 +373,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 4,
-    gap: 10,
+    // gap: 10,
   },
   st: {
-    paddingBottom: 8,
+    paddingBottom: 4,
     color: '#A1A2AD',
   },
 
@@ -353,10 +386,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#701DDB',
   },
-  createLiveText1: {
+  createLiveText: {
     fontSize: 20,
     color: '#fff',
+    width: '80%',
     textAlign: 'center',
+    // marginBottom: 10,
   },
   SbiContainerm: {
     backgroundColor: 'white',

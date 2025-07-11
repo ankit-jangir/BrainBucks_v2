@@ -55,6 +55,7 @@ export default function SignUpExam({navigation, route}) {
         Array.from(selectedExams),
         route.params.otp,
         route.params.referralCode,
+        // route.params.userType,
       );
       console.log('User id: ', res.name);
       if (res.status === 1) {
