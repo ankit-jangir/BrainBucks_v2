@@ -27,8 +27,7 @@ import ChatSockService from '../../services/api/ChatSockService';
 import {generateDynamicLink} from '../../utils/createDynamicLink';
 
 export default function ViewProfile({navigation, route}) {
-  const [image1, setImage1] = useState(
-    'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
+  const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
   const [user, setUser] = useState({});
   let auth = new AuthenticationApiService();

@@ -137,7 +137,6 @@ import messaging from '@react-native-firebase/messaging';
 import SignupReferral from './src/screens/Login/SignupReferral.jsx';
 import {KeyboardProvider} from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {useReferralListener} from './src/hooks/useReferralListener.js';
 import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
 import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
