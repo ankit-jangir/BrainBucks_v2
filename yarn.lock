@@ -3613,19 +3613,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/material-top-tabs@npm:^6.6.13":
-  version: 6.6.14
-  resolution: "@react-navigation/material-top-tabs@npm:6.6.14"
+"@react-navigation/elements@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "@react-navigation/elements@npm:2.5.2"
   dependencies:
     color: ^4.2.3
-    warn-once: ^0.1.0
+    use-latest-callback: ^0.2.4
+    use-sync-external-store: ^1.5.0
   peerDependencies:
-    "@react-navigation/native": ^6.0.0
-    react: "*"
+    "@react-native-masked-view/masked-view": ">= 0.2.0"
+    "@react-navigation/native": ^7.1.14
+    react: ">= 18.2.0"
     react-native: "*"
-    react-native-pager-view: ">= 4.0.0"
-    react-native-tab-view: ">= 3.0.0"
-  checksum: 565919b1a9a948ab30d6448dd2d59035cb05f1d87d559f3710072a0795b344fdcc543f2eeb8884b5d699a965cac7db5d88641ba87ec7544e23245404ffb860ec
+    react-native-safe-area-context: ">= 4.0.0"
+  peerDependenciesMeta:
+    "@react-native-masked-view/masked-view":
+      optional: true
+  checksum: 0b0d92574ba845b8d1ee3c4fe78a22b8aa8a3e69e27678d0daa45aae08d31488eee05128ede6b5a725bbdc4d4a3ef4990f85760a30b3d01ddb47a86d41be5593
+  languageName: node
+  linkType: hard
+
+"@react-navigation/material-top-tabs@npm:^7.3.2":
+  version: 7.3.2
+  resolution: "@react-navigation/material-top-tabs@npm:7.3.2"
+  dependencies:
+    "@react-navigation/elements": ^2.5.2
+    color: ^4.2.3
+    react-native-tab-view: ^4.1.2
+  peerDependencies:
+    "@react-navigation/native": ^7.1.14
+    react: ">= 18.2.0"
+    react-native: "*"
+    react-native-pager-view: ">= 6.0.0"
+    react-native-safe-area-context: ">= 4.0.0"
+  checksum: 5c8ce19bb21dba57c10b3aafb72d945f5add6e3f222af9355d965ba06e6614a37ff2671a2765d85d0d898bbd693b7f5f69010ff4a1f373b2119892da9ec9bc35
   languageName: node
   linkType: hard
 
@@ -4424,7 +4445,7 @@ __metadata:
     "@react-native/typescript-config": 0.74.85
     "@react-navigation/bottom-tabs": ^6.6.0
     "@react-navigation/drawer": ^6.7.0
-    "@react-navigation/material-top-tabs": ^6.6.13
+    "@react-navigation/material-top-tabs": ^7.3.2
     "@react-navigation/native": ^6.1.17
     "@react-navigation/stack": ^6.4.0
     "@rneui/base": ^4.0.0-rc.7
@@ -10717,6 +10738,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-tab-view@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "react-native-tab-view@npm:4.1.2"
+  dependencies:
+    use-latest-callback: ^0.2.4
+  peerDependencies:
+    react: ">= 18.2.0"
+    react-native: "*"
+    react-native-pager-view: ">= 6.0.0"
+  checksum: 35e289ea10bc890c3fde2fbfb716a2df7418adcb027e70d18121a78cee30583676b64c211157a0ca022b125a476ef052650c41cc49c62e71ba8efc600622b0dc
+  languageName: node
+  linkType: hard
+
 "react-native-toast-message@npm:^2.2.0":
   version: 2.3.3
   resolution: "react-native-toast-message@npm:2.3.3"
@@ -12414,7 +12448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-latest-callback@npm:^0.2.1, use-latest-callback@npm:^0.2.3":
+"use-latest-callback@npm:^0.2.1, use-latest-callback@npm:^0.2.3, use-latest-callback@npm:^0.2.4":
   version: 0.2.4
   resolution: "use-latest-callback@npm:0.2.4"
   peerDependencies:
@@ -12423,7 +12457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.2.0, use-sync-external-store@npm:^1.2.2":
+"use-sync-external-store@npm:^1.2.0, use-sync-external-store@npm:^1.2.2, use-sync-external-store@npm:^1.5.0":
   version: 1.5.0
   resolution: "use-sync-external-store@npm:1.5.0"
   peerDependencies:

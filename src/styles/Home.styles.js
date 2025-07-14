@@ -2,13 +2,18 @@ import {StyleSheet} from 'react-native';
 import {ColorsConstant} from '../constants/Colors.constant';
 
 const styles = StyleSheet.create({
- mainHeader: {
+mainHeader: {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
   backgroundColor: '#fff',
   paddingHorizontal: 12,
   paddingVertical: 10,
+  // borderBottomWidth: 1,
+  // borderBottomColor: '#E0E0E0',
+  // shadowOffset: { width: 0, height: 2 },
+  // shadowOpacity: 0.05,
+  // shadowRadius: 2,
 },
 
 iconWrapper: {
@@ -19,12 +24,14 @@ iconWrapper: {
   borderRadius: 20,
   borderWidth: 1,
   borderColor: '#F5F5F5',
+  backgroundColor: '#fff',
 },
 
 iconImage: {
   width: 20,
   height: 20,
   tintColor: '#333',
+  resizeMode: 'contain',
 },
 
 searchBox: {
@@ -34,12 +41,11 @@ searchBox: {
   backgroundColor: '#fff',
   borderWidth: 1,
   borderColor: '#F5F5F5',
-  borderRadius: 12,
+  borderRadius: 10,
   marginHorizontal: 10,
   paddingHorizontal: 12,
   height: 40,
- boxShadow: `0px 2px 4px rgba(71, 71, 71, 0.06)`,
-  // elevation: 2,
+   boxShadow: `0px 2px 4px rgba(71, 71, 71, 0.06)`,
 },
 
 searchIcon: {
@@ -47,43 +53,44 @@ searchIcon: {
   height: 16,
   tintColor: '#7E7E7E',
   marginRight: 8,
+  resizeMode: 'contain',
 },
 
 searchPlaceholder: {
   color: '#7E7E7E',
   fontSize: 14,
-  fontWeight:'600'
+  fontWeight: '500',
 },
 
 bellWrapper: {
-  position: 'relative',
-  padding: 4,
+  width: 40,
+  height: 40,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 20,
+  backgroundColor: '#fff',
 },
 
 bellIcon: {
-  width: 24,
-  height: 24,
+  width: 20,
+  height: 20,
   tintColor: '#333',
-},
-
-badge: {
-  position: 'absolute',
-  top: -5,
-  right: -5,
-  backgroundColor: 'red',
-  borderRadius: 10,
-  paddingHorizontal: 4,
-  paddingVertical: 1,
-  minWidth: 20,
-  alignItems: 'center',
-  justifyContent: 'center',
+  resizeMode: 'contain',
 },
 
 badgeText: {
   color: '#fff',
   fontSize: 10,
   fontWeight: 'bold',
+  position: 'absolute',
+  top: -4,
+  right: -4,
+  backgroundColor: 'red',
+  borderRadius: 10,
+  paddingHorizontal: 4,
+  paddingVertical: 1,
 },
+
 
 
   carouselImage: {

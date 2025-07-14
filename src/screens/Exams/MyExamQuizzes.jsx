@@ -17,7 +17,6 @@ import Toast from 'react-native-toast-message';
 import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
-import Header from '../../components/Header';
 import MainHeader from '../../components/MainHeader';
 export default function MyExamQuizzes({ navigation, route }) {
   const [live, setLive] = useState([]);

@@ -33,11 +33,37 @@ export default function ViewProfile({navigation, route}) {
   const [user, setUser] = useState(route.params.userData);
   let auth = new AuthenticationApiService();
 
+
   let isFocused = useIsFocused();
   const [loggingOut, setLoggingOut] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const [referCode, setReferCode] = useState('');
+  const [totalPlayed, setTotalPlayed] = useState(0);
+
+  useEffect(() => {
+    try {
+      auth.getUserProfile().then(res => {
+        if (res.status === 1) {
+          setUserData(res.user_details);
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image);
+          }
+          setTotalPlayed(res.totalquizplayed);
+          
+        } else {
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+        }
+      });
+    } catch (err) {
+      console.log('Error in Fetching User Profile', err.message);
+    }
+  }, [isFocused]);
+
+
+
+
+
 
   useEffect(() => {
     const fetchReferCode = async () => {
@@ -256,6 +282,10 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
                 <Text style={[styles.quizText, {fontSize: 36}]}>
                   {route.params.totalPlayed}
+
+                </Text>
+                <Text style={[styles.quizText, {fontSize: 36,}]}>
+                  {totalPlayed}
                 </Text>
               </View>
             </ImageBackground>
