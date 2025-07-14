@@ -36,20 +36,18 @@ export default function ViewProfile({navigation, route}) {
     });
   let auth = new AuthenticationApiService();
 
-  console.log(route.params, 'ssss');
 
   let isFocused = useIsFocused();
   const [loggingOut, setLoggingOut] = useState(false);
   const [visible, setVisible] = useState(false);
   const [referCode, setReferCode] = useState('');
+  const [totalPlayed, setTotalPlayed] = useState(0);
 
   useEffect(() => {
     try {
       auth.getUserProfile().then(res => {
         if (res.status === 1) {
           setUserData(res.user_details);
-          console.log(res,'ssssssdo');
-
           if (res.user_details.image) {
             setImage1(BLOBURL + res.user_details.image);
           }
@@ -256,8 +254,8 @@ The referral code will be applied automatically on install. Let’s earn togethe
               style={styles.bgImg}>
               <View style={styles.RfrView}>
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36,color:"#000"}]}>
-                  {userData.totalPlayed}
+                <Text style={[styles.quizText, {fontSize: 36,}]}>
+                  {totalPlayed}
                 </Text>
               </View>
             </ImageBackground>

@@ -139,6 +139,8 @@ import {KeyboardProvider} from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { useReferralListener } from './src/hooks/useReferralListener.js';
+import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
+import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -158,6 +160,7 @@ function MyStack() {
       <Stack.Screen name="wallet" component={Wallet} />
       <Stack.Screen name="study" component={Study} />
       <Stack.Screen name="saved" component={Saved} />
+      <Stack.Screen name="PhysicsChampions" component={PhysicsChampions} />
       <Stack.Screen name="SearchBar" component={SearchBar} />
       <Stack.Screen name="videoplayer" component={VideoPlayer} />
       <Stack.Screen name="SignupName" component={SignupName} />
@@ -202,6 +205,8 @@ function MyStack() {
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
+      <Stack.Screen name="VirtualRooms" component={VirtualRooms} />
+
       <Stack.Screen
         name="ActiveQuizzJoinAnimation"
         component={ActiveQuizzJoinAnimation}

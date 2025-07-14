@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: "space-between",
       alignItems: "center",
+      marginTop:10
     },
     welcomeText: {
       fontFamily: "WorkSans-SemiBold",
@@ -62,11 +63,12 @@ const styles = StyleSheet.create({
     },
     menu: {
       flex: 1,
+      marginTop:10
     },
     menuItem: {
       flexDirection: 'row',
       alignItems: "center",
-      paddingVertical: 10,
+      paddingVertical: 15,
     },
     menuItemIcon: {
       width: 30,
