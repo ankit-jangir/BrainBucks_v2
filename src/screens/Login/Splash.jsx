@@ -13,64 +13,118 @@ import Toast from 'react-native-toast-message';
 import ChatSockService from '../../services/api/ChatSockService';
 import { setLoggedIn } from '../../..';
 
-export default function Splash({ navigation }) {
+export default function Splash({ navigation,route }) {
   const [state, setstate] = useState({ checked: "en" });
   const [checklang, setCheckLang] = useState({ i: 'a' })
   const auth = new AuthenticationApiService()
 
+  // useEffect(() => {
+  //   async function getLang() {
+  //     let langinasync = await AsyncStorage.getItem("language")
+  //     if (langinasync) {
+  //       let localobj = await basic.getLocalObject()
+  //       if (localobj && localobj.jwt) {
+  //         let res;
+  //         try {
+  //           res = await auth.getUserProfile();
+  //           if (res.status === 1) {
+  //             console.log("jwt token: " + localobj.jwt);
+  //             setCheckLang(res)
+  //           } else {
+  //             setCheckLang(null)
+  //            ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
+  //           }
+  //         } catch (err) {
+  //           console.log("ERROR IN GETTING PROFILE", err.message)
+  //           setCheckLang(null)
+  //            ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
+  //         }
+  //         if (res && res.status === 1) {
+  //           setLoggedIn(true)
+  //           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+  //           ChatSockService.connect()
+  //         } else {
+  //           setCheckLang(null)
+  //         }
+  //       }
+  //       else {
+  //         setCheckLang(null)
+  //       }
+  //     } else {
+  //       setCheckLang(null)
+  //     }
+  //   }
+  //   try {
+  //     getLang()
+  //   } catch (er) {
+  //     console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message)
+
+  //   }
+  // }, [])
+
   useEffect(() => {
-    async function getLang() {
-      let langinasync = await AsyncStorage.getItem("language")
-      if (langinasync) {
-        let localobj = await basic.getLocalObject()
-        if (localobj && localobj.jwt) {
+  async function bootstrapAsync() {
+    try {
+      // Handle referral code
+      await GetReferCode();
+
+      // Check language
+      let langInAsync = await AsyncStorage.getItem('language');
+      if (langInAsync) {
+        let localObj = await basic.getLocalObject();
+        if (localObj && localObj.jwt) {
           let res;
           try {
             res = await auth.getUserProfile();
             if (res.status === 1) {
-              console.log("jwt token: " + localobj.jwt);
-              setCheckLang(res)
+              console.log('jwt token:', localObj.jwt);
+              setCheckLang(res);
+              setLoggedIn(true);
+              navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+              ChatSockService.connect();
             } else {
-              setCheckLang(null)
-             ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
+              setCheckLang(null);
+              ToastAndroid.show('Check your network or login again', ToastAndroid.SHORT);
             }
           } catch (err) {
-            console.log("ERROR IN GETTING PROFILE", err.message)
-            setCheckLang(null)
-             ToastAndroid.show("Check your network or login again", ToastAndroid.SHORT);
+            console.log('ERROR IN GETTING PROFILE:', err.message);
+            setCheckLang(null);
+            ToastAndroid.show('Check your network or login again', ToastAndroid.SHORT);
           }
-          if (res && res.status === 1) {
-            setLoggedIn(true)
-            navigation.reset({ index: 0, routes: [{ name: "Home" }] });
-            ChatSockService.connect()
-          } else {
-            setCheckLang(null)
-          }
-        }
-        else {
-          setCheckLang(null)
+        } else {
+          setCheckLang(null);
         }
       } else {
-        setCheckLang(null)
+        setCheckLang(null);
+      }
+    } catch (err) {
+      console.log('ERROR WHILE RETRIEVING LANGUAGE:', err.message);
+    }
+  }
+
+  bootstrapAsync();
+}, []);
+const GetReferCode = async () => {
+  try {
+    const referralCode = route.params?.referralCode;
+    if (referralCode) {
+      await AsyncStorage.setItem('referralCode', referralCode);
+      console.log('Stored referralCode:', referralCode);
+    } else {
+      const storedCode = await AsyncStorage.getItem('referralCode');
+      if (storedCode) {
+        console.log('Found stored referralCode:', storedCode);
       }
     }
-    try {
-      getLang()
-    } catch (er) {
-      console.log("ERROR WHILE RETERIEVING LANGUAGE", er.message)
-
-    }
-  }, [])
-
-  const GetReferCode = async () => {
-    let ReferCode = await AsyncStorage.getItem("referCode");
-    // console.log("refer", ReferCode);
+  } catch (err) {
+    console.log('ERROR IN HANDLING REFER CODE:', err.message);
   }
+};
 
   function setLanguageAndProceed() {
     console.log("Setting language to ", state.checked);
     setSavedLanguage(state.checked).then(() => {
-      navigation.navigate('signup')
+      navigation.navigate('signup', { referralCode: route.params?.referralCode })
     })
   }
 

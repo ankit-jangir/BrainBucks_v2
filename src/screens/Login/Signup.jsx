@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,26 +7,24 @@ import {
   ToastAndroid,
   Linking,
   KeyboardAvoidingView,
+  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
 } from 'react-native';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
-import {Text, TextInput} from '../../utils/Translate';
-import {Button} from '../../utils/Translate';
+import { Text, TextInput } from '../../utils/Translate';
+import { Button } from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import {Dropdown} from 'react-native-element-dropdown';
 
-export default function Signup({navigation}) {
+export default function Signup({ navigation, route }) {
   const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const [numberDone, setNumberDone] = useState(false);
-
+  const referralCode = route.params?.referCode;
   async function next() {
     setErrorMessage(null);
     if (phone.length === 0) {
@@ -41,12 +39,6 @@ export default function Signup({navigation}) {
     }
 
     setNumberDone(true);
-
-    if (userType === '') {
-      setErrorMessage('*Please select user type');
-      return;
-    }
-
     if (!checked) {
       setErrorMessage('*You must accept the terms and conditions');
       return;
@@ -64,8 +56,9 @@ export default function Signup({navigation}) {
         }
         navigation.navigate('Otp', {
           phone: phone,
-          userType: userType, // true or false
-        });
+          // userType: userType, // true or false
+          referCode: referralCode
+        },);
       } else {
         setErrorMessage('*' + resposne.Backend_Error);
       }
@@ -77,34 +70,29 @@ export default function Signup({navigation}) {
     }
   }
 
-  const userTypes = [
-    {label: 'Educator', value: 'educator'},
-    {label: 'Student', value: 'student'},
-  ];
-
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
-      <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ColorsConstant.White }}>
+      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.bbView}>
               <Image
                 source={require('../../assets/img/bbcolorlogo.png')}
                 resizeMode="contain"
-                style={{width: 250}}
+                style={{ width: 250 }}
               />
             </View>
 
             <View style={styles.container}>
-              <View style={[styles.LetsView, {marginTop: 20}]}>
+              <View style={[styles.LetsView, { marginTop: 20 }]}>
                 <View style={styles.LetsView2}>
-                  <View>
+                  <View style={{}}>
                     <Text style={styles.textLets}> Let’s Crack Exams,</Text>
                     <View style={styles.togetherview}>
                       <Text style={styles.texttogether}> Together👋 </Text>
                     </View>
                   </View>
-                  <View>
+                  <View style={{}}>
                     <Image
                       source={require('../../assets/img/arrowtoright.png')}
                       resizeMode="contain"
@@ -114,12 +102,13 @@ export default function Signup({navigation}) {
                 </View>
               </View>
 
-              <View style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
+              <View
+                style={{ width: '100%', paddingHorizontal: 1, marginTop: 15 }}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
                 <View
                   style={[
                     styles.inputView,
-                    errorMessage && !numberDone && {borderColor: 'red'},
+                    errorMessage && !numberDone && { borderColor: 'red' },
                   ]}>
                   <View style={styles.inputview91}>
                     <Text style={styles.text91}>+ 91</Text>
@@ -146,55 +135,6 @@ export default function Signup({navigation}) {
                   {errorMessage}
                 </Text>
               )}
-
-              <Text style={[styles.textEnter, {marginTop: 10}]}>
-                Select User Type
-              </Text>
-
-           <Dropdown
-  style={{
-    backgroundColor: '#A269EB',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 14,
-    marginTop: 5,
-  }}
-  placeholderStyle={{color: '#fff'}}
-  selectedTextStyle={{color: '#fff'}}
-  iconColor="#fff"
-  data={userTypes}
-  maxHeight={200}
-  labelField="label"
-  valueField="value"
-  placeholder="Select user type"
-  value={userType === true ? 'educator' : userType === false ? 'student' : ''}
-  onChange={item => {
-    const isEducator = item.value === 'educator';
-    setUserType(isEducator); // 👈 true or false
-    setErrorMessage(null);
-  }}
-  flatListProps={{
-    contentContainerStyle: {
-      backgroundColor: '#A269EB',
-    },
-  }}
-  renderItem={item => {
-    const isSelected =
-      (userType === true && item.value === 'educator') ||
-      (userType === false && item.value === 'student');
-    return (
-      <View
-        style={{
-          paddingVertical: 12,
-          paddingHorizontal: 16,
-          backgroundColor: isSelected ? 'red' : '#A269EB',
-        }}>
-        <Text style={{color: '#fff'}}>{item.label}</Text>
-      </View>
-    );
-  }}
-/>
-
 
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
@@ -238,9 +178,9 @@ export default function Signup({navigation}) {
                           terms & conditions{' '}
                         </Text>
                       </TouchableOpacity>
-                      <View style={{marginTop: -6}}>
+                      <View style={{ marginTop: -6 }}>
                         <Text
-                          style={{color: ColorsConstant.White, fontSize: 10}}>
+                          style={{ color: ColorsConstant.White, fontSize: 10 }}>
                           and
                         </Text>
                       </View>
@@ -252,7 +192,7 @@ export default function Signup({navigation}) {
                         }}>
                         <Text style={styles.textTerm}>Privacy policy</Text>
                       </TouchableOpacity>
-                      <View style={{marginTop: -6}}>
+                      <View style={{ marginTop: -6 }}>
                         <Text style={styles.textBrain}> Of Brain Bucks.</Text>
                       </View>
                     </Text>
@@ -281,6 +221,7 @@ export default function Signup({navigation}) {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
+      {/* This image stays fixed at bottom */}
       <View
         style={[
           styles.imgView,

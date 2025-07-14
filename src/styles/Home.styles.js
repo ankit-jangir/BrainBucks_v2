@@ -309,7 +309,7 @@ badgeText: {
   
   cardContainer: {
     marginTop:20,
-    width: 160,
+    flex:0.5,
     height: 180,
     backgroundColor: '#fff',
     borderRadius: 10,

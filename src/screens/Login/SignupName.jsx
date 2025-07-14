@@ -17,7 +17,7 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 export default function SignupName({navigation, route}) {
   const [name, setName] = useState();
   const [errorMessage, setErrorMessage] = useState();
-
+const referralCode = route.params?.referCode;
   useEffect(() => {
     console.log('SignupName params:', route.params);
   }, []);
@@ -32,6 +32,7 @@ export default function SignupName({navigation, route}) {
     navigation.navigate('SignupReferral', {
       ...route.params,
       name: name,
+      referCode: referralCode 
     });
   }
 

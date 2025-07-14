@@ -28,6 +28,8 @@ export default function Otp({navigation, route}) {
   const [seconds, setSeconds] = useState(59);
   const [errorMessage, setErrorMessage] = useState();
   const auth = new AuthenticationApiService();
+  // let phone = route.params.phone;
+const referralCode = route.params?.referCode;
   const {phone, userType} = route.params;
 
   let timerRef = null;
@@ -110,7 +112,8 @@ export default function Otp({navigation, route}) {
           StackActions.replace('SignupName', {
             phone: phone,
             otp: otp,
-            userType: userType,
+            referCode: referralCode,
+            // userType: userType,
           }),
         );
       } else {

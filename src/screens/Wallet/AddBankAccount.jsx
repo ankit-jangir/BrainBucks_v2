@@ -134,18 +134,18 @@ const AddBankAccount = ({ navigation }) => {
         </View>
 
         {/* ✅ BUTTON INSIDE SCROLLVIEW */}
-        <View style={styles.addButtonWrapper}>
-          <Button
-            onPress={next}
-            title="Add Account"
-            loading={loading}
-            titleStyle={styles.addButtonText}
-            buttonStyle={styles.addButton}
-            containerStyle={{ width: '100%', alignItems: 'center' }}
-            loadingProps={{ size: 25, color: '#fff' }}
-          />
-        </View>
+
       </ScrollView>
+      <View style={styles.addButtonWrapper}>
+        <Button
+          onPress={next}
+          title="Add Account"
+          loading={loading}
+          titleStyle={styles.addButtonText}
+          buttonStyle={styles.addButton}
+          loadingProps={{ size: 25, color: '#fff' }}
+        />
+      </View>
     </View>
   );
 };
@@ -155,59 +155,49 @@ export default AddBankAccount;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#fff',
   },
   scrollContent: {
-    paddingHorizontal: 16,
+    paddingHorizontal:10,
     paddingTop: 20,
     paddingBottom: 50,
   },
   formCard: {
-    backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 20,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
+
   },
   inputContainer: {
-    marginTop: 20,
+    marginTop: 15,
   },
   inputLabel: {
-    color: '#333',
-    fontWeight: '500',
-    fontSize: 16,
-    marginBottom: 6,
+    color: '#2E2E2E',
+    fontWeight: '400',
+    fontSize: 14,
+    marginBottom: 3,
     fontFamily: 'Work Sans',
   },
   inputs: {
-    borderColor: '#D1D5DB',
+    borderColor: '#EFEFEF',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 14,
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'Work Sans',
     color: ColorsConstant.Black,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#fff',
   },
   addButtonWrapper: {
-    marginTop: 30,
-    marginBottom: 40,
-    alignItems: 'center',
+    position: "absolute",
+    bottom: 50,
+    width: "93%",
+    left: 15,
+    right: 10
   },
   addButton: {
     backgroundColor: '#701DDB',
     paddingVertical: 14,
-    borderRadius: 10,
-    width: '100%',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 5,
-    elevation: 5,
+    borderRadius: 5,
   },
   addButtonText: {
     color: 'white',

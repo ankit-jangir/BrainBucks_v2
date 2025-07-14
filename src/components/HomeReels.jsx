@@ -81,7 +81,7 @@ const HomeReels = ({setParentModalVisible, setCurrentReel}) => {
                     width: screenWidth / 3,
                     height: 200,
                     borderRadius: 5,
-                    objectFit: 'cover',
+                    objectFit: 'fill',
                   }}
                   source={{uri: BLOBURL + item.banner}}
                   controls={false}

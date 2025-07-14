@@ -19,53 +19,26 @@ import styles from '../../styles/ViewProfile.styles';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import {useIsFocused} from '@react-navigation/native';
-import {BLOBURL} from '../../config/urls';
+import {APPURL, BLOBURL} from '../../config/urls';
 import {Overlay} from '@rneui/themed';
 import {Button} from '../../utils/Translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatSockService from '../../services/api/ChatSockService';
-import {generateDynamicLink} from '../../utils/createDynamicLink';
+import { generateDynamicLink } from '../../utils/createDynamicLink';
 
 export default function ViewProfile({navigation, route}) {
   const [image1, setImage1] = useState(
     'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
-  // const [user, setUser] = useState(route.params.userData);
-  const [userData, setUserData] = useState({
-    
-    });
+  const [user, setUser] = useState(route.params.userData);
   let auth = new AuthenticationApiService();
-
 
   let isFocused = useIsFocused();
   const [loggingOut, setLoggingOut] = useState(false);
   const [visible, setVisible] = useState(false);
+
   const [referCode, setReferCode] = useState('');
   const [totalPlayed, setTotalPlayed] = useState(0);
-
-  useEffect(() => {
-    try {
-      auth.getUserProfile().then(res => {
-        if (res.status === 1) {
-          setUserData(res.user_details);
-          if (res.user_details.image) {
-            setImage1(BLOBURL + res.user_details.image);
-          }
-          setTotalPlayed(res.totalquizplayed);
-          
-        } else {
-          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
-        }
-      });
-    } catch (err) {
-      console.log('Error in Fetching User Profile', err.message);
-    }
-  }, [isFocused]);
-
-
-
-
-
 
   useEffect(() => {
     const fetchReferCode = async () => {
@@ -121,49 +94,77 @@ export default function ViewProfile({navigation, route}) {
     }
   }, [isFocused]);
 
-  const onShare = async () => {
-    if (!referCode) {
-      ToastAndroid.show(
-        'Unable to get referral code. Please try again later.',
-        ToastAndroid.SHORT,
-      );
-      return;
-    }
 
-    try {
-      // ✅ Get short dynamic link from Firebase
-      const dynamicLink = await generateDynamicLink(referCode);
+// const onShare = async () => {
+//   if (!referCode) {
+//     ToastAndroid.show(
+//       'Unable to get referral code. Please try again later.',
+//       ToastAndroid.SHORT
+//     );
+//     return;
+//   }
 
-      if (!dynamicLink) {
-        ToastAndroid.show(
-          'Failed to generate referral link',
-          ToastAndroid.SHORT,
-        );
-        return;
-      }
+//   try {
+//     // ✅ Get short dynamic link from Firebase
+//     const dynamicLink = await generateDynamicLink(referCode);
 
-      const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
+//     if (!dynamicLink) {
+//       ToastAndroid.show('Failed to generate referral link', ToastAndroid.SHORT);
+//       return;
+//     }
+
+//     const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
+
+// Hey! I’ve been using this awesome app called BrainBucks where you earn real rewards by participating in fun quizzes! 🏆📱
+
+// 👉 My Referral Code: ${referCode}
+
+// 📲 Download now using this link:
+// ${dynamicLink}
+
+// The referral code will be applied automatically on install. Let’s earn together! 🚀`;
+
+//     const result = await Share.share({ message });
+
+//     if (result.action === Share.sharedAction) {
+//       console.log('Referral link shared successfully');
+//     } else if (result.action === Share.dismissedAction) {
+//       console.log('Referral share dismissed');
+//     }
+//   } catch (error) {
+//     Alert.alert('Error', error.message);
+//   }
+// };
+
+
+const onShare = async () => {
+  try {
+    const result = await Share.share({
+      message: `🎉 Earn Rewards with BrainBucks! 🧠💰
 
 Hey! I’ve been using this awesome app called BrainBucks where you earn real rewards by participating in fun quizzes! 🏆📱
 
 👉 My Referral Code: ${referCode}
 
 📲 Download now using this link:
-${dynamicLink}
+${APPURL}/SignupReferral?referralCode=${referCode}
 
-The referral code will be applied automatically on install. Let’s earn together! 🚀`;
-
-      const result = await Share.share({message});
-
-      if (result.action === Share.sharedAction) {
-        console.log('Referral link shared successfully');
-      } else if (result.action === Share.dismissedAction) {
-        console.log('Referral share dismissed');
+The referral code will be applied automatically on install. Let’s earn together! 🚀`,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // Shared with activity type of result.activityType
+      } else {
+        // Shared
       }
-    } catch (error) {
-      Alert.alert('Error', error.message);
+    } else if (result.action === Share.dismissedAction) {
+      // Dismissed
     }
-  };
+  } catch (error) {
+    Alert.alert(error.message);
+  }
+};
+
 
   const copyToClipboard = () => {
     Clipboard.setString(referCode);
@@ -214,8 +215,8 @@ The referral code will be applied automatically on install. Let’s earn togethe
             style={styles.ProfileImg}
           />
           <View style={styles.mobView}>
-            <Text style={styles.TextName}>{userData.name}</Text>
-            <Text style={styles.Textmobile}>{userData.phone}</Text>
+            <Text style={styles.TextName}>{user.name}</Text>
+            <Text style={styles.Textmobile}>{user.phone}</Text>
             <View
               style={{
                 flex: 1,
@@ -254,8 +255,8 @@ The referral code will be applied automatically on install. Let’s earn togethe
               style={styles.bgImg}>
               <View style={styles.RfrView}>
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36,}]}>
-                  {totalPlayed}
+                <Text style={[styles.quizText, {fontSize: 36}]}>
+                  {route.params.totalPlayed}
                 </Text>
               </View>
             </ImageBackground>
