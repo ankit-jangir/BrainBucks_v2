@@ -1,6 +1,3 @@
-/**
- * @format
- */
 
 import { AppRegistry } from 'react-native';
 import App from './App';
@@ -30,4 +27,3 @@ axios.interceptors.response.use(function (response) {
 );
 
 AppRegistry.registerComponent(appName, () => App);
-// 
