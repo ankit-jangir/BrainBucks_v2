@@ -141,6 +141,7 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { useReferralListener } from './src/hooks/useReferralListener.js';
 import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
 import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
+import ReferEarn from './src/screens/Profile/ReferEarn.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

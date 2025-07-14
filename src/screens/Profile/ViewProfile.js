@@ -27,10 +27,9 @@ import ChatSockService from '../../services/api/ChatSockService';
 import { generateDynamicLink } from '../../utils/createDynamicLink';
 
 export default function ViewProfile({navigation, route}) {
-  const [image1, setImage1] = useState(
-    'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
+  const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
-  const [user, setUser] = useState(route.params.userData);
+  const [user, setUser] = useState({});
   let auth = new AuthenticationApiService();
 
 
@@ -280,10 +279,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
               style={styles.bgImg}>
               <View style={styles.RfrView}>
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36}]}>
-                  {route.params.totalPlayed}
-
-                </Text>
+                
                 <Text style={[styles.quizText, {fontSize: 36,}]}>
                   {totalPlayed}
                 </Text>
