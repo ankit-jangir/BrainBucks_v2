@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   Image,
@@ -8,17 +8,17 @@ import {
   StyleSheet,
   Animated,
 } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { createStackNavigator } from '@react-navigation/stack';
-import { getHeaderTitle } from '@react-navigation/elements';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createStackNavigator} from '@react-navigation/stack';
+import {getHeaderTitle} from '@react-navigation/elements';
 import {
   NavigationContainer,
   useIsFocused,
   useNavigation,
 } from '@react-navigation/native';
 import Home from './src/screens/Home/Home';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Sidebar from './src/screens/Home/Sidebar';
 import Wallet from './src/screens/Wallet/Wallet';
 import Study from './src/screens/Study/Study';
@@ -118,7 +118,7 @@ import ScheduleQuiz from './src/screens/Rooms/ScheduleQuiz';
 import ScheduleQuizTime from './src/screens/Rooms/ScheduleQuizTime';
 import ScheduledSuccessfullyQuiz from './src/screens/Rooms/ScheduledSuccessfullyQuiz';
 import RoomSetting from './src/screens/Rooms/RoomSetting';
-import { ColorsConstant } from './src/constants/Colors.constant';
+import {ColorsConstant} from './src/constants/Colors.constant';
 import GraphQLProvider from './src/context/GraphQLProvider';
 import RoomNotifications from './src/screens/Rooms/RoomNotifications';
 import RoomsAnimations from './src/screens/Rooms/RoomsAnimations';
@@ -131,14 +131,16 @@ import RoomsQuestions from './src/screens/Rooms/RoomsQuestions.js';
 import RoomsResult from './src/screens/Rooms/RoomsResult.js';
 import RoomsScored from './src/screens/Rooms/RoomsScored.js';
 import RoomsRewards from './src/screens/Rooms/RoomsRewards.js';
-import { setNavigation } from './index.js';
+import {setNavigation} from './index.js';
 import HomeReelPlayer from './src/screens/Home/HomeReelPlayer.jsx';
 import messaging from '@react-native-firebase/messaging';
 import SignupReferral from './src/screens/Login/SignupReferral.jsx';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
+import {KeyboardProvider} from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import { useReferralListener } from './src/hooks/useReferralListener.js';
+import {useReferralListener} from './src/hooks/useReferralListener.js';
+import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
+import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
 import ReferEarn from './src/screens/Profile/ReferEarn.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -242,7 +244,7 @@ function MyStack() {
       <Stack.Screen name="search" component={Search} />
       <Stack.Screen
         name="Notification"
-        options={{ title: 'Notification' }}
+        options={{title: 'Notification'}}
         component={Notification}
       />
       <Stack.Screen name="chat" component={Chat} />
@@ -259,7 +261,7 @@ function MyStack() {
       <Stack.Screen
         name="reels"
         component={Reels}
-        options={{ gestureEnabled: false }}
+        options={{gestureEnabled: false}}
       />
       <Stack.Screen name="rooms" component={Rooms} />
       <Stack.Screen name="createroom" component={CreateRoom} />
@@ -296,7 +298,6 @@ function MyStack() {
       <Stack.Screen name="HomeReelPlayer" component={HomeReelPlayer} />
       <Stack.Screen name="ExamSearchScreen" component={ExamSearchScreen} />
       <Stack.Screen name="ReferEarn" component={ReferEarn} />
-
     </Stack.Navigator>
   );
 }
@@ -306,7 +307,7 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 12, paddingBottom: 5 },
+          tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
           tabBarStyle: {
             height: 64,
             backgroundColor: 'white',
@@ -321,7 +322,7 @@ function MyTabs() {
           component={Home}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -336,13 +337,13 @@ function MyTabs() {
                   style={[
                     styles.tabIconWrapper,
                     focused && styles.activeTabBorder,
-                    { transform: [{ scale }] },
+                    {transform: [{scale}]},
                   ]}>
                   <Image
                     source={require('./src/assets/img/hut.png')}
                     style={[
                       styles.iconStyle,
-                      { tintColor: focused ? '#701DDB' : '#7E7E7E' },
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
                     ]}
                     resizeMode="contain"
                   />
@@ -357,7 +358,7 @@ function MyTabs() {
           component={Study}
           options={{
             tabBarLabel: 'Study',
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -372,7 +373,7 @@ function MyTabs() {
                   style={[
                     styles.tabIconWrapper,
                     focused && styles.activeTabBorder,
-                    { transform: [{ scale }] },
+                    {transform: [{scale}]},
                   ]}>
                   <Image
                     source={
@@ -382,7 +383,7 @@ function MyTabs() {
                     }
                     style={[
                       styles.iconStyle,
-                      { tintColor: focused ? '#701DDB' : '#7E7E7E' },
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
                     ]}
                     resizeMode="contain"
                   />
@@ -397,7 +398,7 @@ function MyTabs() {
           component={Rooms}
           options={{
             tabBarLabel: 'Rooms',
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -409,7 +410,7 @@ function MyTabs() {
 
               return (
                 <Animated.View
-                  style={[styles.roomsWrapper, { transform: [{ scale }] }]}>
+                  style={[styles.roomsWrapper, {transform: [{scale}]}]}>
                   <View
                     style={[
                       styles.roomCircle,
@@ -441,7 +442,7 @@ function MyTabs() {
           component={Saved}
           options={{
             tabBarLabel: 'Saved',
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -456,13 +457,13 @@ function MyTabs() {
                   style={[
                     styles.tabIconWrapper,
                     focused && styles.activeTabBorder,
-                    { transform: [{ scale }] },
+                    {transform: [{scale}]},
                   ]}>
                   <Image
                     source={require('./src/assets/img/heart.png')}
                     style={[
                       styles.iconStyle,
-                      { tintColor: focused ? '#701DDB' : '#7E7E7E' },
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
                     ]}
                     resizeMode="contain"
                   />
@@ -492,13 +493,13 @@ function MyTabs() {
                   style={[
                     styles.tabIconWrapper,
                     focused && styles.activeTabBorder,
-                    { transform: [{ scale }] },
+                    {transform: [{scale}]},
                   ]}>
                   <Image
                     source={require('./src/assets/img/usera.png')}
                     style={[
                       styles.iconStyle,
-                      { tintColor: focused ? '#701DDB' : '#7E7E7E' },
+                      {tintColor: focused ? '#701DDB' : '#7E7E7E'},
                     ]}
                     resizeMode="contain"
                   />
@@ -514,7 +515,7 @@ function MyTabs() {
 function MyDrawer() {
   return (
     <Drawer.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{headerShown: false}}
       drawerContent={props => <Sidebar {...props} />}>
       <Drawer.Screen name="Home" component={MyTabs} />
     </Drawer.Navigator>
@@ -546,7 +547,7 @@ export default function App() {
       SignupReferral: {
         path: 'SignupReferral',
         parse: {
-          referralCode: (code) => code || '',
+          referralCode: code => code || '',
         },
       },
       // ssss
@@ -597,7 +598,7 @@ export default function App() {
       }
     },
     subscribe(listener) {
-      const onReceiveURL = ({ url }) => listener(url);
+      const onReceiveURL = ({url}) => listener(url);
 
       // Listen to incoming links from deep linking
       const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
@@ -618,19 +619,14 @@ export default function App() {
     },
   };
 
-
-
-
   return (
     <KeyboardProvider>
-
       <NavigationContainer
         ref={navRef}
         onReady={() => {
           setNavigation(navRef.current);
         }}
         linking={linking}>
-
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
         <AddBankReducer>
           <WithdrawReducer>

@@ -3003,6 +3003,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-checkbox/checkbox@npm:^0.5.8":
+  version: 0.5.8
+  resolution: "@react-native-checkbox/checkbox@npm:0.5.8"
+  peerDependencies:
+    react: "*"
+    react-native: ">= 0.62"
+    react-native-windows: ">=0.62"
+  checksum: 2e8f5f318594000835546db8cc0c893f0e2134bfdddc4c0ebd7b1f5ddc4064edb84ce30e66d57704e9520a6dbbd857f5cfee0fe087a43f7016407e131d641bc3
+  languageName: node
+  linkType: hard
+
 "@react-native-clipboard/clipboard@npm:^1.14.1":
   version: 1.16.3
   resolution: "@react-native-clipboard/clipboard@npm:1.16.3"
@@ -3017,20 +3028,6 @@ __metadata:
     react-native-windows:
       optional: true
   checksum: 3d9944fc2c4acbecf917e752cc36ec92c4dcdb590c94c81c78c24df9ddd4b02448e252eb39e0949000b01046cfdfe2b03e1676c5e3ac0fe7eb3bf6b649970c27
-  languageName: node
-  linkType: hard
-
-"@react-native-community/checkbox@npm:^0.5.17":
-  version: 0.5.20
-  resolution: "@react-native-community/checkbox@npm:0.5.20"
-  peerDependencies:
-    react: "*"
-    react-native: ">= 0.62"
-    react-native-windows: ">=0.62"
-  peerDependenciesMeta:
-    react-native-windows:
-      optional: true
-  checksum: 7b64ba3a570fc61e255dc93a86e63da55b95cfb0c50014d93e171a33659c336eec764d4edddadbbd5921175abe4f7d84a307e81ac836eb115ab69b40126239f3
   languageName: node
   linkType: hard
 
@@ -3212,16 +3209,6 @@ __metadata:
   bin:
     rnc-cli: build/bin.js
   checksum: 5e997b50fd687b4f3fcdde6a1fd36317ffee5536649fb16e87f6e3bb1bd56a279daad57b7d904d0442425106f048a114e3987f9a0fc8dc3fadd0a784dcb83a40
-  languageName: node
-  linkType: hard
-
-"@react-native-community/clipboard@npm:^1.2.2":
-  version: 1.5.1
-  resolution: "@react-native-community/clipboard@npm:1.5.1"
-  peerDependencies:
-    react: ">=16.0"
-    react-native: ">=0.57.0"
-  checksum: 61f993b864804ef43de3a4b33b080d2310d491d7d13bc504e75326a841e0f2715b7c65212cae420fa200688be8881ed4b6731e0f4bad8de2d340c401f598bcea
   languageName: node
   linkType: hard
 
@@ -3952,15 +3939,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@twotalltotems/react-native-otp-input@npm:^1.3.11":
-  version: 1.3.11
-  resolution: "@twotalltotems/react-native-otp-input@npm:1.3.11"
-  dependencies:
-    "@react-native-community/clipboard": ^1.2.2
-  checksum: 80f2464b2cb061c10006db75912573329a93d82e39e943d4dcec895a668a8cbce2cc990a74f46907372371767de6b443265c0d3f9a2ab49b2b58d8653c7e2215
-  languageName: node
-  linkType: hard
-
 "@types/babel__core@npm:^7.1.14":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -4109,7 +4087,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native-vector-icons@npm:^6.4.10, @types/react-native-vector-icons@npm:^6.4.6":
+"@types/react-native-vector-icons@npm:^6.4.10":
   version: 6.4.18
   resolution: "@types/react-native-vector-icons@npm:6.4.18"
   dependencies:
@@ -4431,8 +4409,8 @@ __metadata:
     "@notifee/react-native": ^7.8.2
     "@preact/signals-react": ^2.1.0
     "@react-native-async-storage/async-storage": ^1.24.0
+    "@react-native-checkbox/checkbox": ^0.5.8
     "@react-native-clipboard/clipboard": ^1.14.1
-    "@react-native-community/checkbox": ^0.5.17
     "@react-native-community/datetimepicker": ^8.2.0
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-community/netinfo": ^11.3.2
@@ -4451,7 +4429,6 @@ __metadata:
     "@rneui/base": ^4.0.0-rc.7
     "@rneui/themed": ^4.0.0-rc.8
     "@tanstack/react-query": ^5.51.1
-    "@twotalltotems/react-native-otp-input": ^1.3.11
     "@types/react": ^18.3.3
     "@types/react-test-renderer": ^18.3.0
     axios: ^1.7.2
@@ -4469,8 +4446,7 @@ __metadata:
     react-native-cashfree-pg-sdk: ^2.1.12
     react-native-dropdown-select-list: ^2.0.5
     react-native-element-dropdown: ^2.12.4
-    react-native-elements: ^3.4.3
-    react-native-gesture-handler: 2.18.1
+    react-native-gesture-handler: 2.12.1
     react-native-image-picker: ^7.1.2
     react-native-keyboard-controller: ^1.17.5
     react-native-linear-gradient: ^2.8.3
@@ -4480,12 +4456,12 @@ __metadata:
     react-native-paper: ^5.12.3
     react-native-pdf: ^6.7.5
     react-native-razorpay: ^2.3.0
-    react-native-reanimated: 3.13.0
+    react-native-reanimated: 3.9.0
     react-native-reanimated-carousel: ^3.5.1
     react-native-render-html: ^6.3.4
     react-native-responsive-dimensions: ^3.1.1
-    react-native-safe-area-context: ^4.10.8
-    react-native-screens: ^3.32.0
+    react-native-safe-area-context: ^5.5.2
+    react-native-screens: ^4.11.1
     react-native-svg: ^15.12.0
     react-native-svg-transformer: ^1.5.1
     react-native-tab-view: ^3.5.2
@@ -8824,13 +8800,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.isequal@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.isequal@npm:4.5.0"
-  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
-  languageName: node
-  linkType: hard
-
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -9834,15 +9803,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"opencollective-postinstall@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "opencollective-postinstall@npm:2.0.3"
-  bin:
-    opencollective-postinstall: index.js
-  checksum: 0a68c5cef135e46d11e665d5077398285d1ce5311c948e8327b435791c409744d4a6bb9c55bd6507fb5f2ef34b0ad920565adcdaf974cbdae701aead6f32b396
-  languageName: node
-  linkType: hard
-
 "optimism@npm:^0.18.0":
   version: 0.18.1
   resolution: "optimism@npm:0.18.1"
@@ -10422,37 +10382,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-elements@npm:^3.4.3":
-  version: 3.4.3
-  resolution: "react-native-elements@npm:3.4.3"
-  dependencies:
-    "@types/react-native-vector-icons": ^6.4.6
-    color: ^3.1.2
-    deepmerge: ^4.2.2
-    hoist-non-react-statics: ^3.3.2
-    lodash.isequal: ^4.5.0
-    opencollective-postinstall: ^2.0.3
-    react-native-ratings: 8.0.4
-    react-native-size-matters: ^0.3.1
-  peerDependencies:
-    react-native-safe-area-context: ">= 3.0.0"
-    react-native-vector-icons: ">7.0.0"
-  checksum: e055c18b85527366d7b9e76139828fe3d006a7a8c11f81b165e43b4175c0d4b15eef6308679dd596d33f0813a512c27cb993d6ca49e00c56fcb15a0918d96c6c
-  languageName: node
-  linkType: hard
-
-"react-native-gesture-handler@npm:2.18.1":
-  version: 2.18.1
-  resolution: "react-native-gesture-handler@npm:2.18.1"
+"react-native-gesture-handler@npm:2.12.1":
+  version: 2.12.1
+  resolution: "react-native-gesture-handler@npm:2.12.1"
   dependencies:
     "@egjs/hammerjs": ^2.0.17
     hoist-non-react-statics: ^3.3.0
     invariant: ^2.2.4
+    lodash: ^4.17.21
     prop-types: ^15.7.2
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 49b5b9a232fc60ddc38124a804410150070af5b20efbba1550831221560d71df704b7a7edfa2fb70d84fde32faf8675ad6118aea8b40f50c2a9d80eb7a08eb1c
+  checksum: 1aec3d71c5fd3b8087e613708ee77a0ce7a1ac2bc87f5a6a22529300795b48aaa2359bcba7309f2c14f9de1ca1ffa4904d06b3cb7263820f657a4469976aecb3
   languageName: node
   linkType: hard
 
@@ -10466,7 +10408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-is-edge-to-edge@npm:^1.1.6":
+"react-native-is-edge-to-edge@npm:^1.1.6, react-native-is-edge-to-edge@npm:^1.1.7":
   version: 1.2.1
   resolution: "react-native-is-edge-to-edge@npm:1.2.1"
   peerDependencies:
@@ -10560,18 +10502,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-ratings@npm:8.0.4":
-  version: 8.0.4
-  resolution: "react-native-ratings@npm:8.0.4"
-  dependencies:
-    lodash: ^4.17.15
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: e420dab914a4941722482719e46f8837b51927a11d9861e2f581bac651910ea08419e9a1a2dd4aa072520439c119d6894f0d8d763db3dcc28a15b73072b9eb76
-  languageName: node
-  linkType: hard
-
 "react-native-ratings@npm:^8.1.0":
   version: 8.1.0
   resolution: "react-native-ratings@npm:8.1.0"
@@ -10606,9 +10536,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.13.0":
-  version: 3.13.0
-  resolution: "react-native-reanimated@npm:3.13.0"
+"react-native-reanimated@npm:3.9.0":
+  version: 3.9.0
+  resolution: "react-native-reanimated@npm:3.9.0"
   dependencies:
     "@babel/plugin-transform-arrow-functions": ^7.0.0-0
     "@babel/plugin-transform-nullish-coalescing-operator": ^7.0.0-0
@@ -10622,7 +10552,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 16e12a253cd2bd13f5d105aaabb6e8f3398f00e1dd67a6834c25bd6031c65526bb00b15a3daf9ce908f4ef6a6aa679ec4edb62f2328625a45aada96414a0f04a
+  checksum: 95b5d5e4e7a988696765d90fe62a331a50d3fd7c05e2f3733525e226554f5b69a4afc2b9c148682ec98eaf933d21e82a99aaf07b069504edd0968c4838215620
   languageName: node
   linkType: hard
 
@@ -10655,35 +10585,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^4.10.8":
-  version: 4.14.1
-  resolution: "react-native-safe-area-context@npm:4.14.1"
+"react-native-safe-area-context@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "react-native-safe-area-context@npm:5.5.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: acf94ea2a30a3ec5594b467f8e0942ac48c10cbb5d34d16beba33cc0052f7c82dfd6ace754fa55f41d55143f134d3d3fa908eaf4cc9dec5743d6c4483b23520a
+  checksum: 694e293b474b0738899c6e09da9f001d8087b382b5a40b8b227765c861a8137f0ff0209f1c9d8ae94337bc9c170eb114a9b897a8661b8181f48759a21baeb265
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^3.32.0":
-  version: 3.37.0
-  resolution: "react-native-screens@npm:3.37.0"
+"react-native-screens@npm:^4.11.1":
+  version: 4.11.1
+  resolution: "react-native-screens@npm:4.11.1"
   dependencies:
     react-freeze: ^1.0.0
+    react-native-is-edge-to-edge: ^1.1.7
     warn-once: ^0.1.0
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 84d1e4697ab7afccf42111d13b7c7e68d382b136f4f4d9cd8fd077b0984ada3114e8c7459a69159983a538fe35db1cf4296075e72fc8cb45341e0feb5080d3dc
-  languageName: node
-  linkType: hard
-
-"react-native-size-matters@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "react-native-size-matters@npm:0.3.1"
-  peerDependencies:
-    react-native: "*"
-  checksum: f8fa7f301d97dae96df029771445648b4778562c982b3d0625ae78cb397b35efd0e2b482b240531dad68fde0d18cc23f5181a3904259c6e1ff155823ac34996d
+  checksum: 22d3c302ef90a1cb20eed8c130b32e53d49288a19eba844f506a5e38342ef2add0d4f7a2ff5501cc05052aef6bf7f180db26a067b01f70f3cc12d3e1497329d6
   languageName: node
   linkType: hard
 

@@ -7,86 +7,75 @@ import { Button } from "@rneui/themed";
 translate.engine = "google";
 translate.key = process.env.GOOGLE_KEY;
 
-async function getSavedLanguage(){
-    let t = await AsyncStorage.getItem('language')
-    if(!language){
-        return 'en'
+async function getSavedLanguage() {
+    let language = await AsyncStorage.getItem('language');
+    if (!language) {
+        return 'en';
     }
-        return language
+    return language;
 }
 
-async function setSavedLanguage(lang){
-    await AsyncStorage.setItem("language",lang)
+async function setSavedLanguage(lang) {
+    await AsyncStorage.setItem("language", lang);
 }
 
-function BButton(props){
-    const [text, setText] = useState(props.title)
+function BButton(props) {
+    const [text, setText] = useState(props.title);
+    
     useEffect(() => {
-        (async() => {
+        (async () => {
             let language = await AsyncStorage.getItem('language');
-            if(!language){
-                return setText(text)
-            }
+            if (!language) return;
 
-            if(!props.ignore && text != null){
-                translate(text, language ? language : 'hi').then(result => {setText(result)},).catch(err=>{
-                    console.log("Error in Translation of Language: ",err)
+            if (!props.ignore && text != null) {
+                translate(text, language).then(setText).catch(err => {
+                    console.log("Error in Translation of Language:", err);
                 });
             }
-            return () => {
-                setText({});
-            }
         })();
-    }, [])
+    }, []);
 
-    return(
-        <Button {...props} title={text}/>
-    )
-
+    return (
+        <Button {...props} title={text} />
+    );
 }
 
 function TText(props) {
     const [text, setText] = useState(props.children);
-    useEffect(() => {
-        (async() => {
-            let language = await AsyncStorage.getItem('language');
-            if(!language){
-                return setText(text)
-            }
 
-            if(!props.ignore && text != null){
-                translate(text, language ? language : 'hi').then(result => {setText(result)},).catch(err=>{
-                    console.log("Error in Language Translation:",err)
+    useEffect(() => {
+        (async () => {
+            let language = await AsyncStorage.getItem('language');
+            if (!language) return;
+
+            if (!props.ignore && text != null) {
+                translate(text, language).then(setText).catch(err => {
+                    console.log("Error in Language Translation:", err);
                 });
             }
-            return () => {
-                setText({});
-            }
         })();
-    }, [])
+    }, []);
 
-    return(
+    return (
         <Text {...props}>
-            { text }
+            {text}
         </Text>
-    )
+    );
 }
 
 function TTextInput(props) {
     const [placeholder, setPlaceholder] = useState(props.placeholder);
 
     useEffect(() => {
-        (async() => {
+        (async () => {
             let language = await AsyncStorage.getItem('language');
-            translate(placeholder, language ? language : 'en').then(result => setPlaceholder(result));
-            return () => {
-                setPlaceholder({});
-            }
-        })()
-    },[])
+            translate(placeholder, language || 'en').then(setPlaceholder).catch(console.log);
+        })();
+    }, []);
 
-    return(
+    return (
         <TextInput {...props} placeholder={placeholder} />
-    )
+    );
 }
+
 export { TText as Text, TTextInput as TextInput, getSavedLanguage, setSavedLanguage, BButton as Button };

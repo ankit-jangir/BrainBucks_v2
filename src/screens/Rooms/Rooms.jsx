@@ -13,7 +13,6 @@ import {
   SendOTPToMail,
   verifyOTP,
 } from '../../controllers/RoomsController';
-import Icon from 'react-native-vector-icons/Feather';
 import PrivateRooms from './PrivateRooms';
 import {Modal} from 'react-native-paper';
 import {ColorsConstant} from '../../constants/Colors.constant';
