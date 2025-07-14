@@ -9,7 +9,7 @@ import {
 import { Image } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 
-const MainHeader = ({ name, showBackButton = true }) => {
+const MainHeader = ({ name, showBackButton = true, backIcon }) => {
   const navigation = useNavigation();
 
   return (
@@ -23,7 +23,11 @@ const MainHeader = ({ name, showBackButton = true }) => {
             accessibilityLabel="Go Back"
           >
             <Image
-              source={require('../assets/img/backcopy.png')}
+              source={
+                backIcon
+                  ? backIcon
+                  : require('../assets/img/backcopy.png') // default
+              }
               style={styles.backIcon}
             />
           </TouchableOpacity>
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
-    zIndex: -1, // keeps title behind the touchable
+    zIndex: -1,
   },
   titleText: {
     fontSize: 18,

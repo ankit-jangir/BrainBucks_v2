@@ -98,7 +98,7 @@ const Withdraw = ({ navigation }) => {
             navigation.goBack();
           }}>
           <Image
-            tintColor="gray"
+            tintColor="#000"
             source={require('../../assets/img/radic.png')}
             style={styles.actionIcon}
             resizeMode="contain"
