@@ -113,7 +113,7 @@ const referralCode = route.params?.referCode;
             phone: phone,
             otp: otp,
             referCode: referralCode,
-            userType: userType,
+            // userType: userType,
           }),
         );
       } else {

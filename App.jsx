@@ -139,6 +139,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { useReferralListener } from './src/hooks/useReferralListener.js';
+import ReferEarn from './src/screens/Profile/ReferEarn.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -291,6 +292,8 @@ function MyStack() {
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
       <Stack.Screen name="HomeReelPlayer" component={HomeReelPlayer} />
       <Stack.Screen name="ExamSearchScreen" component={ExamSearchScreen} />
+      <Stack.Screen name="ReferEarn" component={ReferEarn} />
+
     </Stack.Navigator>
   );
 }

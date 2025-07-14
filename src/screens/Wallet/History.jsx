@@ -128,25 +128,24 @@ const History = ({navigation, route}) => {
                 }}
               >
                 <View style={styles.transactionEntry}>
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      {
-                        backgroundColor:
-                          item.success === -1
-                            ? '#fff9ef'
-                            : item.success === 1
-                            ? '#EFFFF6'
-                            : '#FFEFEF',
-                      },
-                    ]}
-                  >
-                    <Image
-                      source={getArrowImage(item.type)}
-                      style={styles.icon}
-                      tintColor={item.success === 1 ? '#129C73' : '#DC1111'}
-                    />
-                  </View>
+                   <View
+                                      style={[
+                                        styles.iconContainer,
+                                        {
+                                          backgroundColor:
+                                            item.success === -1
+                                              ? '#fff9ef'
+                                              : item.success === 1
+                                                ? '#EFFFF6'
+                                                : '#FFEFEF',
+                                        },
+                                      ]}>
+                                      <Image
+                                        source={getArrowImage(item.type)}
+                                        style={styles.icon}
+                                        tintColor={item.success === 1 ? '#129C73' : '#DC1111'}
+                                      />
+                                    </View>
                   <View>
                     <Text style={styles.transactionAmount}>{item.amount}</Text>
                     <Text style={styles.timestamp}>{item.order_datetime}</Text>
@@ -155,7 +154,7 @@ const History = ({navigation, route}) => {
                     <View style={[styles.statusIcon]}>
                       <Image
                         source={getStatusIcon(item.success)}
-                        style={styles.icon1}
+                        style={styles.icon}
                       />
                     </View>
                     <Text

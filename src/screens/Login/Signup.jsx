@@ -56,7 +56,7 @@ export default function Signup({ navigation, route }) {
         }
         navigation.navigate('Otp', {
           phone: phone,
-          userType: userType, // true or false
+          // userType: userType, // true or false
           referCode: referralCode
         },);
       } else {

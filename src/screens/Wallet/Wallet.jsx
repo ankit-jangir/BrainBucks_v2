@@ -249,7 +249,7 @@ export default function Wallet({navigation}) {
                 resizeMode="contain"
               />
             </View>
-            <Text style={styles.actionText}>Add Bank</Text>
+            <Text style={styles.actionText}>Banks</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.actionsContainer1}>

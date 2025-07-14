@@ -123,9 +123,12 @@ const onShare = async () => {
         }}
       />
 
-      {isLoad ? (
-        <ActivityIndicator size={28} color={'gray'} />
-      ) : blog.length === 0 ? (
+      {
+      // isLoad ? (
+      //   <ActivityIndicator size={28} color={'gray'} />
+      // ) : 
+       
+      blog.length === 0 ? (
         <Text style={styles.textNo}>No Update Today</Text>
       ) : (
         <>

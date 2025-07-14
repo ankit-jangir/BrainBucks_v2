@@ -131,6 +131,14 @@ const Sidebar = ({ navigation }) => {
         />
         <MenuItem
           action={() => {
+            navigation.navigate('wallet');
+            navigation.closeDrawer();
+          }}
+          image={require('../../assets/img/privacypolicy.png')}
+          text="Refer Earn"
+        />
+        <MenuItem
+          action={() => {
             navigation.navigate('privacypolice');
             navigation.closeDrawer();
           }}

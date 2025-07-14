@@ -87,7 +87,7 @@ const Earned = () => {
                         </View>
                       </View>
                       <View style={styles.spentForWrapper}>
-                        <Text style={styles.spentFor}>Reward for </Text>
+                        <Text style={styles.spentFor}>Reward for</Text>
                       </View>
                       <View style={styles.containerImg}>
                         <View style={styles.containerImg1}>
@@ -124,8 +124,9 @@ const styles = StyleSheet.create({
     margin: 8,
     paddingLeft: 20,
     borderRadius: 5,
-    elevation: 3,
-    padding: 8
+    padding: 8,
+    borderWidth:1,
+    borderColor:"#F2F2F2"
   },
   row: {
     flexDirection: 'row',
@@ -168,10 +169,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   spentFor: {
-    color: '#000',
+    color: '#8A8A8A',
     fontSize: 14,
-    fontFamily: "Work Sans"
-
+    fontFamily: "Work Sans",
+paddingLeft:5
   },
   containerImg: {
     flexDirection: 'row',
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
     borderRadius: 50,
     objectFit: "cover",
-
+paddingLeft:5
   },
   mainImage: {
     width: 25,
