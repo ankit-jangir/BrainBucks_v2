@@ -44,7 +44,7 @@ export default function ViewProfile({navigation, route}) {
     try {
       auth.getUserProfile().then(res => {
         if (res.status === 1) {
-          setUserData(res.user_details);
+          setUser(res.user_details);
           if (res.user_details.image) {
             setImage1(BLOBURL + res.user_details.image);
           }

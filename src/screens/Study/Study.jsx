@@ -49,7 +49,7 @@ export default function Study({navigation}) {
         );
         setOtherExams(nextOtherArr);
         loadEnrolledExams();
-
+        setModalVisible(false)
         setSelectedExams(new Set([]));
       } else {
         ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);

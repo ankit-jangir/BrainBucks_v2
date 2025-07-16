@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-Regular',
   },
   cardContainer: {
-    width: 160,
-    height: 180,
+    width: 170,
     backgroundColor: '#fff',
     borderRadius: 10,
     // marginRight: 12,

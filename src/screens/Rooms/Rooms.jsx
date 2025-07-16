@@ -1,5 +1,5 @@
 import {View, TouchableOpacity, Image, ToastAndroid} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useLocale} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
 import Explore from './Explore';
@@ -13,7 +13,6 @@ import {
   SendOTPToMail,
   verifyOTP,
 } from '../../controllers/RoomsController';
-import Icon from 'react-native-vector-icons/Feather';
 import PrivateRooms from './PrivateRooms';
 import {Modal} from 'react-native-paper';
 import {ColorsConstant} from '../../constants/Colors.constant';

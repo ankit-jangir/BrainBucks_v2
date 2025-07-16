@@ -118,14 +118,7 @@ const Sidebar = ({navigation}) => {
           image={require('../../assets/img/rulesregulation.png')}
           text="Rules & Regulations"
         />
-        <MenuItem
-          action={() => {
-            navigation.navigate('wallet');
-            navigation.closeDrawer();
-          }}
-          image={require('../../assets/img/privacypolicy.png')}
-          text="Refer Earn"
-        />
+        
         <MenuItem
           action={() => {
             navigation.navigate('privacypolice');
