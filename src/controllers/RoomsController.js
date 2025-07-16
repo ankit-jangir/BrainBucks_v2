@@ -14,15 +14,12 @@ export async function createRoomInController(
     setErrorMessage('Enter name to create room');
     return;
   }
-
   setErrorMessage(null);
-
   let toast = {
     show(errorObj) {
       setErrorMessage(errorObj.text1);
     },
   };
-
   let res = await BasicServices.apiTryCatch(
     async () => {
       return await roomServ.createRoom(room_name, room_type);

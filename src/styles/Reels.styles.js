@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     captionView: {
         position: 'absolute',
         left: 0,
-        bottom: 30,
+        bottom: 6,
         right: 0,
         backgroundColor: 'rgba(0,0,0,0.2)'
     },

@@ -68,13 +68,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: Platform.OS === 'ios' ? 14 : 10,
-    paddingHorizontal: 18,
+    paddingHorizontal: 10,
+    backgroundColor:'#fff'
   },
   iconButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 40,
-    height: 40,
   },
   icon: {
     width: 25,
