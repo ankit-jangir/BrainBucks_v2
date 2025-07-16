@@ -49,7 +49,7 @@ const HomeReels = ({setParentModalVisible, setCurrentReel}) => {
         <View style={styles.SeeView}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Reels');
+              navigation.navigate('reels');
             }}
             style={styles.TouchAll}>
             <Text style={styles.SeeAll}>See All</Text>
@@ -81,7 +81,7 @@ const HomeReels = ({setParentModalVisible, setCurrentReel}) => {
                     width: screenWidth / 3,
                     height: 200,
                     borderRadius: 5,
-                    objectFit: 'fill',
+                    objectFit: 'cover',
                   }}
                   source={{uri: BLOBURL + item.banner}}
                   controls={false}

@@ -8,6 +8,11 @@ import {
 } from 'react-native';
 import Header from '../../components/Header';
 import {Image} from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import ScheduledQuizzes from './ScheduledQuizzes';
+import LiveQuizzes from './LiveQuizzes';
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function PhysicsChampions() {
   const [selectedTab, setSelectedTab] = useState('Live');
@@ -75,167 +80,172 @@ export default function PhysicsChampions() {
         }}
       />
       <View style={styles.container}>
-        <View>
+        <View style={{paddingHorizontal: 16}}>
           <Text style={styles.groupName}>Physics Champions</Text>
 
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', marginTop: 8}}>
             <Image
               source={require('../../assets/img/padlock.png')}
-              style={{width: 13, height: 13}}
-              tintColor={'#4B5563'}
+              style={{width: 13, height: 13, tintColor: '#4B5563'}}
             />
-            <Text style={styles.groupDetails}>Private •</Text>
+            <Text style={[styles.groupDetails, {marginHorizontal: 4}]}>
+              Private
+            </Text>
+
             <Image
               source={require('../../assets/img/h39.png')}
-              style={{width: 15, height: 15}}
-              resizeMode='contain'
-              tintColor={'#4B5563'}
+              style={{width: 15, height: 15, tintColor: '#4B5563'}}
+              resizeMode="contain"
             />
-            <Text style={styles.groupDetails}>
-              234 Members{'\n'}Created by Prof. Sarah
+            <Text style={[styles.groupDetails, {marginLeft: 4}]}>
+              234 Members
             </Text>
           </View>
+
+          <Text style={[styles.groupDetails, {marginTop: 10}]}>
+            Created by Prof. Sarah
+          </Text>
         </View>
+
         {/* Practice Notes */}
-        <TouchableOpacity style={styles.practiceNotesBtn}>
-          <Text style={styles.notesText}>📖 View Practice Notes</Text>
+        <TouchableOpacity style={styles.card}>
+          <View style={styles.contentWrapper}>
+            <Image
+              source={require('../../assets/img/h2.png')} // Replace with your image or local require
+              style={{width: 15, height: 15}}
+              resizeMode="contain"
+            />
+            <Text style={styles.text}>View Practice Notes</Text>
+          </View>
+          <Image
+            source={require('../../assets/img/createroom.png')} // Replace with your image or local require
+            style={styles.image}
+          />
         </TouchableOpacity>
-
         {/* Tabs */}
-        <View style={styles.tabs}>
-          <TouchableOpacity onPress={() => setSelectedTab('Live')}>
-            <Text
-              style={[
-                styles.tabText,
-                selectedTab === 'Live' && styles.activeTabText,
-              ]}>
-              Live Quizzes
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSelectedTab('Scheduled')}>
-            <Text
-              style={[
-                styles.tabText,
-                selectedTab === 'Scheduled' && styles.activeTabText,
-              ]}>
-              Scheduled Quizzes
-            </Text>
-          </TouchableOpacity>
-        </View>
 
-        {/* Quizzes */}
-        <ScrollView contentContainerStyle={styles.listContainer}>
-          {activeQuizzes.map((item, index) => (
-            <View
-              key={index}
-              style={[styles.card, {backgroundColor: item.color}]}>
-              <View style={styles.cardHeader}>
-                <Text style={styles.quizTitle}>{item.title}</Text>
-                <TouchableOpacity>
-                  <Text style={styles.shareIcon}>🔗</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.coins}>🏆 Win {item.coins} Coins</Text>
+        <Tab.Navigator style={{backgroundColor:'#fff'}}>
+  <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
+  <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} />
+</Tab.Navigator>
 
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFilled,
-                    {width: `${(item.filled / item.total) * 100}%`},
-                  ]}
-                />
-              </View>
-              <Text style={styles.seatsText}>
-                {item.filled}/{item.total} seats filled •{' '}
-                {item.total - item.filled} seats left
-              </Text>
-
-              <View style={styles.cardFooter}>
-                <Text style={styles.teacherName}>{item.teacher}</Text>
-                <TouchableOpacity style={styles.enrollBtn}>
-                  <Text style={styles.enrollText}>Enroll Now</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
       </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, padding: 15, backgroundColor: '#fff'},
-
-  header: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    // paddingHorizontal: 16,
+    paddingTop: 10,
   },
+
   groupName: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#111827',
-    fontFamily: 'Inter',
+    color: '#1F2937', // Dark text
+    marginBottom: 4,
   },
-  groupDetails: {fontSize: 12, color: '#4B5563'},
 
-  practiceNotesBtn: {
-    backgroundColor: '#7B61FF',
-    borderRadius: 10,
-    padding: 12,
-    alignItems: 'center',
-    marginBottom: 15,
+  groupDetails: {
+    fontSize: 13,
+    color: '#6B7280', // Muted grey
   },
-  notesText: {color: '#fff', fontWeight: 'bold'},
+
+  card: {
+    backgroundColor: '#7C3AED',
+    borderRadius: 14,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    marginHorizontal: 14,
+  },
+
+  contentWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  text: {
+    color: '#fff',
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
+  image: {
+    width: 42,
+    height: 42,
+    borderRadius: 8,
+    resizeMode: 'contain',
+  },
 
   tabs: {
     flexDirection: 'row',
-    marginBottom: 15,
     justifyContent: 'space-around',
+    backgroundColor: '#F9FAFB',
+    paddingVertical: 10,
+    borderRadius: 12,
+    // marginBottom: 16,
   },
+
   tabText: {
     fontSize: 15,
-    paddingBottom: 4,
-    color: '#888',
+    color: '#6B7280',
     fontWeight: '500',
   },
+
   activeTabText: {
     color: '#7B61FF',
+    fontWeight: '700',
     borderBottomWidth: 2,
     borderColor: '#7B61FF',
+    paddingBottom: 4,
+  },
+
+  listContainer: {
+    paddingBottom: 100,
+  },
+
+  quizTitle: {
+    fontSize: 16,
     fontWeight: '700',
+    color: '#111827',
   },
 
-  listContainer: {paddingBottom: 100},
-
-  card: {
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 15,
+  coins: {
+    fontSize: 13,
+    color: '#4B5563',
+    marginBottom: 6,
   },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  quizTitle: {fontWeight: 'bold', fontSize: 16, color: '#000'},
-  shareIcon: {fontSize: 16},
-
-  coins: {fontSize: 13, color: '#555', marginBottom: 8},
 
   progressBar: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#E5E7EB',
     borderRadius: 10,
     height: 6,
-    marginBottom: 5,
     overflow: 'hidden',
+    marginVertical: 6,
   },
+
   progressFilled: {
     backgroundColor: '#7B61FF',
     height: 6,
+    borderRadius: 10,
   },
+
   seatsText: {
     fontSize: 12,
-    color: '#333',
+    color: '#374151',
     marginBottom: 10,
   },
 
@@ -244,15 +254,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
   teacherName: {
-    color: '#666',
+    color: '#6B7280',
     fontSize: 13,
   },
+
   enrollBtn: {
     backgroundColor: '#7B61FF',
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 8,
   },
-  enrollText: {color: '#fff', fontSize: 13, fontWeight: 'bold'},
+
+  enrollText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 12,
+  },
 });

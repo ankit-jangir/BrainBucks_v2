@@ -141,6 +141,7 @@ import {useReferralListener} from './src/hooks/useReferralListener.js';
 import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
 import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
 import ReferEarn from './src/screens/Profile/ReferEarn.js';
+import HomeReelsPlayer from './src/screens/Home/HomeReelPlayer.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -207,6 +208,7 @@ function MyStack() {
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
       <Stack.Screen name="VirtualRooms" component={VirtualRooms} />
+      <Stack.Screen name="HomeReelsPlayer" component={HomeReelsPlayer} />
 
       <Stack.Screen
         name="ActiveQuizzJoinAnimation"
@@ -306,11 +308,11 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
+          tabBarLabelStyle: {fontSize: 11, paddingBottom: 5},
           tabBarStyle: {
-            height: 64,
+            height: 58,
             backgroundColor: 'white',
-            paddingBottom: 0,
+            // paddingBottom: 10,
           },
           tabBarShowLabel: true,
           headerShown: false,
@@ -402,20 +404,24 @@ function MyTabs() {
 
               useEffect(() => {
                 Animated.spring(scale, {
-                  toValue: focused ? 1.15 : 1,
+                  toValue: focused ? 1.1 : 1,
                   useNativeDriver: true,
                 }).start();
               }, [focused]);
 
               return (
                 <Animated.View
-                  style={[styles.roomsWrapper, {transform: [{scale}]}]}>
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: -45,
+                    transform: [{scale}],
+                    // paddingBottom:10
+                  }}>
                   <View
                     style={[
                       styles.roomCircle,
-                      {
-                        backgroundColor: focused ? '#701DDB' : '#F6F8FF',
-                      },
+                      {backgroundColor: focused ? '#701DDB' : '#F6F8FF'},
                     ]}>
                     <Image
                       source={require('./src/assets/img/roomsimgs.png')}
@@ -522,6 +528,7 @@ function MyDrawer() {
 }
 
 export default function App() {
+  const [currentRoute, setCurrentRoute] = useState('');
   const navRef = useRef();
   useReferralListener();
   useEffect(() => {
@@ -622,10 +629,14 @@ export default function App() {
     <KeyboardProvider>
       <NavigationContainer
         ref={navRef}
+        linking={linking}
         onReady={() => {
-          setNavigation(navRef.current);
+          setNavigation(navRef.current); // existing logic
+          setCurrentRoute(navRef.current.getCurrentRoute()?.name); // route tracking
         }}
-        linking={linking}>
+        onStateChange={() => {
+          setCurrentRoute(navRef.current.getCurrentRoute()?.name); // track on navigation change
+        }}>
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
         <AddBankReducer>
           <WithdrawReducer>
@@ -651,17 +662,14 @@ const styles = StyleSheet.create({
   tabIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    paddingTop: 10,
+    paddingBottom: 2,
   },
   activeTabBorder: {
     borderTopWidth: 2,
     borderTopColor: '#701DDB',
     borderRadius: 2,
-    // marginTop: -2,
-  },
-  roomsWrapper: {
-    alignItems: 'center',
-    marginTop: -40,
+    paddingTop: 2,
   },
   roomCircle: {
     width: 55,
@@ -674,9 +682,9 @@ const styles = StyleSheet.create({
   },
   newLabel: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -6,
     backgroundColor: '#D92828',
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 4,
   },

@@ -29,7 +29,8 @@ import HomeActiveQuizzes from '../../components/HomeActiveQuizzes';
 import HomeTriviaQuizzes from '../../components/HomeTriviaQuizzes';
 import HomeExams from '../../components/HomeExams';
 import HomeEnrolledQuizzes from '../../components/HomeEnrolledQuizzes';
-import HomeReelPlayer from './HomeReelPlayer';
+import HomeReelPlayer from './HomeReelPlayer'
+import HomeReels from '../../components/HomeReels';
 
 export default function Home({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -155,7 +156,7 @@ export default function Home({ navigation }) {
                     </View> */}
 
                     {/* **********************************Reels******************************* */}
-                    {/* <HomeReels setCurrentReel={setCurrentReel} setParentModalVisible={setReelsPlaying} /> */}
+                    <HomeReels setCurrentReel={setCurrentReel} setParentModalVisible={setReelsPlaying} />
               </View>
             </ScrollView>
           )}

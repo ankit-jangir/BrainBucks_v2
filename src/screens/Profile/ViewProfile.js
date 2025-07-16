@@ -233,7 +233,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
             </ImageBackground>
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={onShare}
             style={{width: '100%', paddingHorizontal: 10, marginBottom: 35}}>
             <ImageBackground
@@ -245,7 +245,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 <Text style={[styles.quizText, {fontSize: 36}]}>50,000</Text>
               </View>
             </ImageBackground>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.HelpView}>
             <TouchableOpacity

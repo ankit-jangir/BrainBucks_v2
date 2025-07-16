@@ -1,4 +1,6 @@
-export const QUIZMICRO = "https://quiz.brainbucks.in"
+// export const QUIZMICRO = "https://quiz.brainbucks.in"
+export const QUIZMICRO = "http://98.70.33.58:4004/"
+
 export const AUTHMICRO = "https://auth.brainbucks.in"
 export const PRERECMICRO = "https://prerec.brainbucks.in"
 export const NOTIFYMICRO = "https://notify.brainbucks.in"
