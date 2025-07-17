@@ -169,7 +169,26 @@ const Sidebar = ({navigation}) => {
           image={require('../../assets/img/support.png')}
           text="Help & Support"
         />
-
+        <MenuItem
+          action={() => {
+            navigation.closeDrawer()
+            navigation.navigate('Reels')
+          }
+          }
+          image={require('../../assets/img/resume.png')}
+          text="Brain Boosters"
+        />
+       
+        <MenuItem
+          action={() => { navigation.navigate("saved"), navigation.closeDrawer(); }}
+          image={require('../../assets/img/heart.png')}
+          text="My Exams"
+        />
+ <MenuItem
+          action={() => { navigation.navigate("Dashboard"), navigation.closeDrawer(); }}
+          image={require('../../assets/img/heart.png')}
+          text="Dashboard"
+        />
         <MenuItem
           action={toggleOverlay}
           beingPerformmed={loggingOut}
