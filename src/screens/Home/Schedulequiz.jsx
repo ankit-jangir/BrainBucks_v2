@@ -105,7 +105,7 @@ const Schedulequiz = () => {
           Questions Composition
         </Text>
         <View style={[styles.qBox, styles.shadow]}>
-          <ScrollView style={{maxHeight: 110}} nestedScrollEnabled={true}>
+          <ScrollView style={{maxHeight: 200}} nestedScrollEnabled={true}>
             {[...Array(6)].map((_, index) => (
               <View key={index} style={{marginTop: index === 0 ? 0 : 12}}>
                 <View style={styles.qRow}>
@@ -288,6 +288,7 @@ const styles = StyleSheet.create({
   qBox: {
     backgroundColor: '#F9FAFB',
     padding: 12,
+    height: 240,
     borderRadius: 12,
     marginTop: 10,
   },
@@ -393,18 +394,5 @@ const styles = StyleSheet.create({
     width: 14,
     backgroundColor: '#9333EA',
     borderRadius: 7,
-  },
-  shadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
   },
 });

@@ -162,7 +162,7 @@ const AddQuizScreen6 = () => {
                 source={require('../../assets/img/cloud.png')}
                 style={styles.cloudIcon}
               />
-            <Text style={styles.labelimg}>Upload file</Text>
+              <Text style={styles.labelimg}>Upload file</Text>
               <Text style={styles.uploadText}>300px x 150px</Text>
             </View>
           </View>
@@ -172,7 +172,11 @@ const AddQuizScreen6 = () => {
       {/* Spacer behind button */}
       <View style={styles.bottomSpacer} />
       {/* Proceed Button */}
-      <TouchableOpacity style={styles.proceedButton} onPress={()=>{navigation.navigate('Quizrules')}}>
+      <TouchableOpacity
+        style={styles.proceedButton}
+        onPress={() => {
+          navigation.navigate('Quizrules');
+        }}>
         <Text style={styles.proceedText}>Proceed</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -225,16 +229,17 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
+    borderColor: '#e9e9eaff',
+    borderWidth: 1,
     borderRadius: 8,
     padding: 16,
   },
   label: {
-  fontSize: 14,
-  color: '#6B7280',
-  marginBottom: 10,
-  fontWeight:"600"
-},
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 10,
+    fontWeight: '600',
+  },
   labelimg: {
     fontSize: 18,
     fontWeight: '600',
@@ -309,11 +314,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+     borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   sectionimg: {
     marginVertical: 20,
@@ -370,10 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 22,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+      borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
 });

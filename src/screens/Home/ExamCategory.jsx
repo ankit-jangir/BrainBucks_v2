@@ -190,9 +190,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#F3F4F6',
+    borderColor: '#e9e9eaff',
     borderRadius: 16,
-    elevation: 1,
     backgroundColor: '#00000000',
   },
 

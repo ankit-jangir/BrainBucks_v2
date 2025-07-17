@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
       android: {
-        elevation: 2,
+        borderColor: '#e9e9eaff',
+        borderWidth: 1,
       },
     }),
   },
@@ -212,11 +213,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 16,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: {width: 0, height: 2},
+  borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   quizName: {
     fontSize: 20,
@@ -260,7 +258,8 @@ const styles = StyleSheet.create({
     padding: 25,
     borderRadius: 10,
     marginBottom: 16,
-    elevation: 3,
+     borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   infoTitle: {
     fontSize: 15,
