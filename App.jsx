@@ -142,8 +142,6 @@ import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
 import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
 import ReferEarn from './src/screens/Profile/ReferEarn.js';
 import HomeReelsPlayer from './src/screens/Home/HomeReelPlayer.jsx';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
-import {useReferralListener} from './src/hooks/useReferralListener.js';
 import Dashboard from './src/screens/Home/Dashboard.jsx';
 import ReferStudents from './src/screens/Home/ReferStudents.jsx';
 import Createquiz from './src/screens/Home/Createquiz.jsx';

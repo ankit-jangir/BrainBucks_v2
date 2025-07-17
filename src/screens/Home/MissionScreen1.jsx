@@ -255,10 +255,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-    elevation: 3,
     zIndex: 1,
   },
   backButton: {
