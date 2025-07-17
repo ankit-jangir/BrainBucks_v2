@@ -105,26 +105,27 @@ const AddBanks = ({navigation}) => {
                       </View>
                       <Text style={styles.bankName}>{res.bank_name}</Text>
                       <Text
-  style={[
-    styles.verified,{
-      color:
-        res.status === 'pending'
-          ? 'orange'
-          : res.status === 'accepted'
-          ? 'green'
-          : 'red',
-    },
-  ]}
->
-  {res.status}
-</Text>
-
+                        style={[
+                          styles.verified,
+                          {
+                            color:
+                              res.status === 'pending'
+                                ? 'orange'
+                                : res.status === 'accepted'
+                                  ? 'green'
+                                  : 'red',
+                          },
+                        ]}>
+                        {res.status}
+                      </Text>
                     </View>
-                    <Text style={styles.bankHolder}>{res.account_holder_name}</Text>
+                    <Text style={styles.bankHolder}>
+                      {res.account_holder_name}
+                    </Text>
                     <View style={styles.bankAccountDetails}>
                       <Text style={styles.accountText}>{res.bank_acc_no}</Text>
                       <Text style={styles.ifscText}>{res.ifsc}</Text>
-                     </View>
+                    </View>
                     {/*<View style={{margin: 0}}>
                       <TouchableOpacity
                         onPress={() => {
@@ -171,12 +172,10 @@ const AddBanks = ({navigation}) => {
       </Overlay>
 
       <TouchableOpacity
-  onPress={() => navigation.navigate('addbankAccount')} // Replace with your actual screen
-  style={styles.floatingButton}
->
-  <Text style={styles.floatingButtonText}>+</Text>
-</TouchableOpacity>
-
+        onPress={() => navigation.navigate('addbankAccount')} // Replace with your actual screen
+        style={styles.floatingButton}>
+        <Text style={styles.floatingButtonText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -185,27 +184,27 @@ export default AddBanks;
 
 const styles = StyleSheet.create({
   floatingButton: {
-  position: 'absolute',
-  right: 20,
-  bottom: 30,
-  backgroundColor: '#701DDB',
-  width: 55,
-  height: 55,
-  borderRadius: 30,
-  justifyContent: 'center',
-  alignItems: 'center',
-  elevation: 5,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-},
-floatingButtonText: {
-  color: 'white',
-  fontSize: 30,
-  fontWeight: 'bold',
-  marginBottom: 2,
-},
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#701DDB',
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  floatingButtonText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
 
   header: {
     backgroundColor: 'white',

@@ -177,7 +177,7 @@ async function viewPdf(search = '') {
                   <View key={res._id} style={styles.PView}>
                     <TouchableOpacity style={styles.Ptouch}>
                       <View style={styles.downView}>
-                        <View>
+                        <View style={{flexShrink:1}}>
                           <Text style={styles.textQue}>{res.display_name}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>

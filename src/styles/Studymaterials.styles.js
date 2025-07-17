@@ -597,7 +597,9 @@ paddingTop:10
   },
   downView: {
     flexDirection: 'row',
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems:'center',
+    gap:15
   },
   touchDown: {
     height: 45,

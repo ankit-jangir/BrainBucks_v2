@@ -79,6 +79,7 @@ const AddBankAccount = ({ navigation }) => {
             <Text style={styles.inputLabel}>Enter Bank Name</Text>
             <TextInput
               placeholder="Enter Bank Name"
+              placeholderTextColor="gray"
               value={addBankState.bankName}
               onChangeText={(text) =>
                 dispatch({ type: 'details', bankDetails: { bankName: text } })
@@ -92,6 +93,7 @@ const AddBankAccount = ({ navigation }) => {
             <TextInput
               placeholder="Name of Account Holder"
               style={inputstyle}
+              placeholderTextColor="gray"
               value={addBankState.holderName}
               onChangeText={(text) =>
                 dispatch({ type: 'details', bankDetails: { holderName: text } })
@@ -104,6 +106,7 @@ const AddBankAccount = ({ navigation }) => {
             <TextInput
               placeholder="Enter 16 Digit Account number"
               style={inputstyle}
+              placeholderTextColor="gray"
               value={addBankState.accnum}
               inputMode="numeric"
               keyboardType="numeric"
@@ -123,6 +126,7 @@ const AddBankAccount = ({ navigation }) => {
               value={addBankState.ifsc}
               onChangeText={addIfsc}
               autoCapitalize="characters"
+              placeholderTextColor="gray"
             />
           </View>
 

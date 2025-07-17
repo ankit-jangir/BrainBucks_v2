@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-const quzescreen = () => {
+const QuzescreenR = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -103,7 +103,7 @@ const quzescreen = () => {
   );
 };
 
-export default quzescreen;
+export default QuzescreenR;
 
 const styles = StyleSheet.create({
   container: {

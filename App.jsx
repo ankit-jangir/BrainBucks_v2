@@ -152,12 +152,12 @@ import Addquestion from './src/screens/Home/Addquestion.jsx';
 import Schedulequiz from './src/screens/Home/Schedulequiz.jsx';
 import Addquizscreen6 from './src/screens/Home/Addquizscreen6.jsx';
 import Quizrules from './src/screens/Home/Quizrules.jsx';
-import quzescreen from './src/screens/Home/quzescreen8.jsx';
 import Questionscreen from './src/screens/Home/Questionscreen.jsx';
 import MissionScreen from './src/screens/Home/MissionScreen1.jsx';
 import Grouthbooster from './src/screens/Home/Grouthbooster.jsx';
 import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
 import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
+import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -325,7 +325,7 @@ function MyStack() {
       <Stack.Screen name="Schedulequiz" component={Schedulequiz} />
       <Stack.Screen name="Addquizscreen" component={Addquizscreen6} />
       <Stack.Screen name="Quizrules" component={Quizrules} />
-      <Stack.Screen name="quzescreen" component={quzescreen} />
+      <Stack.Screen name="quzescreenR" component={QuzescreenR} />
       <Stack.Screen name="Questionscreen" component={Questionscreen} />
       <Stack.Screen name="MissionScreen" component={MissionScreen} />
       <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
