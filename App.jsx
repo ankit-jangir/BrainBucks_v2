@@ -443,11 +443,11 @@ function MyTabs() {
         />
 
         <Tab.Screen
-          name="Saved"
-          component={Saved}
+          name="Refer"
+          component={ReferEarn}
           options={{
-            tabBarLabel: 'Saved',
-            tabBarIcon: ({focused}) => {
+            tabBarLabel: 'Refer',
+            tabBarIcon: ({ focused }) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -465,7 +465,7 @@ function MyTabs() {
                     {transform: [{scale}]},
                   ]}>
                   <Image
-                    source={require('./src/assets/img/heart.png')}
+                    source={require('./src/assets/img/Refer.png')}
                     style={[
                       styles.iconStyle,
                       {tintColor: focused ? '#701DDB' : '#7E7E7E'},

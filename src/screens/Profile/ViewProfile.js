@@ -40,6 +40,30 @@ export default function ViewProfile({navigation, route}) {
   const [totalPlayed, setTotalPlayed] = useState(0);
 
   useEffect(() => {
+    try {
+      auth.getUserProfile().then(res => {
+        if (res.status === 1) {
+          setUser(res.user_details);
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image);
+          }
+          setTotalPlayed(res.totalquizplayed);
+          
+        } else {
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+        }
+      });
+    } catch (err) {
+      console.log('Error in Fetching User Profile', err.message);
+    }
+  }, [isFocused]);
+
+
+
+
+
+
+  useEffect(() => {
     const fetchReferCode = async () => {
       const code = await auth.getReferCode();
       if (code) {

@@ -98,6 +98,8 @@ export default function Saved({navigation}) {
         setOtherExams(nextOtherArr);
         setSelectedExams(new Set([]));
         getSavedExams();
+        setModalVisible(false)
+
       } else {
         ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
       }

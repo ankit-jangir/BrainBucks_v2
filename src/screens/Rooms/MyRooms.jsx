@@ -9,7 +9,6 @@ import Toast from 'react-native-toast-message'
 import PendingRequests from './PendingRequests'
 
 export default function MyRooms({ navigation }) {
-
   const [selected, setSelected] = useState('Joined');
 
   return (
