@@ -9,10 +9,12 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 export default function ViewPdf({navigation, route}) {
-  let url = route.params.pdf.pdf_url
-    ? route.params.pdf.pdf_url
-    : route.params.pdf.filename;
+  let url =route.params.pdf.filename;
+  let title = route.params.pdf.display_name;
+    
   let pdf = route.params.pdf;
+
+  console.log(pdf,"lll")
   const [loading, setLoading] = useState(false);
 
 const downloadPDF = async (url, title) => {
@@ -26,8 +28,7 @@ const downloadPDF = async (url, title) => {
     };
 
     // Use a default title if undefined
-    const safeTitle = title || 'downloaded_file';
-    const fileName = safeTitle.endsWith('.pdf') ? sanitizeFileName(safeTitle) : `${sanitizeFileName(safeTitle)}.pdf`;
+    const fileName = title.endsWith('.pdf') ? sanitizeFileName(title) : `${sanitizeFileName(title)}.pdf`;
 
     // Try public Downloads folder
     const publicDownloadPath = `/storage/emulated/0/Download/${fileName}`;
@@ -91,7 +92,7 @@ const downloadPDF = async (url, title) => {
       {loading ? (
         <ActivityIndicator size={20} />
       ) : (
-        <TouchableOpacity onPress={() => downloadPDF(url, pdf.title)}>
+        <TouchableOpacity onPress={() => downloadPDF(url, pdf.display_name)}>
   <Text style={styles.downloadbutt}>Download</Text>
 </TouchableOpacity>
       )}

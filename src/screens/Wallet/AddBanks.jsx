@@ -55,7 +55,7 @@ const AddBanks = ({navigation}) => {
       setLoading(true);
       let res = await wallService.getAllBanks();
       if (res.status === 1) {
-        setBanks(res.banks);
+        setBanks(res.data);
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
@@ -76,9 +76,7 @@ const AddBanks = ({navigation}) => {
         leftIcon={{
           type: 'image',
           source: require('../../assets/img/backq.png'),
-          onPress: () => {
-            navigation.goBack();
-          },
+          onPress: () => navigation.navigate('wallet'),
         }}
       />
 
@@ -95,7 +93,7 @@ const AddBanks = ({navigation}) => {
           banks.map((res, index) => {
             return (
               <View key={res._id}>
-                <TouchableOpacity>
+                <View>
                   <View key={index} style={styles.bankDetailsContainer}>
                     <View style={styles.bankDetailsHeader}>
                       <View style={styles.bankIconContainer}>
@@ -106,16 +104,28 @@ const AddBanks = ({navigation}) => {
                         />
                       </View>
                       <Text style={styles.bankName}>{res.bank_name}</Text>
-                      <Text style={styles.verified}>
-                        {res.is_verifed ? 'verified' : 'not verified'}
-                      </Text>
+                      <Text
+  style={[
+    styles.verified,{
+      color:
+        res.status === 'pending'
+          ? 'orange'
+          : res.status === 'accepted'
+          ? 'green'
+          : 'red',
+    },
+  ]}
+>
+  {res.status}
+</Text>
+
                     </View>
-                    <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
+                    <Text style={styles.bankHolder}>{res.account_holder_name}</Text>
                     <View style={styles.bankAccountDetails}>
                       <Text style={styles.accountText}>{res.bank_acc_no}</Text>
-                      <Text style={styles.ifscText}>{res.ifsc_code}</Text>
-                    </View>
-                    <View style={{margin: 0}}>
+                      <Text style={styles.ifscText}>{res.ifsc}</Text>
+                     </View>
+                    {/*<View style={{margin: 0}}>
                       <TouchableOpacity
                         onPress={() => {
                           setDelId(res._id), setVisible(true);
@@ -123,9 +133,9 @@ const AddBanks = ({navigation}) => {
                         style={styles.button}>
                         <Text style={styles.buttonText}>Remove Account</Text>
                       </TouchableOpacity>
-                    </View>
+                    </View>*/}
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
             );
           })

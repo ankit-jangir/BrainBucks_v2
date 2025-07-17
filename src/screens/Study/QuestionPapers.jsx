@@ -24,6 +24,7 @@ import NoDataFound from '../../components/NoDataFound';
 import { BLOBURL } from '../../config/urls';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import MainHeader from '../../components/MainHeader';
+import { useNavigation } from '@react-navigation/native';
 export default function QuestionPaperList({ navigation, route }) {
   const pdf_id = route.params.pdf_id;
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,7 +33,7 @@ export default function QuestionPaperList({ navigation, route }) {
   const [ViewPdf, setViewPdf] = useState([]);
   const { idState, context } = useCurrentId();
   console.log(idState)
-
+const navigate = useNavigation()
 
   useEffect(() => {
     viewPdf();
@@ -131,7 +132,7 @@ async function viewPdf(search = '') {
             type: 'image',
             source: require('../../assets/img/backq.png'), // provide the image source
             onPress: () => {
-              handleBackPress();
+              navigate.goBack()
             },
           }}
         />
