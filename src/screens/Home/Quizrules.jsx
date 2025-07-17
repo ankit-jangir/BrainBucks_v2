@@ -11,7 +11,7 @@ import {
 import React, {useState} from 'react';
 import {ProgressBar} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker'; // ✅ IMPORT
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const metrics = [
   {
@@ -228,7 +228,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 15,
     marginTop: -10,
-    elevation: 3,
+
+    borderColor: '#e9e9eaff',
+    borderWidth: 1, // ✅ Add this line to make border visible
     zIndex: 10,
   },
 
@@ -307,7 +309,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowOffset: {width: 0, height: 1},
     shadowRadius: 4,
-    elevation: 3,
+    borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   addRuleBtn: {
     flexDirection: 'row',
@@ -338,7 +341,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 4,
-    elevation: 2,
+    borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   chipText: {
     color: '#374151',
@@ -366,11 +370,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 22,
     width: '47%',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 4,
-    elevation: 2,
+    borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
   metricHeader: {
     flexDirection: 'row',
@@ -437,10 +438,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 8,
-    elevation: 2,
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
+    borderColor: '#e9e9eaff',
+    borderWidth: 1,
   },
 
   dashedBox: {
