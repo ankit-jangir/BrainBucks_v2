@@ -138,7 +138,23 @@ import SignupReferral from './src/screens/Login/SignupReferral.jsx';
 import {KeyboardProvider} from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import { useReferralListener } from './src/hooks/useReferralListener.js';
+import {useReferralListener} from './src/hooks/useReferralListener.js';
+import Dashboard from './src/screens/Home/Dashboard.jsx';
+import ReferStudents from './src/screens/Home/ReferStudents.jsx';
+import Createquiz from './src/screens/Home/Createquiz.jsx';
+import ExamCategory from './src/screens/Home/ExamCategory.jsx';
+import SubjectCategory from './src/screens/Home/Subjectcategory.jsx';
+import Quizoverview from './src/screens/Home/Quizoverview.jsx';
+import Addquestion from './src/screens/Home/Addquestion.jsx';
+import Schedulequiz from './src/screens/Home/Schedulequiz.jsx';
+import Addquizscreen6 from './src/screens/Home/Addquizscreen6.jsx';
+import Quizrules from './src/screens/Home/Quizrules.jsx';
+import quzescreen from './src/screens/Home/quzescreen8.jsx';
+import Questionscreen from './src/screens/Home/Questionscreen.jsx';
+import MissionScreen from './src/screens/Home/MissionScreen1.jsx';
+import Grouthbooster from './src/screens/Home/Grouthbooster.jsx';
+import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
+import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -202,6 +218,8 @@ function MyStack() {
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
+      <Stack.Screen name="Dashboard" component={Dashboard} />
+
       <Stack.Screen
         name="ActiveQuizzJoinAnimation"
         component={ActiveQuizzJoinAnimation}
@@ -290,6 +308,23 @@ function MyStack() {
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
       <Stack.Screen name="HomeReelPlayer" component={HomeReelPlayer} />
       <Stack.Screen name="ExamSearchScreen" component={ExamSearchScreen} />
+      <Stack.Screen name="ReferStudents" component={ReferStudents} />
+      <Stack.Screen name="Createquiz" component={Createquiz} />
+      <Stack.Screen name="ExamCategory" component={ExamCategory} />
+      <Stack.Screen name="SubjectCategory" component={SubjectCategory} />
+      <Stack.Screen name="Quizoverview" component={Quizoverview} />
+      <Stack.Screen name="Addquestion" component={Addquestion} />
+      <Stack.Screen name="Schedulequiz" component={Schedulequiz} />
+      <Stack.Screen name="Addquizscreen" component={Addquizscreen6} />
+      <Stack.Screen name="Quizrules" component={Quizrules} />
+      <Stack.Screen name="quzescreen" component={quzescreen} />
+      <Stack.Screen name="Questionscreen" component={Questionscreen} />
+      <Stack.Screen name="MissionScreen" component={MissionScreen} />
+      <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
+      <Stack.Screen name="FoundersClubScreen" component={FoundersClubScreen} />
+      {/* <Stack.Screen name="Super30Screen" component={Super30Screen} /> */}
+
+      <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
     </Stack.Navigator>
   );
 }
@@ -516,7 +551,7 @@ function MyDrawer() {
 
 export default function App() {
   const navRef = useRef();
-useReferralListener(); 
+  useReferralListener();
   useEffect(() => {
     onAppBootstrap();
   }, []);
@@ -617,14 +652,12 @@ useReferralListener();
 
   return (
     <KeyboardProvider>
-    
       <NavigationContainer
         ref={navRef}
         onReady={() => {
           setNavigation(navRef.current);
         }}
         linking={linking}>
-        
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
         <AddBankReducer>
           <WithdrawReducer>
