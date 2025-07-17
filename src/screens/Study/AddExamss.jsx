@@ -11,19 +11,19 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function StudyMaterials({ navigation }) {
   const [selected, setSelected] = useState('FreePdf');
- const navigate = useNavigation()
+  const navigate = useNavigation()
   return (
     <View style={StyleConstants.safeArView}>
-   <MainHeader
-                    name={"Study Materials"}
-                    leftIcon={{
-                      type: 'image',
-                      source: require('../../assets/img/backq.png'), // provide the image source
-                      onPress: () => {
-                        navigate.goBack()
-                      },
-                    }}
-                  />
+      <MainHeader
+        name={"Study Materials"}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'), // provide the image source
+          onPress: () => {
+            navigate.goBack()
+          },
+        }}
+      />
 
       {/* <View style={styles.container}>
         <TouchableOpacity
