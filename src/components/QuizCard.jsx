@@ -26,9 +26,12 @@ const QuizCard = ({
     <View style={styles.cardContainer}>
       {/* Title Row */}
       <View style={styles.titleRow}>
-        <Image source={image} style={styles.image40} />
-        <Text style={styles.titleText}>{title}</Text>
-      </View>
+  <Image source={image} style={styles.image40} />
+  <View style={{ flex: 1 }}>
+    <Text style={styles.titleText}>{title}</Text>
+  </View>
+</View>
+
 
       {/* Fees & Date */}
       <View style={styles.infoRow}>
@@ -244,6 +247,7 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    // gap:10
   },
   image40: {
     width: 40,
@@ -259,6 +263,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     paddingLeft: 12,
     marginBottom: 4,
+      flexWrap: 'wrap',
+  flexShrink: 1,
   },
 
   infoRow: {

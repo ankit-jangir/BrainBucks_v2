@@ -11,59 +11,12 @@ import {Image} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import ScheduledQuizzes from './ScheduledQuizzes';
 import LiveQuizzes from './LiveQuizzes';
+import { useNavigation } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function PhysicsChampions() {
-  const [selectedTab, setSelectedTab] = useState('Live');
-
-  const quizzes = [
-    {
-      title: 'General Knowledge',
-      coins: 500,
-      filled: 12,
-      total: 50,
-      teacher: 'Dr. Smith',
-      color: '#E8F0FF',
-    },
-    {
-      title: 'Science',
-      coins: 600,
-      filled: 25,
-      total: 50,
-      teacher: 'Prof. Johnson',
-      color: '#E9FFF0',
-    },
-    {
-      title: 'Mathematics',
-      coins: 450,
-      filled: 18,
-      total: 40,
-      teacher: 'Dr. Williams',
-      color: '#FFF4EB',
-    },
-  ];
-
-  const scheduledQuizzes = [
-    {
-      title: 'English (Scheduled)',
-      coins: 400,
-      filled: 30,
-      total: 45,
-      teacher: 'Prof. Davis',
-      color: '#F3EDFF',
-    },
-    {
-      title: 'Computer Science (Scheduled)',
-      coins: 500,
-      filled: 22,
-      total: 40,
-      teacher: 'Dr. Miller',
-      color: '#E0F7FA',
-    },
-  ];
-
-  const activeQuizzes = selectedTab === 'Live' ? quizzes : scheduledQuizzes;
+  const navigation =useNavigation()
 
   return (
     <>
@@ -125,11 +78,10 @@ export default function PhysicsChampions() {
         </TouchableOpacity>
         {/* Tabs */}
 
-        <Tab.Navigator style={{backgroundColor:'#fff'}}>
-  <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
-  <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} />
-</Tab.Navigator>
-
+        <Tab.Navigator style={{backgroundColor: '#fff'}}>
+          <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
+          <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} />
+        </Tab.Navigator>
       </View>
     </>
   );

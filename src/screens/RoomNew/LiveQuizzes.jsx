@@ -36,7 +36,7 @@ const LiveQuizzes = () => {
     <FlatList
       data={cardColors}
       keyExtractor={(item, index) => index.toString()}
-      contentContainerStyle={{padding: 16}}
+      contentContainerStyle={{padding: 10}}
       renderItem={({item: bgColor, index}) => {
         const quiz = quizzes[index % quizzes.length];
         const seatsLeft = quiz.total - quiz.filled;

@@ -27,11 +27,11 @@ import ChatSockService from '../../services/api/ChatSockService';
 import {generateDynamicLink} from '../../utils/createDynamicLink';
 
 export default function ViewProfile({navigation, route}) {
-  const [image1, setImage1] = useState('https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
+  const [image1, setImage1] = useState(
+    'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
   const [user, setUser] = useState({});
   let auth = new AuthenticationApiService();
-
 
   let isFocused = useIsFocused();
   const [loggingOut, setLoggingOut] = useState(false);
@@ -197,7 +197,9 @@ The referral code will be applied automatically on install. Let’s earn togethe
               }}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('EditProfile', {...route.params})
+                  navigation.navigate('EditProfile', {
+                    userData: user,
+                  })
                 }
                 style={styles.EditT}>
                 <Text style={styles.EditText}>Edit Profile</Text>
@@ -226,7 +228,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
               style={styles.bgImg}>
               <View style={styles.RfrView}>
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36,}]}>
+                <Text style={[styles.quizText, {fontSize: 36}]}>
                   {totalPlayed}
                 </Text>
               </View>
@@ -337,29 +339,55 @@ The referral code will be applied automatically on install. Let’s earn togethe
           </View>
         </View>
       </ScrollView>
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <View style={styles.logoutView}>
-          <Text style={styles.welcomeText}>Do You Want To Log Out</Text>
-          <View style={styles.logoutbuttons}>
-            <Button
-              title="Yes"
-              color={'#eb1313'}
-              titleStyle={{color: 'white', fontSize: 15, padding: 15}}
-              buttonStyle={styles.logoutyesbutton}
-              onPress={() => {
-                logOut().then(toggleOverlay).then(ChatSockService.disconnect);
-              }}
-            />
-            <Button
-              titleStyle={{color: 'black', fontSize: 15, padding: 15}}
-              color={'#e6e3e8'}
-              title="No"
-              buttonStyle={styles.logoutyesbutton}
-              onPress={toggleOverlay}
-            />
-          </View>
-        </View>
-      </Overlay>
+   <Overlay
+  isVisible={visible}
+  onBackdropPress={toggleOverlay}
+  overlayStyle={{
+    borderRadius: 20,
+    padding: 25,
+    width: '85%',
+    backgroundColor: '#fff',
+    elevation: 10,
+  }}>
+  <View style={{alignItems: 'center'}}>
+    <Text
+      style={{
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#333',
+        marginBottom: 20,
+        textAlign: 'center',
+        fontFamily: 'WorkSans-SemiBold',
+      }}>
+      Are you sure you want to log out?
+    </Text>
+
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 15}}>
+      <Button
+        title="Yes, Logout"
+        onPress={logOut}
+        buttonStyle={{
+          backgroundColor: '#eb1313',
+          paddingHorizontal: 25,
+          paddingVertical: 12,
+          borderRadius: 10,
+        }}
+        titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
+      />
+      <Button
+        title="Cancel"
+        onPress={toggleOverlay}
+        buttonStyle={{
+          backgroundColor: '#e6e3e8',
+          paddingHorizontal: 25,
+          paddingVertical: 12,
+          borderRadius: 10,
+        }}
+        titleStyle={{fontSize: 15, color: '#000'}}
+      />
+    </View>
+  </View>
+</Overlay>
     </SafeAreaView>
   );
 }

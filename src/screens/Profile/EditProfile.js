@@ -21,7 +21,6 @@ import {Button, Text} from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
 import {Overlay} from '@rneui/themed';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import {useIsFocused} from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {BLOBURL} from '../../config/urls';
 

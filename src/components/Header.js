@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { Image } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = ({
   title = 'Welcome',
@@ -16,6 +17,7 @@ const Header = ({
   titleColor = '#1F2937',
 }) => {
   return (
+
     <View style={[styles.container, { backgroundColor }]}>
       <View style={styles.header}>
         {/* Left Icon */}

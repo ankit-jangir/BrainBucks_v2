@@ -88,7 +88,7 @@ const Sidebar = ({navigation}) => {
         <MenuItem
           action={() => {
             navigation.closeDrawer();
-            navigation.navigate('Reels');
+            navigation.navigate('reels');
           }}
           image={require('../../assets/img/resume.png')}
           text="Brain Boosters"
@@ -184,34 +184,56 @@ const Sidebar = ({navigation}) => {
           text="Logout"
         />
       </ScrollView>
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <View style={styles.logoutView}>
-          <Text style={styles.welcomeText}>Do You Want To Log Out</Text>
-          <View style={styles.logoutbuttons}>
-            <Button
-              title="Yes"
-              color={'#eb1313'}
-              titleStyle={{
-                color: 'white',
-                fontSize: 15,
-                padding: 15,
-                paddingHorizontal: 30,
-              }}
-              buttonStyle={styles.logoutyesbutton}
-              onPress={() => {
-                logOut();
-              }}
-            />
-            <Button
-              color={'#e6e3e8'}
-              title="Cancel"
-              buttonStyle={styles.logoutyesbutton}
-              titleStyle={{color: 'black', fontSize: 15, padding: 15}}
-              onPress={toggleOverlay}
-            />
-          </View>
-        </View>
-      </Overlay>
+     <Overlay
+  isVisible={visible}
+  onBackdropPress={toggleOverlay}
+  overlayStyle={{
+    borderRadius: 20,
+    padding: 25,
+    width: '85%',
+    backgroundColor: '#fff',
+    elevation: 10,
+  }}>
+  <View style={{alignItems: 'center'}}>
+    <Text
+      style={{
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#333',
+        marginBottom: 20,
+        textAlign: 'center',
+        fontFamily: 'WorkSans-SemiBold',
+      }}>
+      Are you sure you want to log out?
+    </Text>
+
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 15}}>
+      <Button
+        title="Yes, Logout"
+        onPress={logOut}
+        buttonStyle={{
+          backgroundColor: '#eb1313',
+          paddingHorizontal: 25,
+          paddingVertical: 12,
+          borderRadius: 10,
+        }}
+        titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
+      />
+      <Button
+        title="Cancel"
+        onPress={toggleOverlay}
+        buttonStyle={{
+          backgroundColor: '#e6e3e8',
+          paddingHorizontal: 25,
+          paddingVertical: 12,
+          borderRadius: 10,
+        }}
+        titleStyle={{fontSize: 15, color: '#000'}}
+      />
+    </View>
+  </View>
+</Overlay>
+
     </View>
   );
 };

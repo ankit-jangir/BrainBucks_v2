@@ -10,43 +10,18 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import basic from '../../services/BasicServices';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ExamSearchScreen() {
   const navigation = useNavigation();
-
-  const [searchText, setSearchText] = useState('');
-  const [allExams, setAllExams] = useState([]);
-  const [examResults, setExamResults] = useState([]);
-  const [recentSearches, setRecentSearches] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const inputRef = useRef(null);
 
+  const [searchText, setSearchText] = useState('');
+  const [examResults, setExamResults] = useState([]);
+  const [recentSearches, setRecentSearches] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const BASE_URL = 'https://auth.brainbucks.in/stream/get/public?blobname=';
-
-  const fetchExams = async () => {
-    setLoading(true);
-    let token = await basic.getBearerToken();
-
-    try {
-      const res = await fetch(`https://quiz.brainbucks.in/home/get/exams`, {
-        method: 'GET',
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      const result = await res.json();
-      const exams = result?.exams || [];
-
-      setAllExams(exams);
-      setExamResults(exams);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const saveToRecentSearches = async text => {
     try {
@@ -54,7 +29,7 @@ export default function ExamSearchScreen() {
       let arr = existing ? JSON.parse(existing) : [];
       if (!arr.includes(text)) {
         arr.unshift(text);
-        if (arr.length > 5) arr.pop();
+        arr = arr.slice(0, 10); // keep only 10 recent searches
         await AsyncStorage.setItem('recentSearches', JSON.stringify(arr));
       }
     } catch (err) {
@@ -74,96 +49,124 @@ export default function ExamSearchScreen() {
   const submitSearch = async text => {
     if (!text.trim()) return;
 
-    const filtered = allExams.filter(exam =>
-      exam.category_name.toLowerCase().includes(text.toLowerCase()),
-    );
-    setExamResults(filtered);
     setSearchText(text);
-    await saveToRecentSearches(text);
+    setLoading(true);
+
+    try {
+      let token = await basic.getBearerToken();
+      const res = await fetch(`https://quiz.brainbucks.in/home/get/exams`, {
+        method: 'GET',
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const result = await res.json();
+      const exams = result?.exams || [];
+
+      const filtered = exams.filter(exam =>
+        exam.category_name.toLowerCase().includes(text.toLowerCase())
+      );
+
+      setExamResults(filtered);
+      await saveToRecentSearches(text);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRecentSearch = keyword => {
-    submitSearch(keyword);
+  const handleRecentSearch = async keyword => {
+    setSearchText(keyword);
+    await submitSearch(keyword);
   };
 
-  const renderItem = ({item}) => {
-    return (
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() =>
-          navigation.navigate('MyExamQuizzes', {
-            id: item._id,
-            imgurl: item.image,
-            title: item.category_name,
-          })
-        }>
-        <Image
-          source={
-            item.image
-              ? {uri: `${BASE_URL}${item.image}`}
-              : require('../../assets/img/sbi.png')
-          }
-          style={styles.cardImage}
-        />
-        <View style={styles.cardInfo}>
-          <Text style={styles.cardTitle}>{item.category_name}</Text>
-          <Text style={styles.cardSubtitle}>{`${item.quizCount} Quizzes`}</Text>
-        </View>
-        <Image
-          source={require('../../assets/img/right-arrows.png')}
-          style={styles.checkboxIcon}
-        />
-      </TouchableOpacity>
-    );
-  };
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate('MyExamQuizzes', {
+          id: item._id,
+          imgurl: item.image,
+          title: item.category_name,
+        })
+      }>
+      <Image
+        source={
+          item.image
+            ? {uri: `${BASE_URL}${item.image}`}
+            : require('../../assets/img/sbi.png')
+        }
+        style={styles.cardImage}
+      />
+      <View style={styles.cardInfo}>
+        <Text style={styles.cardTitle}>{item.category_name}</Text>
+        <Text style={styles.cardSubtitle}>{`${item.quizCount} Quizzes`}</Text>
+      </View>
+      <Image
+        source={require('../../assets/img/right-arrows.png')}
+        style={styles.checkboxIcon}
+      />
+    </TouchableOpacity>
+  );
 
   useEffect(() => {
-    fetchExams();
     loadRecentSearches();
     setTimeout(() => inputRef.current?.focus(), 300);
   }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchBox}>
-        <Image
-          source={require('../../assets/img/seacrc.png')}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          ref={inputRef}
-          value={searchText}
-          onChangeText={text => setSearchText(text)}
-          onSubmitEditing={() => submitSearch(searchText)}
-          placeholder="Search for Exams"
-          placeholderTextColor="#888"
-          style={styles.input}
-        />
-      </View>
+    <View style={styles.searchBox}>
+  <Image
+    source={require('../../assets/img/seacrc.png')}
+    style={styles.searchIcon}
+  />
+  <TextInput
+    ref={inputRef}
+    value={searchText}
+    onChangeText={text => setSearchText(text)}
+    onSubmitEditing={() => submitSearch(searchText)}
+    placeholder="Search for Exams"
+    placeholderTextColor="#888"
+    style={styles.input}
+  />
+  {searchText.length > 0 && (
+    <TouchableOpacity onPress={() => {
+      setSearchText('');
+      setExamResults([]);
+    }}>
+      <Image
+        source={require('../../assets/img/close.png')} // 👈 Replace with your X icon
+        style={styles.clearIcon}
+      />
+    </TouchableOpacity>
+  )}
+</View>
 
-      {!loading &&
-        searchText.length === 0 &&
-        examResults.length === 0 &&
-        recentSearches.length > 0 && (
-          <View style={styles.recentBox}>
-            <Text style={styles.recentTitle}>Recent Searches</Text>
-            {recentSearches.map((item, index) => (
-              <TouchableOpacity key={index} onPress={() => handleRecentSearch(item)}>
-                <Text style={styles.recentItem}>{item}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+
+      {searchText.length === 0 && recentSearches.length > 0 && (
+        <View style={styles.recentBox}>
+          <Text style={styles.recentTitle}>Recent Searches</Text>
+          {recentSearches.map((item, index) => (
+            <TouchableOpacity key={index} onPress={() => handleRecentSearch(item)}>
+              <Text style={styles.recentItem}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
 
       {loading ? (
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>Loading exams...</Text>
+        <Text style={{textAlign: 'center', marginTop: 20}}>Loading exams...</Text>
       ) : (
         <FlatList
           data={examResults}
           renderItem={renderItem}
           keyExtractor={item => item._id}
           ListEmptyComponent={
-            <Text style={styles.noResultText}>No exams found</Text>
+            searchText ? (
+              <Text style={styles.noResultText}>No exams found</Text>
+            ) : null
           }
           contentContainerStyle={{paddingBottom: 20}}
         />
@@ -173,6 +176,13 @@ export default function ExamSearchScreen() {
 }
 
 const styles = StyleSheet.create({
+  clearIcon: {
+  width: 18,
+  height: 18,
+  tintColor: '#888',
+  marginLeft: 8,
+},
+
   container: {
     flex: 1,
     backgroundColor: '#FAF9FA',

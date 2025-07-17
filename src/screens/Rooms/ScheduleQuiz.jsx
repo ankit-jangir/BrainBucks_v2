@@ -117,7 +117,7 @@ export default function ScheduleQuiz({navigation, route}) {
             <View style={styles.backandhistory}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={[styles.backimg, {padding: 20, backgroundColor: '#8D4AE2'}]}>
+                style={[styles.backimg, {padding: 20, backgroundColor: '#8D4AE2',borderRadius:20}]}>
                 <Image
                   style={[styles.backimg]}
                   resizeMethod="contain"
@@ -126,7 +126,7 @@ export default function ScheduleQuiz({navigation, route}) {
                 />
               </TouchableOpacity>
               <Image
-                style={{height: 170, width: 200}}
+                style={{height: 130, width: 200}}
                 resizeMethod="contain"
                 source={require('../../assets/img/axeimg.png')}
               />
