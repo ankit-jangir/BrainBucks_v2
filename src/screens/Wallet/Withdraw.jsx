@@ -35,7 +35,7 @@ const Withdraw = ({ navigation }) => {
       setLoading(true);
       let res = await wallServ.getVerfiedBanks();
       if (res.status === 1) {
-        setVerifiedBanks(res.banks);
+        setVerifiedBanks(res.data);
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
@@ -60,30 +60,55 @@ const Withdraw = ({ navigation }) => {
     }
   }
 
-  async function next() {
-    if (!withdrawState.amount) {
-      ToastAndroid.show('Enter an amount to withdraw ', ToastAndroid.SHORT);
-      return;
-    }
+  // async function next() {
+  //   if (!withdrawState.amount) {
+  //     ToastAndroid.show('Enter an amount to withdraw ', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (withdrawState.amount < 100) {
-      ToastAndroid.show('Minimum amount should be ₹100', ToastAndroid.SHORT);
-      return;
-    }
+  //   if (withdrawState.amount < 100) {
+  //     ToastAndroid.show('Minimum amount should be ₹100', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (!withdrawState.bank || Object.keys(withdrawState.bank).length === 0) {
-      ToastAndroid.show('Select a bank to withdraw the money ', ToastAndroid.SHORT);
-      return;
-    }
+  //   if (!withdrawState.bank || Object.keys(withdrawState.bank).length === 0) {
+  //     ToastAndroid.show('Select a bank to withdraw the money ', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (withdrawState.amount > withdrawState.balance - 10) {
-      ToastAndroid.show("You can't withdraw more than Redeemable balance ", ToastAndroid.SHORT);
-      return;
-    }
+  //   if (withdrawState.amount > withdrawState.balance - 10) {
+  //     ToastAndroid.show("You can't withdraw more than Redeemable balance ", ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    bhRef.current.remove();
-    navigation.navigate('withdrawMoney');
+  //   bhRef.current.remove();
+  //   navigation.navigate('withdrawMoney');
+  // }
+
+
+async function next() {
+  if (!withdrawState.amount || withdrawState.amount < 100) {
+    ToastAndroid.show('Enter minimum ₹100 amount', ToastAndroid.SHORT);
+    return;
   }
+
+  if (!withdrawState.bank?._id) {
+    ToastAndroid.show('Select a bank first', ToastAndroid.SHORT);
+    return;
+  }
+
+
+  const result = await wallServ.withdrawMoneyReq({
+    bankAccountId: withdrawState.bank._id,
+    amount: withdrawState.amount,
+  });
+
+  if (result.status === 1) {
+    navigation.navigate('wallet');
+  } else {
+    ToastAndroid.show(result.Backend_Error || 'Something went wrong', ToastAndroid.SHORT);
+  }
+}
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 80 }}>
@@ -95,7 +120,7 @@ const Withdraw = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             dispatch({ type: 'empty' });
-            navigation.goBack();
+            navigation.navigate("wallet");
           }}>
           <Image
             tintColor="#000"
@@ -160,10 +185,10 @@ const Withdraw = ({ navigation }) => {
                   />
                   <Text style={styles.bankName}>{res.bank_name}</Text>
                 </View>
-                <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
+                <Text style={styles.bankHolder}>{res.account_holder_name}</Text>
                 <View style={styles.bankAccountDetails}>
-                  <Text style={styles.accountText}>A/C: {res.bank_acc_no}</Text>
-                  <Text style={styles.ifscText}>IFSC: {res.ifsc_code}</Text>
+                  <Text style={styles.accountText}>A/C: {res.account_number}</Text>
+                  <Text style={styles.ifscText}>IFSC: {res.ifsc}</Text>
                 </View>
               </View>
             </TouchableOpacity>

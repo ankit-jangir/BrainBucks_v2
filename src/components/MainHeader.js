@@ -9,36 +9,62 @@ import {
 import { Image } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
 
-const MainHeader = ({ name, showBackButton = true, backIcon }) => {
+const MainHeader = ({
+  name,
+  showBackButton = true,
+  backIcon,
+  leftIcon, // optional prop
+}) => {
   const navigation = useNavigation();
+
+  const renderLeftIcon = () => {
+    if (leftIcon && leftIcon.type === 'image' && leftIcon.source) {
+      return (
+        <TouchableOpacity
+          onPress={leftIcon.onPress}
+          style={styles.backButton}
+          accessible={true}
+          accessibilityLabel="Left Icon"
+        >
+          <Image source={leftIcon.source} style={styles.backIcon} />
+        </TouchableOpacity>
+      );
+    }
+
+    if (showBackButton) {
+      return (
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+          accessible={true}
+          accessibilityLabel="Go Back"
+        >
+          <Image
+            source={
+              backIcon
+                ? backIcon
+                : require('../assets/img/backcopy.png') // default
+            }
+            style={styles.backIcon}
+          />
+        </TouchableOpacity>
+      );
+    }
+
+    return <View style={{ width: 40 }} />;
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {showBackButton && (
-          <TouchableOpacity
-            onPress={() => navigation?.goBack()}
-            style={styles.backButton}
-            accessible={true}
-            accessibilityLabel="Go Back"
-          >
-            <Image
-              source={
-                backIcon
-                  ? backIcon
-                  : require('../assets/img/backcopy.png') // default
-              }
-              style={styles.backIcon}
-            />
-          </TouchableOpacity>
-        )}
+        {renderLeftIcon()}
 
         <View style={styles.titleWrapper}>
           <Text style={styles.titleText}>{name}</Text>
         </View>
 
-        {/* Invisible view to balance the back button space */}
-        {showBackButton ? <View style={styles.fakeSpace} /> : <View style={{ width: 40 }} />}
+        {/* Invisible view to balance the left icon */}
+        <View style={styles.fakeSpace} />
       </View>
     </View>
   );

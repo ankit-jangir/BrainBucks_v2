@@ -48,9 +48,9 @@ const AddBankAccount = ({ navigation }) => {
 
     try {
       setLoading(true);
-      let ifscres = await wallServ.checkIfsc(addBankState.ifsc.toUpperCase());
-      if (ifscres.data.IFSC) {
-        navigation.navigate('AccountDeatils');
+      let ifscres = await wallServ.checkIfsc(addBankState);
+      if (ifscres.status===1) {
+        navigation.navigate('addbankDetails');
       } else {
         console.log('Something went wrong in IFSC checking: ', ifscres);
       }
