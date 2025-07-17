@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -11,11 +11,10 @@ import {
 import {LineChart} from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 const screenWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -116,7 +115,9 @@ const Dashboard = () => {
       {/* Action Buttons */}
       <View style={styles.buttonRow}>
         <TouchableOpacity
-        onPress={()=>{navigation.navigate("ReferStudents")}}
+          onPress={() => {
+            navigation.navigate('ReferStudents');
+          }}
           style={[styles.actionButton, {backgroundColor: '#b66ef5'}]}>
           <View style={styles.centerContent}>
             <Image
@@ -129,7 +130,10 @@ const Dashboard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]} onPress={()=>{navigation.navigate('Createquiz')}}>
+          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}
+          onPress={() => {
+            navigation.navigate('Createquiz');
+          }}>
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/line3.png')}
@@ -142,8 +146,9 @@ const Dashboard = () => {
 
         <TouchableOpacity
           style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}
-          onPress={()=>{navigation.navigate('Grouthbooster')}}
-          >
+          onPress={() => {
+            navigation.navigate('Grouthbooster');
+          }}>
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/rokect.png')}
@@ -278,7 +283,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: '#000000',
     fontFamily: 'Inter',
-    textAlign:"right"
+    textAlign: 'right',
   },
 
   sectionTitle: {
