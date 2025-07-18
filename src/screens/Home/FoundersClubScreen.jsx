@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const plans = [
   {
@@ -57,15 +57,20 @@ const FoundersClubScreen = () => {
 
   const getButtonStyle = name => {
     if (name === 'Basic') return [styles.buttonBase, styles.outlineButton];
-    if (name === 'Pro Affiliate') return [styles.buttonBase, styles.filledButton];
-    if (name === 'Elite Partner') return [styles.buttonBase, styles.whiteButton];
+    if (name === 'Pro Affiliate')
+      return [styles.buttonBase, styles.filledButton];
+    if (name === 'Elite Partner')
+      return [styles.buttonBase, styles.whiteButton];
     return styles.buttonBase;
   };
 
   const getTextStyle = name => {
-    if (name === 'Basic') return [styles.buttonTextBase, styles.outlineButtonText];
-    if (name === 'Pro Affiliate') return [styles.buttonTextBase, styles.filledButtonText];
-    if (name === 'Elite Partner') return [styles.buttonTextBase, styles.blackText];
+    if (name === 'Basic')
+      return [styles.buttonTextBase, styles.outlineButtonText];
+    if (name === 'Pro Affiliate')
+      return [styles.buttonTextBase, styles.filledButtonText];
+    if (name === 'Elite Partner')
+      return [styles.buttonTextBase, styles.blackText];
     return styles.buttonTextBase;
   };
 
@@ -152,8 +157,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 20,
     paddingBottom: 10,
-    backgroundColor: '#F9F9FC',
+    backgroundColor: '#fff',
+    elevation: 2,
+    zIndex: 1,
   },
+
   backIcon: {
     width: 24,
     height: 24,
@@ -164,25 +172,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heading: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: '#1A1A1A',
   },
   subheading: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666666',
     marginTop: 2,
     fontFamily: 'Poppins',
   },
   scrollArea: {
     paddingHorizontal: 20,
+    paddingVertical:10,
     paddingBottom: 40,
   },
   card: {
     borderRadius: 16,
     padding: 20,
     marginBottom: 20,
-    fontSize:24
+    fontSize: 22,
   },
   basicCard: {
     backgroundColor: '#F8F9FA',
@@ -203,21 +212,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   planName: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
-    fontFamily:"Poppins"
+    fontFamily: 'Poppins',
   },
   price: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: '800',
     marginTop: 10,
     marginBottom: 12,
-    fontFamily:"Poppins"
+    fontFamily: 'Poppins',
   },
   sub: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '400',
-    fontFamily:"Poppins"
+    fontFamily: 'Poppins',
   },
   icon: {
     width: 30,
@@ -236,9 +245,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   feature: {
-    fontSize: 16,
+    fontSize: 14,
     flexShrink: 1,
-    fontWeight:"400"
+    fontWeight: '400',
   },
   tag: {
     backgroundColor: '#FF6A00',
@@ -251,7 +260,7 @@ const styles = StyleSheet.create({
   },
   tagText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '600',
   },
   buttonBase: {
@@ -261,7 +270,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonTextBase: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '700',
   },
   outlineButton: {

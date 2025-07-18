@@ -14,7 +14,6 @@ const MissionScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.screen}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -32,27 +31,10 @@ const MissionScreen = () => {
         </View>
       </View>
 
-      {/* Scrollable Content */}
       <ScrollView contentContainerStyle={styles.container}>
-        {/* Levels Section */}
         {levels.map((level, index) => (
-          <View
-            key={index}
-            style={[
-              styles.levelBox,
-              level.active &&
-                {
-                  // backgroundColor: '#F4F1FF',
-                  // borderColor: '#8453E2',
-                },
-              level.completed &&
-                !level.active && {
-                  backgroundColor: '#E7F8EF',
-                  borderColor: '#4CAF50',
-                },
-            ]}>
+          <View key={index} style={[styles.levelBox]}>
             <View style={styles.levelRow}>
-              {/* Icon + Connecting Line */}
               <View style={styles.iconColumn}>
                 <View
                   style={[
@@ -83,7 +65,6 @@ const MissionScreen = () => {
                 )}
               </View>
 
-              {/* Text Content */}
               <View style={{flex: 1, paddingRight: 10, position: 'relative'}}>
                 <Text
                   style={[
@@ -110,8 +91,6 @@ const MissionScreen = () => {
                     style={{marginTop: 6, width: '90%'}}
                   />
                 )}
-
-                {/* ✅ Checkmark */}
                 {level.completed && (
                   <Image
                     source={require('../../assets/img/checkmark.png')}
@@ -123,12 +102,10 @@ const MissionScreen = () => {
           </View>
         ))}
 
-        {/* View Button */}
         <TouchableOpacity style={styles.viewBtn}>
           <Text style={styles.viewBtnText}>View Your Level Details</Text>
         </TouchableOpacity>
 
-        {/* Earnings Dashboard */}
         <Text style={[styles.title, {marginTop: 30}]}>Earnings Dashboard</Text>
         <Text style={styles.earningAmount}>
           $1,247.50 <Text style={styles.monthText}>This Month</Text>
@@ -147,11 +124,10 @@ const MissionScreen = () => {
           </View>
         ))}
 
-        {/* Export Button */}
         <TouchableOpacity style={styles.exportBtn}>
           <View style={styles.exportContent}>
             <Image
-              source={require('../../assets/img/down.png')} // 🔁 Replace with your export icon path
+              source={require('../../assets/img/down.png')}
               style={styles.exportIcon}
             />
             <Text style={styles.exportText}>Export Earnings Report</Text>
@@ -246,7 +222,6 @@ const earnings = [
   },
 ];
 
-// ✅ Styles
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -255,12 +230,14 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-    elevation: 3,
+    elevation: 2,
+    backgroundColor: '#fff',
     zIndex: 1,
   },
+
   backButton: {
     width: 32,
     height: 32,
@@ -274,13 +251,13 @@ const styles = StyleSheet.create({
     tintColor: '#000',
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
     color: '#000',
     fontFamily: 'Poppins',
   },
   headerSubtitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     marginTop: 2,
     fontFamily: 'Poppins',
@@ -324,15 +301,15 @@ const styles = StyleSheet.create({
   },
   levelTitle: {
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
     color: '#9CA3AF',
     fontFamily: 'Poppins',
   },
   levelEarnings: {
     color: '#6B7280',
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 2,
-    fontVariant: '400',
+    fontFamily: 'Poppins',
   },
   checkmarkIcon: {
     width: 20,
@@ -351,24 +328,24 @@ const styles = StyleSheet.create({
   viewBtnText: {
     color: '#FFFFFF',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Poppins',
   },
   title: {
     fontWeight: '700',
-    fontSize: 28,
+    fontSize: 26,
     color: '#000',
     fontFamily: 'Poppins',
   },
   earningAmount: {
     fontWeight: '800',
-    fontSize: 30,
+    fontSize: 28,
     marginTop: 6,
     color: '#000000',
     fontFamily: 'Poppins',
   },
   monthText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#4B5563',
     fontWeight: '600',
     fontFamily: 'Poppins',
@@ -394,13 +371,13 @@ const styles = StyleSheet.create({
   },
   earningTitle: {
     color: '#000000',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     fontFamily: 'Poppins',
   },
   earningValue: {
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 4,
     color: '#4B5563',
     fontFamily: 'Poppins',
@@ -417,22 +394,20 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     backgroundColor: '#F3F4F6',
   },
-
   exportContent: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
   },
-
   exportIcon: {
     width: 20,
     height: 20,
     tintColor: '#8453E2',
   },
-
   exportText: {
     color: '#374151',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
+    fontFamily: 'Poppins',
   },
 });

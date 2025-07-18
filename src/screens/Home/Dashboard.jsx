@@ -115,9 +115,7 @@ const Dashboard = () => {
       {/* Action Buttons */}
       <View style={styles.buttonRow}>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ReferStudents');
-          }}
+          onPress={() => navigation.navigate('ReferStudents')}
           style={[styles.actionButton, {backgroundColor: '#b66ef5'}]}>
           <View style={styles.centerContent}>
             <Image
@@ -130,10 +128,8 @@ const Dashboard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}
-          onPress={() => {
-            navigation.navigate('Createquiz');
-          }}>
+          onPress={() => navigation.navigate('Createquiz')}
+          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}>
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/line3.png')}
@@ -145,10 +141,8 @@ const Dashboard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}
-          onPress={() => {
-            navigation.navigate('Grouthbooster');
-          }}>
+          onPress={() => navigation.navigate('Grouthbooster')}
+          style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}>
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/rokect.png')}
@@ -176,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greeting: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#6B7280',
     flex: 1,
     fontWeight: '400',
@@ -187,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   welcome: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
     marginVertical: 1,
     color: '#000000',
@@ -212,28 +206,27 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     overflow: 'hidden',
   },
-
   earningsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   earningsLabel: {
     color: '#FFFFFFE5',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Inter',
     fontWeight: '400',
   },
   earningsChange: {
     color: '#FFFFFFE5',
-    fontSize: 16,
+    fontSize: 14,
     opacity: 0.8,
     fontFamily: 'Inter',
     fontWeight: '500',
   },
   earnings: {
     color: '#FFFFFF',
-    fontSize: 30,
-    fontWeight: 'Inter',
+    fontSize: 26,
+    fontFamily: 'Inter',
     marginTop: 5,
     fontWeight: '700',
   },
@@ -254,40 +247,31 @@ const styles = StyleSheet.create({
     elevation: 1,
     justifyContent: 'space-around',
   },
-
   icons: {
     width: 30,
     height: 20.44,
     tintColor: '#a855f7',
     marginRight: 49,
   },
-  centerContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   statContent: {
     flexDirection: 'column',
   },
-
   statTitle: {
     color: '#6B7280',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '500',
     fontFamily: 'Inter',
   },
-
   statValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
     marginTop: 4,
     color: '#000000',
     fontFamily: 'Inter',
     textAlign: 'right',
   },
-
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '600',
     marginTop: 24,
     marginBottom: 8,
@@ -306,7 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A855F7',
   },
   goalText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#6B7280',
     marginTop: 6,
     fontWeight: '400',
@@ -316,30 +300,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+    gap: 10,
   },
-
   actionButton: {
-    width: 120,
-    height: 120,
+    flex: 1,
+    aspectRatio: 1,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5,
   },
-
   centerContent: {
     alignItems: 'center',
   },
-
   icon1: {
     width: 32,
     height: 32,
     marginBottom: 8,
   },
-
   buttonLabel: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'center',
     fontWeight: '700',
     lineHeight: 20,
