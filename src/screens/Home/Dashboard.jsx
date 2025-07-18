@@ -11,10 +11,6 @@ import {
 import {LineChart} from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
 const screenWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
@@ -119,11 +115,7 @@ const Dashboard = () => {
       {/* Action Buttons */}
       <View style={styles.buttonRow}>
         <TouchableOpacity
-<<<<<<< HEAD
         onPress={()=>{navigation.navigate("ReferStudents")}}
-=======
-          onPress={() => navigation.navigate('ReferStudents')}
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
           style={[styles.actionButton, {backgroundColor: '#b66ef5'}]}>
           <View style={styles.centerContent}>
             <Image
@@ -136,12 +128,7 @@ const Dashboard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-<<<<<<< HEAD
           style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]} onPress={()=>{navigation.navigate('Createquiz')}}>
-=======
-          onPress={() => navigation.navigate('Createquiz')}
-          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}>
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/line3.png')}
@@ -153,14 +140,9 @@ const Dashboard = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-<<<<<<< HEAD
           style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}
           onPress={()=>{navigation.navigate('Grouthbooster')}}
           >
-=======
-          onPress={() => navigation.navigate('Grouthbooster')}
-          style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}>
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
           <View style={styles.centerContent}>
             <Image
               source={require('../../assets/img/rokect.png')}
@@ -188,11 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greeting: {
-<<<<<<< HEAD
     fontSize: 16,
-=======
-    fontSize: 14,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     color: '#6B7280',
     flex: 1,
     fontWeight: '400',
@@ -235,34 +213,21 @@ const styles = StyleSheet.create({
   },
   earningsLabel: {
     color: '#FFFFFFE5',
-<<<<<<< HEAD
     fontSize: 16,
-=======
-    fontSize: 14,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     fontFamily: 'Inter',
     fontWeight: '400',
   },
   earningsChange: {
     color: '#FFFFFFE5',
-<<<<<<< HEAD
     fontSize: 16,
-=======
-    fontSize: 14,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     opacity: 0.8,
     fontFamily: 'Inter',
     fontWeight: '500',
   },
   earnings: {
     color: '#FFFFFF',
-<<<<<<< HEAD
     fontSize: 30,
     fontWeight: 'Inter',
-=======
-    fontSize: 26,
-    fontFamily: 'Inter',
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     marginTop: 5,
     fontWeight: '700',
   },
@@ -301,38 +266,22 @@ const styles = StyleSheet.create({
 
   statTitle: {
     color: '#6B7280',
-<<<<<<< HEAD
     fontSize: 16,
-=======
-    fontSize: 14,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     fontWeight: '500',
     fontFamily: 'Inter',
   },
 
   statValue: {
-<<<<<<< HEAD
     fontSize: 24,
-=======
-    fontSize: 22,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     fontWeight: '700',
     marginTop: 4,
     color: '#000000',
     fontFamily: 'Inter',
-<<<<<<< HEAD
     textAlign:"right"
-=======
-    textAlign: 'right',
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
   },
 
   sectionTitle: {
-<<<<<<< HEAD
     fontSize: 18,
-=======
-    fontSize: 14,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     fontWeight: '600',
     marginTop: 24,
     marginBottom: 8,
@@ -351,11 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A855F7',
   },
   goalText: {
-<<<<<<< HEAD
     fontSize: 14,
-=======
-    fontSize: 12,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     color: '#6B7280',
     marginTop: 6,
     fontWeight: '400',
@@ -365,20 +310,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-<<<<<<< HEAD
-=======
-    gap: 10,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
   },
 
   actionButton: {
-<<<<<<< HEAD
     width: 120,
     height: 120,
-=======
-    flex: 1,
-    aspectRatio: 1,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
@@ -397,11 +333,7 @@ const styles = StyleSheet.create({
 
   buttonLabel: {
     color: '#FFFFFF',
-<<<<<<< HEAD
     fontSize: 14,
-=======
-    fontSize: 12,
->>>>>>> 1b2d85558d9d0d5d61241f59707dd448c5770bfc
     textAlign: 'center',
     fontWeight: '700',
     lineHeight: 20,
