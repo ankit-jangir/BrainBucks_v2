@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   checboxview: {
     width: "100%",
     height: 50,
-    marginTop: 25,
+    marginTop: 15,
     alignItems:'center',
     justifyContent:'center',
     

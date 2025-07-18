@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getReferralCode } from '../../hooks/useReferralListener';
 
 export default function SignupReferral({ navigation, route }) {
-  const [referralCode, setReferralCode] = useState('');
+  const [referralCode, setReferralCode] = useState(route.params?.referralCode);
 
   useEffect(() => {
   const getReferralCodeAsync = async () => {
@@ -54,7 +54,6 @@ export default function SignupReferral({ navigation, route }) {
     console.log('Navigating to SignupGender with referralCode:', referralCode);
     navigation.navigate('SignupGender', {
       ...route.params,
-      referralCode: referralCode || '',
     });
   };
 

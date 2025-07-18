@@ -107,11 +107,12 @@ export default function SignupGender({navigation, route}) {
           </View>
 
           {/* Continue Button */}
-            <TouchableOpacity onPress={handleNext}>
-          <View style={styles.TouchView}>
-              <Text style={styles.btntex}>Next</Text>
-          </View>
-            </TouchableOpacity>
+            <TouchableOpacity onPress={handleNext} disabled={!gender}>
+  <View style={[styles.TouchView, {opacity: gender ? 1 : 0.5}]}>
+    <Text style={styles.btntex}>Next</Text>
+  </View>
+</TouchableOpacity>
+
         </View>
       </ScrollView>
     </SafeAreaView>

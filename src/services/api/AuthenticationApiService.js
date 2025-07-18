@@ -27,7 +27,7 @@ class AuthenticationApiService {
         phone: phone,
         fcm_key: fcm,
         otp: otp,
-      //  is_edu:userType
+       is_edu:userType
       },
     });
 
@@ -45,7 +45,7 @@ class AuthenticationApiService {
   }
 
        
-  async registerUser(phone, name, gender, category, otp,referralCode,userType) {
+  async registerUser(phone, name, gender, category, otp,referralCode,userType,description) {
     phone = "+91" + phone;
     let local = await basic.getLocalObject();
     let fcm = local.fcm
@@ -60,7 +60,8 @@ class AuthenticationApiService {
         fcm_key: fcm,
         otp:otp,
         refer_id:referralCode,
-        // is_edu:userType
+        is_edu:userType,
+        description:description
       },
     });
     if (response.data.status === 1) {

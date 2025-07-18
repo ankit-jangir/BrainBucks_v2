@@ -29,9 +29,11 @@ export default function Otp({navigation, route}) {
   const [errorMessage, setErrorMessage] = useState();
   const auth = new AuthenticationApiService();
   // let phone = route.params.phone;
-const referralCode = route.params?.referCode;
+  const referralCode = route.params?.referCode;
   const {phone, userType} = route.params;
-
+  console.log('====================================');
+  console.log(userType, 'ssssss');
+  console.log('====================================');
   let timerRef = null;
 
   const startOTPTimer = () => {
@@ -113,7 +115,7 @@ const referralCode = route.params?.referCode;
             phone: phone,
             otp: otp,
             referCode: referralCode,
-            // userType: userType,
+            userType: userType,
           }),
         );
       } else {
@@ -167,11 +169,11 @@ const referralCode = route.params?.referCode;
             </View>
 
             <View style={styles.otpMetaRow}>
-            <View style={{flex:0.7}}>
+              <View style={{flex: 0.7}}>
                 {errorMessage && (
-                <Text style={styles.errorText}>{errorMessage}</Text>
-              )}
-            </View>
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+                )}
+              </View>
               <Text style={styles.validityText}>
                 OTP Valid For: 00:{seconds > 9 ? seconds : '0' + seconds}
               </Text>

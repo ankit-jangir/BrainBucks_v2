@@ -22,6 +22,7 @@ import MainHeader from '../../components/MainHeader';
 const AddBanks = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [banks, setBanks] = useState([]);
+  console.log(banks)
   const [visible, setVisible] = useState(false);
   const [delId, setDelId] = useState('');
   const isFocused = useIsFocused();
@@ -123,7 +124,7 @@ const AddBanks = ({navigation}) => {
                       {res.account_holder_name}
                     </Text>
                     <View style={styles.bankAccountDetails}>
-                      <Text style={styles.accountText}>{res.bank_acc_no}</Text>
+                      <Text style={styles.accountText}>{res.account_number}</Text>
                       <Text style={styles.ifscText}>{res.ifsc}</Text>
                     </View>
                     {/*<View style={{margin: 0}}>

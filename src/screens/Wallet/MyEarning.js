@@ -3,10 +3,11 @@ import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image } from 'r
 import MyEarningSpent from './MyEarningSpent';
 import Earned from './Earned';
 import MainHeader from '../../components/MainHeader';
+import { useNavigation } from '@react-navigation/native';
 
 const MyEarning = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
-
+const navigate = useNavigation()
   return (
     <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
        <MainHeader
@@ -15,7 +16,7 @@ const MyEarning = ({navigation}) => {
             type: 'image',
             source: require('../../assets/img/backq.png'), // provide the image source
             onPress: () => {
-              navigation.goBack()
+              navigate.goBack()
             },
           }}
         />

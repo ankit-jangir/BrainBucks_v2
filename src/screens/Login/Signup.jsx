@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,92 +7,177 @@ import {
   ToastAndroid,
   Linking,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
-import { Text, TextInput } from '../../utils/Translate';
-import { Button } from '../../utils/Translate';
+import {Text, TextInput, Button} from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import {SelectList} from 'react-native-dropdown-select-list';
 
-export default function Signup({ navigation, route }) {
+export default function Signup({navigation, route}) {
   const [phone, setPhone] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const [numberDone, setNumberDone] = useState(false);
+  const [selected, setSelected] = useState('');
   const referralCode = route.params?.referCode;
+
+  const data = [
+    {key: '1', value: 'Student'},
+    {key: '2', value: 'Educator'},
+  ];
+
+  // async function next() {
+  //   setErrorMessage(null);
+
+  //   if (!selected) {
+  //     setErrorMessage('*Please select user type');
+  //     return;
+  //   }
+
+  //   if (phone.length === 0) {
+  //     setErrorMessage('*Please enter mobile number');
+  //     setNumberDone(false);
+  //     return;
+  //   }
+
+  //   if (phone.length !== 10) {
+  //     setErrorMessage('*Mobile number must be of 10 digits');
+  //     setNumberDone(false);
+  //     return;
+  //   }
+
+  //   setNumberDone(true);
+
+  //   if (!checked) {
+  //     setErrorMessage('*You must accept the terms and conditions');
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     setErrorMessage(null);
+  //     const auth = new AuthenticationApiService();
+
+  //     // ✅ Send true if Educator, false if Student
+  //     const isEducator = selected === 'Educator';
+
+  //     const response = await auth.sendOtp(phone, isEducator);
+
+  //     console.log('Response for OTP', response);
+
+  //     if (response.status === 1) {
+  //       if (response.otp) {
+  //         ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
+  //       }
+
+  //       navigation.navigate('Otp', {
+  //         phone: phone,
+  //         userType: selected,
+  //         referCode: referralCode,
+  //       });
+  //     } else {
+  //       setErrorMessage('*' + response.Backend_Error);
+  //     }
+  //   } catch (error) {
+  //     console.log('Error while Sending OTP: ', error.message);
+  //     setErrorMessage('*Something went wrong');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+
   async function next() {
-    setErrorMessage(null);
-    if (phone.length === 0) {
-      setErrorMessage('*Please enter mobile number');
-      setNumberDone(false);
-      return;
-    }
-    if (phone.length !== 10) {
-      setErrorMessage('*Mobile number must be of 10 digits');
-      setNumberDone(false);
-      return;
-    }
+  setErrorMessage(null);
 
-    setNumberDone(true);
-    if (!checked) {
-      setErrorMessage('*You must accept the terms and conditions');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      setErrorMessage(null);
-      const auth = new AuthenticationApiService();
-      const resposne = await auth.sendOtp(phone);
-      console.log('Response for OTP', resposne);
-      if (resposne.status === 1) {
-        if (resposne.otp) {
-          ToastAndroid.show(resposne.otp + '', ToastAndroid.LONG);
-        }
-        navigation.navigate('Otp', {
-          phone: phone,
-          // userType: userType, // true or false
-          referCode: referralCode
-        },);
-      } else {
-        setErrorMessage('*' + resposne.Backend_Error);
-      }
-    } catch (error) {
-      console.log('Error while Sending OTP: ', error.message);
-      setErrorMessage('*Something went wrong');
-    } finally {
-      setLoading(false);
-    }
+  if (!selected) {
+    setErrorMessage('*Please select user type');
+    return;
   }
 
+  if (phone.length === 0) {
+    setErrorMessage('*Please enter mobile number');
+    setNumberDone(false);
+    return;
+  }
+
+  if (phone.length !== 10) {
+    setErrorMessage('*Mobile number must be of 10 digits');
+    setNumberDone(false);
+    return;
+  }
+
+  setNumberDone(true);
+
+  if (!checked) {
+    setErrorMessage('*You must accept the terms and conditions');
+    return;
+  }
+
+  setLoading(true);
+  try {
+    setErrorMessage(null);
+
+    const isEducator = selected === 'Educator'; // ✅ true or false
+
+    const auth = new AuthenticationApiService();
+    const response = await auth.sendOtp(phone, isEducator); // ✅ sirf true/false bhej rahe
+
+    console.log('Response for OTP', response);
+
+    if (response.status === 1) {
+      if (response.otp) {
+        ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
+      }
+
+      navigation.navigate('Otp', {
+        phone: phone,
+        userType: isEducator, // ✅ sirf true/false bhej rahe
+        referCode: referralCode,
+      });
+    } else {
+      setErrorMessage('*' + response.Backend_Error);
+    }
+  } catch (error) {
+    console.log('Error while Sending OTP: ', error.message);
+    setErrorMessage('*Something went wrong');
+  } finally {
+    setLoading(false);
+  }
+}
+
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: ColorsConstant.White }}>
-      <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <ScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.bbView}>
               <Image
                 source={require('../../assets/img/bbcolorlogo.png')}
                 resizeMode="contain"
-                style={{ width: 250 }}
+                style={{width: 250}}
               />
             </View>
 
             <View style={styles.container}>
-              <View style={[styles.LetsView, { marginTop: 20 }]}>
+              <View style={[styles.LetsView, {marginTop: 20}]}>
                 <View style={styles.LetsView2}>
-                  <View style={{}}>
+                  <View>
                     <Text style={styles.textLets}> Let’s Crack Exams,</Text>
                     <View style={styles.togetherview}>
                       <Text style={styles.texttogether}> Together👋 </Text>
                     </View>
                   </View>
-                  <View style={{}}>
+                  <View>
                     <Image
                       source={require('../../assets/img/arrowtoright.png')}
                       resizeMode="contain"
@@ -102,13 +187,13 @@ export default function Signup({ navigation, route }) {
                 </View>
               </View>
 
-              <View
-                style={{ width: '100%', paddingHorizontal: 1, marginTop: 15 }}>
+              {/* Phone Number Input */}
+              <View style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
                 <View
                   style={[
                     styles.inputView,
-                    errorMessage && !numberDone && { borderColor: 'red' },
+                    errorMessage && !numberDone && {borderColor: 'red'},
                   ]}>
                   <View style={styles.inputview91}>
                     <Text style={styles.text91}>+ 91</Text>
@@ -136,6 +221,28 @@ export default function Signup({ navigation, route }) {
                 </Text>
               )}
 
+              {/* Dropdown for User Type */}
+              <View style={{marginTop: 15, width: '100%'}}>
+                <Text style={styles.textEnter}> Select User Type </Text>
+                <SelectList
+                  setSelected={val => {
+                    setErrorMessage(null);
+                    setSelected(val);
+                  }}
+                  data={data}
+                  save="value"
+                  boxStyles={{
+                    backgroundColor: '#9856EB',
+                    borderColor: '#ffffff80',
+                    paddingVertical: 15,
+                    marginTop: 6,
+                  }}
+                  dropdownStyles={{backgroundColor: '#9856EB'}}
+                  placeholder="Select user type"
+                />
+              </View>
+
+              {/* Terms and Conditions */}
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
                   <View
@@ -168,31 +275,27 @@ export default function Signup({ navigation, route }) {
                       {' '}
                       I hereby confirm my age is 18 Years or above & agree to
                       <TouchableOpacity
-                        onPress={() => {
+                        onPress={() =>
                           Linking.openURL(
                             'https://brainbucks.in/terms/condition',
-                          );
-                        }}>
-                        <Text style={styles.textTerm}>
-                          {' '}
-                          terms & conditions{' '}
-                        </Text>
+                          )
+                        }>
+                        <Text style={styles.textTerm}> terms & conditions </Text>
                       </TouchableOpacity>
-                      <View style={{ marginTop: -6 }}>
-                        <Text
-                          style={{ color: ColorsConstant.White, fontSize: 10 }}>
+                      <View style={{marginTop: -6}}>
+                        <Text style={{color: ColorsConstant.White, fontSize: 10}}>
                           and
                         </Text>
                       </View>
                       <TouchableOpacity
-                        onPress={() => {
+                        onPress={() =>
                           Linking.openURL(
                             'https://brainbucks.in/privacy/policy',
-                          );
-                        }}>
+                          )
+                        }>
                         <Text style={styles.textTerm}>Privacy policy</Text>
                       </TouchableOpacity>
-                      <View style={{ marginTop: -6 }}>
+                      <View style={{marginTop: -6}}>
                         <Text style={styles.textBrain}> Of Brain Bucks.</Text>
                       </View>
                     </Text>
@@ -205,6 +308,7 @@ export default function Signup({ navigation, route }) {
                 )}
               </View>
 
+              {/* Get OTP Button */}
               <Button
                 onPress={next}
                 title="Get OTP"
@@ -221,7 +325,7 @@ export default function Signup({ navigation, route }) {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
-      {/* This image stays fixed at bottom */}
+      {/* Bottom Image */}
       <View
         style={[
           styles.imgView,
