@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     fontWeight: '400',
     marginBottom: 8,
@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#6B7280',
     marginBottom: 10,
     fontWeight: '600',
   },
   labelimg: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     marginBottom: 6,
     color: '#111827',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   inputText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '500',
     color: '#111827',
   },
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   adjustText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#1F2937',
   },
   compositionContainer: {
@@ -280,21 +280,15 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   compositionLabel: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#4B5563',
   },
   compositionValue: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#111827',
   },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-  },
-  halfSection: {
-    flex: 0.48,
-  },
+
+
   uploadContainer: {
     backgroundColor: '#F9FAFB',
     borderRadius: 8,
@@ -302,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   uploadText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#4B5563',
   },
   proceedButton: {
@@ -328,15 +322,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
 
-  uploadContainer: {
-    alignItems: 'center',
-  },
-  uploadText: {
-    fontSize: 14,
-    color: '#666',
-  },
   proceedText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#fff',
     fontWeight: '600',
   },

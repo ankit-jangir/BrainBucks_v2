@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Platform,
+  ToastAndroid,
 } from 'react-native';
 import {Slider} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
@@ -32,6 +32,10 @@ const Schedulequiz = () => {
     {label: '30 minutes', value: '30'},
     {label: '1 hour', value: '60'},
   ];
+
+  const showToast = message => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
 
   const handleDateConfirm = date => {
     setSelectedDate(
@@ -71,18 +75,20 @@ const Schedulequiz = () => {
         }}
       />
 
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <View style={styles.fixedProgressBar}>
         <Text style={styles.stepText}>5/8 Steps Completed</Text>
         <View style={styles.progressBar}>
           <View style={styles.progressFill} />
         </View>
+      </View>
 
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.cardRow}>
-          <View style={[styles.card, styles.shadow]}>
+          <View style={[styles.card]}>
             <Text style={styles.cardTitle}>Exam Category</Text>
             <Text style={styles.cardValue}>UPSC</Text>
           </View>
-          <View style={[styles.card, styles.shadow]}>
+          <View style={[styles.card]}>
             <Text style={styles.cardTitle}>Exam Sub Category</Text>
             <Text style={styles.cardValue}>Civil Services</Text>
           </View>
@@ -174,6 +180,7 @@ const Schedulequiz = () => {
         </Text>
         <Dropdown
           style={[styles.dropdown, styles.shadow]}
+          dropdownPosition="auto"
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           itemTextStyle={styles.itemTextStyle}
@@ -186,18 +193,31 @@ const Schedulequiz = () => {
           value={repeatOption}
           onChange={item => setRepeatOption(item.value)}
         />
+      </ScrollView>
 
+      <View style={styles.bottomFixed}>
         <TouchableOpacity
           style={styles.proceedButton}
           onPress={() => {
-            console.log('Proceed tapped');
+            const num = parseInt(questionCount);
+            if (!questionCount || isNaN(num)) {
+              showToast('Please enter total number of questions');
+              return;
+            }
+            if (num < 10) {
+              showToast('Minimum 10 questions required');
+              return;
+            }
+            if (num > 500) {
+              showToast('Maximum 500 questions allowed');
+              return;
+            }
             navigation.navigate('Addquizscreen');
           }}>
           <Text style={styles.proceedText}>Proceed</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
 
-      {/* Pickers */}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
@@ -223,10 +243,14 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 16,
-    paddingBottom: 40,
+    paddingBottom: 120,
+  },
+  fixedProgressBar: {
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     fontWeight: '400',
   },
@@ -252,22 +276,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     borderRadius: 12,
     padding: 16,
-    height: 90,
+    height: 88,
   },
   cardTitle: {
     color: '#4B5563',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '400',
   },
   cardValue: {
     marginTop: 4,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: '#111827',
   },
   label: {
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 14,
     color: '#111827',
     marginTop: 16,
   },
@@ -277,11 +301,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 12,
     color: '#111827',
   },
   inputHint: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#6B7280',
     marginTop: 4,
   },
@@ -297,12 +321,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   qTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     color: '#4B5563',
   },
   qPercent: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: '#111827',
   },
@@ -345,7 +369,7 @@ const styles = StyleSheet.create({
   },
   scheduleText: {
     marginLeft: 8,
-    fontSize: 14,
+    fontSize: 12,
     color: '#111827',
   },
   iconImg: {
@@ -353,8 +377,18 @@ const styles = StyleSheet.create({
     height: 20,
     tintColor: '#9333EA',
   },
+  bottomFixed: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    paddingBottom:30,
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+  },
   proceedButton: {
-    marginTop: 28,
     backgroundColor: '#701DDB',
     borderRadius: 12,
     paddingVertical: 16,
@@ -363,7 +397,7 @@ const styles = StyleSheet.create({
   proceedText: {
     color: '#fff',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
   },
   dropdown: {
     marginTop: 8,
@@ -373,11 +407,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   placeholderStyle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#9CA3AF',
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#000',
   },
   iconStyle: {
@@ -386,7 +420,7 @@ const styles = StyleSheet.create({
     tintColor: '#6B7280',
   },
   itemTextStyle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#000',
   },
   thumbStyle: {

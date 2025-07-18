@@ -36,7 +36,7 @@ const boosters = [
     desc: 'Exclusive mastermind groups for top performers',
     icon: require('../../assets/img/wins.png'),
     buttonText: 'Learn More',
-    screen: 'Super30Screen',
+    screen: 'SuperScreen',
   },
 ];
 
@@ -78,7 +78,6 @@ const Grouthbooster = ({navigation}) => {
         </Text>
       </View>
 
-    
       <View style={styles.scrollBackground}>
         <FlatList
           data={boosters}
@@ -145,8 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,
-    minHeight: 235,
     justifyContent: 'space-between',
+    flexGrow: 1, 
   },
   iconWrapper: {
     width: 47,
@@ -159,16 +158,16 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '700',
-    lineHeight:24,
+    lineHeight: 24,
     color: '#000',
   },
   cardDesc: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
     marginBottom: 12,
-    lineHeight:16,
+    lineHeight: 16,
   },
   button: {
     backgroundColor: '#701DDB',

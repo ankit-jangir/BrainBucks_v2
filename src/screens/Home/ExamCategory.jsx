@@ -6,14 +6,16 @@ import {
   FlatList,
   TextInput,
   Image,
+  ToastAndroid,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import React, {useState} from 'react';
 import MainHeader from '../../components/MainHeader';
-
-import LinearGradient from 'react-native-linear-gradient';
-
 import {useNavigation} from '@react-navigation/native';
-import {Icon, ProgressBar} from 'react-native-paper';
+import {ProgressBar} from 'react-native-paper';
+
+const {width, height} = Dimensions.get('window');
 
 const categories = [
   {
@@ -40,6 +42,7 @@ const categories = [
     icon: require('../../assets/img/person.png'),
     bgColor: '#F9FAFB',
   },
+  
 ];
 
 const ExamCategory = () => {
@@ -67,6 +70,14 @@ const ExamCategory = () => {
     );
   };
 
+  const handleProceed = () => {
+    if (!selectedCategory) {
+      ToastAndroid.show('Please select a category', ToastAndroid.SHORT);
+      return;
+    }
+    navigation.navigate('SubjectCategory');
+  };
+
   return (
     <View style={styles.container}>
       <MainHeader
@@ -77,86 +88,82 @@ const ExamCategory = () => {
         }}
       />
 
-      {/* Step progress bar */}
-      <View style={styles.progressContainer}>
+      <View style={styles.fixedContent}>
         <Text style={styles.stepText}>2/8 Steps Completed</Text>
         <ProgressBar
           styleAttr="Horizontal"
           indeterminate={false}
-          progress={0.20}
+          progress={0.2}
           color="#9333EA"
         />
+        <Text style={styles.examCategoryText}>Exam Category : UPSC</Text>
+        <Text style={styles.selectCategory}>Select Sub Category</Text>
+        <View style={styles.searchBox}>
+          <Image
+            source={require('../../assets/img/searchicon.png')}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            placeholder="Search for Sub Category"
+            placeholderTextColor="#9CA3AF"
+            style={styles.searchInput}
+          />
+        </View>
       </View>
 
-      {/* Headings */}
-      <Text style={styles.examCategoryText}>Exam Category : UPSC</Text>
-      <Text style={styles.selectCategory}>Select Sub Category</Text>
-
-      {/* Search bar */}
-      <View style={styles.searchBox}>
-        <Image
-          source={require('../../assets/img/searchicon.png')}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          placeholder="Search for Sub Category"
-          placeholderTextColor="#9CA3AF"
-          style={styles.searchInput}
-        />
-      </View>
-
-      {/* Categories List */}
       <FlatList
         data={categories}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
       />
 
-      {/* Proceed Button */}
-      <TouchableOpacity
-        style={styles.proceedButton}
-        onPress={() => {
-          navigation.navigate('SubjectCategory');
-        }}>
-        <Text style={styles.proceedText}>Proceed</Text>
-      </TouchableOpacity>
+      {/* White background container for button */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+          <Text style={styles.proceedText}>Proceed</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 export default ExamCategory;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 16,
+    paddingHorizontal: width * 0.04,
   },
-
-  progressContainer: {
-    marginTop: 10,
+  fixedContent: {
+    paddingTop: height * 0.015,
+    paddingBottom: height * 0.02,
+    backgroundColor: '#fff',
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12,
+    fontFamily: 'Inter',
     color: '#6B7280',
     marginBottom: 6,
     textAlign: 'right',
   },
-
   examCategoryText: {
-    fontSize: 24,
+    fontSize: 22,
+    fontFamily: 'Inter',
     fontWeight: '600',
     color: '#1A1A1A',
-    marginTop: 16,
+    marginTop: 12,
   },
   selectCategory: {
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: 'Inter',
     fontWeight: '500',
     color: '#4B5563',
     marginTop: 4,
-    marginVertical: 30,
+    marginVertical: 20,
   },
-
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -164,22 +171,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   searchIcon: {
     width: 20,
     height: 20,
-    tintColor: '#9CA3AF', // Optional: makes the icon black
+    tintColor: '#9CA3AF',
     marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 12,
+    fontFamily: 'Inter',
     color: '#000',
   },
-
   list: {
-    paddingBottom: 20,
+    paddingBottom: height * 0.15,
   },
   categoryItem: {
     flexDirection: 'row',
@@ -187,14 +194,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 74,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 16,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#e9e9eaff',
-    borderRadius: 16,
-    backgroundColor: '#00000000',
+    borderColor: '#e9e9ea',
+    backgroundColor: '#fff',
   },
-
   categoryLeft: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -205,7 +210,8 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   categoryText: {
-    fontSize: 16,
+    fontSize: 14,
+    fontFamily: 'Inter',
     fontWeight: '600',
     color: '#111827',
   },
@@ -220,20 +226,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#9333EA',
     borderColor: '#9333EA',
   },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: width * 0.04,
+    backgroundColor: '#fff',
+    paddingBottom: 55,
+    paddingTop: 10,
+  },
   proceedButton: {
-    marginTop: 'auto',
     backgroundColor: '#701DDB',
-    marginBottom: 40,
-    paddingVertical: 16,
-    height: 56,
-
+    paddingVertical: 19,
     borderRadius: 12,
     alignItems: 'center',
   },
-
   proceedText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: 'Inter',
     fontWeight: '700',
   },
 });

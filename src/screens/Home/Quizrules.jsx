@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {ProgressBar} from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker'; // ✅ IMPORT
+import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 
 const metrics = [
@@ -48,6 +48,7 @@ const metrics = [
 
 const Quizrules = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [rulesText, setRulesText] = useState('');
   const navigation = useNavigation();
 
   const pickImageFromGallery = () => {
@@ -60,8 +61,6 @@ const Quizrules = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#7B61FF" barStyle="light-content" />
-
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -83,13 +82,8 @@ const Quizrules = () => {
 
       {/* Sticky Tab Bar */}
       <View style={styles.stickyTabContainer}>
-        {[
-          {label: 'UPSC', icon: require('../../assets/img/cap.png')},
-          {
-            label: 'Civil Services',
-            icon: require('../../assets/img/bulding.png'),
-          },
-        ].map(item => (
+        {[{label: 'UPSC', icon: require('../../assets/img/cap.png')},
+          {label: 'Civil Services', icon: require('../../assets/img/bulding.png')}].map(item => (
           <TouchableOpacity key={item.label} style={styles.tabItem}>
             <Image source={item.icon} style={styles.tabIcon} />
             <Text style={styles.tabText}>{item.label}</Text>
@@ -97,23 +91,26 @@ const Quizrules = () => {
         ))}
       </View>
 
-      {/* Scroll Content */}
+      {/* Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Rules Input */}
         <View style={styles.rulesContainer}>
           <Text style={styles.label}>Enter Rules for Quiz</Text>
           <View style={styles.textAreaWrapper}>
             <TextInput
+              value={rulesText}
+              onChangeText={text => setRulesText(text)}
               placeholder="Enter quiz rules..."
               placeholderTextColor="#717173"
               multiline
+              maxLength={2000}
               style={styles.textArea}
             />
             <View style={styles.rulesFooter}>
               <TouchableOpacity>
                 <Text style={styles.addRuleText}>+ Add More Rule</Text>
               </TouchableOpacity>
-              <Text style={styles.charCount}>1/2000</Text>
+              <Text style={styles.charCount}>{rulesText.length}/2000</Text>
             </View>
           </View>
         </View>
@@ -174,9 +171,7 @@ const Quizrules = () => {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.previewBtn}
-          onPress={() => {
-            navigation.navigate('quzescreen');
-          }}>
+          onPress={() => navigation.navigate('quzescreen')}>
           <Text style={styles.previewText}>Preview Quiz</Text>
         </TouchableOpacity>
       </View>
@@ -195,13 +190,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#701DDB',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 28,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
   },
   headerTitle: {
     color: '#fff',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: '700',
     marginLeft: 12,
   },
@@ -212,7 +207,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 6,
     fontWeight: '600',
   },
@@ -230,7 +225,7 @@ const styles = StyleSheet.create({
     marginTop: -10,
 
     borderColor: '#e9e9eaff',
-    borderWidth: 1, // ✅ Add this line to make border visible
+    borderWidth: 1, 
     zIndex: 10,
   },
 
@@ -254,7 +249,7 @@ const styles = StyleSheet.create({
 
   tabText: {
     color: '#701DDB',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
 
@@ -263,12 +258,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   scrollContainer: {
-    padding: 20,
-    paddingBottom: 140,
+    paddingHorizontal: 20,
   },
   label: {
     fontWeight: '600',
-    fontSize: 18,
+    fontSize: 15,
     marginBottom: 8,
     color: '#111827',
     marginTop: 15,
@@ -277,7 +271,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
     textAlignVertical: 'top',
     color: '#000',
-    fontSize: 15,
+    fontSize: 13,
   },
   rulesFooter: {
     position: 'absolute',
@@ -289,13 +283,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addRuleText: {
-    color: '#7A33FF', // purple color
+    color: '#7A33FF', 
     fontWeight: '500',
   },
 
   charCount: {
     color: '#A0A0A0',
-    fontSize: 13,
+    fontSize: 12,
   },
   rulesContainer: {
     marginBottom: 16,
@@ -318,14 +312,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  charCount: {
-    color: '#A0A0A0',
-    fontSize: 13,
-  },
-  charCount: {
-    color: '#999',
-    fontSize: 12,
-  },
+ 
   chipsWrapper: {
     gap: 10,
     marginVertical: 8,
@@ -336,7 +323,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    paddingVertical: 20,
+    paddingVertical: 18,
     paddingHorizontal: 16,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
@@ -346,7 +333,7 @@ const styles = StyleSheet.create({
   },
   chipText: {
     color: '#374151',
-    fontSize: 15,
+    fontSize: 13,
     flex: 1,
   },
 
@@ -355,7 +342,7 @@ const styles = StyleSheet.create({
   },
   chipCloseText: {
     color: '#999',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
   },
   metricsContainer: {
@@ -380,17 +367,17 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   metricIcon: {
-    width: 18,
-    height: 18,
+    width: 17,
+    height: 17,
     resizeMode: 'contain',
   },
 
   metricLabel: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#333',
   },
   metricValue: {
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: '600',
     color: '#000',
   },
@@ -414,14 +401,15 @@ const styles = StyleSheet.create({
   },
   previewBtn: {
     backgroundColor: '#701DDB',
-    paddingVertical: 20,
+    paddingVertical: 16,
+    marginBottom: 10,
     borderRadius: 12,
     alignItems: 'center',
   },
   previewText: {
     color: '#FFFFFF',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
   },
 
   backIconWrapper: {
@@ -434,7 +422,7 @@ const styles = StyleSheet.create({
   },
   uploadWrapper: {
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 100,
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 8,
@@ -473,6 +461,6 @@ const styles = StyleSheet.create({
   changeImageText: {
     color: '#701DDB',
     fontWeight: '500',
-    fontSize: 14,
+    fontSize: 12,
   },
 });

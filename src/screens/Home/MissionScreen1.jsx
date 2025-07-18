@@ -230,7 +230,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical:10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
     elevation: 2,
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     tintColor: '#000',
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '700',
     color: '#000',
     fontFamily: 'Poppins',
@@ -301,13 +302,13 @@ const styles = StyleSheet.create({
   },
   levelTitle: {
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: 13,
     color: '#9CA3AF',
     fontFamily: 'Poppins',
   },
   levelEarnings: {
     color: '#6B7280',
-    fontSize: 12,
+    fontSize: 11,
     marginTop: 2,
     fontFamily: 'Poppins',
   },
@@ -328,24 +329,24 @@ const styles = StyleSheet.create({
   viewBtnText: {
     color: '#FFFFFF',
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Poppins',
   },
   title: {
     fontWeight: '700',
-    fontSize: 26,
+    fontSize: 24,
     color: '#000',
     fontFamily: 'Poppins',
   },
   earningAmount: {
     fontWeight: '800',
-    fontSize: 28,
+    fontSize: 26,
     marginTop: 6,
     color: '#000000',
     fontFamily: 'Poppins',
   },
   monthText: {
-    fontSize: 14,
+    fontSize: 11,
     color: '#4B5563',
     fontWeight: '600',
     fontFamily: 'Poppins',
@@ -371,13 +372,13 @@ const styles = StyleSheet.create({
   },
   earningTitle: {
     color: '#000000',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     fontFamily: 'Poppins',
   },
   earningValue: {
     fontWeight: '500',
-    fontSize: 14,
+    fontSize: 13,
     marginTop: 4,
     color: '#4B5563',
     fontFamily: 'Poppins',
@@ -407,7 +408,7 @@ const styles = StyleSheet.create({
   exportText: {
     color: '#374151',
     fontWeight: '600',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Poppins',
   },
 });

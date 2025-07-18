@@ -17,7 +17,7 @@ const quzescreen = () => {
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            source={require('../../assets/img/backq.png')} // <-- your arrow image
+            source={require('../../assets/img/backq.png')} 
             style={styles.backIcon}
           />
         </TouchableOpacity>
@@ -44,7 +44,7 @@ const quzescreen = () => {
           Questions Composition
         </Text>
         <View style={[styles.qBox, styles.shadow]}>
-          <ScrollView style={{maxHeight: 110}} nestedScrollEnabled={true}>
+          <ScrollView style={{maxHeight: 170}} nestedScrollEnabled={true}>
             {[...Array(6)].map((_, index) => (
               <View key={index} style={{marginTop: index === 0 ? 0 : 12}}>
                 <View style={styles.qRow}>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     color: '#000',
     position: 'absolute',
@@ -136,13 +136,13 @@ const styles = StyleSheet.create({
   },
   publishBtn: {
     backgroundColor: '#701DDB',
-    paddingVertical: 13,
-    paddingHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
     borderRadius: 8,
   },
   publishBtnText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
   },
 
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   qTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     color: '#4B5563',
   },
   qPercent: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: '#111827',
   },
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   categoryText: {
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 8,
     color: '#4B5563',
   },
@@ -217,12 +217,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   quizName: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     color: '#4B5563',
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     marginBottom: 12,
     color: '#4B5563',
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   label: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#4B5563',
   },
   progressBar: {
@@ -262,11 +262,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   infoTitle: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#4b5563c5',
   },
   infoValue: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
     color: '#4B5563',
   },

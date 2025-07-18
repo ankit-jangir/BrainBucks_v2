@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     width: '48%',
-    height: 110,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
     elevation: 1,

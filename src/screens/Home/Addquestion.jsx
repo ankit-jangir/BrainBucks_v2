@@ -7,13 +7,13 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import MainHeader from '../../components/MainHeader';
 import {useNavigation} from '@react-navigation/native';
 
 const AddQuestion = () => {
-    
   const navigation = useNavigation();
   const [questions, setQuestions] = useState([
     {
@@ -23,6 +23,10 @@ const AddQuestion = () => {
       correctIndex: null,
     },
   ]);
+
+  const showToast = message => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
 
   const handleOptionChange = (text, qIndex, optIndex) => {
     const updated = [...questions];
@@ -51,6 +55,24 @@ const AddQuestion = () => {
         correctIndex: null,
       },
     ]);
+  };
+
+  const isFormValid = () => {
+    return questions.every(
+      q =>
+        q.question.trim() &&
+        q.options.every(opt => opt.trim()) &&
+        q.correctIndex !== null,
+    );
+  };
+
+  const handleProceed = () => {
+    // if (!isFormValid()) {
+    //   showToast('Please complete all fields and select correct options.');
+    //   return;
+    // }
+    // showToast('Proceeding to schedule quiz...');
+    navigation.navigate('Schedulequiz');
   };
 
   return (
@@ -96,12 +118,7 @@ const AddQuestion = () => {
             {q.image && (
               <Image
                 source={{uri: q.image.uri}}
-                style={{
-                  width: '100%',
-                  height: 150,
-                  marginBottom: 10,
-                  borderRadius: 8,
-                }}
+                style={styles.image}
                 resizeMode="contain"
               />
             )}
@@ -134,11 +151,10 @@ const AddQuestion = () => {
           </View>
         ))}
 
-        {/* Spacer to prevent bottom buttons from overlapping */}
         <View style={{height: 180}} />
       </ScrollView>
 
-      {/* Fixed Bottom Buttons */}
+      {/* Fixed Footer with White Background */}
       <View style={styles.bottomFixedButtons}>
         <View style={styles.buttonRow}>
           <TouchableOpacity
@@ -152,7 +168,7 @@ const AddQuestion = () => {
             <Text style={styles.buttonText}>Add Image Option</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.proceedButton} onPress={()=>{navigation.navigate('Schedulequiz')}}>
+        <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
           <Text style={styles.proceedText}>Proceed</Text>
         </TouchableOpacity>
       </View>
@@ -176,7 +192,7 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 4,
-    fontSize: 14,
+    fontSize: 12,
     color: '#111827',
   },
   input: {
@@ -188,6 +204,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 16,
     color: '#111827',
+    fontSize: 12,
   },
   fileButton: {
     flexDirection: 'row',
@@ -203,9 +220,17 @@ const styles = StyleSheet.create({
     color: '#374151',
     fontWeight: '500',
     marginRight: 12,
+    fontSize: 12,
   },
   fileName: {
     color: '#9CA3AF',
+    fontSize: 12,
+  },
+  image: {
+    width: '100%',
+    height: 150,
+    marginBottom: 10,
+    borderRadius: 8,
   },
   optionContainer: {
     flexDirection: 'row',
@@ -232,7 +257,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   optionLabel: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#374151',
     marginBottom: 4,
     fontWeight: '500',
@@ -252,11 +277,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
   },
   proceedButton: {
     backgroundColor: '#701DDB',
-    padding: 19,
+    padding: 16,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 16,
@@ -264,7 +289,7 @@ const styles = StyleSheet.create({
   proceedText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
   },
   questionBlock: {
     marginBottom: 24,

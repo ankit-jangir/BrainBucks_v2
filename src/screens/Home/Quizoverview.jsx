@@ -50,21 +50,17 @@ const QuizOverview = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View>
-        <MainHeader
-          name="Add New Quiz"
-          leftIcon={{
-            source: require('../../assets/img/backq.png'),
-            onPress: () => navigation.goBack(),
-          }}
-        />
-      </View>
+      <MainHeader
+        name="Add New Quiz"
+        leftIcon={{
+          source: require('../../assets/img/backq.png'),
+          onPress: () => navigation.goBack(),
+        }}
+      />
 
       <Text style={styles.stepText}>4/8 Steps Completed</Text>
       <ProgressBar progress={0.4} color="#9333EA" style={styles.stepBar} />
 
-      {/* Category Selection */}
       <TouchableOpacity style={styles.selectionBox}>
         <View style={styles.row}>
           <View>
@@ -91,11 +87,12 @@ const QuizOverview = () => {
         </View>
       </TouchableOpacity>
 
-      {/* Question Composition */}
       <Text style={styles.sectionTitle}>Select Question Composition</Text>
-      <View style={{maxHeight: 400}}>
-        <ScrollView showsVerticalScrollIndicator={true}>
-          <View style={{padding: 16}}>
+
+      {/* Scrollable Topics Only */}
+      <View style={styles.scrollWrapper}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{paddingBottom: 20}}>
             {topics.map((item, index) => (
               <View key={index}>
                 <View style={styles.topicRow}>
@@ -118,14 +115,14 @@ const QuizOverview = () => {
         </ScrollView>
       </View>
 
-      {/* Proceed Button */}
-      <TouchableOpacity
-        style={styles.proceedBtn}
-        onPress={() => {
-          navigation.navigate('Addquestion');
-        }}>
-        <Text style={styles.proceedText}>Proceed</Text>
-      </TouchableOpacity>
+      {/* Fixed Proceed Button with White BG */}
+      <View style={styles.proceedWrapper}>
+        <TouchableOpacity
+          style={styles.proceedBtn}
+          onPress={() => navigation.navigate('Addquestion')}>
+          <Text style={styles.proceedText}>Proceed</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -139,16 +136,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12, 
     color: '#6B7280',
     marginBottom: 4,
     marginTop: 15,
-  },
-  sectionTitle: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: '800',
-    marginVertical: 20,
   },
   stepBar: {
     height: 6,
@@ -160,7 +151,10 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     marginBottom: 12,
-    
+  },
+  image: {
+    height: 20,
+    width: 20,
   },
   row: {
     flexDirection: 'row',
@@ -168,81 +162,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: 12,
+    fontSize: 10, 
     color: '#6B7280',
     marginBottom: 4,
   },
   selectionText: {
-    fontSize: 16,
+    fontSize: 14, 
     color: '#111827',
     fontWeight: '600',
+  },
+  sectionTitle: {
+    color: '#000',
+    fontSize: 14, 
+    fontWeight: '800',
+    marginVertical: 12,
+  },
+  scrollWrapper: {
+    flex: 1,
+    maxHeight: 350, 
   },
   topicRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 4,
   },
   iconLabel: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-  image: {
-    height: 20,
-    width: 20,
-  },
   topicText: {
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: 14, 
     color: '#1F2937',
+    marginLeft: 8,
   },
   percentage: {
-    fontSize: 15,
+    fontSize: 14, 
     fontWeight: '600',
     color: '#9333EA',
   },
   progressBar: {
     height: 6,
-    borderRadius: 4,
-    backgroundColor: '#E5E7EB',
-    marginBottom: 16,
-  },
-  proceedBtn: {
-    marginTop: 'auto',
-    backgroundColor: '#701DDB',
-    marginBottom: 40,
-    paddingVertical: 16,
-    height: 56,
-
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  proceedText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-
-  topicRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  iconLabel: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  topicText: {
-    fontSize: 16,
-    color: '#1F2937',
-    marginLeft: 8,
-  },
-
-  progressBar: {
-    height: 8,
     borderRadius: 10,
     backgroundColor: '#E5E7EB',
     marginBottom: 16,
@@ -251,5 +212,22 @@ const styles = StyleSheet.create({
     width: 30,
     height: 25,
     resizeMode: 'contain',
+  },
+  proceedWrapper: {
+    backgroundColor: '#fff',
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
+  proceedBtn: {
+    backgroundColor: '#701DDB',
+    height: 56,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  proceedText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14, 
   },
 });

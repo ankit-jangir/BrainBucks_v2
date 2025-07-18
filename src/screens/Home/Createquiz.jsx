@@ -6,20 +6,18 @@ import {
   FlatList,
   TextInput,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import MainHeader from '../../components/MainHeader';
-
-import LinearGradient from 'react-native-linear-gradient';
-
 import {useNavigation} from '@react-navigation/native';
-import {Icon, ProgressBar} from 'react-native-paper';
+import {ProgressBar} from 'react-native-paper';
 
 const categories = [
   {
     id: '1',
     name: 'UPSC',
-    icon: require('../../assets/img/upsc.png'), // replace with correct icons
+    icon: require('../../assets/img/upsc.png'),
     bgColor: '#FFFFFF',
   },
   {
@@ -51,12 +49,7 @@ const Createquiz = () => {
 
     return (
       <TouchableOpacity
-        style={[
-          styles.categoryItem,
-          {
-            backgroundColor: item.bgColor,
-          },
-        ]}
+        style={[styles.categoryItem, {backgroundColor: item.bgColor}]}
         onPress={() => setSelectedCategory(item.id)}>
         <View style={styles.categoryLeft}>
           <Image source={item.icon} style={styles.categoryIcon} />
@@ -65,6 +58,18 @@ const Createquiz = () => {
         <View style={[styles.radio, isSelected && styles.radioSelected]} />
       </TouchableOpacity>
     );
+  };
+
+  const handleProceed = () => {
+    if (!selectedCategory) {
+      ToastAndroid.showWithGravity(
+        'Please select a category',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
+      return;
+    }
+    navigation.navigate('ExamCategory');
   };
 
   return (
@@ -77,20 +82,20 @@ const Createquiz = () => {
         }}
       />
 
-      {/* Step progress bar */}
-        <View style={styles.progressContainer}>
-            <ProgressBar
-            styleAttr="Horizontal"
-            indeterminate={false}
-            progress={0.10}
-            color="#9333EA"
-            />
+      {/* Progress */}
+      <View style={styles.progressContainer}>
+        <ProgressBar
+          styleAttr="Horizontal"
+          indeterminate={false}
+          progress={0.1}
+          color="#9333EA"
+        />
         <Text style={styles.stepText}>1/8 Steps Completed</Text>
       </View>
 
       <Text style={styles.selectCategory}>Select Category</Text>
 
-      {/* Search bar */}
+      {/* Search Box */}
       <View style={styles.searchBox}>
         <Image
           source={require('../../assets/img/searchicon.png')}
@@ -103,7 +108,7 @@ const Createquiz = () => {
         />
       </View>
 
-      {/* Categories List */}
+      {/* Category List */}
       <FlatList
         data={categories}
         renderItem={renderItem}
@@ -112,11 +117,7 @@ const Createquiz = () => {
       />
 
       {/* Proceed Button */}
-      <TouchableOpacity
-        style={styles.proceedButton}
-        onPress={() => {
-          navigation.navigate('ExamCategory');
-        }}>
+      <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
         <Text style={styles.proceedText}>Proceed</Text>
       </TouchableOpacity>
     </View>
@@ -131,18 +132,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
   },
-
   progressContainer: {
     marginTop: 10,
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#6B7280',
     marginTop: 6,
+    fontFamily: 'Inter-Regular',
   },
   selectCategory: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 22,
+    fontFamily: 'Inter-Bold',
     marginVertical: 20,
     color: '#1A1A1A',
   },
@@ -158,15 +159,15 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 20,
     height: 20,
-    tintColor: '#9CA3AF', // Optional: makes the icon black
+    tintColor: '#9CA3AF',
     marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 12,
     color: '#000',
+    fontFamily: 'Inter-Regular',
   },
-
   list: {
     paddingBottom: 20,
   },
@@ -176,14 +177,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 74,
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 16,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#efefefff',
-    borderRadius: 16,
-    backgroundColor: '#00000000',
+    borderColor: '#efefef',
+    backgroundColor: '#FFFFFF',
   },
-
   categoryLeft: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -194,9 +193,9 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   categoryText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
     color: '#1F2937',
+    fontFamily: 'Inter-Regular',
   },
   radio: {
     width: 20,
@@ -215,14 +214,12 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     paddingVertical: 16,
     height: 56,
-
     borderRadius: 12,
     alignItems: 'center',
   },
-
   proceedText: {
     color: '#fff',
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 14,
+    fontFamily: 'Inter-Bold',
   },
 });
