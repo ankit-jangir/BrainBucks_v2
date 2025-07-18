@@ -163,9 +163,10 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     color: '#111827',
+    fontFamily: 'Inter',
   },
   banner: {
     width: '100%',
@@ -178,10 +179,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '800',
     marginBottom: 8,
     color: '#111827',
+    fontFamily: 'Inter',
   },
   rowBetween: {
     flexDirection: 'row',
@@ -189,14 +191,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   subText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#4B5563',
     fontFamily: 'Inter',
   },
   subTextBold: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#701DDB',
     fontWeight: '700',
+    fontFamily: 'Inter',
   },
   incomeBox: {
     padding: 16,
@@ -206,20 +209,23 @@ const styles = StyleSheet.create({
   },
   incomeTitle: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   incomeAmount: {
     color: '#fff',
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: '900',
     textAlign: 'center',
     marginVertical: 4,
+    fontFamily: 'Inter',
   },
   incomeNote: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   infoRow: {
     flexDirection: 'row',
@@ -241,21 +247,23 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   infoText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '800',
     color: '#111827',
+    fontFamily: 'Inter',
   },
   infoSub: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     fontFamily: 'Inter',
     fontWeight: '400',
   },
   stepTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '900',
     marginBottom: 12,
     color: '#111827',
+    fontFamily: 'Inter',
   },
   stepBox: {
     flexDirection: 'row',
@@ -275,15 +283,17 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     marginRight: 10,
     fontWeight: '700',
+    fontFamily: 'Inter',
   },
   stepHeading: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: '#111827',
     paddingBottom: 6,
+    fontFamily: 'Inter',
   },
   stepText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     fontFamily: 'Inter',
     fontWeight: '400',
@@ -293,7 +303,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 16,
   },
-
   metricBox: {
     backgroundColor: '#F8F9FB',
     borderRadius: 12,
@@ -302,33 +311,30 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     justifyContent: 'space-between',
   },
-
   metricHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
   },
-
   metricIcon: {
     width: 24,
     height: 24,
     marginRight: 8,
   },
-
   metricTitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#475569',
     lineHeight: 20,
     flexShrink: 1,
+    fontFamily: 'Inter',
   },
-
   metricValue: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#0F172A',
     lineHeight: 24,
+    fontFamily: 'Inter',
   },
-
   btn: {
     backgroundColor: '#701DDB',
     paddingVertical: 18,
@@ -339,12 +345,15 @@ const styles = StyleSheet.create({
   btnText: {
     color: '#FFFFFF',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 14,
+    fontFamily: 'Inter',
   },
   footnote: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: 12,
     color: '#4B5563',
     marginTop: 10,
+    fontFamily: 'Inter',
   },
 });
+
