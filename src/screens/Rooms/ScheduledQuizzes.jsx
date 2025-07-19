@@ -1,4 +1,5 @@
-import { FlatList, ToastAndroid, View } from 'react-native'
+import { FlatList, ToastAndroid, View,Share,
+ } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/NoDataFound'
 import { ActivityIndicator } from 'react-native'
@@ -8,12 +9,14 @@ import RoomsApiService from '../../services/api/RoomsApiService'
 import { useQuery } from '@apollo/client'
 import Toast from 'react-native-toast-message'
 import { useIsFocused } from '@react-navigation/native'
-import { BLOBURL } from '../../config/urls'
+import { APPURL, BLOBURL } from '../../config/urls'
 import { useRoom } from '../../utils/store'
+import { Alert } from 'react-native'
 
 export default function ScheduledQuizzes({ navigation, route }) {
 
     const [scheduledQuizzes, setScheduledQuizzes] = useState([])
+    console.log(scheduledQuizzes)
 
     const [totalPages, setTotalPages] = useState(2)
     const [currentPage, setCurrentPage] = useState(1)
@@ -68,6 +71,27 @@ export default function ScheduledQuizzes({ navigation, route }) {
         }
     },[isFocused])
 
+
+
+      const onShare = async quiz_id => {
+          try {
+            const result = await Share.share({
+              message: `${APPURL}/scheduledQuizzes?id=${quiz_id}`,
+            });
+            if (result.action === Share.sharedAction) {
+              if (result.activityType) {
+                // shared with activity type of result.activityType
+              } else {
+                // shared
+              }
+            } else if (result.action === Share.dismissedAction) {
+              // dismissed
+            }
+          } catch (error) {
+            Alert.alert(error.message);
+          }
+        };
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             {
@@ -101,6 +125,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                                         type={'active'}
                                         btntxt={"Register"}
                                         invitebtn={true}
+                                        onShare={()=>{onShare(item._id)}}
                                     />
                                 )
 

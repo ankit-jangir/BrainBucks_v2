@@ -62,6 +62,8 @@ export default function Splash({ navigation,route }) {
   //   }
   // }, [])
 
+ 
+
   useEffect(() => {
   async function bootstrapAsync() {
     try {
@@ -104,6 +106,7 @@ export default function Splash({ navigation,route }) {
 
   bootstrapAsync();
 }, []);
+
 const GetReferCode = async () => {
   try {
     const referralCode = route.params?.referralCode;
@@ -114,10 +117,13 @@ const GetReferCode = async () => {
       const storedCode = await AsyncStorage.getItem('referralCode');
       if (storedCode) {
         console.log('Found stored referralCode:', storedCode);
+      } else {
+        console.log('No referral code found');
       }
     }
   } catch (err) {
     console.log('ERROR IN HANDLING REFER CODE:', err.message);
+    ToastAndroid.show('Error handling referral code', ToastAndroid.SHORT);
   }
 };
 

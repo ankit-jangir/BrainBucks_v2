@@ -142,11 +142,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   card: {
+    flexGrow: 1,
+    flexBasis: '48%',
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,
     minHeight: 235,
     justifyContent: 'space-between',
+    
   },
   iconWrapper: {
     width: 47,
@@ -163,6 +166,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight:24,
     color: '#000',
+    fontFamily:"Inter"
   },
   cardDesc: {
     fontSize: 14,

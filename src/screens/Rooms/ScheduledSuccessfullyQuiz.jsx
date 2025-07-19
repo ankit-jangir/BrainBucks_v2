@@ -4,24 +4,31 @@ import styles from '../../styles/Rooms.styles';
 import {Button, Image} from 'react-native-elements';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import {Text} from '../../utils/Translate';
-import {BLOBURL} from '../../config/urls';
+import {APPURL, BLOBURL} from '../../config/urls';
+import { Alert } from 'react-native';
 
 const ScheduledSuccessfullyQuiz = ({navigation, route}) => {
   let quiz_obj = route.params.obj;
 
-  const handleInvite = () => {
-    const message = `🎉 I just scheduled a quiz on BrainBucks!
-
-📚 Category: ${quiz_obj.category_name}
-💰 Entry Fee: ${quiz_obj.entryFees} BB Coins
-⏰ Time: ${quiz_obj.sch_time.substr(0, 10)} ${quiz_obj.sch_time.substr(11, 5)}
-
-Join now and show your skills! 💪
-Download the app and use my invite link:
-https://play.google.com/store/apps/details?id=com.brainbucks.android`;
-
-    Share.share({message});
-  };
+console.log(quiz_obj,"pppp")
+   const onShare = async quiz_id => {
+      try {
+        const result = await Share.share({
+          message: `${APPURL}/scheduledsuccessfullyQuiz?id=${quiz_id}`,
+        });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error) {
+        Alert.alert(error.message);
+      }
+    };
 
   return (
     <View style={styles.maincontainers}>
@@ -112,7 +119,7 @@ https://play.google.com/store/apps/details?id=com.brainbucks.android`;
       {/* Action Buttons */}
       <View style={{gap: 15, marginHorizontal: 20, marginVertical: 25}}>
         <Button
-          onPress={handleInvite}
+          onPress={onShare}
           icon={
             <Image
               style={{height: 22, width: 22, marginRight: 10}}

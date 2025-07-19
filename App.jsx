@@ -158,6 +158,7 @@ import Grouthbooster from './src/screens/Home/Grouthbooster.jsx';
 import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
 import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
 import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
+import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -297,6 +298,10 @@ function MyStack() {
       />
       <Stack.Screen name="schedulquiz" component={ScheduleQuiz} />
       <Stack.Screen name="schedulquiztime" component={ScheduleQuizTime} />
+      <Stack.Screen
+        name="scheduledQuizzes"
+        component={ScheduledQuizzes}
+      />
       <Stack.Screen
         name="scheduledsuccessfullyQuiz"
         component={ScheduledSuccessfullyQuiz}
@@ -584,8 +589,8 @@ export default function App() {
         },
       },
       // ssssss
-      SignupReferral: {
-        path: 'SignupReferral',
+      Splash: {
+        path: 'Splash',
         parse: {
           referralCode: code => code || '',
         },
@@ -599,6 +604,12 @@ export default function App() {
       },
       reels: {
         path: 'reels',
+        parse: {
+          id: id => `${id}`,
+        },
+      },
+      scheduledQuizzes: {
+        path: 'scheduledQuizzes',
         parse: {
           id: id => `${id}`,
         },

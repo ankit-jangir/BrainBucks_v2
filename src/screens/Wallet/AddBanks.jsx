@@ -68,7 +68,7 @@ const AddBanks = ({navigation}) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
       <View style={{zIndex: 100}}>
         <Toast />
       </View>
@@ -97,6 +97,7 @@ const AddBanks = ({navigation}) => {
                 <View>
                   <View key={index} style={styles.bankDetailsContainer}>
                     <View style={styles.bankDetailsHeader}>
+                    <View style={{flexDirection:"row",alignItems:"center"}}>
                       <View style={styles.bankIconContainer}>
                         <Image
                           source={require('../../assets/img/bank.png')}
@@ -105,6 +106,16 @@ const AddBanks = ({navigation}) => {
                         />
                       </View>
                       <Text style={styles.bankName}>{res.bank_name}</Text>
+                      
+                      </View>
+                      <View style={[styles.data, {
+                            backgroundColor:
+                              res.status === 'pending'
+                                ? '#FFEDD5'
+                                : res.status === 'accepted'
+                                  ? '#DCFCE7'
+                                  : '#dcfce7',
+                          }]}>
                       <Text
                         style={[
                           styles.verified,
@@ -119,13 +130,28 @@ const AddBanks = ({navigation}) => {
                         ]}>
                         {res.status}
                       </Text>
+                      </View>
+                      
                     </View>
+                    <View style={{paddingBottom:20}}>
+                    <Text style={[styles.bankHolder1]}>
+                      Account Holder
+                    </Text>
                     <Text style={styles.bankHolder}>
                       {res.account_holder_name}
                     </Text>
-                    <View style={styles.bankAccountDetails}>
-                      <Text style={styles.accountText}>{res.account_number}</Text>
-                      <Text style={styles.ifscText}>{res.ifsc}</Text>
+                    <Text style={[styles.bankHolder1]}>
+                      Account Number
+                    </Text>
+                    <Text style={styles.bankHolder}>
+                      {res.account_number}
+                    </Text>
+                    <Text style={[styles.bankHolder1]}>
+                     IFSC Code
+                    </Text>
+                    <Text style={styles.bankHolder}>
+                      {res.ifsc}
+                    </Text>
                     </View>
                     {/*<View style={{margin: 0}}>
                       <TouchableOpacity
@@ -243,28 +269,24 @@ const styles = StyleSheet.create({
   },
   bankDetailsContainer: {
     margin: 10,
-    // padding: 10,
-    // backgroundColor:'#EFEFEF',
+    padding: 10,
+    backgroundColor:'#fff',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'lightgray',
   },
   bankDetailsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
-    paddingTop: 8,
+    justifyContent:"space-between",
+    paddingRight:10
   },
   bankIconContainer: {
-    height: 40,
+    height:40,
     width: 40,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: '#F2F2F2',
+    justifyContent:"center"
   },
   bankIcon: {
-    height: '100%',
-    width: '100%',
+    height: '80%',
+    width: '80%',
   },
   bankName: {
     fontSize: 17,
@@ -272,11 +294,20 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     color: 'black',
   },
-  bankHolder: {
-    paddingLeft: 10,
+
+  bankHolder1: {
     fontWeight: '400',
-    color: '#7E7E7E',
-    paddingTop: 20,
+    color: '#666262ff',
+    paddingTop:10,
+    fontSize:14,
+    fontFamily:"Inter"
+  },
+  bankHolder: {
+    fontWeight: '500',
+    color: '#000000',
+    paddingTop:5,
+    fontSize:16,
+    fontFamily:"Inter",
   },
   bankAccountDetails: {
     flexDirection: 'row',
@@ -330,7 +361,6 @@ const styles = StyleSheet.create({
   verified: {
     color: '#367CFF',
     textAlign: 'right',
-    flex: 1,
-    paddingRight: 13,
   },
+  data:{paddingVertical:5,backgroundColor:"red",paddingHorizontal:15,borderRadius:50}
 });

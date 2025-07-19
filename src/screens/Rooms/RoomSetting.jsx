@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, FlatList, Image, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert,Share, FlatList, Image, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Text } from '../../utils/Translate';
 import { ColorsConstant } from '../../constants/Colors.constant';
@@ -8,7 +8,6 @@ import { deleteRoomInController } from '../../controllers/RoomsController';
 import RoomsApiService from '../../services/api/RoomsApiService';
 import { useQuery } from '@apollo/client';
 import NoDataFound from '../../components/NoDataFound';
-import Share from '../Wallet/Share';
 import { useRoom } from '../../utils/store';
 import { APPURL } from '../../config/urls';
 import MainHeader from '../../components/MainHeader';
