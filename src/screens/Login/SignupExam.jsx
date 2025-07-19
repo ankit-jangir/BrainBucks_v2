@@ -23,9 +23,6 @@ import {setLoggedIn} from '../../..';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUpExam({navigation, route}) {
-  useEffect(() => {
-    console.log('SignupNamessss params:', route.params);
-  }, []);
 
   const [refresh, setRefresh] = useState(false);
   const [exams, setExams] = useState([]);
@@ -57,21 +54,20 @@ export default function SignUpExam({navigation, route}) {
         route.params.referralCode,
         route.params.userType,
         route.params.description,
-
       );
       console.log('User id: ', res);
       if (res.status === 1) {
         console.log('JWT TOKEN: ', res.token);
         console.log('wwwww: ', res);
 
-
         try {
           await BasicServices.setJwt(res.token);
           await BasicServices.setId(res.user_id);
+          await BasicServices.setUserType(res.is_edu);
+
           ChatSockService.connect();
           setLoggedIn(true);
           await AsyncStorage.removeItem('referral_code');
-
           navigation.reset({
             index: 0,
             routes: [{name: 'Home'}],
@@ -106,7 +102,7 @@ export default function SignUpExam({navigation, route}) {
     setDisabled(true);
     try {
       let res = await auth.getExams(search);
-       if (res.status === 1) {
+      if (res.status === 1) {
         setExams(res.categories);
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
@@ -202,7 +198,6 @@ export default function SignUpExam({navigation, route}) {
                             width: 50,
                             height: 50,
                             borderRadius: 25,
-
                           }}></Image>
                       </View>
                       <View style={styles.CateViewName}>

@@ -670,6 +670,7 @@ export default function App() {
   }}
 >
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
+        
         <AddBankReducer>
           <WithdrawReducer>
             <IdReducer>

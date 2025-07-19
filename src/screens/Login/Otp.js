@@ -13,12 +13,12 @@ import {Text} from '../../utils/Translate';
 import {Button} from '../../utils/Translate';
 import {OtpInput} from 'react-native-otp-entry';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import basic from '../../services/BasicServices';
 import {StackActions} from '@react-navigation/native';
 import ChatSockService from '../../services/api/ChatSockService';
 import Toast from 'react-native-toast-message';
 import BackgroundTimer from 'react-native-background-timer';
 import {setLoggedIn} from '../../..';
+import BasicServices from '../../services/BasicServices';
 
 const {width} = Dimensions.get('window');
 
@@ -31,9 +31,8 @@ export default function Otp({navigation, route}) {
   // let phone = route.params.phone;
   const referralCode = route.params?.referCode;
   const {phone, userType} = route.params;
-  console.log('====================================');
-  console.log(userType, 'ssssss');
-  console.log('====================================');
+
+
   let timerRef = null;
 
   const startOTPTimer = () => {
@@ -102,13 +101,20 @@ export default function Otp({navigation, route}) {
       setErrorMessage(null);
       setLoading(true);
       let response = await auth.verifyOtpAndRegister(phone, otp, userType);
-      if (response.status === 1) {
-        await basic.setJwt(response.token);
-        await basic.setId(response.user_id);
-
+      console.log('====================================');
+      console.log(response,"dododoodod"),
+      console.log('====================================');
+      if (response.status === 1 && response.token && response.user_id) {
+        await BasicServices.setJwt(response.token);
+        await BasicServices.setId(response.user_id);
+        await BasicServices.setUserType(response.is_Edu);
         ChatSockService.connect();
         setLoggedIn(true);
-        navigation.reset({index: 0, routes: [{name: 'Home'}]});
+
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'Home'}],
+          });
       } else if (response.status === 2) {
         navigation.dispatch(
           StackActions.replace('SignupName', {
