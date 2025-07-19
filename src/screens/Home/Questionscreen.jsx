@@ -104,26 +104,26 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
     color: '#111827',
     marginBottom: 4,
   },
   cardSubtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#4B5563',
     marginBottom: 12,
   },
   orangeBtn: {
     backgroundColor: '#F5A623',
-    paddingVertical: 18,
+    paddingVertical: 16,
     borderRadius: 8,
     alignItems: 'center',
   },
   orangeBtnText: {
     color: '#FFFFFF',
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
   },
   purpleBtn: {
     backgroundColor: '#701DDB',
@@ -145,21 +145,21 @@ const styles = StyleSheet.create({
   },
   purpleBtnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
   },
   grayBtnText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 14,
   },
   uploadBtnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
   },
   btnContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical:7,
+    paddingVertical:5,
   },
   btnIcon: {
     width: 20,

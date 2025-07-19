@@ -111,22 +111,33 @@ const ReferStudents = () => {
         {/* Share Options */}
         <Text style={styles.sectionTitle1}>Or Share Via</Text>
         <View style={styles.shareRow}>
-          <Image
-            source={require('../../assets/img/whatsaps.png')}
-            style={styles.shareIcon}
-          />
-          <Image
-            source={require('../../assets/img/messenger.png')}
-            style={styles.shareIcon}
-          />
-          <Image
-            source={require('../../assets/img/emails.png')}
-            style={styles.shareIcon}
-          />
-          <Image
-            source={require('../../assets/img/more.png')}
-            style={styles.shareIcon}
-          />
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/img/whatsaps.png')}
+              style={styles.shareIcon}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/img/messenger.png')}
+              style={styles.shareIcon}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/img/emails.png')}
+              style={styles.shareIcon}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Image
+              source={require('../../assets/img/more.png')}
+              style={styles.shareIcon}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Stats */}
@@ -161,35 +172,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    // marginBottom: 16,
     paddingVertical: 12,
   },
   topTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '700',
     color: '#1A1A1A',
     fontFamily: 'Poppins',
   },
   topIcon: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
 
   earningsCard: {
     borderRadius: 16,
     padding: 20,
-    marginBottom: 20,
+    marginVertical: 20,
     height: 116,
     position: 'relative',
   },
   earningsTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     color: '#FFFFFFE5',
     fontFamily: 'Poppins',
   },
   earningsAmount: {
-    fontSize: 35,
+    fontSize: 32,
     fontWeight: '800',
     color: '#FFFFFF',
     fontFamily: 'Poppins',
@@ -204,14 +215,14 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontSize: 16, // -2
+    fontSize: 16,
     fontWeight: '700',
     color: '#1A1A1A',
     marginVertical: 12,
     fontFamily: 'Poppins',
   },
   sectionTitle1: {
-    fontSize: 14, // -2
+    fontSize: 14,
     fontWeight: '700',
     color: '#666666',
     textAlign: 'center',
@@ -239,20 +250,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   percentText: {
-    fontSize: 18, // -2
+    fontSize: 18,
     fontWeight: '700',
     color: '#1A1A1A',
     fontFamily: 'Poppins',
   },
   commissionLabel: {
-    fontSize: 18, // -2
+    fontSize: 18,
     fontWeight: '700',
     color: '#1A1A1A',
     marginBottom: 6,
     fontFamily: 'Poppins',
   },
   commissionDesc: {
-    fontSize: 12, // -2
+    fontSize: 12,
     fontWeight: '600',
     lineHeight: 20,
     color: '#666666',
