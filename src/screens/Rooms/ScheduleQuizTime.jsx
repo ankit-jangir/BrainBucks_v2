@@ -81,7 +81,7 @@ export default function ScheduleQuizTime({navigation, route}) {
     );
 
     if (createRes) {
-      navigation.navigate('scheduledsuccessfullyQuiz', {
+      navigation.navigate('roomenter', {
         obj: createRes.view_data,
       });
     }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,19 @@ import {
   Clipboard,
   Alert,
 } from 'react-native';
-import {StyleConstants} from '../../constants/Style.constant';
+import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/ViewProfile.styles';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import {useIsFocused} from '@react-navigation/native';
-import {BLOBURL} from '../../config/urls';
-import {Overlay} from '@rneui/themed';
-import {Button} from '../../utils/Translate';
+import { useIsFocused } from '@react-navigation/native';
+import { BLOBURL } from '../../config/urls';
+import { Overlay } from '@rneui/themed';
+import { Button } from '../../utils/Translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatSockService from '../../services/api/ChatSockService';
-import {generateDynamicLink} from '../../utils/createDynamicLink';
+import { generateDynamicLink } from '../../utils/createDynamicLink';
 
-export default function ViewProfile({navigation, route}) {
+export default function ViewProfile({ navigation, route }) {
   const [image1, setImage1] = useState(
     'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
@@ -48,7 +48,7 @@ export default function ViewProfile({navigation, route}) {
             setImage1(BLOBURL + res.user_details.image);
           }
           setTotalPlayed(res.totalquizplayed);
-          
+
         } else {
           ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
         }
@@ -95,7 +95,7 @@ export default function ViewProfile({navigation, route}) {
     } catch (err) {
       console.log('Error in Logging out', err.message);
     } finally {
-      navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+      navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
       setLoggingOut(false);
     }
   }
@@ -149,7 +149,7 @@ ${dynamicLink}
 
 The referral code will be applied automatically on install. Let’s earn together! 🚀`;
 
-      const result = await Share.share({message});
+      const result = await Share.share({ message });
 
       if (result.action === Share.sharedAction) {
         console.log('Referral link shared successfully');
@@ -181,7 +181,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
             style={StyleConstants.H2Nd}>
             <Image
               source={require('../../assets/img/arrows.png')}
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -190,14 +190,14 @@ The referral code will be applied automatically on install. Let’s earn togethe
             <Image
               source={require('../../assets/img/logout.png')}
               tintColor={'red'}
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
             />
           </TouchableOpacity>
         </View>
       </View>
       <ScrollView>
         <View style={styles.MainView}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <View style={styles.MainView1}>
               {/* <View style={styles.MainView2} >
                       <Image source={{ uri: image }} style={styles.img} />
@@ -205,7 +205,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
             </View>
           </View>
           <Image
-            source={{uri: image1}}
+            source={{ uri: image1 }}
             resizeMode="contain"
             style={styles.ProfileImg}
           />
@@ -239,7 +239,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 {/* <Icon name="copy-outline" size={22} color="#2188E7" /> */}
                 <Image
                   source={require('../../assets/img/copy.png')}
-                  style={{width: 20, height: 20}}
+                  style={{ width: 20, height: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -252,7 +252,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
               style={styles.bgImg}>
               <View style={styles.RfrView}>
                 <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36}]}>
+                <Text style={[styles.quizText, { fontSize: 36 }]}>
                   {totalPlayed}
                 </Text>
               </View>
@@ -339,7 +339,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
               />
             </TouchableOpacity>
           </View>
-          <View style={[styles.HelpView, {marginBottom: 30}]}>
+          <View style={[styles.HelpView, { marginBottom: 30 }]}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('AboutBB');
@@ -349,7 +349,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 <Image
                   source={require('../../assets/img/bbimg.png')}
                   resizeMode="contain"
-                  style={{width: 60, height: 60}}
+                  style={{ width: 60, height: 60 }}
                 />
               </View>
               <View style={styles.SupportV}>
@@ -363,55 +363,55 @@ The referral code will be applied automatically on install. Let’s earn togethe
           </View>
         </View>
       </ScrollView>
-   <Overlay
-  isVisible={visible}
-  onBackdropPress={toggleOverlay}
-  overlayStyle={{
-    borderRadius: 20,
-    padding: 25,
-    width: '85%',
-    backgroundColor: '#fff',
-    elevation: 10,
-  }}>
-  <View style={{alignItems: 'center'}}>
-    <Text
-      style={{
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#333',
-        marginBottom: 20,
-        textAlign: 'center',
-        fontFamily: 'WorkSans-SemiBold',
-      }}>
-      Are you sure you want to log out?
-    </Text>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={{
+          borderRadius: 20,
+          padding: 25,
+          width: '85%',
+          backgroundColor: '#fff',
+          elevation: 10,
+        }}>
+        <View style={{ alignItems: 'center' }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '600',
+              color: '#333',
+              marginBottom: 20,
+              textAlign: 'center',
+              fontFamily: 'WorkSans-SemiBold',
+            }}>
+            Are you sure you want to log out?
+          </Text>
 
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 15}}>
-      <Button
-        title="Yes, Logout"
-        onPress={logOut}
-        buttonStyle={{
-          backgroundColor: '#eb1313',
-          paddingHorizontal: 25,
-          paddingVertical: 12,
-          borderRadius: 10,
-        }}
-        titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
-      />
-      <Button
-        title="Cancel"
-        onPress={toggleOverlay}
-        buttonStyle={{
-          backgroundColor: '#e6e3e8',
-          paddingHorizontal: 25,
-          paddingVertical: 12,
-          borderRadius: 10,
-        }}
-        titleStyle={{fontSize: 15, color: '#000'}}
-      />
-    </View>
-  </View>
-</Overlay>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 15 }}>
+            <Button
+              title="Yes, Logout"
+              onPress={logOut}
+              buttonStyle={{
+                backgroundColor: '#eb1313',
+                paddingHorizontal: 25,
+                paddingVertical: 12,
+                borderRadius: 10,
+              }}
+              titleStyle={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}
+            />
+            <Button
+              title="Cancel"
+              onPress={toggleOverlay}
+              buttonStyle={{
+                backgroundColor: '#e6e3e8',
+                paddingHorizontal: 25,
+                paddingVertical: 12,
+                borderRadius: 10,
+              }}
+              titleStyle={{ fontSize: 15, color: '#000' }}
+            />
+          </View>
+        </View>
+      </Overlay>
     </SafeAreaView>
   );
 }

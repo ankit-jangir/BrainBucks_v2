@@ -1,164 +1,391 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import MainHeader from "../../components/MainHeader";
-import { Card } from "react-native-paper";
-import LottieView from "lottie-react-native";
-import { ColorsConstant } from "../../constants/Colors.constant";
+import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  ScrollView,
+  Alert,
+  ToastAndroid,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import MainHeader from '../../components/MainHeader';
+import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import { Share } from 'react-native';
+import { APPURL } from '../../config/urls';
+import { Clipboard } from 'react-native';
 
+const ReferEarn = () => {
+  const navigation = useNavigation();
+    let auth = new AuthenticationApiService();
+    const [referCode, setReferCode] = useState('');
+  console.log(referCode)
+   const copyToClipboard = () => {
+      Clipboard.setString(referCode);
+      ToastAndroid.show('Referral code copied to clipboard', ToastAndroid.LONG);
+    };
+    const CopYLink = () => {
+      Clipboard.setString(`${APPURL}/Splash?referralCode=${referCode}`);
+      ToastAndroid.show('Copey Link', ToastAndroid.LONG);
+    };
+  useEffect(() => {
+      const fetchReferCode = async () => {
+        const code = await auth.getReferCode();
+        if (code) {
+          setReferCode(code);
+        }
+      };
+  
+      fetchReferCode();
+    }, []);
 
-const ReferEarn = ({ navigation }) => {
+    
+      const onShare = async reel_id => {
+        try {
+          const result = await Share.share({
+            message: `${APPURL}/Splash?referralCode=${referCode}`,
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+      };
   return (
     <View style={styles.container}>
+      {/* Top Bar */}
       <MainHeader
-        name={"Refer Earn"}
-        leftIcon={{
-          type: "image",
-          source: require("../../assets/img/backq.png"),
-          onPress: () => {
-            navigation.goBack();
-          },
-        }}
-      />
+          name={'Refer & Earn'}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.goBack();
+            },
+          }}
+        />
 
-      <View>
-        <Card style={styles.card}>
-          <Text style={styles.heading}>Refer & Earn 10% Lifetime</Text>
-          <Text style={styles.subheading}>
-            Refer our app to your Circle & earn extra 60% on account opening!
-          </Text>
-
-          <View style={styles.row}>
-            <View style={styles.dashedBorder}>
-              <TouchableOpacity style={styles.seeHowButton}>
-                <Text style={styles.seeHowText}>See how it works</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.lottieContainer}>
-              <LottieView
-                source={require("../../assets/img/wallet.json")}
-                autoPlay
-                loop
-                style={styles.lottie}
-              />
-            </View>
-          </View>
-
-          <View style={styles.bottomRow}>
-            <View>
-              <Text style={styles.referralLabel}>Referral Code</Text>
-              <Text style={styles.referralCode}>refername</Text>
-            </View>
-
-            <TouchableOpacity style={styles.iconButton}>
-               <Image source={require("../../assets/img/copy.png")} style={styles.copyIcon} tintColor={"#fff"} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.referNowButton}>
-              <Text style={styles.referNowText}>REFER NOW</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
+        <ScrollView style={{paddingHorizontal:15,paddingTop:10,marginBottom:10}} showsVerticalScrollIndicator={false}>
+      {/* Lifetime Earnings Card */}
+      <View >
+        <LinearGradient
+          colors={['#9333ea', '#b266fa']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={styles.earningsCard}>
+          <Text style={styles.earningsTitle}>Lifetime Earnings</Text>
+          <Text style={styles.earningsAmount}>$2,458.50</Text>
+          <Image
+            source={require('../../assets/img/chart.png')}
+            style={styles.earningsIcon}
+          />
+        </LinearGradient>
       </View>
+
+      {/* How Earning Works */}
+      <Text style={styles.sectionTitle}>How Earning Works</Text>
+      <View style={styles.commissionRow}>
+        <View style={styles.commissionCard}>
+          <View style={styles.iconWrapper}>
+            <Image
+              source={require('../../assets/img/gift2.png')}
+              style={styles.icons}
+            />
+          </View>
+          <Text style={styles.percentText}>1%</Text>
+          <Text style={styles.commissionLabel}>Commission</Text>
+          <Text style={styles.commissionDesc}>
+            When students join paid quizzes
+          </Text>
+        </View>
+
+        <View style={styles.commissionCard}>
+          <View style={styles.iconWrapper}>
+            <Image
+              source={require('../../assets/img/win.png')}
+              style={styles.icons}
+            />
+          </View>
+          <Text style={styles.percentText}>10%</Text>
+          <Text style={styles.commissionLabel}>Commission</Text>
+          <Text style={styles.commissionDesc}>
+            When your students win prizes
+          </Text>
+        </View>
+      </View>
+
+      {/* Referral Code Box */}
+      <View style={styles.inviteContainer}>
+        <View style={styles.inviteBox}>
+          <TextInput
+            style={styles.refCode}
+            value={referCode}
+            editable={false}
+          />
+          <TouchableOpacity onPress={copyToClipboard}>
+            <Image
+              source={require('../../assets/img/copy1.png')}
+              style={styles.copyIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity onPress={CopYLink}>
+          <LinearGradient
+            colors={['#9230f0', '#b266fa']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            style={styles.copyButton}>
+            <Text style={styles.copyButtonText}>Copy Invite Link</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+
+      {/* Share Options */}
+      <Text style={styles.sectionTitle1}>Or Share Via</Text>
+      <TouchableOpacity onPress={onShare}>
+          <LinearGradient
+            colors={['#9230f0', '#b266fa']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            style={[styles.copyButton,{marginHorizontal:10,marginBottom:20}]}>
+            <Text style={styles.copyButtonText}>Invite Friend</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
+      {/* Stats */}
+      <View style={styles.statsRow}>
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Active Referrals</Text>
+          <Text style={styles.statValue}>24</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Total Earned</Text>
+          <Text style={styles.statValue}>$2,458.50</Text>
+        </View>
+      </View>
+      </ScrollView>
     </View>
   );
 };
 
 export default ReferEarn;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
-  card: {
-    backgroundColor: ColorsConstant.Theme,
-    borderRadius:10,
-    padding: 16,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    margin: 10,
+
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
-  heading: {
+  topTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    fontFamily: 'Poppins-Regular',
+  },
+  topIcon: {
+    width: 40,
+    height: 40,
+  },
+
+  earningsCard: {
+    // backgroundColor: '#9333ea',
+    borderRadius: 16,
+    padding: 20,
+    position: 'relative',
+    marginBottom: 20,
+    height: 116,
+  },
+  earningsTitle: {
+    color: '#FFFFFFE5',
+    fontSize: 16,
+    fontWeight: '500',
+    fontFamily: 'Poppins-Regular',
+  },
+  earningsAmount: {
+    color: '#FFFFFF',
+    fontSize: 37,
+    fontWeight: '800',
+    marginTop: 4,
+    fontFamily: 'Poppins-Regular',
+  },
+  earningsIcon: {
+    width: 20,
+    height: 15,
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    color: '#FFFFFFCC',
+  },
+
+  sectionTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: '500',
+    marginVertical: 12,
+    color: '#1A1A1A',
+    fontFamily: 'Poppins-Regular',
   },
-  subheading: {
+  sectionTitle1: {
+    fontSize: 16,
+    fontWeight: '400',
+    marginVertical: 19,
+    color: '#666666',
+    fontFamily: 'Poppins-Regular',
+    textAlign: 'center', // ✅ center the text
+  },
+
+  commissionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  commissionCard: {
+    width: '48%',
+    backgroundColor: '#F8F9FA',
+    borderRadius: 12,
+    padding: 12,
+    height: 200,
+  },
+
+  iconWrapper: {
+    // backgroundColor: '#f3e8ff',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+
+  icon: {
+    width: 24,
+    height: 18,
+    resizeMode: 'contain',
+  },
+
+  percentText: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 0,
+    fontFamily: 'Poppins-Regular',
+  },
+
+  commissionLabel: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 6,
+    fontFamily: 'Poppins-Regular',
+  },
+
+  commissionDesc: {
     fontSize: 14,
-    color: "white",
+    color: '#666666',
+    lineHeight: 20,
+    fontWeight: '600',
+    fontFamily: 'Poppins-Regular',
   },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+
+  icons: {
+    width: 48,
+    height: 48,
   },
-  dashedBorder: {
-    borderBottomWidth: 1,
-    borderColor: "white",
-    borderStyle: "dashed",
-    flex: 0.6,
-    justifyContent: "center",
+
+  inviteContainer: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 20,
   },
-  seeHowButton: {
-    borderWidth: 2,
-    borderColor: "white",
-    paddingVertical: 8,
-    borderRadius: 24,
-    alignItems: "center",
-    width: "80%",
+
+  inviteBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 12,
   },
-  seeHowText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  lottieContainer: {
-    alignItems: "center",
-    flex: 0.3,
-  },
-  lottie: {
-    width: 120,
-    height: 90,
-  },
-  bottomRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderTopColor: "white",
-    paddingTop: 8,
-  },
-  referralLabel: {
+
+  refCode: {
     fontSize: 14,
-    fontWeight: "400",
-    color: "white",
+    fontWeight: '500',
+    color: '#111827',
+    flex: 1,
+    marginRight: 10,
   },
-  referralCode: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 17,
+
+  copyIcon: {
+    width: 20,
+    height: 20,
   },
-  iconButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 2,
-    borderRadius: 8,
-    padding: 8,
-    borderColor: "white",
+
+  copyButton: {
+    backgroundColor: '#9333ea',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
   },
-  referNowButton: {
-    backgroundColor: "white",
-    borderRadius: 24,
-    alignSelf: "center",
-    padding: 8,
-    paddingHorizontal: 13,
+
+  copyButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: 'Poppins-Regular',
   },
-  referNowText: {
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "center",
+
+  shareRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+    paddingHorizontal: 25,
   },
-  copyIcon:{
-    height:20,
-    width:20,
-    resizeMode:"contain"
-  }
+
+  shareIcon: {
+    width: 48,
+    height: 48,
+  },
+
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom:30
+  },
+  statCard: {
+    backgroundColor: '#F8F9FA',
+    borderRadius: 12,
+    width: '48%',
+    padding: 16,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 4,
+    color: '#1A1A1A',
+    fontFamily: 'Poppins-Regular',
+  },
+  statLabel: {
+    fontSize: 16,
+    color: '#666666',
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '700',
+  },
 });

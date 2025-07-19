@@ -1,11 +1,11 @@
-import {View, TouchableOpacity, Image, ToastAndroid} from 'react-native';
-import React, {useEffect, useState,useLocale} from 'react';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import React, { useEffect, useState, useLocale } from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
 import Explore from './Explore';
 import MyRooms from './MyRooms';
-import {Button} from '../../utils/Translate';
-import {Text, TextInput} from '../../utils/Translate';
+import { Button } from '../../utils/Translate';
+import { Text, TextInput } from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
 import {
   CheckEligibilityForPublicRoom,
@@ -14,13 +14,13 @@ import {
   verifyOTP,
 } from '../../controllers/RoomsController';
 import PrivateRooms from './PrivateRooms';
-import {Modal} from 'react-native-paper';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { Modal } from 'react-native-paper';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function Rooms({navigation, route}) {
-  const {id, type} = route.params || {};
+export default function Rooms({ navigation, route }) {
+  const { id, type } = route.params || {};
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
   const [otpModalVisible, setOtpModalVisible] = useState(false);
@@ -29,7 +29,7 @@ export default function Rooms({navigation, route}) {
   const [checkValidityLoading, setValidityLoading] = useState(false);
   const [mailLoading, setMailLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-    const [showActions, setShowActions] = useState(false);
+  const [showActions, setShowActions] = useState(false);
 
   async function handleEligibleClick() {
     let res = await CheckEligibilityForPublicRoom(
@@ -86,53 +86,53 @@ export default function Rooms({navigation, route}) {
           : type === 'private'
             ? 'Private'
             : 'MyRooms';
-      navigation.navigate(screen, {id});
+      navigation.navigate(screen, { id });
     }
   }, [id, type, navigation]);
 
   return (
     <>
-      <View style={{zIndex: 20}}>
+      <View style={{ zIndex: 20 }}>
         <Toast />
       </View>
       <View style={styles.maincontainer}>
-   <View style={styles.topbtns}>
-  <Text style={styles.roomstext}>Rooms</Text>
+        <View style={styles.topbtns}>
+          <Text style={styles.roomstext}>Rooms</Text>
 
-  <View style={{position: 'relative'}}>
-   <TouchableOpacity
-  onPress={() => setShowActions(prev => !prev)}
-  style={styles.actionToggleButton}>
-  <Text style={styles.actionToggleText}>+ Action</Text>
-</TouchableOpacity>
+          <View style={{ position: 'relative' }}>
+            <TouchableOpacity
+              onPress={() => setShowActions(prev => !prev)}
+              style={styles.actionToggleButton}>
+              <Text style={styles.actionToggleText}>+ Action</Text>
+            </TouchableOpacity>
 
-    {showActions && (
-      <View style={styles.actionContainer}>
-        <Button
-          title="Create Room"
-          onPress={() => {
-            setShowActions(false);
-            navigation.navigate('createroom');
-          }}
-          buttonStyle={styles.actionButton}
-          titleStyle={styles.actionTitle}
-        />
-        <Button
-          title="Apply Public"
-          onPress={() => {
-            setShowActions(false);
-            handleEligibleClick(); // your public logic
-          }}
-          buttonStyle={styles.actionButton}
-          titleStyle={styles.actionTitle}
-        />
-      </View>
-    )}
-  </View>
-</View>
-    
-       <Tab.Navigator
-       style={{marginTop:25}}
+            {showActions && (
+              <View style={styles.actionContainer}>
+                <Button
+                  title="Create Room"
+                  onPress={() => {
+                    setShowActions(false);
+                    navigation.navigate('createroom');
+                  }}
+                  buttonStyle={styles.actionButton}
+                  titleStyle={styles.actionTitle}
+                />
+                <Button
+                  title="Apply Public"
+                  onPress={() => {
+                    setShowActions(false);
+                    handleEligibleClick(); // your public logic
+                  }}
+                  buttonStyle={styles.actionButton}
+                  titleStyle={styles.actionTitle}
+                />
+              </View>
+            )}
+          </View>
+        </View>
+
+        <Tab.Navigator
+          style={{ marginTop: 25 }}
           tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}
           initialRouteName={
             type === 'public'
@@ -141,13 +141,13 @@ export default function Rooms({navigation, route}) {
                 ? 'Private'
                 : 'MyRooms'
           }>
-          <Tab.Screen name="Explore" component={Explore} initialParams={{id}} />
+          <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} />
           <Tab.Screen
             name="Private"
             component={PrivateRooms}
-            initialParams={{id}}
+            initialParams={{ id }}
           />
-          <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{id}} />
+          <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }} />
         </Tab.Navigator>
 
         <Modal
@@ -175,7 +175,7 @@ export default function Rooms({navigation, route}) {
                     setEmail(text);
                   }}
                 />
-                <View style={{flexDirection: 'row', gap: 20, marginTop: 30}}>
+                <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
                   <Button
                     title="OK"
                     onPress={sendOtpToMail}
@@ -183,8 +183,8 @@ export default function Rooms({navigation, route}) {
                       borderColor: ColorsConstant.Theme,
                     }}
                     loading={mailLoading}
-                    titleStyle={{color: ColorsConstant.White}}
-                    containerStyle={{flex: 1}}
+                    titleStyle={{ color: ColorsConstant.White }}
+                    containerStyle={{ flex: 1 }}
                   />
                   <Button
                     title="Cancel"
@@ -195,8 +195,8 @@ export default function Rooms({navigation, route}) {
                       borderColor: 'rgba(78, 116, 289, 1)',
                     }}
                     type="outline"
-                    titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
-                    containerStyle={{flex: 1}}
+                    titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                    containerStyle={{ flex: 1 }}
                   />
                 </View>
               </>
@@ -224,7 +224,7 @@ export default function Rooms({navigation, route}) {
                     borderColor: 'rgba(78, 116, 289, 1)',
                   }}
                   type="outline"
-                  titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
+                  titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
                   containerStyle={{
                     width: 200,
                     marginHorizontal: 50,
@@ -259,7 +259,7 @@ export default function Rooms({navigation, route}) {
                 setOtp(text);
               }}
             />
-            <View style={{flexDirection: 'row', gap: 20, marginTop: 30}}>
+            <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
               <Button
                 title="OK"
                 onPress={verifyOtp}
@@ -267,8 +267,8 @@ export default function Rooms({navigation, route}) {
                   borderColor: ColorsConstant.Theme,
                 }}
                 loading={otpLoading}
-                titleStyle={{color: ColorsConstant.White}}
-                containerStyle={{flex: 1}}
+                titleStyle={{ color: ColorsConstant.White }}
+                containerStyle={{ flex: 1 }}
               />
               <Button
                 title="Cancel"
@@ -279,8 +279,8 @@ export default function Rooms({navigation, route}) {
                   borderColor: 'rgba(78, 116, 289, 1)',
                 }}
                 type="outline"
-                titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
-                containerStyle={{flex: 1}}
+                titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                containerStyle={{ flex: 1 }}
               />
             </View>
           </View>
@@ -300,9 +300,13 @@ export function MyTabBar({
   width,
 }) {
   return (
-    <View style={[styles.topbar, width && {width: width + '%'}]}>
+    <View style={[
+      styles.topbar,
+      { flexDirection: 'row', backgroundColor: '#fff',padding:10 }, // add backgroundColor
+      width && { width: width + '%' },
+    ]}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
@@ -342,27 +346,27 @@ export function MyTabBar({
           <TouchableOpacity
             key={label}
             accessibilityRole="button"
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{flex: 1}}>
+            style={{ flex: 1 }}>
             <View
               style={[
                 styles.tabBarLabelHolder,
-                isFocused && {borderBottomWidth: 1},
+                isFocused && {  },
               ]}>
               {imgNeeded && (
                 <Image
                   style={[
                     styles.tabBarLabelLogo,
-                    isFocused && {tintColor: '#000'},
+                    isFocused && { tintColor: ColorsConstant.Theme },
                   ]}
                   source={src}
                 />
               )}
-              <Text style={[styles.tabBarLabel, isFocused && {color: '#000'}]}>
+              <Text style={[styles.tabBarLabel, isFocused && { color: ColorsConstant.Theme }]}>
                 {label}
               </Text>
             </View>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,57 +10,80 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Text } from '../../utils/Translate';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
-import BasicServices from '../../services/BasicServices';
-import Toast from 'react-native-toast-message';
 import WalletApiService from '../../services/api/WalletApiService';
 import MainHeader from '../../components/MainHeader';
+import Toast from 'react-native-toast-message';
+import { BottomSheetModal, BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const History = ({ navigation, route }) => {
+const History = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const wallet = new WalletApiService();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
   const [datahistory, setDataHistory] = useState([]);
+  const [statusFilter, setStatusFilter] = useState(null);
+  const [tempStatusFilter, setTempStatusFilter] = useState(null);
+  const bottomSheetRef = useRef(null);
+  const snapPoints = ['45%'];
+
+  const statusOptions = [
+    {
+      id: '1',
+      label: 'Accepted',
+      color: '#129C73',
+      icon: require("../../assets/img/mark.png"),
+    },
+    {
+      id: '2',
+      label: 'Pending',
+      color: 'orange',
+      icon: require("../../assets/img/wall-clock.png"),
+    },
+    {
+      id: '3',
+      label: 'Rejected',
+      color: ColorsConstant.RedLight,
+      icon: require("../../assets/img/multiply.png"),
+    },
+  ];
 
   useEffect(() => {
     getWalletHistoryData(1);
-  }, []);
+  }, [statusFilter]);
 
   async function getWalletHistoryData(page = 1) {
     try {
-      if (page > totalPages && page !== 1) return; // Prevent fetching beyond total pages
+      if (page > totalPages && page !== 1) return;
       setLoading(page === 1);
       setLoadingMore(page > 1);
 
-      const response = await wallet.withdrawTranctions(page);
+      const response = await wallet.withdrawTranctions(page, 15, statusFilter || '');
+      if (!response.data || !Array.isArray(response.data)) {
+        throw new Error('Invalid API response: data is not an array');
+      }
+
       const newData = response.data.map(item => ({
         ...item,
-        // Map API status to success field for compatibility
         success: item.status === 'Pending' ? -1 : item.status === 'Accepted' ? 1 : 0,
-        // Use createdAt as order_datetime, format if needed
         order_datetime: new Date(item.createdAt).toLocaleString(),
-        // Assuming type is always 'debit' for withdrawals, adjust if needed
         type: 'debit',
-        // Ensure _id is a string to avoid object-related issues
         _id: String(item._id),
       }));
 
-      // Filter out duplicates by _id when appending new data
       setDataHistory(prevData => {
         const existingIds = new Set(prevData.map(item => item._id));
         const filteredNewData = newData.filter(item => !existingIds.has(item._id));
         return page === 1 ? newData : [...prevData, ...filteredNewData];
       });
 
-      // Update totalPages based on API response or data length
-      if (response.totalPages) {
-        setTotalPages(response.totalPages);
-      } else if (newData.length < 25) {
-        setTotalPages(page); // Assume last page if fewer than limit items
+      if (response.pagination && response.pagination.totalPages) {
+        setTotalPages(response.pagination.totalPages);
+      } else if (newData.length < 15) {
+        setTotalPages(page);
       }
     } catch (error) {
       Toast.show({
@@ -74,70 +98,91 @@ const History = ({ navigation, route }) => {
     }
   }
 
-  const getArrowImage = type => {
+  const handleStatusSelect = (status) => {
+    setTempStatusFilter(status);
+  };
+
+  const handleApplyFilter = () => {
+    setStatusFilter(tempStatusFilter);
+    setCurrentPage(1);
+    bottomSheetRef.current?.dismiss();
+  };
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
+
+  const getArrowImage = (type) => {
     return type === 'debit'
       ? require('../../assets/img/arrowdown.png')
       : require('../../assets/img/uparrowss.png');
   };
 
-  const getStatusIcon = success => {
+  const getStatusIcon = (success) => {
     if (success === 1) return require('../../assets/img/arrowright.png');
     else if (success === -1) return require('../../assets/img/pending.png');
     else return require('../../assets/img/cross.png');
   };
 
-  const getStatusText = success => {
+  const getStatusText = (success) => {
     if (success === 1) return 'Success';
     else if (success === -1) return 'Pending';
-    else return 'Failed';
+    else return 'Rejected';
   };
 
-  const getStatusColor = (success, type) => {
+  const getStatusColor = (success) => {
     if (success === 1) return '#129C73';
     else if (success === -1) return 'orange';
     else return ColorsConstant.RedLight;
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#fff', flex: 1 }}>
-      <View style={{ zIndex: 20 }}>
-        <Toast />
-      </View>
+    <BottomSheetModalProvider>
+      <SafeAreaView style={{ backgroundColor: '#fff', flex: 1 }}>
+        <View style={{ zIndex: 20 }}>
+          <Toast />
+        </View>
 
-      <View style={{ flex: 0.1 }}>
-        <MainHeader name={'Transaction History'} />
-      </View>
-
-      <View style={{ flex: 1 }}>
-        {loading ? (
-          <ActivityIndicator size={40} color={ColorsConstant.Theme} />
-        ) : datahistory.length === 0 ? (
-          <NoDataFound
-            scale={0.8}
-            message={'No Transaction History Yet..'}
-            actionText={'Go back'}
-            action={() => {
-              navigation.goBack();
+        <View style={{ flex: 0.1 }}>
+          <MainHeader
+            name={'Transaction History'}
+            rightIcon={{
+              source: require('../../assets/img/filter.png'),
+              onPress: () => bottomSheetRef.current?.present(),
             }}
           />
-        ) : (
-          <FlatList
-            onEndReachedThreshold={0.8}
-            onEndReached={() => {
-              if (currentPage < totalPages) {
-                setCurrentPage(prev => prev + 1);
-                getWalletHistoryData(currentPage + 1);
-              }
-            }}
-            data={datahistory}
-            keyExtractor={item => item._id} // Ensure _id is a string
-            renderItem={({ item }) => (
-              <View style={styles.historyContainer}>
-                <View
-                  // onPress={() => {
-                  //   navigation.navigate('transactionDetails', { res: item });
-                  // }}
-                >
+        </View>
+
+        <View style={{ flex: 1 }}>
+          {loading ? (
+            <ActivityIndicator size={40} color={ColorsConstant.Theme} />
+          ) : datahistory.length === 0 ? (
+            <NoDataFound
+              scale={0.8}
+              message={'No Transaction History Yet..'}
+              actionText={'Go back'}
+              action={() => navigation.goBack()}
+            />
+          ) : (
+            <FlatList
+              onEndReachedThreshold={0.8}
+              onEndReached={() => {
+                if (currentPage < totalPages && !loadingMore) {
+                  setCurrentPage((prev) => prev + 1);
+                  getWalletHistoryData(currentPage + 1);
+                }
+              }}
+              data={datahistory}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <View style={styles.historyContainer}>
                   <View style={styles.transactionEntry}>
                     <View
                       style={[
@@ -147,8 +192,8 @@ const History = ({ navigation, route }) => {
                             item.success === -1
                               ? '#fff9ef'
                               : item.success === 1
-                              ? '#EFFFF6'
-                              : '#FFEFEF',
+                                ? '#EFFFF6'
+                                : '#FFEFEF',
                         },
                       ]}
                     >
@@ -164,15 +209,12 @@ const History = ({ navigation, route }) => {
                     </View>
                     <View style={styles.statusContainer}>
                       <View style={[styles.statusIcon]}>
-                        <Image
-                          source={getStatusIcon(item.success)}
-                          style={styles.icon}
-                        />
+                        <Image source={getStatusIcon(item.success)} style={styles.icon} />
                       </View>
                       <Text
                         style={[
                           styles.statusText,
-                          { color: getStatusColor(item.success, item.type) },
+                          { color: getStatusColor(item.success) },
                         ]}
                       >
                         {getStatusText(item.success)}
@@ -187,13 +229,79 @@ const History = ({ navigation, route }) => {
                     </View>
                   </View>
                 </View>
-              </View>
-            )}
-          />
-        )}
-        {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
-      </View>
-    </SafeAreaView>
+              )}
+            />
+          )}
+          {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
+        </View>
+
+        <BottomSheetModal
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          backdropComponent={renderBackdrop}
+          onDismiss={() => setTempStatusFilter(statusFilter)}
+        >
+          <BottomSheetView style={styles.sheetContent}>
+            <View style={styles.header}>
+              <Text style={styles.title}>Status</Text>
+              <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
+                <Image source={require("../../assets/img/multiply.png")} style={{ height: 20, width: 20 }}  />
+
+              </TouchableOpacity>
+            </View>
+
+            {statusOptions.map((option) => (
+              <TouchableOpacity
+                key={option.id}
+                style={styles.optionContainer}
+                onPress={() => handleStatusSelect(option.label)}
+              >
+                <View style={styles.optionLeft}>
+                  <View style={[styles.iconContainer, { backgroundColor: option.color }]}>
+                    <Image source={option.icon} style={{ height: 20, width: 20 }} tintColor={"#fff"} />
+                  </View>
+                  <Text style={styles.optionText}>{option.label}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.radioOuter,
+                    tempStatusFilter === option.label && {
+                      borderColor: option.color,
+                    },
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.radioInner,
+                      tempStatusFilter === option.label && {
+                        backgroundColor: option.color,
+                      },
+                    ]}
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.clearButton}
+                onPress={() => {
+                  setTempStatusFilter(null);
+                  setStatusFilter(null);
+                  setCurrentPage(1);
+                  // bottomSheetRef.current?.dismiss();
+                }}
+              >
+                <Text style={styles.clearButtonText}>Clear all</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.applyButton} onPress={handleApplyFilter}>
+                <Text style={styles.applyButtonText}>Apply</Text>
+              </TouchableOpacity>
+            </View>
+          </BottomSheetView>
+        </BottomSheetModal>
+      </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -268,5 +376,80 @@ const styles = StyleSheet.create({
   icon2: {
     height: 12,
     width: 12,
+  },
+  sheetContent: {
+    flex: 1,
+    padding: 16,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Work Sans',
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  optionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  optionText: {
+    fontSize: 16,
+    fontFamily: 'Work Sans',
+    marginLeft: 10,
+  },
+  radioOuter: {
+    height: 24,
+    width: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  radioInner: {
+    height: 10,
+    width: 10,
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  clearButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  clearButtonText: {
+    fontSize: 16,
+    fontFamily: 'Work Sans',
+    color: '#000',
+  },
+  applyButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: ColorsConstant.Theme,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    fontSize: 16,
+    fontFamily: 'Work Sans',
+    color: '#fff',
   },
 });

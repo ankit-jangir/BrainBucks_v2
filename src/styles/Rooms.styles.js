@@ -12,14 +12,25 @@ const styles = StyleSheet.create({
   paddingVertical: 8,
   borderRadius: 5,
 },
-
+tabBarLabelLogo:{
+height:20,width:20
+},
+tabBarLabelHolder:{
+flexDirection:"row",
+gap:10
+},
 actionToggleText: {
   color: '#fff',
   fontSize: 14,
   fontWeight: '600',
   fontFamily: 'WorkSans-SemiBold',
 },
-
+actionToggleText: {
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: '600',
+  fontFamily: 'WorkSans-SemiBold',
+},
  
  topbtns: {
   flexDirection: 'row',
@@ -179,7 +190,6 @@ createroomtext: {
     width: '100%',
     backgroundColor: '#701DDB',
     paddingTop: 20,
-    paddingBottom: 30, // Keyboard overlap prevent
   },
   backRoomEnterImg: {
     height: 14,
@@ -601,6 +611,20 @@ createroomtext: {
     borderColor: 'transparent',
     textAlign: 'center',
   },
+  actionIcon:{
+    height:25,
+    width:20
+  },
+  inviteBtn:{
+    width:"100%",
+    padding:10,
+    borderRadius:10,
+    marginVertical:10
+  },
+  shareIcon:{
+    height:25,
+    width:20
+  }
 });
 
 export default styles;

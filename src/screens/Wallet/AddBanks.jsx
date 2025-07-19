@@ -268,22 +268,19 @@ const styles = StyleSheet.create({
   },
   bankDetailsContainer: {
     margin: 10,
-    // padding: 10,
+    padding: 10,
     backgroundColor:'#fff',
     borderRadius: 10,
   },
   bankDetailsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
-    paddingTop: 8,
     justifyContent:"space-between",
     paddingRight:10
   },
   bankIconContainer: {
     height:40,
     width: 40,
-    alignItems:"center",
     justifyContent:"center"
   },
   bankIcon: {
@@ -298,7 +295,6 @@ const styles = StyleSheet.create({
   },
 
   bankHolder1: {
-    paddingLeft: 10,
     fontWeight: '400',
     color: '#666262ff',
     paddingTop:10,
@@ -306,7 +302,6 @@ const styles = StyleSheet.create({
     fontFamily:"Inter"
   },
   bankHolder: {
-    paddingLeft: 10,
     fontWeight: '500',
     color: '#000000',
     paddingTop:5,

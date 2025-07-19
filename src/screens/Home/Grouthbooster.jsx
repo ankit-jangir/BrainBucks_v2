@@ -115,18 +115,13 @@ const styles = StyleSheet.create({
   },
   card: {
     flexGrow: 1,
-    flexShrink: 1,
     flexBasis: '48%',
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,
     marginBottom: 16,
     justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 6,
-    elevation: 3,
+    
   },
   iconWrapper: {
     width: 50,
@@ -143,6 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 5,
     color: '#000',
+    fontFamily:"Inter"
   },
   cardDesc: {
     fontSize: 14,
