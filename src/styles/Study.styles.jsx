@@ -219,6 +219,8 @@ const styles = StyleSheet.create({
       fontSize: 16,
       paddingLeft: 10,
       color: '#000',
+       flexWrap: 'wrap',
+  flexShrink: 1, 
     },
     RightVe: {
       flex: 0.2,

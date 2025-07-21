@@ -49,7 +49,7 @@ const HomeReels = ({setParentModalVisible, setCurrentReel}) => {
         <View style={styles.SeeView}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Reels');
+              navigation.navigate('reels');
             }}
             style={styles.TouchAll}>
             <Text style={styles.SeeAll}>See All</Text>

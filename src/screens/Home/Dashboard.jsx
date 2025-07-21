@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,153 +7,192 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
+import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 
 const screenWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
   const navigation = useNavigation();
+    let auth = new AuthenticationApiService();
+  const [userData, setUserData] = useState({});
+  const [Imag, setImage1] = useState({});
+  let isFocused = useIsFocused();
+
+
+ useEffect(() => {
+    try {
+      auth.getUserProfile().then(res => {
+        if (res.status === 1) {
+          setUserData(res.user_details);
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image);
+          }
+        } else {
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+        }
+      });
+    } catch (err) {
+      console.log('Error in Fetching User Profile', err.message);
+    }
+  }, [isFocused]);
   return (
-    <View style={styles.container}>
-      {/* Header */}
+    <>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Good morning</Text>
-        <View style={styles.rightHeader}>
+        <TouchableOpacity onPress={() => navigation?.openDrawer?.()}>
           <Image
+            source={require('../../assets/img/burgerbar.png')} // Hamburger menu icon
+            style={styles.menuIcon}
+          />
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.greeting}>Good morning</Text>
+          <Text style={styles.welcome}>
+            Welcome back, {userData?.name || userData?.username || 'User'}!
+          </Text> 
+        </View>
+
+        <View style={styles.rightHeader}>
+          {/* <Image
             source={require('../../assets/img/bell.png')}
             style={styles.icon}
-          />
-          <Image
+          /> */}
+          {/* <Image
             source={{uri: 'https://i.pravatar.cc/150?img=3'}}
             style={styles.avatar}
-          />
+          /> */}
         </View>
       </View>
 
-      <Text style={styles.welcome}>Welcome back, Alex!</Text>
+      <View style={styles.container}>
+        {/* Header */}
 
-      {/* Earnings Card */}
-      <LinearGradient colors={['#9333EA', '#A855F7']} style={styles.card}>
-        <View style={styles.earningsHeader}>
-          <Text style={styles.earningsLabel}>Total Earnings</Text>
-          <Text style={styles.earningsChange}>+12.5%</Text>
-        </View>
-        <Text style={styles.earnings}>$1,247.50</Text>
-
-        <LineChart
-          data={{
-            labels: ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{data: [300, 280, 500, 450, 470, 520]}],
-          }}
-          width={screenWidth - 40}
-          height={160}
-          withDots={false}
-          withInnerLines={false}
-          withOuterLines={false}
-          withShadow={true}
-          withVerticalLabels={true}
-          withHorizontalLabels={false}
-          chartConfig={{
-            backgroundGradientFromOpacity: 0,
-            backgroundGradientToOpacity: 0,
-            color: () => '#ffffff',
-            labelColor: () => '#ffffff',
-            propsForBackgroundLines: {
-              strokeWidth: 0,
-            },
-            propsForLabels: {
-              fontSize: 12,
-            },
-            fillShadowGradient: '#ffffff',
-            fillShadowGradientOpacity: 0.15,
-          }}
-          bezier
-          style={{
-            marginTop: 15,
-            marginLeft: -10,
-            marginRight: -10,
-          }}
-        />
-      </LinearGradient>
-
-      {/* Stats Boxes */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statBox}>
-          <Image
-            source={require('../../assets/img/user.png')}
-            style={styles.icons}
-            resizeMode="contain"
-          />
-          <View style={styles.statContent}>
-            <Text style={styles.statTitle}>Referrals</Text>
-            <Text style={styles.statValue}>42</Text>
+        {/* Earnings Card */}
+        <LinearGradient colors={['#9333EA', '#A855F7']} style={styles.card}>
+          <View style={styles.earningsHeader}>
+            <Text style={styles.earningsLabel}>Total Earnings</Text>
+            <Text style={styles.earningsChange}>+12.5%</Text>
           </View>
-        </View>
+          <Text style={styles.earnings}>$1,247.50</Text>
 
-        <View style={styles.statBox}>
-          <Image
-            source={require('../../assets/img/gift.png')}
-            style={styles.icons}
-            resizeMode="contain"
+          <LineChart
+            data={{
+              labels: ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              datasets: [{data: [300, 280, 500, 450, 470, 520]}],
+            }}
+            width={screenWidth - 40}
+            height={90} // 👈 reduced height here
+            withDots={false}
+            withInnerLines={false}
+            withOuterLines={false}
+            withShadow={true}
+            withVerticalLabels={true}
+            withHorizontalLabels={false}
+            chartConfig={{
+              backgroundGradientFromOpacity: 0,
+              backgroundGradientToOpacity: 0,
+              color: () => '#ffffff',
+              labelColor: () => '#ffffff',
+              propsForBackgroundLines: {
+                strokeWidth: 0,
+              },
+              propsForLabels: {
+                fontSize: 12,
+              },
+              fillShadowGradient: '#ffffff',
+              fillShadowGradientOpacity: 0.15,
+            }}
+            bezier
+            style={{
+              marginTop: 15,
+              marginLeft: -10,
+              marginRight: -10,
+            }}
           />
-          <View style={styles.statContent}>
-            <Text style={styles.statTitle}>Level</Text>
-            <Text style={styles.statValue}>5</Text>
-          </View>
-        </View>
-      </View>
+        </LinearGradient>
 
-      {/* Monthly Goals */}
-      <Text style={styles.sectionTitle}>Monthly Goals</Text>
-      <View style={styles.progressBarBackground}>
-        <View style={styles.progressBarFill} />
-      </View>
-      <Text style={styles.goalText}>30 more referrals to reach next level</Text>
-
-      {/* Action Buttons */}
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ReferStudents')}
-          style={[styles.actionButton, {backgroundColor: '#b66ef5'}]}>
-          <View style={styles.centerContent}>
+        {/* Stats Boxes */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statBox}>
             <Image
-              source={require('../../assets/img/user1.png')}
-              style={styles.icon1}
+              source={require('../../assets/img/h86.png')}
+              style={styles.icons}
               resizeMode="contain"
             />
-            <Text style={styles.buttonLabel}>Refer{'\n'}Students</Text>
+            <View style={styles.statContent}>
+              <Text style={styles.statTitle}>Referrals</Text>
+              <Text style={styles.statValue}>42</Text>
+            </View>
           </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Createquiz')}
-          style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}>
-          <View style={styles.centerContent}>
+          <View style={styles.statBox}>
             <Image
-              source={require('../../assets/img/line3.png')}
-              style={styles.icon1}
+              source={require('../../assets/img/h92.png')}
+              style={styles.icons}
               resizeMode="contain"
             />
-            <Text style={styles.buttonLabel}>Create{'\n'}Quiz</Text>
+            <View style={styles.statContent}>
+              <Text style={styles.statTitle}>Level</Text>
+              <Text style={styles.statValue}>5</Text>
+            </View>
           </View>
-        </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Grouthbooster')}
-          style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}>
-          <View style={styles.centerContent}>
-            <Image
-              source={require('../../assets/img/rokect.png')}
-              style={styles.icon1}
-              resizeMode="contain"
-            />
-            <Text style={styles.buttonLabel}>Missions</Text>
-          </View>
-        </TouchableOpacity>
+        {/* Monthly Goals */}
+        <Text style={styles.sectionTitle}>Monthly Goals</Text>
+        <View style={styles.progressBarBackground}>
+          <View style={styles.progressBarFill} />
+        </View>
+        <Text style={styles.goalText}>
+          30 more referrals to reach next level
+        </Text>
+
+        {/* Action Buttons */}
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ReferStudents')}
+            style={[styles.actionButton, {backgroundColor: '#b66ef5'}]}>
+            <View style={styles.centerContent}>
+              <Image
+                source={require('../../assets/img/h103.png')}
+                style={styles.icon1}
+                resizeMode="contain"
+              />
+              <Text style={styles.buttonLabel}>Refer{'\n'}Students</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Createquiz')}
+            style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}>
+            <View style={styles.centerContent}>
+              <Image
+                source={require('../../assets/img/h107.png')}
+                style={styles.icon1}
+                resizeMode="contain"
+              />
+              <Text style={styles.buttonLabel}>Create{'\n'}Quiz</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Grouthbooster')}
+            style={[styles.actionButton, {backgroundColor: '#fa7fc5'}]}>
+            <View style={styles.centerContent}>
+              <Image
+                source={require('../../assets/img/SV.png')}
+                style={styles.icon1}
+                resizeMode="contain"
+              />
+              <Text style={styles.buttonLabel}>Missions</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -168,37 +207,48 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: '#fff',
   },
+
   greeting: {
     fontSize: 14,
     color: '#6B7280',
-    flex: 1,
     fontWeight: '400',
     fontFamily: 'Inter',
   },
+
   rightHeader: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  welcome: {
-    fontSize: 22,
-    fontWeight: '700',
-    marginVertical: 1,
-    color: '#000000',
-    fontFamily: 'Inter',
-  },
+
   avatar: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    marginLeft: 10,
+    // marginLeft: 10,
   },
+
   icon: {
     width: 28,
     height: 24,
-    borderRadius: 18,
-    marginLeft: 10,
+    // marginLeft: 10,
   },
+
+  menuIcon: {
+    width: 24,
+    height: 24,
+  },
+  welcome: {
+    color: '#000000',
+    fontSize: 18,
+    fontFamily: 'Inter',
+    fontWeight: '600',
+  },
+
   card: {
     borderRadius: 16,
     padding: 20,
@@ -232,29 +282,28 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     marginTop: 20,
-    borderRadius: 12,
   },
   statBox: {
     backgroundColor: '#fff',
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
     borderRadius: 12,
     width: '48%',
-    height: 100,
-    flexDirection: 'row',
     alignItems: 'center',
-    elevation: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    elevation: 0.6,
+    flexDirection: 'row',
   },
   icons: {
     width: 30,
-    height: 20.44,
+    height: 24,
     tintColor: '#a855f7',
-    marginRight: 49,
+    marginBottom: 30,
   },
   statContent: {
-    flexDirection: 'column',
+    alignItems: 'center',
   },
   statTitle: {
     color: '#6B7280',
@@ -268,7 +317,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: '#000000',
     fontFamily: 'Inter',
-    textAlign: 'right',
   },
   sectionTitle: {
     fontSize: 14,
@@ -308,21 +356,25 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 5,
+    padding: 15,
+    width: 100,
   },
   centerContent: {
     alignItems: 'center',
+    gap: 5,
   },
   icon1: {
-    width: 32,
-    height: 32,
-    marginBottom: 8,
+    width: 30,
+    height: 30,
+    // marginBottom: 8,
   },
   buttonLabel: {
     color: '#FFFFFF',
     fontSize: 12,
     textAlign: 'center',
     fontWeight: '700',
-    lineHeight: 20,
+    // lineHeight: 10,
     fontFamily: 'Inter',
   },
 });

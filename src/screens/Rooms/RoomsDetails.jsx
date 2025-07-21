@@ -23,6 +23,7 @@ import { StackActions } from '@react-navigation/native';
 import { registerQuizInController } from '../../controllers/RoomsController';
 import { useQuery } from '@apollo/client';
 import RoomsApiService from '../../services/api/RoomsApiService';
+import MainHeader from '../../components/MainHeader';
 
 export default function RoomsDetails({ navigation, route }) {
 
@@ -72,22 +73,16 @@ export default function RoomsDetails({ navigation, route }) {
         <Toast />
       </View>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.backButton}>
-              <Image
-                source={require('../../assets/img/arrows.png')}
-                resizeMode="contain"
-                style={styles.backButtonImage}
-              />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Text style={styles.headerTitle}>Quiz Details</Text>
-            </View>
-          </View>
-        </View>
+           <MainHeader
+          name={"Quiz Details"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.goBack()
+            },
+          }}
+        />
         <ScrollView>
           {
             refresh

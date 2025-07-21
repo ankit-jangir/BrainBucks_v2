@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,58 +7,105 @@ import {
   ToastAndroid,
   Linking,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import styles from '../../styles/SingUp.styles';
-import {Text, TextInput} from '../../utils/Translate';
-import {Button} from '../../utils/Translate';
+import {Text, TextInput, Button} from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import {SelectList} from 'react-native-dropdown-select-list';
+import BasicServices from '../../services/BasicServices';
 
-export default function Signup({navigation}) {
+export default function Signup({navigation, route}) {
   const [phone, setPhone] = useState('');
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
   const [numberDone, setNumberDone] = useState(false);
+  const [selected, setSelected] = useState('');
+  const [isEduStored, setIsEduStored] = useState(null); // null = not set
+
+  const referralCode = route.params?.referCode;
+
+  const data = [
+    {key: '1', value: 'Student'},
+    {key: '2', value: 'Educator'},
+  ];
+
+  // Load from AsyncStorage on mount
+  useEffect(() => {
+    const fetchLocalUserType = async () => {
+      const localObj = await BasicServices.getLocalObject();
+      const isEdu = localObj?.is_edu;
+
+      console.log('====================================');
+      console.log(localObj,';;;sss');
+      console.log('====================================');
+
+      if (isEdu === true || isEdu === false) {
+        setIsEduStored(isEdu); // true or false
+      } else {
+        setIsEduStored(null); // not set
+      }
+    };
+    fetchLocalUserType();
+  }, []);
 
   async function next() {
     setErrorMessage(null);
-    if (phone.length === 0) {
-      setErrorMessage('*Please enter mobile number');
-      setNumberDone(false);
-      return;
-    }
-    if (phone.length !== 10) {
-      setErrorMessage('*Mobile number must be of 10 digits');
+
+    // Validate phone
+    if (!phone || phone.length !== 10) {
+      setErrorMessage('*Please enter valid 10-digit mobile number');
       setNumberDone(false);
       return;
     }
 
     setNumberDone(true);
+
+    // Validate terms
     if (!checked) {
       setErrorMessage('*You must accept the terms and conditions');
       return;
     }
 
+    // Validate user type if not stored
+    if (isEduStored == null && !selected) {
+      setErrorMessage('*Please select user type');
+      return;
+    }
+
+    // Set loading
     setLoading(true);
     try {
       setErrorMessage(null);
+
       const auth = new AuthenticationApiService();
-      const resposne = await auth.sendOtp(phone);
-      console.log('Response for OTP', resposne);
-      if (resposne.status === 1) {
-        if (resposne.otp) {
-          ToastAndroid.show(resposne.otp + '', ToastAndroid.LONG);
+
+      // Send stored value or dropdown-selected
+      const userTypeToSend =
+        isEduStored != null ? isEduStored : selected === 'Educator';
+
+      const response = await auth.sendOtp(phone, userTypeToSend);
+
+      console.log('Response for OTP', response);
+
+      if (response.status === 1) {
+        if (response.otp) {
+          ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
         }
-        navigation.navigate('Otp', {
-          phone: phone,
-        });
+
+      navigation.navigate('Otp', {
+  phone: phone,
+  userType: userTypeToSend,  // <- true or false
+  referCode: referralCode,
+});
+
       } else {
-        setErrorMessage('*' + resposne.Backend_Error);
+        setErrorMessage('*' + response.Backend_Error);
       }
     } catch (error) {
       console.log('Error while Sending OTP: ', error.message);
@@ -70,7 +117,9 @@ export default function Signup({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
-      <KeyboardAvoidingView behavior="height" style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView contentContainerStyle={{flexGrow: 1}}>
             <View style={styles.bbView}>
@@ -82,24 +131,24 @@ export default function Signup({navigation}) {
             </View>
 
             <View style={styles.container}>
-              <View style={[styles.LetsView,{marginTop:20}]}>
+              {/* Header */}
+              <View style={[styles.LetsView, {marginTop: 20}]}>
                 <View style={styles.LetsView2}>
-                  <View style={{}}>
+                  <View>
                     <Text style={styles.textLets}> Let’s Crack Exams,</Text>
                     <View style={styles.togetherview}>
                       <Text style={styles.texttogether}> Together👋 </Text>
                     </View>
                   </View>
-                  <View style={{}}>
-                    <Image
-                      source={require('../../assets/img/arrowtoright.png')}
-                      resizeMode="contain"
-                      style={styles.rightarraow}
-                    />
-                  </View>
+                  <Image
+                    source={require('../../assets/img/arrowtoright.png')}
+                    resizeMode="contain"
+                    style={styles.rightarraow}
+                  />
                 </View>
               </View>
 
+              {/* Phone Number */}
               <View
                 style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
@@ -134,6 +183,39 @@ export default function Signup({navigation}) {
                 </Text>
               )}
 
+              {/* ✅ Only show dropdown if isEduStored is null */}
+              {isEduStored == null && (
+                <View style={{marginTop: 15, width: '100%'}}>
+                  <Text style={styles.textEnter}> Select User Type </Text>
+                  <SelectList
+                    setSelected={val => {
+                      setErrorMessage(null);
+                      setSelected(val);
+                    }}
+                    data={data}
+                    search={false}
+                    save="value"
+                    boxStyles={{
+                      backgroundColor: '#9856EB',
+                      borderColor: '#ffffff80',
+                      paddingVertical: 15,
+                      marginTop: 6,
+                    }}
+                    dropdownStyles={{backgroundColor: '#9856EB'}}
+                    placeholder="Select user type"
+                     inputStyles={{color: '#fff'}}
+                    arrowicon={
+                      <Image
+                        source={require('../../assets/img/down-arrow.png')}
+                        style={{width: 20, height: 20}}
+                        tintColor={'#fff'}
+                      />
+                    }
+                  />
+                </View>
+              )}
+
+              {/* Terms and Conditions */}
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
                   <View
@@ -166,11 +248,11 @@ export default function Signup({navigation}) {
                       {' '}
                       I hereby confirm my age is 18 Years or above & agree to
                       <TouchableOpacity
-                        onPress={() => {
+                        onPress={() =>
                           Linking.openURL(
                             'https://brainbucks.in/terms/condition',
-                          );
-                        }}>
+                          )
+                        }>
                         <Text style={styles.textTerm}>
                           {' '}
                           terms & conditions{' '}
@@ -183,11 +265,11 @@ export default function Signup({navigation}) {
                         </Text>
                       </View>
                       <TouchableOpacity
-                        onPress={() => {
+                        onPress={() =>
                           Linking.openURL(
                             'https://brainbucks.in/privacy/policy',
-                          );
-                        }}>
+                          )
+                        }>
                         <Text style={styles.textTerm}>Privacy policy</Text>
                       </TouchableOpacity>
                       <View style={{marginTop: -6}}>
@@ -203,6 +285,7 @@ export default function Signup({navigation}) {
                 )}
               </View>
 
+              {/* Button */}
               <Button
                 onPress={next}
                 title="Get OTP"
@@ -219,7 +302,7 @@ export default function Signup({navigation}) {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
 
-      {/* This image stays fixed at bottom */}
+      {/* Bottom Image */}
       <View
         style={[
           styles.imgView,

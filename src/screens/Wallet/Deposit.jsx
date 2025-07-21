@@ -140,7 +140,7 @@ const Deposit = ({ navigation }) => {
       </View>
 
       <View style={styles.quickAmountContainer}>
-        {['1', '50', '100', '500','1000', '2000'].map((amt, i) => (
+        {['100', '500','1000', '2000'].map((amt, i) => (
           <TouchableOpacity
             key={i}
             onPress={() => setAmount(amt)}

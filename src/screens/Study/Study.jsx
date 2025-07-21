@@ -46,6 +46,7 @@ export default function Study({navigation}) {
       if (response.status === 1) {
         let nextOtherArr = otherExams.filter(
           item => !selectedExams.has(item._id),
+          setModalVisible(false),
         );
         setOtherExams(nextOtherArr);
         loadEnrolledExams();
@@ -250,7 +251,7 @@ export default function Study({navigation}) {
               type: 'image',
               source: require('../../assets/img/backq.png'), // provide the image source
               onPress: () => {
-                handleBackPress();
+                navigation.goBack();
               },
             }}
           />

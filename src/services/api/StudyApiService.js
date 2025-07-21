@@ -1,6 +1,5 @@
 import axios from "axios";
 import basic from "../BasicServices";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QUIZMICRO } from "../../config/urls";
 
 export default class StudyApiService {
@@ -47,9 +46,9 @@ export default class StudyApiService {
         const response = await axios(options);
         return response.data;
     }
-    async getStudyMaterial(cat_id, pdf_type) {
+    async getStudyMaterial(cat_id, pdf_type, search = '') {
         let bearer = await basic.getBearerToken();
-        let url = `${QUIZMICRO}/participants/get/materials/of/particular/exam/in/particular/pdftype?cat_id=${cat_id}&pdf_type=${pdf_type}&search`;
+        let url = `${QUIZMICRO}/participants/get/materials/of/particular/exam/in/particular/pdftype?cat_id=${cat_id}&pdf_type=${pdf_type}&search=${search}`;
         let headers = { "content-type": "application/json", "authorization": bearer };
         let options = {
             method: "get",

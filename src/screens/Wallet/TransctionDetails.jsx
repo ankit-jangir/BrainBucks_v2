@@ -187,9 +187,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Work Sans',
   },
   backImage: {
-    height: 45,
-    width: 45,
+    height: 25,
+    width: 25,
     marginRight: 8,
+    tintColor:"#fff"
   },
   amountContainer: {
     flexDirection: 'row',

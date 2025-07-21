@@ -51,6 +51,16 @@ async function getBearerToken() {
     }
 }
 
+async function getUserType() {
+    try {
+        let obj = await getLocalObject();
+        return obj.is_edu;  // true or false
+    } catch (err) {
+        console.log("Error in Getting User Type: ", err.message);
+    }
+}
+
+
 async function setJwt(jwt) {
     try {
         let localObj = await getLocalObject()
@@ -168,6 +178,24 @@ async function setId(id){
     }
 }
 
+async function setUserType(is_edu) {
+    try {
+        let localObj = await getLocalObject()
+        let objectToSave = new BrainBucksObject()
+        if (localObj) {
+            localObj.is_edu = is_edu;
+            objectToSave.setObject(localObj)
+        } else {
+            objectToSave.setUserType(is_edu)
+        }
+        await setLocalObject(objectToSave.getObject());
+    }
+    catch (err) {
+        console.log("Error in setting User Type: ", err.message)
+    }
+}
+
+
 
 function getDateFromSchTime(sch) {
     let time = sch.substr(11, 8)
@@ -180,14 +208,16 @@ function getDateFromSchTime(sch) {
 
 
 class BrainBucksObject {
-    constructor(fcm, jwt, number, name, gender, id) {
+   constructor(fcm, jwt, number, name, gender, id, is_edu) {
         this.fcm = fcm;
         this.jwt = jwt;
         this.number = number;
         this.name = name;
         this.gender = gender;
         this.id = id;
+        this.is_edu = is_edu;
     }
+
 
     setObject(obj) {
         this.fcm = obj.fcm;
@@ -195,20 +225,25 @@ class BrainBucksObject {
         this.number = obj.number;
         this.name = obj.name;
         this.gender = obj.gender;
-        this.id = obj.id
+        this.id = obj.id;
+        this.is_edu = obj.is_edu;
     }
-
     getObject() {
         return {
-            fcm: this.fcm,
+             fcm: this.fcm,
             jwt: this.jwt,
             number: this.number,
             name: this.name,
             gender: this.gender,
-            id: this.id
+            id: this.id,
+            is_edu: this.is_edu
         }
     }
 
+
+      setUserType(is_edu) {
+        this.is_edu = is_edu;
+    }
     setGender(gender) {
         this.gender = gender
     }
@@ -249,9 +284,9 @@ class BrainBucksObject {
     getId(){
         return this.id
     }
-
+     
 }
 
 export default {
-    BrainBucksObject, getDateFromSchTime, setNumber, setId, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch
+    BrainBucksObject, getDateFromSchTime,getUserType, setNumber, setId, setName, setGender, setFcm, setJwt, getBearerToken, getLocalObject, setLocalObject, apiTryCatch,setUserType,
 }

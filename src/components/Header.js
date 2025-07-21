@@ -7,15 +7,17 @@ import {
   Platform,
 } from 'react-native';
 import { Image } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = ({
   title = 'Welcome',
   leftIcon,
   rightIcon,
-  backgroundColor = '#f7f7f7',
-  titleColor = '#000',
+  backgroundColor = '#fff ',
+  titleColor = '#1F2937',
 }) => {
   return (
+
     <View style={[styles.container, { backgroundColor }]}>
       <View style={styles.header}>
         {/* Left Icon */}
@@ -27,7 +29,7 @@ const Header = ({
             <Image
               source={leftIcon.source}
               style={[styles.icon, leftIcon.style]}
-              tintColor={leftIcon.tintColor || '#000'}
+              tintColor={leftIcon.tintColor || '#1F2937'}
             />
           </TouchableOpacity>
         ) : <View style={styles.iconPlaceholder} />}
@@ -47,7 +49,7 @@ const Header = ({
           >
             <Image
               source={rightIcon.source}
-              style={[styles.icon, rightIcon.style]}
+              style={[styles.icon1, rightIcon.style]}
               tintColor={rightIcon.tintColor || '#000'}
             />
           </TouchableOpacity>
@@ -59,27 +61,28 @@ const Header = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f7f7f7',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    backgroundColor: '#fff',
+    // borderBottomWidth: 0.8,
+    // borderBottomColor: '#ddd',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: Platform.OS === 'ios' ? 14 : 10,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
+    backgroundColor:'#fff'
   },
   iconButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 25,
-    width: 40,
-    height: 40,
   },
   icon: {
+    width: 25,
+    height: 25,
+    resizeMode: 'contain',
+  },
+   icon1: {
     width: 20,
     height: 20,
     resizeMode: 'contain',

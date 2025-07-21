@@ -6,23 +6,24 @@ import { Text } from '../../utils/Translate';
 import { StyleConstants } from '../../constants/Style.constant';
 import styles from '../../styles/Studymaterials.styles';
 import MainHeader from '../../components/MainHeader';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function StudyMaterials({ navigation }) {
   const [selected, setSelected] = useState('FreePdf');
- 
+  const navigate = useNavigation()
   return (
     <View style={StyleConstants.safeArView}>
-   <MainHeader
-                    name={"Study Materials"}
-                    leftIcon={{
-                      type: 'image',
-                      source: require('../../assets/img/backq.png'), // provide the image source
-                      onPress: () => {
-                        handleBackPress()
-                      },
-                    }}
-                  />
+      <MainHeader
+        name={"Study Materials"}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'), // provide the image source
+          onPress: () => {
+            navigate.goBack()
+          },
+        }}
+      />
 
       {/* <View style={styles.container}>
         <TouchableOpacity

@@ -599,7 +599,7 @@ const MemoizedCaptionSection = memo(
       <View
         style={[
           styles.captionView,
-          {height: expendedCaptions[item._id] ? 400 : 200},
+          {height: expendedCaptions[item._id] ? 400 : 160},
         ]}>
         <ScrollView>
           <View style={styles.reelNameContainer}>

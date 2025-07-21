@@ -38,15 +38,15 @@ export default function SearchBar() {
       </TouchableOpacity>
 
       {/* Bell Icon with Notification */}
-      {/* <TouchableOpacity onPress={() => console.log('Notifications')}>
+      <TouchableOpacity onPress={() => navigation.navigate('wallet')}>
         <View style={styles.bellWrapper}>
           <Image
-            source={require('../../assets/img/notification.png')}
+            source={require('../../assets/img/wallet.png')}
             style={styles.bellIcon}
           />
          
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 }

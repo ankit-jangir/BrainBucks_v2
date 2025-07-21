@@ -91,12 +91,15 @@ export default function Saved({navigation}) {
       let arr = Array.from(selectedExams);
       let response = await study.enrollInExam(arr);
       if (response.status === 1) {
+        setModalVisible(false)
         let nextOtherArr = otherExams.filter(
           item => !selectedExams.has(item._id),
         );
         setOtherExams(nextOtherArr);
         setSelectedExams(new Set([]));
         getSavedExams();
+        setModalVisible(false)
+
       } else {
         ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
       }

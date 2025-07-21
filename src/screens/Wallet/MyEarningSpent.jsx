@@ -74,7 +74,7 @@ const MyEarningSpent = () => {
                 <View style={styles.card}>
                   <View style={styles.row}>
                     <View>
-                      <View style={{ flexDirection: 'row' }}>
+                      <View style={{ flexDirection: 'row', }}>
                         <Image
                           source={require('../../assets/img/bb.png')}
                           style={styles.icon}
@@ -126,18 +126,20 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'white',
-    margin: 8,
     paddingLeft: 20,
     borderRadius: 5,
-    elevation: 3,
     padding: 8,
+    borderWidth:1,
+    borderColor:"#F2F2F2",
+    marginTop:5
   },
   row: {
     flexDirection: 'row',
   },
   icon: {
     height: 35,
-    width: 35,
+    width:35,
+    resizeMode:"contain"
   },
   info: {
     marginLeft: 10,
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#2E2E2E',
-    fontSize: 17,
+    fontSize: 14,
     fontWeight: '400',
     paddingRight: 5,
     textAlign: 'right',
@@ -167,9 +169,10 @@ const styles = StyleSheet.create({
   },
   spentForWrapper: {
     paddingTop: 20,
+    paddingLeft:5
   },
   spentFor: {
-    color: '#000',
+    color: '#8A8A8A',
     fontSize: 14,
   },
   containerImg: {
@@ -182,6 +185,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderRadius: 50,
     objectFit: 'cover',
+    paddingLeft:5
   },
 
   mainImage: {
@@ -192,7 +196,7 @@ const styles = StyleSheet.create({
   textTitle: {
     marginLeft: 15,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '600',
     fontFamily: 'Inter',
     color: '#2E2E2E',
   },

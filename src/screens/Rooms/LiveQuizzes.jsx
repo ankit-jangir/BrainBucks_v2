@@ -49,6 +49,7 @@ export default function LiveQuizzes({ navigation, route }) {
         <>
             <View style={{ zIndex: 20 }}><Toast /></View>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
+
                 {
                     loading
                         ?

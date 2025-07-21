@@ -30,7 +30,7 @@ export default function HomeBanners() {
       <Carousel
         loop
         width={width}
-        height={width / 2.1}
+        height={width /2}
         autoPlay
         data={banners}
         scrollAnimationDuration={1000}

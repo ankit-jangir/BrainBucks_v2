@@ -2,32 +2,40 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import MyEarningSpent from './MyEarningSpent';
 import Earned from './Earned';
+import MainHeader from '../../components/MainHeader';
+import { useNavigation } from '@react-navigation/native';
 
 const MyEarning = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
-
+const navigate = useNavigation()
   return (
     <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
-      <View style={styles.header}>
-      <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-      <Image source={require('../../assets/img/backq.png')} style={styles.backImage} />
-      
-      </TouchableOpacity>
-        <Text style={styles.headerText}>My Earnings</Text>
-      </View>
+       <MainHeader
+          name={"My Earnings"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigate.goBack()
+            },
+          }}
+        />
+
 
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tabItem, index === 0 ? styles.selectedTab : styles.spentTab]}
           onPress={() => setIndex(0)}
         >
-          <Text style={styles.tabTitle}>Spent</Text>
+        <Image source={require("../../assets/img/spent.png")} style={{height:20,width:20,resizeMode:"contain"}}/>
+          <Text style={[styles.tabTitle, index === 1 ? styles.selectedTab1 : styles.tabTitle1]}>Spent</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabItem, index === 1 ? styles.selectedTab : styles.earningTab]}
           onPress={() => setIndex(1)}
         >
-          <Text style={styles.tabTitle}>Earned</Text>
+        <Image source={require("../../assets/img/Earned.png")} style={{height:20,width:20,resizeMode:"contain"}}/>
+        <Text style={[styles.tabTitle, index === 1 ? styles.tabTitle : styles.selectedTab1]}>Earned</Text>
         </TouchableOpacity>
       </View>
 
@@ -71,25 +79,33 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     margin: 10,
-    backgroundColor: "lightgray",
+    backgroundColor: "#F2F2F2",
     borderRadius: 5,
   },
   tabTitle: {
     color: 'white',
-    fontFamily:"Work Sans"
+    fontFamily:"Inter",
+    fontSize:16,
+    fontWeight:"600"
 
+  },
+  selectedTab1:{
+color:"gray"
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 5,
+    borderRadius:10,
+    height:50,
+    justifyContent:"center",
+    flexDirection:"row",
+    gap:10
   },
   spentTab: {
-    backgroundColor: 'lightgray',
+    backgroundColor: '#F2F2F2',
   },
   earningTab: {
-    backgroundColor: 'lightgray',
+    backgroundColor: '#F2F2F2',
   },
   selectedTab: {
     backgroundColor: '#701DDB',

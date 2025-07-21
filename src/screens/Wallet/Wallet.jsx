@@ -1,31 +1,40 @@
 import {
   StyleSheet,
   View,
-  Linking,
-  TouchableOpacity,
   ScrollView,
   Image,
+  TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {Text} from '../../utils/Translate';
+import { Text } from '../../utils/Translate';
 import WalletApiService from '../../services/api/WalletApiService';
-import {
-  useNavigation,
-  NavigationContainer,
-  useIsFocused,
-} from '@react-navigation/native';
-import {ActivityIndicator} from 'react-native-paper';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
-import {useSignal} from '@preact/signals-react';
+import { useSignal } from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
-import {useWithdraw} from '../../context/WithdrawReducer';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { useWithdraw } from '../../context/WithdrawReducer';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import BasicServices from '../../services/BasicServices';
 import MainHeader from '../../components/MainHeader';
 
-export default function Wallet({navigation}) {
+export default function Wallet({ navigation }) {
+  const walletData = useSignal({
+    investmoney: 0,
+    wallet: 0,
+    redemmoney: 0,
+    transactions: [],
+    currentPage: 1,
+    totalPages: 1,
+  });
+
+  const [loading, setLoading] = useState(false);
+  const wallet = new WalletApiService();
+  const isFocused = useIsFocused();
+  const { withdrawState, dispatch } = useWithdraw();
+
   const getArrowImage = type => {
     return type === 'debit'
       ? require('../../assets/img/arrowdown.png')
@@ -44,26 +53,17 @@ export default function Wallet({navigation}) {
     else return 'Failed';
   };
 
-  const getStatusColor = (success, type) => {
+  const getStatusColor = success => {
     if (success === 1) return '#129C73';
     else if (success === -1) return 'orange';
     else return '#B71C1C';
   };
 
-  const walletData = useSignal({
-    investmoney: 0,
-    wallet: 0,
-    redemmoney: 0,
-    transactions: [],
-  });
-  const {withdrawState, dispatch} = useWithdraw();
-  const [loading, setLoading] = useState(false);
-  const wallet = new WalletApiService();
-  const isFocused = useIsFocused();
-
   useEffect(() => {
+    walletData.value.transactions = [];
+    walletData.value.currentPage = 1;
     getWalletData();
-    getTransactions();
+    getTransactions(1);
   }, [isFocused]);
 
   function getDataHelper(page) {
@@ -73,21 +73,26 @@ export default function Wallet({navigation}) {
     };
   }
 
-  async function getTransactions() {
-    let func = setLoading;
-    let res = await BasicServices.apiTryCatch(
-      getDataHelper(1),
+  async function getTransactions(page = 1) {
+    const func = setLoading;
+    const res = await BasicServices.apiTryCatch(
+      getDataHelper(page),
       Toast,
-      () => {
-        func(true);
-      },
-      () => {
-        func(false);
-      },
+      () => func(true),
+      () => func(false)
     );
+
     if (res) {
-      let transactions = res.transactions;
-      walletData.value = {...walletData, transactions: transactions};
+      let newTransactions = res.transactions || [];
+      walletData.value = {
+        ...walletData.value,
+        transactions:
+          page === 1
+            ? newTransactions
+            : [...walletData.value.transactions, ...newTransactions],
+        currentPage: page,
+        totalPages: res.totalPages || walletData.value.totalPages,
+      };
     }
   }
 
@@ -96,29 +101,42 @@ export default function Wallet({navigation}) {
       setLoading(true);
       let res = await wallet.getTransactions(1, 10);
       if (res.status === 1) {
-        walletData.value = res;
-        dispatch({type: 'details', withdrawDetails: {balance: res.wallet}});
+        walletData.value = { ...walletData.value, ...res };
+        dispatch({ type: 'details', withdrawDetails: { balance: res.wallet } });
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
-      console.log('Error while getting earned data', err.message);
+      console.log('Error while getting wallet data', err.message);
     } finally {
       setLoading(false);
     }
   }
 
+  function isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - 50;
+  }
+
   return (
     <View style={styles.container}>
-      <View style={{zIndex: 100}}>
+      <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
       <View style={styles.stdView1}>
-        <MainHeader name={'My Wallet'} />
+         <MainHeader
+                  name={'My Wallet'}
+                  leftIcon={{
+                    type: 'image',
+                    source: require('../../assets/img/backq.png'), // provide the image source
+                    onPress: () => {
+                      navigation.navigate("Home");
+                    },
+                  }}
+                />
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={{width: '100%', borderRadius: 10}}
+          style={{ width: '100%', borderRadius: 10 }}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
             <View style={styles.headerLeft}>
@@ -129,25 +147,11 @@ export default function Wallet({navigation}) {
               />
               <Text style={styles.headerTitle}> My Wallet </Text>
             </View>
-
-            <View style={styles.headerRight}>
-              {/* <Text style={styles.shareText}>Share</Text>
-              <TouchableOpacity>
-                <Image
-                  tintColor="white"
-                  source={require('../../assets/img/share.png')}
-                  style={styles.shareIcon}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity> */}
-            </View>
           </View>
 
           <View>
-            <Text
-              key={walletData.value.wallet + 'balance'}
-              style={styles.balanceText}>
-              ₹ {walletData.value.wallet}{' '}
+            <Text key={walletData.value.wallet + 'balance'} style={styles.balanceText}>
+              ₹ {walletData.value.wallet}
             </Text>
           </View>
 
@@ -233,7 +237,7 @@ export default function Wallet({navigation}) {
                 resizeMode="contain"
               />
             </View>
-            <Text style={styles.actionText}>History</Text>
+            <Text style={styles.actionText}>Withdraw History</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -252,88 +256,100 @@ export default function Wallet({navigation}) {
             <Text style={styles.actionText}>Add Bank</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.actionsContainer1}>
-          <Text style={styles.RecentText}>Recent Transactions</Text>
 
-          {walletData?.value?.transactions?.length > 0 && (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('history')}
-              style={styles.TouchableButton}>
-              <Text style={styles.ViewText}>View All</Text>
-            </TouchableOpacity>
-          )}
+        <View style={styles.actionsContainer1}>
+          <Text style={styles.RecentText}>Deposit Transactions</Text>
         </View>
       </View>
-      <ScrollView>
-        {loading ? (
+
+      <ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (
+            isCloseToBottom(nativeEvent) &&
+            !loading &&
+            walletData.value.currentPage < walletData.value.totalPages
+          ) {
+            getTransactions(walletData.value.currentPage + 1);
+          }
+        }}
+        scrollEventThrottle={400}>
+        {loading && walletData.value.transactions.length === 0 ? (
           <ActivityIndicator size={30} color={ColorsConstant.Theme} />
         ) : walletData.value.transactions.length === 0 ? (
           <NoDataFound
             message={'No Transactions yet'}
-            action={getWalletData}
+            action={() => getTransactions(1)}
             actionText={'Load Again'}
           />
         ) : (
-          walletData.value.transactions.map((res, index) => (
-            <View key={res._id} style={styles.historyContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('transactionDetails', {res: res});
-                }}>
-                <View style={styles.transactionEntry}>
-                  <View
-                    style={[
-                      styles.iconContainer,
-                      {
-                        backgroundColor:
-                          res.success === -1
-                            ? '#fff9ef'
-                            : res.success === 1
+          <>
+            {walletData.value.transactions.map((res, index) => (
+              <View key={res._id} style={styles.historyContainer}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('transactionDetails', { res })
+                  }>
+                  <View style={styles.transactionEntry}>
+                    <View
+                      style={[
+                        styles.iconContainer,
+                        {
+                          backgroundColor:
+                            res.success === -1
+                              ? '#fff9ef'
+                              : res.success === 1
                               ? '#EFFFF6'
                               : '#FFEFEF',
-                      },
-                    ]}>
-                    <Image
-                      source={getArrowImage(res.type)}
-                      style={styles.icon}
-                      tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
-                    />
-                  </View>
-                  <View>
-                    <Text style={styles.transactionAmount}>₹ {res.amount}</Text>
-                    <Text style={styles.timestamp}>{res.order_datetime}</Text>
-                  </View>
-                  <View style={styles.statusContainer}>
-                    <View style={[styles.statusIcon]}>
+                        },
+                      ]}>
+                      <Image
+                        source={getArrowImage(res.type)}
+                        style={styles.icon}
+                        tintColor={res.success === 1 ? '#129C73' : '#DC1111'}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.transactionAmount}>₹ {res.amount}</Text>
+                      <Text style={styles.timestamp}>{res.order_datetime}</Text>
+                    </View>
+                    <View style={styles.statusContainer}>
                       <Image
                         source={getStatusIcon(res.success)}
                         style={styles.icon1}
                       />
+                      <Text
+                        style={[
+                          styles.statusText,
+                          { color: getStatusColor(res.success) },
+                        ]}>
+                        {getStatusText(res.success)}
+                      </Text>
                     </View>
-                    <Text
-                      style={[
-                        styles.statusText,
-                        {color: getStatusColor(res.success, res.type)},
-                      ]}>
-                      {getStatusText(res.success)}
-                    </Text>
+                    <View style={styles.arrowIconContainer}>
+                      <Image
+                        source={require('../../assets/img/rightarrow1.png')}
+                        style={styles.icon2}
+                        tintColor={'gray'}
+                      />
+                    </View>
                   </View>
-                  <View style={styles.arrowIconContainer}>
-                    <Image
-                      source={require('../../assets/img/rightarrow1.png')}
-                      style={styles.icon2}
-                      tintColor={'gray'}
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-          ))
+                </TouchableOpacity>
+              </View>
+            ))}
+            {loading && (
+              <ActivityIndicator
+                size="small"
+                color={ColorsConstant.Theme}
+                style={{ marginVertical: 10 }}
+              />
+            )}
+          </>
         )}
       </ScrollView>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

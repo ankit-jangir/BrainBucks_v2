@@ -1,157 +1,141 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  ScrollView,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from "react-native";
+import React, { useEffect } from "react";
+import MainHeader from "../../components/MainHeader";
+import { useNavigation } from "@react-navigation/native";
+import HomeApiService from "../../services/api/HomeApiService";
+import { useQuery } from "@tanstack/react-query";
 
 const ReferStudents = () => {
   const navigation = useNavigation();
+  const homeServ = new HomeApiService();
+
+  const getActiveHomeQuizzes = async () => {
+    console.log("Fetching referral data...");
+    const res = await homeServ.ReferEarnData();
+    console.log("API response:", res.data);
+    return res.data;
+  };
+
+  const { data: referralData = [], refetch, isFetching, isError } = useQuery({
+    queryKey: ["homeActiveQuizzes"],
+    queryFn: getActiveHomeQuizzes,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  // Trigger initial fetch on mount
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  const handleRefresh = async () => {
+    await refetch();
+  };
+
+  // Show loading state
+  if (isFetching) {
+    return (
+      <View style={styles.container}>
+        <MainHeader
+          name={"Refer & Earn"}
+          leftIcon={{
+            type: "image",
+            source: require("../../assets/img/backq.png"),
+            onPress: () => navigation.goBack(),
+          }}
+        />
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  // Show error state
+  if (isError) {
+    return (
+      <View style={styles.container}>
+        <MainHeader
+          name={"Refer & Earn"}
+          leftIcon={{
+            type: "image",
+            source: require("../../assets/img/backq.png"),
+            onPress: () => navigation.goBack(),
+          }}
+        />
+        <Text>Error loading data. Please try again.</Text>
+      </View>
+    );
+  }
+
+  // Show empty state
+  if (!referralData || referralData.length === 0) {
+    return (
+      <View style={styles.container}>
+        <MainHeader
+          name={"Refer & Earn"}
+          leftIcon={{
+            type: "image",
+            source: require("../../assets/img/backq.png"),
+            onPress: () => navigation.goBack(),
+          }}
+        />
+        <Text>No referral data available.</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../assets/img/backicon.png')}
-            style={styles.topIcon}
-          />
-        </TouchableOpacity>
-        <Text style={styles.topTitle}>Refer Students & Earn</Text>
-        <TouchableOpacity>
-          <Image
-            source={require('../../assets/img/help.png')}
-            style={styles.topIcon}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}>
-        {/* Lifetime Earnings Card */}
-        <LinearGradient
-          colors={['#9333ea', '#b266fa']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          style={styles.earningsCard}>
-          <Text style={styles.earningsTitle}>Lifetime Earnings</Text>
-          <Text style={styles.earningsAmount}>$2,458.50</Text>
-          <Image
-            source={require('../../assets/img/chart.png')}
-            style={styles.earningsIcon}
-          />
-        </LinearGradient>
-
-        {/* How Earning Works */}
-        <Text style={styles.sectionTitle}>How Earning Works</Text>
-        <View style={styles.commissionRow}>
-          <View style={styles.commissionCard}>
-            <View style={styles.iconWrapper}>
-              <Image
-                source={require('../../assets/img/gift2.png')}
-                style={styles.icons}
-              />
+      <MainHeader
+        name={"Refer & Earn"}
+        leftIcon={{
+          type: "image",
+          source: require("../../assets/img/backq.png"),
+          onPress: () => navigation.goBack(),
+        }}
+      />
+      <FlatList
+        data={referralData}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.contentWrapper}
+        refreshing={isFetching}
+        onRefresh={handleRefresh}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={styles.profileRow}>
+              <View style={styles.profileImageWrapper}>
+                <Image
+                  source={require("../../assets/img/FRAME.png")}
+                  style={styles.earningsIcon}
+                />
+              </View>
+              <View>
+                <View style={styles.nameRow}>
+                  <Text style={styles.nameText}>{item.name}</Text>
+                  <Image
+                    source={
+                      item.gender === "girl"
+                        ? require("../../assets/img/h35.png")
+                        : require("../../assets/img/boys.png")
+                    }
+                    style={styles.verifiedIcon}
+                    resizeMode="contain"
+                  />
+                </View>
+                <Text style={styles.phoneText}>{item.phone}</Text>
+              </View>
             </View>
-            <Text style={styles.percentText}>1%</Text>
-            <Text style={styles.commissionLabel}>Commission</Text>
-            <Text style={styles.commissionDesc}>
-              When students join paid quizzes
-            </Text>
-          </View>
-
-          <View style={styles.commissionCard}>
-            <View style={styles.iconWrapper}>
+            <View style={styles.balanceRow}>
               <Image
-                source={require('../../assets/img/win.png')}
-                style={styles.icons}
+                source={require("../../assets/img/wallets.png")}
+                style={styles.walletIcon}
+                resizeMode="contain"
               />
+              <Text style={styles.amountText}>₹ {item.wallet || 0}</Text>
+              <Text style={styles.balanceText}> Balance</Text>
             </View>
-            <Text style={styles.percentText}>10%</Text>
-            <Text style={styles.commissionLabel}>Commission</Text>
-            <Text style={styles.commissionDesc}>
-              When your students win prizes
-            </Text>
           </View>
-        </View>
-
-        {/* Referral Code Box */}
-        <View style={styles.inviteContainer}>
-          <View style={styles.inviteBox}>
-            <TextInput
-              style={styles.refCode}
-              value="REF-2024-XYZ"
-              editable={false}
-            />
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/img/copy1.png')}
-                style={styles.copyIcon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity>
-            <LinearGradient
-              colors={['#9230f0', '#b266fa']}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              style={styles.copyButton}>
-              <Text style={styles.copyButtonText}>Copy Invite Link</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
-        {/* Share Options */}
-        <Text style={styles.sectionTitle1}>Or Share Via</Text>
-        <View style={styles.shareRow}>
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/img/whatsaps.png')}
-              style={styles.shareIcon}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/img/messenger.png')}
-              style={styles.shareIcon}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/img/emails.png')}
-              style={styles.shareIcon}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/img/more.png')}
-              style={styles.shareIcon}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Stats */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statLabel}>Active Referrals</Text>
-            <Text style={styles.statValue}>24</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statLabel}>Total Earned</Text>
-            <Text style={styles.statValue}>$2,458.50</Text>
-          </View>
-        </View>
-      </ScrollView>
+        )}
+      />
     </View>
   );
 };
@@ -161,193 +145,79 @@ export default ReferStudents;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
   },
-  scrollContent: {
-    paddingBottom: 30,
+  contentWrapper: {
+    padding: 15,
   },
-
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    // marginBottom: 16,
-    paddingVertical: 12,
-  },
-  topTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1A1A1A',
-    fontFamily: 'Poppins',
-  },
-  topIcon: {
-    width: 30,
-    height: 30,
-  },
-
-  earningsCard: {
-    borderRadius: 16,
-    padding: 20,
-    marginVertical: 20,
-    height: 116,
-    position: 'relative',
-  },
-  earningsTitle: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#FFFFFFE5',
-    fontFamily: 'Poppins',
-  },
-  earningsAmount: {
-    fontSize: 32,
-    fontWeight: '800',
-    color: '#FFFFFF',
-    fontFamily: 'Poppins',
-    marginTop: 4,
-  },
-  earningsIcon: {
-    width: 20,
-    height: 15,
-    position: 'absolute',
-    top: 16,
-    right: 16,
-  },
-
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1A1A1A',
-    marginVertical: 12,
-    fontFamily: 'Poppins',
-  },
-  sectionTitle1: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#666666',
-    textAlign: 'center',
-    marginVertical: 19,
-    fontFamily: 'Poppins',
-  },
-
-  commissionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  commissionCard: {
-    width: '48%',
-    backgroundColor: '#F8F9FA',
+  card: {
     borderRadius: 12,
-    padding: 12,
-    height: 200,
-  },
-  iconWrapper: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "white",
+    padding: 15,
     marginBottom: 10,
   },
-  percentText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1A1A1A',
-    fontFamily: 'Poppins',
+  profileRow: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
   },
-  commissionLabel: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1A1A1A',
-    marginBottom: 6,
-    fontFamily: 'Poppins',
+  profileImageWrapper: {
+    height: 50,
+    width: 50,
+    borderRadius: 100,
+    overflow: "hidden",
   },
-  commissionDesc: {
-    fontSize: 12,
-    fontWeight: '600',
-    lineHeight: 20,
-    color: '#666666',
-    fontFamily: 'Poppins',
+  earningsIcon: {
+    height: "100%",
+    width: "100%",
+    resizeMode: "contain",
   },
-  icons: {
-    width: 48,
-    height: 48,
+  nameRow: {
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingRight: 15,
   },
-
-  inviteContainer: {
-    backgroundColor: '#f9fafb',
-    borderRadius: 16,
-    padding: 16,
-    marginTop: 20,
+  nameText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#111827",
+    fontFamily: "Poppins",
+    flexShrink: 1,
   },
-  inviteBox: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 12,
+  verifiedIcon: {
+    height: 13,
+    width: 13,
   },
-  refCode: {
-    fontSize: 12,
-    fontWeight: '500',
-    flex: 1,
-    marginRight: 10,
-    color: '#111827',
-    fontFamily: 'Poppins',
+  phoneText: {
+    fontSize: 14,
+    color: "#4B5563",
+    marginTop: 2,
+    fontFamily: "Poppins",
+    fontWeight: "400",
   },
-  copyIcon: {
-    width: 20,
+  balanceRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 15,
+    paddingLeft: 5,
+  },
+  walletIcon: {
     height: 20,
+    width: 20,
   },
-  copyButton: {
-    backgroundColor: '#9333ea',
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: 'center',
+  amountText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#000000",
+    marginLeft: 6,
+    fontFamily: "Poppins",
   },
-  copyButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#FFFFFF',
-    fontFamily: 'Poppins',
-  },
-
-  shareRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 20,
-    paddingHorizontal: 25,
-  },
-  shareIcon: {
-    width: 48,
-    height: 48,
-  },
-
-  statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30,
-  },
-  statCard: {
-    width: '48%',
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
-    padding: 16,
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#1A1A1A',
-    fontFamily: 'Poppins',
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#666666',
-    fontFamily: 'Poppins',
+  balanceText: {
+    fontSize: 16,
+    color: "#4B5563",
+    marginLeft: 4,
+    fontFamily: "Poppins",
+    fontWeight: "400",
   },
 });

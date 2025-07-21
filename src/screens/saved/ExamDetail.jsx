@@ -17,6 +17,7 @@ import FreeTrivia from './FreeTrivia';
 import styles from '../../styles/Saved.styles';
 import LinearGradient from 'react-native-linear-gradient';
 import StudyMaterials from '../Study/StudyMaterials';
+import MainHeader from '../../components/MainHeader';
 
 
 
@@ -27,23 +28,16 @@ export default function ExamDetail({navigation, route}) {
   
   return (
       <SafeAreaView style={StyleConstants.safeArView}>
-        <View style={styles.Hview}>
-          <View style={styles.Hview1}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={styles.THead}>
-              <Image
-                source={require('../../assets/img/arrows.png')}
-                resizeMode="contain"
-                style={{width: 20, height: 20}}
-              />
-            </TouchableOpacity>
-            <View style={styles.ViewMy}>
-              <Text style={styles.TextMy}>Exams Quizzes </Text>
-            </View>
-          </View>
-        </View>
-           
+    <MainHeader
+          name={"Exams Quizzes"}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.goBack()
+            },
+          }}
+        />
 
       <View style={styles.RView} >
       <Tab.Navigator screenOptions={{

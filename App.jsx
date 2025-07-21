@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   Image,
@@ -137,8 +137,11 @@ import messaging from '@react-native-firebase/messaging';
 import SignupReferral from './src/screens/Login/SignupReferral.jsx';
 import {KeyboardProvider} from 'react-native-keyboard-controller';
 import ExamSearchScreen from './src/screens/Home/ExamSearchScreen.js';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {useReferralListener} from './src/hooks/useReferralListener.js';
+import VirtualRooms from './src/screens/RoomNew/VirtualRooms.jsx';
+import PhysicsChampions from './src/screens/RoomNew/PhysicsChampions.jsx';
+import ReferEarn from './src/screens/Profile/ReferEarn.js';
+import HomeReelsPlayer from './src/screens/Home/HomeReelPlayer.jsx';
 import Dashboard from './src/screens/Home/Dashboard.jsx';
 import ReferStudents from './src/screens/Home/ReferStudents.jsx';
 import Createquiz from './src/screens/Home/Createquiz.jsx';
@@ -149,12 +152,13 @@ import Addquestion from './src/screens/Home/Addquestion.jsx';
 import Schedulequiz from './src/screens/Home/Schedulequiz.jsx';
 import Addquizscreen6 from './src/screens/Home/Addquizscreen6.jsx';
 import Quizrules from './src/screens/Home/Quizrules.jsx';
-import quzescreen from './src/screens/Home/quzescreen8.jsx';
 import Questionscreen from './src/screens/Home/Questionscreen.jsx';
 import MissionScreen from './src/screens/Home/MissionScreen1.jsx';
 import Grouthbooster from './src/screens/Home/Grouthbooster.jsx';
 import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
 import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
+import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
+import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -170,16 +174,18 @@ function MyStack() {
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="signup" component={SingUp} />
       <Stack.Screen name="Otp" component={Otp} />
+      <Stack.Screen name="SignupName" component={SignupName} />
+      <Stack.Screen name="SignupReferral" component={SignupReferral} />
       <Stack.Screen name="Home" component={MyDrawer} />
       <Stack.Screen name="wallet" component={Wallet} />
       <Stack.Screen name="study" component={Study} />
       <Stack.Screen name="saved" component={Saved} />
+      <Stack.Screen name="PhysicsChampions" component={PhysicsChampions} />
       <Stack.Screen name="SearchBar" component={SearchBar} />
       <Stack.Screen name="videoplayer" component={VideoPlayer} />
-      <Stack.Screen name="SignupName" component={SignupName} />
+
       <Stack.Screen name="SignupGender" component={SignupGender} />
       <Stack.Screen name="SignUpExam" component={SignUpExam} />
-      <Stack.Screen name="SignupReferral" component={SignupReferral} />
       <Stack.Screen name="ViewProfile" component={ViewProfile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="StudyExam" component={StudyExam} />
@@ -218,6 +224,8 @@ function MyStack() {
       <Stack.Screen name="Particpants" component={Particpants} />
       <Stack.Screen name="myhistory" component={MyHistory} />
       <Stack.Screen name="InsideLobby" component={InsideLobby} />
+      <Stack.Screen name="VirtualRooms" component={VirtualRooms} />
+      <Stack.Screen name="HomeReelsPlayer" component={HomeReelsPlayer} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
 
       <Stack.Screen
@@ -291,6 +299,10 @@ function MyStack() {
       <Stack.Screen name="schedulquiz" component={ScheduleQuiz} />
       <Stack.Screen name="schedulquiztime" component={ScheduleQuizTime} />
       <Stack.Screen
+        name="scheduledQuizzes"
+        component={ScheduledQuizzes}
+      />
+      <Stack.Screen
         name="scheduledsuccessfullyQuiz"
         component={ScheduledSuccessfullyQuiz}
       />
@@ -308,6 +320,7 @@ function MyStack() {
       <Stack.Screen name="RoomsRewards" component={RoomsRewards} />
       <Stack.Screen name="HomeReelPlayer" component={HomeReelPlayer} />
       <Stack.Screen name="ExamSearchScreen" component={ExamSearchScreen} />
+      <Stack.Screen name="ReferEarn" component={ReferEarn} />
       <Stack.Screen name="ReferStudents" component={ReferStudents} />
       <Stack.Screen name="Createquiz" component={Createquiz} />
       <Stack.Screen name="ExamCategory" component={ExamCategory} />
@@ -317,7 +330,7 @@ function MyStack() {
       <Stack.Screen name="Schedulequiz" component={Schedulequiz} />
       <Stack.Screen name="Addquizscreen" component={Addquizscreen6} />
       <Stack.Screen name="Quizrules" component={Quizrules} />
-      <Stack.Screen name="quzescreen" component={quzescreen} />
+      <Stack.Screen name="quzescreenR" component={QuzescreenR} />
       <Stack.Screen name="Questionscreen" component={Questionscreen} />
       <Stack.Screen name="MissionScreen" component={MissionScreen} />
       <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
@@ -334,11 +347,11 @@ function MyTabs() {
     <SafeAreaProvider>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: {fontSize: 12, paddingBottom: 5},
+          tabBarLabelStyle: {fontSize: 11, paddingBottom: 5},
           tabBarStyle: {
-            height: 64,
+            height: 58,
             backgroundColor: 'white',
-            paddingBottom: 0,
+            // paddingBottom: 10,
           },
           tabBarShowLabel: true,
           headerShown: false,
@@ -430,20 +443,24 @@ function MyTabs() {
 
               useEffect(() => {
                 Animated.spring(scale, {
-                  toValue: focused ? 1.15 : 1,
+                  toValue: focused ? 1.1 : 1,
                   useNativeDriver: true,
                 }).start();
               }, [focused]);
 
               return (
                 <Animated.View
-                  style={[styles.roomsWrapper, {transform: [{scale}]}]}>
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: -45,
+                    transform: [{scale}],
+                    // paddingBottom:10
+                  }}>
                   <View
                     style={[
                       styles.roomCircle,
-                      {
-                        backgroundColor: focused ? '#701DDB' : '#F6F8FF',
-                      },
+                      {backgroundColor: focused ? '#701DDB' : '#F6F8FF'},
                     ]}>
                     <Image
                       source={require('./src/assets/img/roomsimgs.png')}
@@ -465,11 +482,11 @@ function MyTabs() {
         />
 
         <Tab.Screen
-          name="Saved"
-          component={Saved}
+          name="Refer"
+          component={ReferEarn}
           options={{
-            tabBarLabel: 'Saved',
-            tabBarIcon: ({focused}) => {
+            tabBarLabel: 'Refer',
+            tabBarIcon: ({ focused }) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -487,7 +504,7 @@ function MyTabs() {
                     {transform: [{scale}]},
                   ]}>
                   <Image
-                    source={require('./src/assets/img/heart.png')}
+                    source={require('./src/assets/img/Refer.png')}
                     style={[
                       styles.iconStyle,
                       {tintColor: focused ? '#701DDB' : '#7E7E7E'},
@@ -501,10 +518,10 @@ function MyTabs() {
         />
 
         <Tab.Screen
-          name="Wallet"
-          component={Wallet}
+          name="ViewProfile"
+          component={ViewProfile}
           options={{
-            tabBarLabel: 'Wallet',
+            tabBarLabel: 'Profile',
             tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
@@ -523,7 +540,7 @@ function MyTabs() {
                     {transform: [{scale}]},
                   ]}>
                   <Image
-                    source={require('./src/assets/img/wallet.png')}
+                    source={require('./src/assets/img/usera.png')}
                     style={[
                       styles.iconStyle,
                       {tintColor: focused ? '#701DDB' : '#7E7E7E'},
@@ -550,6 +567,7 @@ function MyDrawer() {
 }
 
 export default function App() {
+  const [currentRoute, setCurrentRoute] = useState('');
   const navRef = useRef();
   useReferralListener();
   useEffect(() => {
@@ -571,16 +589,12 @@ export default function App() {
         },
       },
       // ssssss
-      Signup: {
-        path: 'signup',
-      },
-      SignupReferral: {
-        path: 'signup/:referralCode?',
+      Splash: {
+        path: 'Splash',
         parse: {
-          referralCode: code => `${code}`,
+          referralCode: code => code || '',
         },
       },
-
       // ssss
       QuizDetails: {
         path: 'quiz',
@@ -590,6 +604,12 @@ export default function App() {
       },
       reels: {
         path: 'reels',
+        parse: {
+          id: id => `${id}`,
+        },
+      },
+      scheduledQuizzes: {
+        path: 'scheduledQuizzes',
         parse: {
           id: id => `${id}`,
         },
@@ -653,12 +673,15 @@ export default function App() {
   return (
     <KeyboardProvider>
       <NavigationContainer
-        ref={navRef}
-        onReady={() => {
-          setNavigation(navRef.current);
-        }}
-        linking={linking}>
+  ref={navRef}
+  linking={linking}
+  onReady={() => {
+    setNavigation(navRef.current); // existing logic
+    setCurrentRoute(navRef.current.getCurrentRoute()?.name); // route tracking
+  }}
+>
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
+        
         <AddBankReducer>
           <WithdrawReducer>
             <IdReducer>
@@ -683,17 +706,14 @@ const styles = StyleSheet.create({
   tabIconWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 40,
+    paddingTop: 10,
+    paddingBottom: 2,
   },
   activeTabBorder: {
     borderTopWidth: 2,
     borderTopColor: '#701DDB',
     borderRadius: 2,
-    // marginTop: -2,
-  },
-  roomsWrapper: {
-    alignItems: 'center',
-    marginTop: -40,
+    paddingTop: 2,
   },
   roomCircle: {
     width: 55,
@@ -706,9 +726,9 @@ const styles = StyleSheet.create({
   },
   newLabel: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -6,
     backgroundColor: '#D92828',
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 4,
   },

@@ -320,10 +320,12 @@ export default function QuizDetails({navigation, route}) {
                     style={styles.RegisteredImg}
                   />
                 </View>
+
                 <View style={styles.RulesName}>
                   <Text style={styles.NameText}>{data?.quiz_name}</Text>
                 </View>
               </View>
+
               <TouchableOpacity
                 onPress={() => {
                   navigation.dispatch(

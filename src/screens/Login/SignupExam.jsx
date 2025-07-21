@@ -23,9 +23,6 @@ import {setLoggedIn} from '../../..';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUpExam({navigation, route}) {
-  useEffect(() => {
-    console.log('SignupNamessss params:', route.params);
-  }, []);
 
   const [refresh, setRefresh] = useState(false);
   const [exams, setExams] = useState([]);
@@ -55,18 +52,22 @@ export default function SignUpExam({navigation, route}) {
         Array.from(selectedExams),
         route.params.otp,
         route.params.referralCode,
+        route.params.userType,
+        route.params.description,
       );
-      console.log('User id: ', res.name);
+      console.log('User id: ', res);
       if (res.status === 1) {
         console.log('JWT TOKEN: ', res.token);
+        console.log('wwwww: ', res);
 
         try {
           await BasicServices.setJwt(res.token);
           await BasicServices.setId(res.user_id);
+          await BasicServices.setUserType(res.is_edu);
+
           ChatSockService.connect();
           setLoggedIn(true);
           await AsyncStorage.removeItem('referral_code');
-
           navigation.reset({
             index: 0,
             routes: [{name: 'Home'}],

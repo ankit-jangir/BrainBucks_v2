@@ -24,20 +24,40 @@ import {Overlay} from '@rneui/themed';
 import {Button} from '../../utils/Translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatSockService from '../../services/api/ChatSockService';
-import { generateDynamicLink } from '../../utils/createDynamicLink';
+import {generateDynamicLink} from '../../utils/createDynamicLink';
+import BasicServices from '../../services/BasicServices';
 
 export default function ViewProfile({navigation, route}) {
   const [image1, setImage1] = useState(
     'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
-  const [user, setUser] = useState(route.params.userData);
+  const [user, setUser] = useState({});
   let auth = new AuthenticationApiService();
 
   let isFocused = useIsFocused();
   const [loggingOut, setLoggingOut] = useState(false);
   const [visible, setVisible] = useState(false);
-
   const [referCode, setReferCode] = useState('');
+  const [totalPlayed, setTotalPlayed] = useState(0);
+  const [userType, setUserType] = useState('');
+
+  useEffect(() => {
+    try {
+      auth.getUserProfile().then(res => {
+        if (res.status === 1) {
+          setUser(res.user_details);
+          if (res.user_details.image) {
+            setImage1(BLOBURL + res.user_details.image);
+          }
+          setTotalPlayed(res.totalquizplayed);
+        } else {
+          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+        }
+      });
+    } catch (err) {
+      console.log('Error in Fetching User Profile', err.message);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const fetchReferCode = async () => {
@@ -54,19 +74,54 @@ export default function ViewProfile({navigation, route}) {
     setVisible(!visible);
   }
 
+  // async function logOut() {
+  //   setLoggingOut(true);
+  //   try {
+  //     let response = await auth.logout();
+  //     if (response.status === 1) {
+  //       basic.setJwt('').then(() => {
+  //         AsyncStorage.removeItem('language').then(() => {
+  //           toggleOverlay();
+  //           ChatSockService.disconnect();
+  //         });
+  //       });
+  //     } else {
+  //       ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in Logging out', err.message);
+  //   } finally {
+  //     navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+  //     setLoggingOut(false);
+  //   }
+  //
+
+  useEffect(() => {
+    if (isFocused) {
+      BasicServices.getUserType()
+        .then(type => {
+          console.log('User Type aaaaaaaaaa(is_edu):', type);
+          setUserType(type);
+        })
+        .catch(err => {
+          console.log('Error fetching user type:', err);
+        });
+    }
+  }, [isFocused]);
+
   async function logOut() {
     setLoggingOut(true);
     try {
       let response = await auth.logout();
       if (response.status === 1) {
-        basic.setJwt('').then(() => {
+        BasicServices.setJwt('').then(() => {
           AsyncStorage.removeItem('language').then(() => {
             toggleOverlay();
             ChatSockService.disconnect();
           });
         });
       } else {
-        ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in Logging out', err.message);
@@ -76,43 +131,28 @@ export default function ViewProfile({navigation, route}) {
     }
   }
 
-  useEffect(() => {
-    try {
-      auth.getUserProfile().then(res => {
-        if (res.status === 1) {
-          setUser(res.user_details);
-          if (res.user_details.image) {
-            setImage1(BLOBURL + res.user_details.image);
-          }
-        } else {
-          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
-        }
-      });
-    } catch (err) {
-      console.log('Error in Fetching Profile in Edit Profile', err.message);
-    }
-  }, [isFocused]);
-
-
-const onShare = async () => {
-  if (!referCode) {
-    ToastAndroid.show(
-      'Unable to get referral code. Please try again later.',
-      ToastAndroid.SHORT
-    );
-    return;
-  }
-
-  try {
-    // ✅ Get short dynamic link from Firebase
-    const dynamicLink = await generateDynamicLink(referCode);
-
-    if (!dynamicLink) {
-      ToastAndroid.show('Failed to generate referral link', ToastAndroid.SHORT);
+  const onShare = async () => {
+    if (!referCode) {
+      ToastAndroid.show(
+        'Unable to get referral code. Please try again later.',
+        ToastAndroid.SHORT,
+      );
       return;
     }
 
-    const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
+    try {
+      // ✅ Get short dynamic link from Firebase
+      const dynamicLink = await generateDynamicLink(referCode);
+
+      if (!dynamicLink) {
+        ToastAndroid.show(
+          'Failed to generate referral link',
+          ToastAndroid.SHORT,
+        );
+        return;
+      }
+
+      const message = `🎉 Earn Rewards with BrainBucks! 🧠💰
 
 Hey! I’ve been using this awesome app called BrainBucks where you earn real rewards by participating in fun quizzes! 🏆📱
 
@@ -123,21 +163,17 @@ ${dynamicLink}
 
 The referral code will be applied automatically on install. Let’s earn together! 🚀`;
 
-    const result = await Share.share({ message });
+      const result = await Share.share({message});
 
-    if (result.action === Share.sharedAction) {
-      console.log('Referral link shared successfully');
-    } else if (result.action === Share.dismissedAction) {
-      console.log('Referral share dismissed');
+      if (result.action === Share.sharedAction) {
+        console.log('Referral link shared successfully');
+      } else if (result.action === Share.dismissedAction) {
+        console.log('Referral share dismissed');
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message);
     }
-  } catch (error) {
-    Alert.alert('Error', error.message);
-  }
-};
-
-
-
-
+  };
 
   const copyToClipboard = () => {
     Clipboard.setString(referCode);
@@ -199,7 +235,9 @@ The referral code will be applied automatically on install. Let’s earn togethe
               }}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('EditProfile', {...route.params})
+                  navigation.navigate('EditProfile', {
+                    userData: user,
+                  })
                 }
                 style={styles.EditT}>
                 <Text style={styles.EditText}>Edit Profile</Text>
@@ -221,33 +259,22 @@ The referral code will be applied automatically on install. Let’s earn togethe
             </View>
           </View>
 
-          <View style={styles.totalView}>
-            <ImageBackground
-              source={require('../../assets/img/background1.png')}
-              resizeMode="contain"
-              style={styles.bgImg}>
-              <View style={styles.RfrView}>
-                <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, {fontSize: 36}]}>
-                  {route.params.totalPlayed}
-                </Text>
-              </View>
-            </ImageBackground>
-          </View>
+       {userType !== true && (
+  <View style={styles.totalView}>
+    <ImageBackground
+      source={require('../../assets/img/background1.png')}
+      resizeMode="contain"
+      style={styles.bgImg}>
+      <View style={styles.RfrView}>
+        <Text style={styles.quizText}>Total Quiz Participated</Text>
+        <Text style={[styles.quizText, {fontSize: 36}]}>
+          {totalPlayed}
+        </Text>
+      </View>
+    </ImageBackground>
+  </View>
+)}
 
-          <TouchableOpacity
-            onPress={onShare}
-            style={{width: '100%', paddingHorizontal: 10, marginBottom: 35}}>
-            <ImageBackground
-              source={require('../../assets/img/background2.png')}
-              resizeMode="contain"
-              style={styles.bgImg}>
-              <View style={styles.RfrView}>
-                <Text style={styles.quizText}>Refer & Earn upto </Text>
-                <Text style={[styles.quizText, {fontSize: 36}]}>50,000</Text>
-              </View>
-            </ImageBackground>
-          </TouchableOpacity>
 
           <View style={styles.HelpView}>
             <TouchableOpacity
@@ -339,25 +366,56 @@ The referral code will be applied automatically on install. Let’s earn togethe
           </View>
         </View>
       </ScrollView>
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <View style={styles.logoutView}>
-          <Text style={styles.welcomeText}>Do You Want To Log Out</Text>
-          <View style={styles.logoutbuttons}>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={{
+          borderRadius: 20,
+          padding: 25,
+          width: '85%',
+          backgroundColor: '#fff',
+          elevation: 10,
+        }}>
+        <View style={{alignItems: 'center'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '600',
+              color: '#333',
+              marginBottom: 20,
+              textAlign: 'center',
+              fontFamily: 'WorkSans-SemiBold',
+            }}>
+            Are you sure you want to log out?
+          </Text>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              gap: 15,
+            }}>
             <Button
-              title="Yes"
-              color={'#eb1313'}
-              titleStyle={{color: 'white', fontSize: 15, padding: 15}}
-              buttonStyle={styles.logoutyesbutton}
-              onPress={() => {
-                logOut().then(toggleOverlay).then(ChatSockService.disconnect);
+              title="Yes, Logout"
+              onPress={logOut}
+              buttonStyle={{
+                backgroundColor: '#eb1313',
+                paddingHorizontal: 25,
+                paddingVertical: 12,
+                borderRadius: 10,
               }}
+              titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
             />
             <Button
-              titleStyle={{color: 'black', fontSize: 15, padding: 15}}
-              color={'#e6e3e8'}
-              title="No"
-              buttonStyle={styles.logoutyesbutton}
+              title="Cancel"
               onPress={toggleOverlay}
+              buttonStyle={{
+                backgroundColor: '#e6e3e8',
+                paddingHorizontal: 25,
+                paddingVertical: 12,
+                borderRadius: 10,
+              }}
+              titleStyle={{fontSize: 15, color: '#000'}}
             />
           </View>
         </View>

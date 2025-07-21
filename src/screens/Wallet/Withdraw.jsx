@@ -35,7 +35,7 @@ const Withdraw = ({ navigation }) => {
       setLoading(true);
       let res = await wallServ.getVerfiedBanks();
       if (res.status === 1) {
-        setVerifiedBanks(res.banks);
+        setVerifiedBanks(res.data);
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
@@ -60,33 +60,58 @@ const Withdraw = ({ navigation }) => {
     }
   }
 
-  async function next() {
-    if (!withdrawState.amount) {
-      ToastAndroid.show('Enter an amount to withdraw ', ToastAndroid.SHORT);
-      return;
-    }
+  // async function next() {
+  //   if (!withdrawState.amount) {
+  //     ToastAndroid.show('Enter an amount to withdraw ', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (withdrawState.amount < 100) {
-      ToastAndroid.show('Minimum amount should be ₹100', ToastAndroid.SHORT);
-      return;
-    }
+  //   if (withdrawState.amount < 100) {
+  //     ToastAndroid.show('Minimum amount should be ₹100', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (!withdrawState.bank || Object.keys(withdrawState.bank).length === 0) {
-      ToastAndroid.show('Select a bank to withdraw the money ', ToastAndroid.SHORT);
-      return;
-    }
+  //   if (!withdrawState.bank || Object.keys(withdrawState.bank).length === 0) {
+  //     ToastAndroid.show('Select a bank to withdraw the money ', ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    if (withdrawState.amount > withdrawState.balance - 10) {
-      ToastAndroid.show("You can't withdraw more than Redeemable balance ", ToastAndroid.SHORT);
-      return;
-    }
+  //   if (withdrawState.amount > withdrawState.balance - 10) {
+  //     ToastAndroid.show("You can't withdraw more than Redeemable balance ", ToastAndroid.SHORT);
+  //     return;
+  //   }
 
-    bhRef.current.remove();
-    navigation.navigate('withdrawMoney');
+  //   bhRef.current.remove();
+  //   navigation.navigate('withdrawMoney');
+  // }
+
+
+async function next() {
+  if (!withdrawState.amount || withdrawState.amount < 100) {
+    ToastAndroid.show('Enter minimum ₹100 amount', ToastAndroid.SHORT);
+    return;
   }
 
+  if (!withdrawState.bank?._id) {
+    ToastAndroid.show('Select a bank first', ToastAndroid.SHORT);
+    return;
+  }
+
+
+  const result = await wallServ.withdrawMoneyReq({
+    bankAccountId: withdrawState.bank._id,
+    amount: withdrawState.amount,
+  });
+
+  if (result.status === 1) {
+    navigation.navigate('wallet');
+  } else {
+    ToastAndroid.show(result.Backend_Error || 'Something went wrong', ToastAndroid.SHORT);
+  }
+}
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8F9FB', paddingBottom: 80 }}>
+    <View style={{ flex: 1, backgroundColor: '#fff', paddingBottom: 80 }}>
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
@@ -95,10 +120,10 @@ const Withdraw = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             dispatch({ type: 'empty' });
-            navigation.goBack();
+            navigation.navigate("wallet");
           }}>
           <Image
-            tintColor="gray"
+            tintColor="#000"
             source={require('../../assets/img/radic.png')}
             style={styles.actionIcon}
             resizeMode="contain"
@@ -112,7 +137,7 @@ const Withdraw = ({ navigation }) => {
       </View>
 
       <View style={styles.balanceContainer}>
-        <Text>Total Redeemable Balance</Text>
+        <Text style={styles.totaltext}>Total Redeemable Balance</Text>
         <Text style={styles.balanceAmount}>₹ {withdrawState.balance - 10 >= 0 ? withdrawState.balance - 10 : 0}</Text>
       </View>
 
@@ -160,10 +185,10 @@ const Withdraw = ({ navigation }) => {
                   />
                   <Text style={styles.bankName}>{res.bank_name}</Text>
                 </View>
-                <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
+                <Text style={styles.bankHolder}>{res.account_holder_name}</Text>
                 <View style={styles.bankAccountDetails}>
-                  <Text style={styles.accountText}>A/C: {res.bank_acc_no}</Text>
-                  <Text style={styles.ifscText}>IFSC: {res.ifsc_code}</Text>
+                  <Text style={styles.accountText}>A/C: {res.account_number}</Text>
+                  <Text style={styles.ifscText}>IFSC: {res.ifsc}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -186,20 +211,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
   },
   actionIcon: {
-    width: 22,
-    height: 22,
+    width: 17,
+    height: 17,
   },
   headerTextContainer: {
-    paddingLeft: 20,
+    paddingLeft:40,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize:17,
     fontWeight: '600',
     color: 'black',
     fontFamily: 'Work Sans',
@@ -208,53 +230,62 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#D92828',
     fontFamily: 'Work Sans',
+    fontWeight:"400"
   },
   balanceContainer: {
-    margin: 15,
+    margin:12,
     borderColor: '#EFEFEF',
     padding: 15,
-    borderWidth: 1,
-    borderRadius: 12,
+    borderWidth:0.6,
+    borderRadius:5,
     backgroundColor: '#fff',
+  },
+  totaltext:{
+  fontFamily:"Work Sans",
+  fontWeight:"400",
+  fontSize:14,
+  color:"#8A8A8A",
+  fontStyle:"Regular"
   },
   balanceAmount: {
     fontSize: 30,
     fontWeight: '600',
     fontFamily: 'Work Sans',
-    color: 'black',
-  },
+    color: '#7E7E7E',
+    },
   balanceAmount1: {
-    fontSize: 18,
+    fontSize:20,
     fontWeight: '500',
     color: 'black',
     paddingLeft: 20,
     fontFamily: 'Work Sans',
     paddingBottom: 5,
-    paddingTop: 10,
+    paddingTop:40,
   },
   amountInputContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingTop: 10,
   },
   amountLabel: {
     color: 'black',
-    fontSize: 16,
+    fontSize:20,
     fontFamily: 'Work Sans',
     marginBottom: 6,
+    fontWeight:"500"
   },
   inputs: {
     borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
+    borderWidth:0.6,
     padding: 10,
     fontSize: 16,
     fontFamily: 'Work Sans',
     backgroundColor: '#fff',
     color: 'black',
+    borderRadius:5
   },
   warningText: {
     fontSize: 13,
-    marginTop: 6,
+    marginTop:3,
     color: '#D92828',
     fontFamily: 'Work Sans',
   },
@@ -262,15 +293,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 12,
     borderRadius: 10,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: '#ddd',
     backgroundColor: '#fff',
     padding: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+   
   },
   bankHeader: {
     flexDirection: 'row',
@@ -290,7 +317,7 @@ const styles = StyleSheet.create({
   },
   bankHolder: {
     fontWeight: '400',
-    color: '#7E7E7E',
+    color: '#000',
     fontFamily: 'Work Sans',
     marginBottom: 10,
   },
@@ -313,18 +340,14 @@ const styles = StyleSheet.create({
     right: 20,
     backgroundColor: '#701DDB',
     paddingVertical: 14,
-    borderRadius: 30,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    
   },
   payNowText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
     fontFamily: 'Work Sans',
   },

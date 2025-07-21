@@ -22,6 +22,7 @@ import MainHeader from '../../components/MainHeader';
 const AddBanks = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [banks, setBanks] = useState([]);
+  console.log(banks)
   const [visible, setVisible] = useState(false);
   const [delId, setDelId] = useState('');
   const isFocused = useIsFocused();
@@ -55,7 +56,7 @@ const AddBanks = ({navigation}) => {
       setLoading(true);
       let res = await wallService.getAllBanks();
       if (res.status === 1) {
-        setBanks(res.banks);
+        setBanks(res.data);
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
@@ -67,7 +68,7 @@ const AddBanks = ({navigation}) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
       <View style={{zIndex: 100}}>
         <Toast />
       </View>
@@ -76,9 +77,7 @@ const AddBanks = ({navigation}) => {
         leftIcon={{
           type: 'image',
           source: require('../../assets/img/backq.png'),
-          onPress: () => {
-            navigation.goBack();
-          },
+          onPress: () => navigation.navigate('wallet'),
         }}
       />
 
@@ -95,9 +94,10 @@ const AddBanks = ({navigation}) => {
           banks.map((res, index) => {
             return (
               <View key={res._id}>
-                <TouchableOpacity>
+                <View>
                   <View key={index} style={styles.bankDetailsContainer}>
                     <View style={styles.bankDetailsHeader}>
+                    <View style={{flexDirection:"row",alignItems:"center"}}>
                       <View style={styles.bankIconContainer}>
                         <Image
                           source={require('../../assets/img/bank.png')}
@@ -106,16 +106,54 @@ const AddBanks = ({navigation}) => {
                         />
                       </View>
                       <Text style={styles.bankName}>{res.bank_name}</Text>
-                      <Text style={styles.verified}>
-                        {res.is_verifed ? 'verified' : 'not verified'}
+                      
+                      </View>
+                      <View style={[styles.data, {
+                            backgroundColor:
+                              res.status === 'pending'
+                                ? '#FFEDD5'
+                                : res.status === 'accepted'
+                                  ? '#DCFCE7'
+                                  : '#dcfce7',
+                          }]}>
+                      <Text
+                        style={[
+                          styles.verified,
+                          {
+                            color:
+                              res.status === 'pending'
+                                ? 'orange'
+                                : res.status === 'accepted'
+                                  ? 'green'
+                                  : 'red',
+                          },
+                        ]}>
+                        {res.status}
                       </Text>
+                      </View>
+                      
                     </View>
-                    <Text style={styles.bankHolder}>{res.acc_holder_name}</Text>
-                    <View style={styles.bankAccountDetails}>
-                      <Text style={styles.accountText}>{res.bank_acc_no}</Text>
-                      <Text style={styles.ifscText}>{res.ifsc_code}</Text>
+                    <View style={{paddingBottom:20}}>
+                    <Text style={[styles.bankHolder1]}>
+                      Account Holder
+                    </Text>
+                    <Text style={styles.bankHolder}>
+                      {res.account_holder_name}
+                    </Text>
+                    <Text style={[styles.bankHolder1]}>
+                      Account Number
+                    </Text>
+                    <Text style={styles.bankHolder}>
+                      {res.account_number}
+                    </Text>
+                    <Text style={[styles.bankHolder1]}>
+                     IFSC Code
+                    </Text>
+                    <Text style={styles.bankHolder}>
+                      {res.ifsc}
+                    </Text>
                     </View>
-                    <View style={{margin: 0}}>
+                    {/*<View style={{margin: 0}}>
                       <TouchableOpacity
                         onPress={() => {
                           setDelId(res._id), setVisible(true);
@@ -123,9 +161,9 @@ const AddBanks = ({navigation}) => {
                         style={styles.button}>
                         <Text style={styles.buttonText}>Remove Account</Text>
                       </TouchableOpacity>
-                    </View>
+                    </View>*/}
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
             );
           })
@@ -161,12 +199,10 @@ const AddBanks = ({navigation}) => {
       </Overlay>
 
       <TouchableOpacity
-  onPress={() => navigation.navigate('addbankAccount')} // Replace with your actual screen
-  style={styles.floatingButton}
->
-  <Text style={styles.floatingButtonText}>+</Text>
-</TouchableOpacity>
-
+        onPress={() => navigation.navigate('addbankAccount')} // Replace with your actual screen
+        style={styles.floatingButton}>
+        <Text style={styles.floatingButtonText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -175,27 +211,27 @@ export default AddBanks;
 
 const styles = StyleSheet.create({
   floatingButton: {
-  position: 'absolute',
-  right: 20,
-  bottom: 30,
-  backgroundColor: '#701DDB',
-  width: 55,
-  height: 55,
-  borderRadius: 30,
-  justifyContent: 'center',
-  alignItems: 'center',
-  elevation: 5,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-},
-floatingButtonText: {
-  color: 'white',
-  fontSize: 30,
-  fontWeight: 'bold',
-  marginBottom: 2,
-},
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#701DDB',
+    width: 55,
+    height: 55,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  floatingButtonText: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
 
   header: {
     backgroundColor: 'white',
@@ -233,28 +269,24 @@ floatingButtonText: {
   },
   bankDetailsContainer: {
     margin: 10,
-    // padding: 10,
-    // backgroundColor:'#EFEFEF',
+    padding: 10,
+    backgroundColor:'#fff',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'lightgray',
   },
   bankDetailsHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 8,
-    paddingTop: 8,
+    justifyContent:"space-between",
+    paddingRight:10
   },
   bankIconContainer: {
-    height: 40,
+    height:40,
     width: 40,
-    borderRadius: 50,
-    borderWidth: 2,
-    borderColor: '#F2F2F2',
+    justifyContent:"center"
   },
   bankIcon: {
-    height: '100%',
-    width: '100%',
+    height: '80%',
+    width: '80%',
   },
   bankName: {
     fontSize: 17,
@@ -262,11 +294,20 @@ floatingButtonText: {
     paddingLeft: 15,
     color: 'black',
   },
-  bankHolder: {
-    paddingLeft: 10,
+
+  bankHolder1: {
     fontWeight: '400',
-    color: '#7E7E7E',
-    paddingTop: 20,
+    color: '#666262ff',
+    paddingTop:10,
+    fontSize:14,
+    fontFamily:"Inter"
+  },
+  bankHolder: {
+    fontWeight: '500',
+    color: '#000000',
+    paddingTop:5,
+    fontSize:16,
+    fontFamily:"Inter",
   },
   bankAccountDetails: {
     flexDirection: 'row',
@@ -320,7 +361,6 @@ floatingButtonText: {
   verified: {
     color: '#367CFF',
     textAlign: 'right',
-    flex: 1,
-    paddingRight: 13,
   },
+  data:{paddingVertical:5,backgroundColor:"red",paddingHorizontal:15,borderRadius:50}
 });

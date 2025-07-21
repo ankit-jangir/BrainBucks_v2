@@ -5,20 +5,20 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { Text } from '../utils/Translate';
-import React, { useEffect, useState } from 'react';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { BLOBURL } from '../config/urls';
+import {Text} from '../utils/Translate';
+import React, {useEffect, useState} from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {BLOBURL} from '../config/urls';
 import HomeApiService from '../services/api/HomeApiService';
-import { useQuery } from '@tanstack/react-query';
-import { color } from '@rneui/base';
+import {useQuery} from '@tanstack/react-query';
+import {color} from '@rneui/base';
 
 export default function HomeExams() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const homeServ = new HomeApiService();
 
-  const { data, refetch } = useQuery({
+  const {data, refetch} = useQuery({
     queryKey: ['homeExams'],
     queryFn: homeServ.getExams,
     refetchOnWindowFocus: true,
@@ -26,7 +26,6 @@ export default function HomeExams() {
   });
 
   const [exams, setExams] = useState([]);
-
 
   useEffect(() => {
     if (isFocused) refetch();
@@ -45,8 +44,7 @@ export default function HomeExams() {
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>Exams</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('myexams', { exams })}
-        >
+          onPress={() => navigation.navigate('myexams', {exams})}>
           <Text style={styles.headerSeeAll}>See All &gt;</Text>
         </TouchableOpacity>
       </View>
@@ -56,8 +54,8 @@ export default function HomeExams() {
         data={exams}
         keyExtractor={item => item._id.toString()}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 10 }}
-        renderItem={({ item }) => (
+        contentContainerStyle={{paddingHorizontal: 10}}
+        renderItem={({item}) => (
           <TouchableOpacity
             style={styles.cardContainer}
             onPress={() =>
@@ -66,15 +64,27 @@ export default function HomeExams() {
                 imgurl: item.image,
                 title: item.category_name,
               })
-            }
-          >
+            }>
             <Image
-              source={{ uri: BLOBURL + item.image }}
+              source={{uri: BLOBURL + item.image}}
               style={styles.cardImage}
             />
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>{item.category_name}</Text>
-              <Text style={styles.cardSubtitle}>{item.quizCount}<Text style={{color:"#7E7E7E",fontWeight:'400',fontSize:12}}> Active Quizzes</Text></Text>
+              <Text
+                style={styles.cardTitle}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {item.category_name}
+              </Text>
+
+              <Text style={styles.cardSubtitle}>
+                {item.quizCount}
+                <Text
+                  style={{color: '#7E7E7E', fontWeight: '400', fontSize: 12}}>
+                  {' '}
+                  Active Quizzes
+                </Text>
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   headerTitle: {
-     color: '#333333',
+    color: '#333333',
     fontSize: 16,
     fontFamily: 'WorkSans-Medium',
     fontWeight: '500',
@@ -103,18 +113,17 @@ const styles = StyleSheet.create({
     fontFamily: 'WorkSans-Regular',
   },
   cardContainer: {
-    width: 160,
-    height: 180,
+    width: 170,
     backgroundColor: '#fff',
     borderRadius: 10,
     // marginRight: 12,
     elevation: 0.8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     overflow: 'hidden',
-    margin:10
+    margin: 10,
   },
   cardImage: {
     width: '100%',
@@ -124,11 +133,14 @@ const styles = StyleSheet.create({
   cardContent: {
     padding: 10,
   },
+
   cardTitle: {
     fontSize: 14,
     fontFamily: 'WorkSans-SemiBold',
     color: '#000',
+    width: '100%',
   },
+
   cardSubtitle: {
     fontSize: 14,
     fontFamily: 'WorkSans-Regular',

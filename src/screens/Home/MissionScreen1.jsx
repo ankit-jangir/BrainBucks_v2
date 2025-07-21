@@ -230,12 +230,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical:10,
+    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-    elevation: 2,
-    backgroundColor: '#fff',
     zIndex: 1,
   },
 
