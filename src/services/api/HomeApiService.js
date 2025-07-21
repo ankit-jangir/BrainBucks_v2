@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { QUIZMICRO, TICKETURL } from '../../config/urls';
+import { AUTHMICRO, QUIZMICRO, TICKETURL } from '../../config/urls';
 import basic from '../BasicServices'
 
 class HomeApiService{
@@ -20,6 +20,19 @@ class HomeApiService{
     async getBanners(){
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/banners`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let options = {
+            method: "get",
+            headers: headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async ReferEarnData(){
+        let token = await basic.getBearerToken()
+        let url = `${AUTHMICRO}/auth/participant/referer`
         let headers = {"content-type":"application/json", "authorization":token}
         let options = {
             method: "get",
