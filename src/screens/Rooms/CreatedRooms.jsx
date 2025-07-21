@@ -56,7 +56,6 @@ export default function CreatedRooms({navigation}) {
   }
 
   let ras = new RoomsApiService();
-
   let {loading, error, data, refetch} = useQuery(ras.Get_created_rooms);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ const plans = [
   {
     name: 'Pro Affiliate',
     price: '₹499',
-    sub: '/month',
+    sub: 'month',
     tag: 'Most Popular',
     features: [
       '12% Referral Bonus',
@@ -33,7 +33,7 @@ const plans = [
   {
     name: 'Elite Partner',
     price: '₹9,999',
-    sub: '/month',
+    sub: 'month',
     features: [
       '20% Referral Bonus',
       'Premium Analytics',
@@ -80,7 +80,7 @@ const FoundersClubScreen = () => {
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            source={require('../../assets/img/backq.png')}
+            source={require('../../assets/img/h27.png')}
             style={styles.backIcon}
           />
         </TouchableOpacity>
@@ -90,7 +90,7 @@ const FoundersClubScreen = () => {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollArea}>
+      <ScrollView contentContainerStyle={styles.scrollArea} showsVerticalScrollIndicator={false} >
         {plans.map((plan, index) => (
           <View key={index} style={[styles.card, getCardStyle(plan.name)]}>
             {plan.tag && (
@@ -106,12 +106,13 @@ const FoundersClubScreen = () => {
               <Image source={plan.icon} style={styles.icon} />
             </View>
 
+           <View style={{flexDirection:"row",alignItems:"center"}}>
             <Text style={[styles.price, getTextColor(plan.name)]}>
-              {plan.price}{' '}
-              <Text style={[styles.sub, getTextColor(plan.name)]}>
-                {plan.sub}
+              {plan.price}/{' '}</Text>
+             <Text style={[styles.sub, getTextColor(plan.name)]}>
+              {plan.sub}
               </Text>
-            </Text>
+           </View>
 
             {plan.features.map((feature, i) => (
               <View key={i} style={styles.featureRow}>
@@ -150,39 +151,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 10,
+    paddingVertical: 10,
     backgroundColor: '#F9F9FC',
+    gap: 10
   },
   backIcon: {
     width: 24,
     height: 24,
     resizeMode: 'contain',
-    marginRight: 17,
-  },
-  headerTextBox: {
-    flex: 1,
   },
   heading: {
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: '400',
     color: '#1A1A1A',
+    fontFamily: "Poppins"
   },
   subheading: {
     fontSize: 16,
     color: '#666666',
-    marginTop: 2,
     fontFamily: 'Poppins',
+    fontWeight: '400',
+    paddingTop: 5
   },
   scrollArea: {
-    paddingHorizontal: 20,
+    paddingHorizontal:15,
     paddingBottom: 40,
+    paddingTop:30
   },
   card: {
     borderRadius: 16,
-    padding: 20,
+    padding:20,
     marginBottom: 20,
-    fontSize:24
+    fontSize: 24,
   },
   basicCard: {
     backgroundColor: '#F8F9FA',
@@ -204,20 +204,20 @@ const styles = StyleSheet.create({
   },
   planName: {
     fontSize: 24,
-    fontWeight: '700',
-    fontFamily:"Poppins"
+    fontWeight: '400',
+    fontFamily: "Poppins",
+    color:"#1A1A1A"
   },
   price: {
     fontSize: 30,
-    fontWeight: '800',
-    marginTop: 10,
-    marginBottom: 12,
-    fontFamily:"Poppins"
+    fontWeight: '400',
+    fontFamily: "Poppins"
   },
   sub: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '400',
-    fontFamily:"Poppins"
+    fontFamily: "Poppins",
+    color:"#4B5563"
   },
   icon: {
     width: 30,
@@ -230,15 +230,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   checkbox: {
-    width: 16,
-    height: 16,
+    width: 20,
+    height: 20,
     marginRight: 8,
     resizeMode: 'contain',
   },
   feature: {
     fontSize: 16,
     flexShrink: 1,
-    fontWeight:"400"
+    fontWeight: "400",
+    fontFamily:"Poppins",
+    color:"#374151"
   },
   tag: {
     backgroundColor: '#FF6A00',
@@ -261,8 +263,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonTextBase: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: 16,
+    fontWeight: '500',
+    fontFamily:"Poppins"
   },
   outlineButton: {
     borderWidth: 1,

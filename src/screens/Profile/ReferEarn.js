@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -10,6 +10,7 @@ import {
   ScrollView,
   Alert,
   ToastAndroid,
+  FlatList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MainHeader from '../../components/MainHeader';
@@ -20,160 +21,177 @@ import { Clipboard } from 'react-native';
 
 const ReferEarn = () => {
   const navigation = useNavigation();
-    let auth = new AuthenticationApiService();
-    const [referCode, setReferCode] = useState('');
-  console.log(referCode)
-   const copyToClipboard = () => {
-      Clipboard.setString(referCode);
-      ToastAndroid.show('Referral code copied to clipboard', ToastAndroid.LONG);
-    };
-    const CopYLink = () => {
-      Clipboard.setString(`${APPURL}/Splash?referralCode=${referCode}`);
-      ToastAndroid.show('Copey Link', ToastAndroid.LONG);
-    };
-  useEffect(() => {
-      const fetchReferCode = async () => {
-        const code = await auth.getReferCode();
-        if (code) {
-          setReferCode(code);
-        }
-      };
-  
-      fetchReferCode();
-    }, []);
+  let auth = new AuthenticationApiService();
+  const [referCode, setReferCode] = useState('');
 
-    
-      const onShare = async reel_id => {
-        try {
-          const result = await Share.share({
-            message: `${APPURL}/Splash?referralCode=${referCode}`,
-          });
-          if (result.action === Share.sharedAction) {
-            if (result.activityType) {
-              // shared with activity type of result.activityType
-            } else {
-              // shared
-            }
-          } else if (result.action === Share.dismissedAction) {
-            // dismissed
-          }
-        } catch (error) {
-          Alert.alert(error.message);
+  const copyToClipboard = () => {
+    Clipboard.setString(referCode);
+    ToastAndroid.show('Referral code copied to clipboard', ToastAndroid.LONG);
+  };
+
+  const CopYLink = () => {
+    Clipboard.setString(`${APPURL}/Splash?referralCode=${referCode}`);
+    ToastAndroid.show('Copey Link', ToastAndroid.LONG);
+  };
+
+  useEffect(() => {
+    const fetchReferCode = async () => {
+      const code = await auth.getReferCode();
+      if (code) {
+        setReferCode(code);
+      }
+    };
+
+    fetchReferCode();
+  }, []);
+
+  
+
+  const onShare = async reel_id => {
+    try {
+      const result = await Share.share({
+        message: `${APPURL}/Splash?referralCode=${referCode}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
         }
-      };
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
+  const commissionData = [
+    {
+      id: '1',
+      icon: require('../../assets/img/gift2.png'),
+      percent: '1%',
+      label: 'Commission',
+      desc: 'When students join paid quizzes',
+    },
+    {
+      id: '2',
+      icon: require('../../assets/img/win.png'),
+      percent: 'Signup',
+      label: 'Commission',
+      desc: 'When your students win prizes',
+    },
+    {
+      id: '3',
+      icon: require('../../assets/img/win.png'),
+      percent: '10%',
+      label: 'Commission',
+      desc: 'When your students win prizes',
+    },
+  ];
+
   return (
     <View style={styles.container}>
       {/* Top Bar */}
       <MainHeader
-          name={'Refer & Earn'}
-          leftIcon={{
-            type: 'image',
-            source: require('../../assets/img/backq.png'), // provide the image source
-            onPress: () => {
-              navigation.goBack();
-            },
-          }}
+        name={'Refer & Earn'}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'), // provide the image source
+          onPress: () => {
+            navigation.goBack();
+          },
+        }}
+      />
+
+      <ScrollView style={{ paddingHorizontal: 15, paddingTop: 10, marginBottom: 10 }} showsVerticalScrollIndicator={false}>
+        {/* Lifetime Earnings Card */}
+        <View >
+          <LinearGradient
+            colors={['#9333ea', '#b266fa']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.earningsCard}>
+            <Text style={styles.earningsTitle}>Lifetime Earnings</Text>
+            <Text style={styles.earningsAmount}>$2,458.50</Text>
+            <Image
+              source={require('../../assets/img/chart.png')}
+              style={styles.earningsIcon}
+            />
+          </LinearGradient>
+        </View>
+
+        {/* How Earning Works */}
+        <Text style={styles.sectionTitle}>How Earning Works</Text>
+        <FlatList
+          horizontal
+          data={commissionData}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: 10 }}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={()=>navigation.navigate("ReferStudents")} style={styles.commissionCard}>
+              <View style={styles.iconWrapper}>
+                <Image source={item.icon} style={styles.icon} />
+              </View>
+              <Text style={styles.percentText}>{item.percent}</Text>
+              <Text style={styles.commissionLabel}>{item.label}</Text>
+              <Text style={styles.commissionDesc}>{item.desc}</Text>
+            </TouchableOpacity>
+          )}
         />
 
-        <ScrollView style={{paddingHorizontal:15,paddingTop:10,marginBottom:10}} showsVerticalScrollIndicator={false}>
-      {/* Lifetime Earnings Card */}
-      <View >
-        <LinearGradient
-          colors={['#9333ea', '#b266fa']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          style={styles.earningsCard}>
-          <Text style={styles.earningsTitle}>Lifetime Earnings</Text>
-          <Text style={styles.earningsAmount}>$2,458.50</Text>
-          <Image
-            source={require('../../assets/img/chart.png')}
-            style={styles.earningsIcon}
-          />
-        </LinearGradient>
-      </View>
 
-      {/* How Earning Works */}
-      <Text style={styles.sectionTitle}>How Earning Works</Text>
-      <View style={styles.commissionRow}>
-        <View style={styles.commissionCard}>
-          <View style={styles.iconWrapper}>
-            <Image
-              source={require('../../assets/img/gift2.png')}
-              style={styles.icons}
+        {/* Referral Code Box */}
+        <View style={styles.inviteContainer}>
+          <View style={styles.inviteBox}>
+            <TextInput
+              style={styles.refCode}
+              value={referCode}
+              editable={false}
             />
+            <TouchableOpacity onPress={copyToClipboard}>
+              <Image
+                source={require('../../assets/img/copy1.png')}
+                style={styles.copyIcon}
+              />
+            </TouchableOpacity>
           </View>
-          <Text style={styles.percentText}>1%</Text>
-          <Text style={styles.commissionLabel}>Commission</Text>
-          <Text style={styles.commissionDesc}>
-            When students join paid quizzes
-          </Text>
-        </View>
 
-        <View style={styles.commissionCard}>
-          <View style={styles.iconWrapper}>
-            <Image
-              source={require('../../assets/img/win.png')}
-              style={styles.icons}
-            />
-          </View>
-          <Text style={styles.percentText}>10%</Text>
-          <Text style={styles.commissionLabel}>Commission</Text>
-          <Text style={styles.commissionDesc}>
-            When your students win prizes
-          </Text>
-        </View>
-      </View>
-
-      {/* Referral Code Box */}
-      <View style={styles.inviteContainer}>
-        <View style={styles.inviteBox}>
-          <TextInput
-            style={styles.refCode}
-            value={referCode}
-            editable={false}
-          />
-          <TouchableOpacity onPress={copyToClipboard}>
-            <Image
-              source={require('../../assets/img/copy1.png')}
-              style={styles.copyIcon}
-            />
+          <TouchableOpacity onPress={CopYLink}>
+            <LinearGradient
+              colors={['#9230f0', '#b266fa']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.copyButton}>
+              <Text style={styles.copyButtonText}>Copy Invite Link</Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={CopYLink}>
+        {/* Share Options */}
+        <Text style={styles.sectionTitle1}>Or Share Via</Text>
+        <TouchableOpacity onPress={onShare}>
           <LinearGradient
             colors={['#9230f0', '#b266fa']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={styles.copyButton}>
-            <Text style={styles.copyButtonText}>Copy Invite Link</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
-
-      {/* Share Options */}
-      <Text style={styles.sectionTitle1}>Or Share Via</Text>
-      <TouchableOpacity onPress={onShare}>
-          <LinearGradient
-            colors={['#9230f0', '#b266fa']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={[styles.copyButton,{marginHorizontal:10,marginBottom:20}]}>
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.copyButton, { marginHorizontal: 10, marginBottom: 20 }]}>
             <Text style={styles.copyButtonText}>Invite Friend</Text>
           </LinearGradient>
         </TouchableOpacity>
 
-      {/* Stats */}
-      <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Text style={styles.statLabel}>Active Referrals</Text>
-          <Text style={styles.statValue}>24</Text>
+        {/* Stats */}
+        <View style={styles.statsRow}>
+          <TouchableOpacity onPress={()=>{navigation.navigate("ReferStudents")}} style={styles.statCard}>
+            <Text style={styles.statLabel}>Active Referrals</Text>
+            <Text style={styles.statValue}>24</Text>
+          </TouchableOpacity>
+          <View style={styles.statCard}>
+            <Text style={styles.statLabel}>Total Earned</Text>
+            <Text style={styles.statValue}>$2,458.50</Text>
+          </View>
         </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statLabel}>Total Earned</Text>
-          <Text style={styles.statValue}>$2,458.50</Text>
-        </View>
-      </View>
       </ScrollView>
     </View>
   );
@@ -252,29 +270,24 @@ const styles = StyleSheet.create({
   commissionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+
   },
 
   commissionCard: {
-    width: '48%',
+    width: 167,
     backgroundColor: '#F8F9FA',
     borderRadius: 12,
     padding: 12,
     height: 200,
+    marginRight: 10, // Optional, if not using `gap` in FlatList
   },
 
-  iconWrapper: {
-    // backgroundColor: '#f3e8ff',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
+
+
 
   icon: {
-    width: 24,
-    height: 18,
+    width: 48,
+    height: 48,
     resizeMode: 'contain',
   },
 
@@ -284,6 +297,7 @@ const styles = StyleSheet.create({
     color: '#1A1A1A',
     marginBottom: 0,
     fontFamily: 'Poppins-Regular',
+    marginTop: 10
   },
 
   commissionLabel: {
@@ -367,7 +381,7 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom:30
+    marginBottom: 30
   },
   statCard: {
     backgroundColor: '#F8F9FA',
