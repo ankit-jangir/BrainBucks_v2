@@ -450,6 +450,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 2,
+    marginBottom:10,
     marginHorizontal: 10,
   },
   title: {

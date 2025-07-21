@@ -41,7 +41,10 @@ export default function CreatedRooms({navigation}) {
   async function deleteRoom(room_id) {
     setDeleteBankModalVisible(false);
     let res = await deleteRoomInController(room_id, Toast);
+    console.log(res ,'sosnususu');
     if (res) {
+      console.log('====================================');
+      console.log('====================================');
       let newArr = rooms.filter((item, index) => item._id !== room_id);
       setRooms([...newArr]);
 

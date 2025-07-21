@@ -45,7 +45,7 @@ export default function Home({navigation}) {
   const [triviaData, setTriviaData] = useState([]);
   const [examData, setExamData] = useState([]);
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
-const [userType, setUserType] = useState(null); 
+  const [userType, setUserType] = useState(null);
   const isFocused = useIsFocused();
   const backRef = useRef();
 
@@ -68,22 +68,21 @@ const [userType, setUserType] = useState(null);
       if (backRef.current) backRef.current.remove();
     };
   }, [isReelsPlaying]);
-  
 
- useEffect(() => {
+  useEffect(() => {
     if (isFocused) {
-      basic.getBearerToken()
-        .catch(err => {
-          console.log("Error fetching JWT token:", err);
-        });
+      basic.getBearerToken().catch(err => {
+        console.log('Error fetching JWT token:', err);
+      });
 
-      basic.getUserType()
+      basic
+        .getUserType()
         .then(type => {
-          console.log("User Type (is_edu):", type);
-          setUserType(type);  
+          console.log('User Type (is_edu):', type);
+          setUserType(type);
         })
         .catch(err => {
-          console.log("Error fetching user type:", err);
+          console.log('Error fetching user type:', err);
         });
     }
   }, [isFocused]);
@@ -125,79 +124,82 @@ const [userType, setUserType] = useState(null);
   };
 
   return (
- <>
-  <StatusBar
-           animated={true}
-           backgroundColor="#61dafb"
-         />
-  {userType===true?<>
-    <View style={{flex:1,}}>
-     <Dashboard/>
-    </View>
-  </>:
-  <>
-       <>
-      <View style={{zIndex: 100}}>
-        <Toast />
-      </View>
-
-      {isReelsPlaying ? (
-        <HomeReelPlayer
-          setParentModalVisible={setReelsPlaying}
-          firstReel={currentReel}
-        />
-      ) : (
-        <SafeAreaView style={StyleConstants.safeArView}>
-          <View>
-            <SearchBar />
+    <>
+      <StatusBar animated={true} backgroundColor="#61dafb" />
+      {userType === true ? (
+        <>
+          <View style={{flex: 1}}>
+            <Dashboard />
           </View>
-
-          {loading ? (
-            <View style={{flex: 1}}>
-              <LottieView
-                autoPlay
-                style={{flex: 0.8, padding: 10}}
-                source={require('../../assets/img/homeloading.json')}
-              />
-              <Text
-                style={{
-                  flex: 0.2,
-                  fontSize: 20,
-                  color: ColorsConstant.Theme,
-                  textAlign: 'center',
-                }}>
-                Loading...
-              </Text>
+        </>
+      ) : (
+        <>
+          <>
+            <View style={{zIndex: 100}}>
+              <Toast />
             </View>
-          ) : (
-            <ScrollView
-              refreshControl={
-                <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
-              }>
-              <View style={{marginBottom: 20}}>
-                <HomeBanners data={bannerData} />
-                <HomeActiveQuizzes data={activeQuizzes} />
-                <HomeTriviaQuizzes data={triviaData} />
-                <HomeExams data={examData} />
-                <HomeEnrolledQuizzes data={enrolledQuizzes} />
 
-                {/* ********************************************courses**************************************** */}
-                {/* <View>
+            {isReelsPlaying ? (
+              <HomeReelPlayer
+                setParentModalVisible={setReelsPlaying}
+                firstReel={currentReel}
+              />
+            ) : (
+              <SafeAreaView style={StyleConstants.safeArView}>
+                <View>
+                  <SearchBar />
+                </View>
+
+                {loading ? (
+                  <View style={{flex: 1}}>
+                    <LottieView
+                      autoPlay
+                      style={{flex: 0.8, padding: 10}}
+                      source={require('../../assets/img/homeloading.json')}
+                    />
+                    <Text
+                      style={{
+                        flex: 0.2,
+                        fontSize: 20,
+                        color: ColorsConstant.Theme,
+                        textAlign: 'center',
+                      }}>
+                      Loading...
+                    </Text>
+                  </View>
+                ) : (
+                  <ScrollView
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refresh}
+                        onRefresh={onRefresh}
+                      />
+                    }>
+                    <View style={{marginBottom: 20}}>
+                      <HomeBanners data={bannerData} />
+                      <HomeActiveQuizzes data={activeQuizzes} />
+                      <HomeTriviaQuizzes data={triviaData} />
+                      <HomeExams data={examData} />
+                      <HomeEnrolledQuizzes data={enrolledQuizzes} />
+
+                      {/* ********************************************courses**************************************** */}
+                      {/* <View>
                       <HomeCourses />
                     </View> */}
 
-                {/* **********************************Reels******************************* */}
-                <HomeReels
-                  setCurrentReel={setCurrentReel}
-                  setParentModalVisible={setReelsPlaying}
-                />
-              </View>
-            </ScrollView>
-          )}
-        </SafeAreaView>
+                      {/* **********************************Reels******************************* */}
+                      <HomeReels
+                        setCurrentReel={setCurrentReel}
+                        setParentModalVisible={setReelsPlaying}
+                      />
+                    </View>
+                  </ScrollView>
+                )}
+              </SafeAreaView>
+            )}
+          </>
+        </>
       )}
     </>
-  </>}
- </>
   );
 }

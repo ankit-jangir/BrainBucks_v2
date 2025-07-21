@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -14,19 +14,20 @@ import {
   Clipboard,
   Alert,
 } from 'react-native';
-import { StyleConstants } from '../../constants/Style.constant';
+import {StyleConstants} from '../../constants/Style.constant';
 import styles from '../../styles/ViewProfile.styles';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
-import { useIsFocused } from '@react-navigation/native';
-import { BLOBURL } from '../../config/urls';
-import { Overlay } from '@rneui/themed';
-import { Button } from '../../utils/Translate';
+import {useIsFocused} from '@react-navigation/native';
+import {BLOBURL} from '../../config/urls';
+import {Overlay} from '@rneui/themed';
+import {Button} from '../../utils/Translate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatSockService from '../../services/api/ChatSockService';
-import { generateDynamicLink } from '../../utils/createDynamicLink';
+import {generateDynamicLink} from '../../utils/createDynamicLink';
+import BasicServices from '../../services/BasicServices';
 
-export default function ViewProfile({ navigation, route }) {
+export default function ViewProfile({navigation, route}) {
   const [image1, setImage1] = useState(
     'https://e7.pngegg.com/pngimages/85/114/png-clipart-avatar-user-profile-male-logo-profile-icon-hand-monochrome.png',
   );
@@ -38,6 +39,7 @@ export default function ViewProfile({ navigation, route }) {
   const [visible, setVisible] = useState(false);
   const [referCode, setReferCode] = useState('');
   const [totalPlayed, setTotalPlayed] = useState(0);
+  const [userType, setUserType] = useState('');
 
   useEffect(() => {
     try {
@@ -48,7 +50,6 @@ export default function ViewProfile({ navigation, route }) {
             setImage1(BLOBURL + res.user_details.image);
           }
           setTotalPlayed(res.totalquizplayed);
-
         } else {
           ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
         }
@@ -57,11 +58,6 @@ export default function ViewProfile({ navigation, route }) {
       console.log('Error in Fetching User Profile', err.message);
     }
   }, [isFocused]);
-
-
-
-
-
 
   useEffect(() => {
     const fetchReferCode = async () => {
@@ -78,44 +74,62 @@ export default function ViewProfile({ navigation, route }) {
     setVisible(!visible);
   }
 
+  // async function logOut() {
+  //   setLoggingOut(true);
+  //   try {
+  //     let response = await auth.logout();
+  //     if (response.status === 1) {
+  //       basic.setJwt('').then(() => {
+  //         AsyncStorage.removeItem('language').then(() => {
+  //           toggleOverlay();
+  //           ChatSockService.disconnect();
+  //         });
+  //       });
+  //     } else {
+  //       ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
+  //     }
+  //   } catch (err) {
+  //     console.log('Error in Logging out', err.message);
+  //   } finally {
+  //     navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+  //     setLoggingOut(false);
+  //   }
+  //
+
+  useEffect(() => {
+    if (isFocused) {
+      BasicServices.getUserType()
+        .then(type => {
+          console.log('User Type aaaaaaaaaa(is_edu):', type);
+          setUserType(type);
+        })
+        .catch(err => {
+          console.log('Error fetching user type:', err);
+        });
+    }
+  }, [isFocused]);
+
   async function logOut() {
     setLoggingOut(true);
     try {
       let response = await auth.logout();
       if (response.status === 1) {
-        basic.setJwt('').then(() => {
+        BasicServices.setJwt('').then(() => {
           AsyncStorage.removeItem('language').then(() => {
             toggleOverlay();
             ChatSockService.disconnect();
           });
         });
       } else {
-        ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
+        ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
     } catch (err) {
       console.log('Error in Logging out', err.message);
     } finally {
-      navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
+      navigation.reset({index: 0, routes: [{name: 'Splash'}]});
       setLoggingOut(false);
     }
   }
-
-  useEffect(() => {
-    try {
-      auth.getUserProfile().then(res => {
-        if (res.status === 1) {
-          setUser(res.user_details);
-          if (res.user_details.image) {
-            setImage1(BLOBURL + res.user_details.image);
-          }
-        } else {
-          ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
-        }
-      });
-    } catch (err) {
-      console.log('Error in Fetching Profile in Edit Profile', err.message);
-    }
-  }, [isFocused]);
 
   const onShare = async () => {
     if (!referCode) {
@@ -149,7 +163,7 @@ ${dynamicLink}
 
 The referral code will be applied automatically on install. Let’s earn together! 🚀`;
 
-      const result = await Share.share({ message });
+      const result = await Share.share({message});
 
       if (result.action === Share.sharedAction) {
         console.log('Referral link shared successfully');
@@ -181,7 +195,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
             style={StyleConstants.H2Nd}>
             <Image
               source={require('../../assets/img/arrows.png')}
-              style={{ height: 20, width: 20 }}
+              style={{height: 20, width: 20}}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -190,14 +204,14 @@ The referral code will be applied automatically on install. Let’s earn togethe
             <Image
               source={require('../../assets/img/logout.png')}
               tintColor={'red'}
-              style={{ height: 20, width: 20 }}
+              style={{height: 20, width: 20}}
             />
           </TouchableOpacity>
         </View>
       </View>
       <ScrollView>
         <View style={styles.MainView}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <View style={styles.MainView1}>
               {/* <View style={styles.MainView2} >
                       <Image source={{ uri: image }} style={styles.img} />
@@ -205,7 +219,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
             </View>
           </View>
           <Image
-            source={{ uri: image1 }}
+            source={{uri: image1}}
             resizeMode="contain"
             style={styles.ProfileImg}
           />
@@ -239,39 +253,28 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 {/* <Icon name="copy-outline" size={22} color="#2188E7" /> */}
                 <Image
                   source={require('../../assets/img/copy.png')}
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </TouchableOpacity>
             </View>
           </View>
 
-          <View style={styles.totalView}>
-            <ImageBackground
-              source={require('../../assets/img/background1.png')}
-              resizeMode="contain"
-              style={styles.bgImg}>
-              <View style={styles.RfrView}>
-                <Text style={styles.quizText}>Total Quiz Participated</Text>
-                <Text style={[styles.quizText, { fontSize: 36 }]}>
-                  {totalPlayed}
-                </Text>
-              </View>
-            </ImageBackground>
-          </View>
+       {userType !== true && (
+  <View style={styles.totalView}>
+    <ImageBackground
+      source={require('../../assets/img/background1.png')}
+      resizeMode="contain"
+      style={styles.bgImg}>
+      <View style={styles.RfrView}>
+        <Text style={styles.quizText}>Total Quiz Participated</Text>
+        <Text style={[styles.quizText, {fontSize: 36}]}>
+          {totalPlayed}
+        </Text>
+      </View>
+    </ImageBackground>
+  </View>
+)}
 
-          {/* <TouchableOpacity
-            onPress={onShare}
-            style={{width: '100%', paddingHorizontal: 10, marginBottom: 35}}>
-            <ImageBackground
-              source={require('../../assets/img/background2.png')}
-              resizeMode="contain"
-              style={styles.bgImg}>
-              <View style={styles.RfrView}>
-                <Text style={styles.quizText}>Refer & Earn upto </Text>
-                <Text style={[styles.quizText, {fontSize: 36}]}>50,000</Text>
-              </View>
-            </ImageBackground>
-          </TouchableOpacity> */}
 
           <View style={styles.HelpView}>
             <TouchableOpacity
@@ -339,7 +342,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
               />
             </TouchableOpacity>
           </View>
-          <View style={[styles.HelpView, { marginBottom: 30 }]}>
+          <View style={[styles.HelpView, {marginBottom: 30}]}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('AboutBB');
@@ -349,7 +352,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 <Image
                   source={require('../../assets/img/bbimg.png')}
                   resizeMode="contain"
-                  style={{ width: 60, height: 60 }}
+                  style={{width: 60, height: 60}}
                 />
               </View>
               <View style={styles.SupportV}>
@@ -373,7 +376,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
           backgroundColor: '#fff',
           elevation: 10,
         }}>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{alignItems: 'center'}}>
           <Text
             style={{
               fontSize: 18,
@@ -386,7 +389,12 @@ The referral code will be applied automatically on install. Let’s earn togethe
             Are you sure you want to log out?
           </Text>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 15 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              gap: 15,
+            }}>
             <Button
               title="Yes, Logout"
               onPress={logOut}
@@ -396,7 +404,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 paddingVertical: 12,
                 borderRadius: 10,
               }}
-              titleStyle={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}
+              titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
             />
             <Button
               title="Cancel"
@@ -407,7 +415,7 @@ The referral code will be applied automatically on install. Let’s earn togethe
                 paddingVertical: 12,
                 borderRadius: 10,
               }}
-              titleStyle={{ fontSize: 15, color: '#000' }}
+              titleStyle={{fontSize: 15, color: '#000'}}
             />
           </View>
         </View>

@@ -132,7 +132,7 @@ export default function Rooms({ navigation, route }) {
         </View>
 
         <Tab.Navigator
-          style={{ marginTop: 25 }}
+          style={{ marginTop: 25,color:'#000'}}
           tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}
           initialRouteName={
             type === 'public'
@@ -141,13 +141,13 @@ export default function Rooms({ navigation, route }) {
                 ? 'Private'
                 : 'MyRooms'
           }>
-          <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} />
+          <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} color={'#000'} />
           <Tab.Screen
             name="Private"
             component={PrivateRooms}
             initialParams={{ id }}
           />
-          <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }} />
+          <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }}   color={'#000'} />
         </Tab.Navigator>
 
         <Modal

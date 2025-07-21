@@ -12,8 +12,17 @@ const styles = StyleSheet.create({
   paddingVertical: 8,
   borderRadius: 5,
 },
+tabBarLabel:{
+color:'#8A8A8A',
+  fontSize: 14,
+  fontWeight: '400',
+  fontFamily: 'WorkSans',
+
+},
 tabBarLabelLogo:{
-height:20,width:20
+height:20,width:20,
+resizeMode:'contain',
+tintColor:'#8A8A8A'
 },
 tabBarLabelHolder:{
 flexDirection:"row",

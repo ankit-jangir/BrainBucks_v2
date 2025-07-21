@@ -1,6 +1,5 @@
 import axios from "axios";
 import basic from "../BasicServices";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QUIZMICRO } from "../../config/urls";
 
 export default class StudyApiService {

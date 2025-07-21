@@ -20,7 +20,7 @@ import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import {BLOBURL} from '../../config/urls';
 import {useCurrentId} from '../../context/IdReducer';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import MainHeader from '../../components/MainHeader';
 export default function Study({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,7 +33,7 @@ export default function Study({navigation}) {
   const {idState, dispatch} = useCurrentId();
   const focused = useIsFocused();
   const study = new StudyApiService();
-const navigate = useNavigation()
+
   async function addExams() {
     if (selectedExams.size === 0) {
       ToastAndroid.show('Select atleast one exam to add', ToastAndroid.SHORT);
@@ -46,11 +46,11 @@ const navigate = useNavigation()
       if (response.status === 1) {
         let nextOtherArr = otherExams.filter(
           item => !selectedExams.has(item._id),
-            setModalVisible(false)
+          setModalVisible(false),
         );
         setOtherExams(nextOtherArr);
         loadEnrolledExams();
-        setModalVisible(false)
+
         setSelectedExams(new Set([]));
       } else {
         ToastAndroid.show(response.Backend_Error, ToastAndroid.SHORT);
@@ -251,7 +251,7 @@ const navigate = useNavigation()
               type: 'image',
               source: require('../../assets/img/backq.png'), // provide the image source
               onPress: () => {
-                navigate.goBack()
+                navigation.goBack();
               },
             }}
           />
