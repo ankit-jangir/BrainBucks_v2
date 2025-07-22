@@ -27,7 +27,7 @@ const LeaderboardScreen = () => {
         }}
       />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Banner */}
         <Image
           source={require('../../assets/img/banner2.png')}

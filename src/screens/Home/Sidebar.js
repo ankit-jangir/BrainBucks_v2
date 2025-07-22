@@ -104,6 +104,14 @@ const Sidebar = ({navigation}) => {
         />
         <MenuItem
           action={() => {
+            navigation.navigate('Grouthbooster');
+            navigation.closeDrawer();
+          }}
+          image={require('../../assets/img/dailyupdate.png')}
+          text="Grouth Booster"
+        />
+        <MenuItem
+          action={() => {
             navigation.navigate('dailyupdates');
             navigation.closeDrawer();
           }}

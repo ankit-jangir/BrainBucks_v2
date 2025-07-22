@@ -147,10 +147,14 @@ export default function Support({navigation}) {
       <Overlay
         isVisible={visible}
         overlayStyle={{
-          elevation: 3,
           paddingHorizontal: 10,
-          gap: 10,
-          width: '80%',
+          gap: 15,
+          width: '100%',
+          position:"absolute",
+          bottom:0,
+          borderTopRightRadius:10,
+          borderTopLeftRadius:10,
+
         }}
         animationType="slide"
         onBackdropPress={() => {
@@ -234,13 +238,10 @@ const styles = StyleSheet.create({
   },
   tickettopview: {
     padding: 10,
-    elevation: 3,
     backgroundColor: ColorsConstant.BlurWhite,
     paddingLeft: 20,
-    borderRadius: 10,
     marginVertical: 19,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
   },
   ticketview: {
@@ -256,6 +257,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     paddingVertical: 10,
+    paddingBottom:50
   },
   ticketinput: {
     borderWidth: 0.2,

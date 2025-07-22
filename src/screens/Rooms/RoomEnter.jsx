@@ -1,19 +1,19 @@
-import {View, TouchableOpacity, Image, Share, Alert} from 'react-native';
-import React, {useState} from 'react';
+import { View, TouchableOpacity, Image, Share, Alert } from 'react-native';
+import React, { useState } from 'react';
 import styles from '../../styles/Rooms.styles';
-import {Button, Text} from '../../utils/Translate';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { Button, Text } from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import styles2 from '../../styles/Studymaterials.styles';
-import {MyTabBar} from './Rooms';
+import { MyTabBar } from './Rooms';
 import LiveQuizzes from './LiveQuizzes';
 import ScheduledQuizzes from './ScheduledQuizzes';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {useRoom} from '../../utils/store';
-import {APPURL} from '../../config/urls';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useRoom } from '../../utils/store';
+import { APPURL } from '../../config/urls';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function RoomEnter({navigation, route}) {
+export default function RoomEnter({ navigation, route }) {
   const room_data = useRoom(state => state.currentRoom);
   const [selected, setSelected] = useState('Quizzes');
   const type = route.params.type;
@@ -43,7 +43,7 @@ export default function RoomEnter({navigation, route}) {
         <View style={styles.backandhistory}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={[styles.backimg, {padding: 20, backgroundColor: '#8D4AE2'}]}>
+            style={[styles.backimg, { padding: 20, backgroundColor: '#8D4AE2' }]}>
             <Image
               style={[styles.backimg]}
               resizeMethod="contain"
@@ -52,8 +52,8 @@ export default function RoomEnter({navigation, route}) {
             />
           </TouchableOpacity>
 
-          <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            {/* 
+          <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+            
     {type === 'created' && (
       <Button
         icon={
@@ -76,7 +76,7 @@ export default function RoomEnter({navigation, route}) {
         titleStyle={{ fontSize: 14 }}
       />
     )} 
-    */}
+    
 
             <Button
               icon={
@@ -91,7 +91,7 @@ export default function RoomEnter({navigation, route}) {
               }
               onPress={() => {
                 type === 'created'
-                  ? navigation.navigate('roomsetting', {type: type})
+                  ? navigation.navigate('roomsetting', { type: type })
                   : navigation.navigate('roomhistory');
               }}
               buttonStyle={{
@@ -102,23 +102,23 @@ export default function RoomEnter({navigation, route}) {
                 paddingHorizontal: 20,
               }}
               title={type === 'created' ? 'Settings' : 'History'}
-              titleStyle={{fontSize: 14}}
+              titleStyle={{ fontSize: 14 }}
             />
           </View>
         </View>
 
         <View style={styles.detailsContainer}>
-          <Text style={[styles.roomNameText, {color: ColorsConstant.White}]}>
+          <Text style={[styles.roomNameText, { color: ColorsConstant.White }]}>
             {room_data.room_name}
           </Text>
-          <Text style={[styles.memberText, {color: ColorsConstant.White}]}>
+          <Text style={[styles.memberText, { color: ColorsConstant.White }]}>
             Members:{' '}
             <Text
               key={room_data?.enrolled_participants_count}
-              style={{color: ColorsConstant.GreenColor}}>
+              style={{ color: ColorsConstant.GreenColor }}>
               {room_data.enrolled_participants_count}
             </Text>
-            <Text style={{color: ColorsConstant.White}}>{}</Text>
+            <Text style={{ color: ColorsConstant.White }}>{ }</Text>
           </Text>
           <View style={styles.invitePrev}>
             <Button
@@ -130,16 +130,16 @@ export default function RoomEnter({navigation, route}) {
                 />
               }
               buttonStyle={styles.roomEnterShareBtn}
-              titleStyle={{fontSize: 12}}
+              titleStyle={{ fontSize: 12 }}
               title={'Invite'}
               onPress={onShare}
             />
-            <Text style={{fontSize: 12, color: 'white'}}>
+            <Text style={{ fontSize: 12, color: 'white' }}>
               {room_data.room_hash ? 'Private' : 'Public'}
             </Text>
           </View>
 
-          <View style={[styles2.container, {marginHorizontal: 0}]}>
+          <View style={[styles2.container, { marginHorizontal: 0 }]}>
             {type === 'created' ? (
               <View style={styles.roomContainerBtns}>
                 {/* <Button
@@ -152,7 +152,7 @@ export default function RoomEnter({navigation, route}) {
                 <Button
                   titleStyle={[styles.enterbtn]}
                   containerStyle={styles.enterbtncontainer}
-                  buttonStyle={{backgroundColor: '#0CBC8B'}}
+                  buttonStyle={{ backgroundColor: '#0CBC8B' }}
                   title={' + Schedule Quiz'}
                   onPress={() => {
                     navigation.navigate('schedulquiz');

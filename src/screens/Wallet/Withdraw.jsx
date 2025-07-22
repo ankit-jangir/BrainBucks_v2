@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   BackHandler,
   ToastAndroid,
+  StatusBar,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Text, TextInput } from '../../utils/Translate';
@@ -14,6 +15,7 @@ import { useWithdraw } from '../../context/WithdrawReducer';
 import Toast from 'react-native-toast-message';
 import WalletApiService from '../../services/api/WalletApiService';
 import NoDataFound from '../../components/NoDataFound';
+import { ColorsConstant } from '../../constants/Colors.constant';
 
 const Withdraw = ({ navigation }) => {
   const { withdrawState, dispatch } = useWithdraw();
@@ -115,7 +117,7 @@ async function next() {
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
-
+<StatusBar backgroundColor={ColorsConstant.Theme} />
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
