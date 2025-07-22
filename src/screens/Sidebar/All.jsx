@@ -7,6 +7,7 @@ import QuizCard from '../../components/QuizCard';
 import { BLOBURL } from '../../config/urls';
 import { screenHeight, screenWidth } from '../../constants/Sizes.constant';
 import { useQuiz } from '../../context/QuizPlayReducer';
+import { Text } from '../../utils/Translate';
 
 const All = ({ navigation, order }) => {
   const [allwin, setAllWin] = React.useState([]);
@@ -112,7 +113,6 @@ export default All;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    padding: 10,
     backgroundColor: "white"
   },
   container: {

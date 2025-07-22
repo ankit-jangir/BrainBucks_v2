@@ -113,7 +113,6 @@ export default Free;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    padding: 10,
     backgroundColor: "white"
   },
   container: {

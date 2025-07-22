@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,180 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import { ProgressBar } from 'react-native-paper';
+import BasicServices from '../../services/BasicServices';
+import { AUTHMICRO } from '../../config/urls';
+import NoDataFound from '../../components/NoDataFound';
 
 const MissionScreen = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const [levels, setLevels] = useState([]);
+
+  const earnings = [
+    {
+      title: 'Student Referrals',
+      amount: '750.00',
+      change: '↑ 15%',
+      changeColor: 'green',
+      icon: require('../../assets/img/studentcap.png'),
+    },
+    {
+      title: 'Quizzes Created',
+      amount: '245.50',
+      change: '↑ 8%',
+      changeColor: 'green',
+      icon: require('../../assets/img/document.png'),
+    },
+    {
+      title: 'Room Owner Referrals',
+      amount: '150.00',
+      change: '0%',
+      changeColor: 'gray',
+      icon: require('../../assets/img/key.png'),
+    },
+    {
+      title: 'Tier Bonuses',
+      amount: '75.00',
+      change: '↑ 5%',
+      changeColor: 'green',
+      icon: require('../../assets/img/bonus.png'),
+    },
+    {
+      title: 'Level-Up Rewards',
+      amount: '27.00',
+      change: '↓ 2%',
+      changeColor: 'red',
+      icon: require('../../assets/img/reward.png'),
+    },
+  ];
+
+  useEffect(() => {
+    LevelApiUser();
+  }, []);
+
+  async function LevelApiUser() {
+    setLoading(true);
+    const token = await BasicServices.getBearerToken();
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `${token}`);
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch(`${AUTHMICRO}/levelBenefits/user`, requestOptions);
+      const result = await response.json();
+
+      if (result.success == true) {
+        const combinedLevels = [
+          ...result.achieved_levels.map(item => ({
+            ...item,
+            type: 'achieved',
+            icon: require('../../assets/img/cupwin.png'),
+          })),
+          {
+            ...result.current_level,
+            type: 'current',
+            icon: require('../../assets/img/top.png'),
+          },
+          ...result.upcoming_levels.map(item => ({
+            ...item,
+            type: 'upcoming',
+            icon: require('../../assets/img/expert.png'),
+          })),
+        ];
+        setLevels(combinedLevels);
+      } else {
+        console.error('API failed:', result.message);
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+    } finally {
+      setLoading(false);
+
+    }
+  }
+
+
+
+
+  const renderLevelItem = ({ item, index }) => {
+    let color = '#9CA3AF'; // default gray
+    if (item.type === 'achieved') color = '#22C55E';
+    if (item.type === 'current') color = '#8453E2';
+
+    return (
+      <View style={[styles.levelBox]}>
+        <View style={styles.levelRow}>
+          <View style={styles.iconColumn}>
+            <View style={[styles.iconWrapper, { borderColor: color }]}>
+              <Image
+                source={item.icon || defaultIcon}
+                style={styles.levelIcon}
+                resizeMode="contain"
+              />
+            </View>
+            {index !== levels.length - 1 && (
+              <View style={[styles.verticalLine, { backgroundColor: '#c6c2cdff' }]} />
+            )}
+          </View>
+
+          <View style={{ flex: 1, paddingRight: 10, position: 'relative' }}>
+            <Text style={[styles.levelTitle, { color }]}>
+              {item.level_name || item.title}
+            </Text>
+
+            <Text style={styles.levelEarnings}>
+              Income: {item.income_slab} | Followers: {item.follower_slab}
+            </Text>
+            <Text style={styles.levelEarnings}>
+              Benefits: {item.income_benefits}
+            </Text>
+
+            {Array.isArray(item.other_benefits) &&
+              item.other_benefits.map((benefit, idx) => (
+                <Text key={idx} style={styles.levelEarnings}>
+                  • {benefit}
+                </Text>
+              ))}
+
+           {/*} {item.type === 'current' && (
+              <ProgressBar
+                progress={0.75} // Replace with dynamic value if available
+                color="#8453E2"
+                unfilledColor="#E6E6E6"
+                borderWidth={0}
+                height={6}
+                style={{ marginTop: 6, width: '90%' }}
+              />
+            )}*/}
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderEarningItem = ({ item }) => (
+    <View style={styles.earningCard}>
+      <View style={styles.row}>
+        <Image source={item.icon} style={styles.cardIcon} />
+        <View>
+          <Text style={styles.earningTitle}>{item.title}</Text>
+          <Text style={styles.earningValue}>${item.amount}</Text>
+        </View>
+      </View>
+      <Text style={{ color: item.changeColor }}>{item.change}</Text>
+    </View>
+  );
+
+ 
+
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
@@ -31,98 +200,38 @@ const MissionScreen = () => {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.container}>
-        {levels.map((level, index) => (
-          <View key={index} style={[styles.levelBox]}>
-            <View style={styles.levelRow}>
-              <View style={styles.iconColumn}>
-                <View
-                  style={[
-                    styles.iconWrapper,
-                    {
-                      borderColor: level.active
-                        ? '#8453E2'
-                        : level.completed
-                          ? '#22C55E'
-                          : '#C4C4C4',
-                    },
-                  ]}>
-                  <Image
-                    source={level.icon}
-                    style={styles.levelIcon}
-                    resizeMode="contain"
-                  />
-                </View>
-                {index !== levels.length - 1 && (
-                  <View
-                    style={[
-                      styles.verticalLine,
-                      {
-                        backgroundColor: '#c6c2cdff',
-                      },
-                    ]}
-                  />
-                )}
-              </View>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        {
+          loading ? <ActivityIndicator  size={24} /> :
+            <FlatList
+              data={levels}
+              refreshing={loading}
+              onRefresh={LevelApiUser}
+              renderItem={renderLevelItem}
+              keyExtractor={(item, index) => index.toString()}
+              scrollEnabled={false}
+              ListHeaderComponent={() => {
+              <NoDataFound message={"NO Level cross"} />
+              }}
+            />
+      }
 
-              <View style={{flex: 1, paddingRight: 10, position: 'relative'}}>
-                <Text
-                  style={[
-                    styles.levelTitle,
-                    level.active && {color: '#8453E2'},
-                    level.completed && {color: '#22C55E'},
-                    !level.completed && !level.active && {color: '#9CA3AF'},
-                  ]}>
-                  {level.title}
-                </Text>
 
-                <Text style={styles.levelEarnings}>
-                  {level.progress !== null
-                    ? `Earn up to $500/month\n${Math.round(level.progress * 25)}/25 referrals`
-                    : level.earning}
-                </Text>
-                {level.progress !== null && (
-                  <ProgressBar
-                    progress={level.progress}
-                    color="#8453E2"
-                    unfilledColor="#E6E6E6"
-                    borderWidth={0}
-                    height={6}
-                    style={{marginTop: 6, width: '90%'}}
-                  />
-                )}
-                {level.completed && (
-                  <Image
-                    source={require('../../assets/img/checkmark.png')}
-                    style={styles.checkmarkIcon}
-                  />
-                )}
-              </View>
-            </View>
-          </View>
-        ))}
-
-        <TouchableOpacity style={styles.viewBtn}>
+       {/* <TouchableOpacity style={styles.viewBtn}>
           <Text style={styles.viewBtnText}>View Your Level Details</Text>
         </TouchableOpacity>
 
-        <Text style={[styles.title, {marginTop: 30}]}>Earnings Dashboard</Text>
+        <Text style={[styles.title, { marginTop: 30 }]}>Earnings Dashboard</Text>
         <Text style={styles.earningAmount}>
           $1,247.50 <Text style={styles.monthText}>This Month</Text>
         </Text>
 
-        {earnings.map((item, i) => (
-          <View key={i} style={styles.earningCard}>
-            <View style={styles.row}>
-              <Image source={item.icon} style={styles.cardIcon} />
-              <View>
-                <Text style={styles.earningTitle}>{item.title}</Text>
-                <Text style={styles.earningValue}>${item.amount}</Text>
-              </View>
-            </View>
-            <Text style={{color: item.changeColor}}>{item.change}</Text>
-          </View>
-        ))}
+        <FlatList
+          data={earnings}
+          renderItem={renderEarningItem}
+          keyExtractor={(item, index) => index.toString()}
+          scrollEnabled={false}
+        />
 
         <TouchableOpacity style={styles.exportBtn}>
           <View style={styles.exportContent}>
@@ -132,7 +241,7 @@ const MissionScreen = () => {
             />
             <Text style={styles.exportText}>Export Earnings Report</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </ScrollView>
     </View>
   );
@@ -140,88 +249,7 @@ const MissionScreen = () => {
 
 export default MissionScreen;
 
-// ✅ Updated Dummy Data
-const levels = [
-  {
-    title: 'Level 5: Expert Mentor',
-    earning: 'Earn up to $2000/month\nRefer 50+ students',
-    icon: require('../../assets/img/expert.png'),
-    active: false,
-    progress: null,
-    completed: false,
-  },
-  {
-    title: 'Level 4: Senior Guide',
-    earning: 'Earn up to $1000/month\nRefer 25+ students',
-    icon: require('../../assets/img/madel.png'),
-    active: false,
-    progress: null,
-    completed: false,
-  },
-  {
-    title: 'Level 3: Rising Star',
-    earning: '',
-    icon: require('../../assets/img/top.png'),
-    active: true,
-    progress: 18 / 25,
-    completed: false,
-  },
-  {
-    title: 'Level 2: Helper',
-    earning: 'Earn up to $200/month',
-    icon: require('../../assets/img/cupwin.png'),
-    active: true,
-    progress: null,
-    completed: true,
-  },
-  {
-    title: 'Level 1: Beginner',
-    earning: 'Earn up to $50/month',
-    icon: require('../../assets/img/cupwin.png'),
-    active: true,
-    progress: null,
-    completed: true,
-  },
-];
-
-const earnings = [
-  {
-    title: 'Student Referrals',
-    amount: '750.00',
-    change: '↑ 15%',
-    changeColor: 'green',
-    icon: require('../../assets/img/studentcap.png'),
-  },
-  {
-    title: 'Quizzes Created',
-    amount: '245.50',
-    change: '↑ 8%',
-    changeColor: 'green',
-    icon: require('../../assets/img/document.png'),
-  },
-  {
-    title: 'Room Owner Referrals',
-    amount: '150.00',
-    change: '0%',
-    changeColor: 'gray',
-    icon: require('../../assets/img/key.png'),
-  },
-  {
-    title: 'Tier Bonuses',
-    amount: '75.00',
-    change: '↑ 5%',
-    changeColor: 'green',
-    icon: require('../../assets/img/bonus.png'),
-  },
-  {
-    title: 'Level-Up Rewards',
-    amount: '27.00',
-    change: '↓ 2%',
-    changeColor: 'red',
-    icon: require('../../assets/img/reward.png'),
-  },
-];
-
+// Styles remain unchanged
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -235,7 +263,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
     zIndex: 1,
   },
-
   backButton: {
     width: 32,
     height: 32,
@@ -308,13 +335,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     fontFamily: 'Poppins',
-  },
-  checkmarkIcon: {
-    width: 20,
-    height: 20,
-    position: 'absolute',
-    top: 0,
-    right: 0,
   },
   viewBtn: {
     backgroundColor: '#701DDB',

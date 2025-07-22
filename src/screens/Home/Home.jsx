@@ -125,7 +125,6 @@ export default function Home({navigation}) {
 
   return (
     <>
-      <StatusBar animated={true} backgroundColor="#61dafb" />
       {userType === true ? (
         <>
           <View style={{flex: 1}}>

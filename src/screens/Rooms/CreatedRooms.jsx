@@ -109,7 +109,7 @@ export default function CreatedRooms({navigation}) {
                     </Text>
                   </Text>
                   <Text style={{color: '#000', marginRight: 20}}>
-                    {item.type}
+                    {item.type} 
                   </Text>
                 </View>
                 <View>

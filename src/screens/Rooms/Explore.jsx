@@ -50,7 +50,7 @@ export default function Explore({ route }) {
 
     useEffect(() => {
         if (data?.getPublicRoom.error) {
-             ToastAndroid.show(data?.getPublicRoom.error, ToastAndroid.SHORT);
+            ToastAndroid.show(data?.getPublicRoom.error, ToastAndroid.SHORT);
 
             return;
         }
@@ -118,9 +118,9 @@ export default function Explore({ route }) {
                         <FlatList
                             refreshing={loading}
                             ListEmptyComponent={() => (
-                                <NoDataFound scale={0.7} message={"No Rooms Found"}/>
+                                <NoDataFound scale={0.7} message={"No Rooms Found"} />
                             )}
-                            onRefresh={()=>{setCurrentPage(1)}}
+                            onRefresh={() => { setCurrentPage(1) }}
                             data={rooms}
                             keyExtractor={(item) => item._id}
                             onEndReached={() => {
@@ -135,7 +135,12 @@ export default function Explore({ route }) {
                                     <View style={styles.roomContainer}>
                                         <Text style={styles.roomNameText}>{item.room_name}</Text>
                                         <View style={styles.memberHolder}>
-                                            <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>
+                                            <Text style={styles.memberText}>Members:
+                                                <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>
+                                                    {item.enrolled_participants_count}
+                                                </Text>
+                                            </Text>
+
                                             <Text style={{ color: '#000', marginRight: 20, fontWeight: "600" }}>{"Public"}</Text>
                                         </View>
                                         <Button

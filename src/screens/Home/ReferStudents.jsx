@@ -4,6 +4,7 @@ import MainHeader from "../../components/MainHeader";
 import { useNavigation } from "@react-navigation/native";
 import HomeApiService from "../../services/api/HomeApiService";
 import { useQuery } from "@tanstack/react-query";
+import NoDataFound from "../../components/NoDataFound";
 
 const ReferStudents = () => {
   const navigation = useNavigation();
@@ -78,7 +79,11 @@ const ReferStudents = () => {
             onPress: () => navigation.goBack(),
           }}
         />
-        <Text>No referral data available.</Text>
+        <NoDataFound
+          scale={0.9}
+          
+          message={"No referral data available."}
+        />
       </View>
     );
   }

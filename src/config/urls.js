@@ -1,31 +1,44 @@
-// export const QUIZMICRO = "https://quiz.brainbucks.in" /* prod */
-export const QUIZMICRO = "https://quiz.brainbucks.co.in" /* dev */
-// export const AUTHMICRO = "https://auth.brainbucks.in"  /* prod */
-export const AUTHMICRO = "https://auth.brainbucks.co.in"   /* dev */
-// export const PRERECMICRO = "https://prerec.brainbucks.in" /* prod */
-export const PRERECMICRO = "https://prerec.brainbucks.co.in" /* prod */
+const env = "dev"; // Change to "prod" for production
 
-// export const NOTIFYMICRO = "https://notify.brainbucks.in" {/*prod*\ */}
-export const NOTIFYMICRO = "https://notify.brainbucks.co.in"     /* dev */
+const config = {
+  dev: {
+    QUIZMICRO: "https://quiz.brainbucks.co.in",
+    AUTHMICRO: "https://auth.brainbucks.co.in",
+    PRERECMICRO: "https://prerec.brainbucks.co.in",
+    NOTIFYMICRO: "https://notify.brainbucks.co.in",
+    BLOBURL: "https://auth.brainbucks.co.in/stream/get/public?blobname=",
+    IMAGE_URL: "https://auth.brainbucks.co.in/stream/get/public?blobname=",
+    CHATURL: "https://socket.brainbucks.co.in",
+    TICKETURL: "https://notify.brainbucks.co.in",
+    ROOMURL: "https://room.brainbucks.co.in",
+    APPURL: "https://app.brainbucks.co.in",
+  },
+  prod: {
+    QUIZMICRO: "https://quiz.brainbucks.in",
+    AUTHMICRO: "https://auth.brainbucks.in",
+    PRERECMICRO: "https://prerec.brainbucks.in",
+    NOTIFYMICRO: "https://notify.brainbucks.in",
+    BLOBURL: "https://auth.brainbucks.in/stream/get/public?blobname=",
+    IMAGE_URL: "https://auth.brainbucks.in/stream/get/public?blobname=",
+    CHATURL: "https://socket.brainbucks.in",
+    TICKETURL: "https://notify.brainbucks.in",
+    ROOMURL: "https://room.brainbucks.in",
+    APPURL: "https://app.brainbucks.in",
+  },
+};
 
-// export const BLOBURL = 'https://auth.brainbucks.in/stream/get/public?blobname=' /* prod */
-export const BLOBURL = 'https://auth.brainbucks.co.in/stream/get/public?blobname=' /* dev */
+export const {
+  QUIZMICRO,
+  AUTHMICRO,
+  PRERECMICRO,
+  NOTIFYMICRO,
+  BLOBURL,
+  IMAGE_URL,
+  CHATURL,
+  TICKETURL,
+  ROOMURL,
+  APPURL,
+} = config[env];
 
-// export const IMAGE_URL="https://auth.brainbucks.in/stream/get/public?blobname=" /* prod */
-export const IMAGE_URL="https://auth.brainbucks.co.in/stream/get/public?blobname=" /* dev */
-
-export const IFSC_CHECk = 'https://ifsc.razorpay.com'
-// export const CHATURL = 'https://socket.brainbucks.in' /* prod */
-export const CHATURL = 'https://socket.brainbucks.co.in' /* dev */
-
-// export const TICKETURL = 'https://notify.brainbucks.in'  /* prod */
-export const TICKETURL = 'https://notify.brainbucks.co.in'  /* dev */
-
-// export const ROOMURL = 'https://room.brainbucks.in' /* prod */
-export const ROOMURL = 'https://room.brainbucks.co.in' /* dev */
-
-// export const APPURL = 'https://app.brainbucks.in'  /* prod */
-export const APPURL = 'https://app.brainbucks.co.in'  /* dev */
-
-
-
+export const IFSC_CHECk = 'https://ifsc.razorpay.com'; // Static - same in both
+export { env };
