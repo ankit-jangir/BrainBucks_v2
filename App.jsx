@@ -156,7 +156,6 @@ import Questionscreen from './src/screens/Home/Questionscreen.jsx';
 import MissionScreen from './src/screens/Home/MissionScreen1.jsx';
 import Grouthbooster from './src/screens/Home/Grouthbooster.jsx';
 import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
-import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
 import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
 import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
@@ -332,7 +331,6 @@ function MyStack() {
       <Stack.Screen name="Questionscreen" component={Questionscreen} />
       <Stack.Screen name="MissionScreen" component={MissionScreen} />
       <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
-      <Stack.Screen name="FoundersClubScreen" component={FoundersClubScreen} />
       <Stack.Screen name="UploadQuestionsScreen" component={UploadQuestionsScreen} />
 
       <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
