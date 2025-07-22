@@ -166,7 +166,7 @@ const Dashboard = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('Createquiz')}
+            onPress={() => navigation.navigate('Questionscreen')}
             style={[styles.actionButton, {backgroundColor: '#6ed1f5'}]}>
             <View style={styles.centerContent}>
               <Image
@@ -174,7 +174,7 @@ const Dashboard = () => {
                 style={styles.icon1}
                 resizeMode="contain"
               />
-              <Text style={styles.buttonLabel}>Create{'\n'}Quiz</Text>
+              <Text style={styles.buttonLabel}>Create{'\n'}Question</Text>
             </View>
           </TouchableOpacity>
 

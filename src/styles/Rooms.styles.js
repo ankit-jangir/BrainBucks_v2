@@ -88,12 +88,12 @@ actionTitle: {
   roomContainer: {
     flex: 1,
     borderRadius: 10,
-    padding: 10,
-    margin: 2,
+    padding: 15,
+    margin: 14,
     backgroundColor: 'white',
     elevation: 2,
     gap: 10,
-    paddingBottom: 14,
+    paddingBottom: 24,
     marginVertical: 7,
   },
   roomNameText: {

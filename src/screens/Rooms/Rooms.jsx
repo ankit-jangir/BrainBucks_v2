@@ -1,5 +1,12 @@
-import { View, TouchableOpacity, Image, ToastAndroid } from 'react-native';
-import React, { useEffect, useState, useLocale } from 'react';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
 import Explore from './Explore';
@@ -9,13 +16,14 @@ import { Text, TextInput } from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
 import {
   CheckEligibilityForPublicRoom,
-  getPublicRoomsController,
   SendOTPToMail,
   verifyOTP,
 } from '../../controllers/RoomsController';
 import PrivateRooms from './PrivateRooms';
 import { Modal } from 'react-native-paper';
 import { ColorsConstant } from '../../constants/Colors.constant';
+import { useIsFocused } from '@react-navigation/native';
+import BasicServices from '../../services/BasicServices';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,6 +38,8 @@ export default function Rooms({ navigation, route }) {
   const [mailLoading, setMailLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
   const [showActions, setShowActions] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const isFocused = useIsFocused();
 
   async function handleEligibleClick() {
     let res = await CheckEligibilityForPublicRoom(
@@ -42,13 +52,21 @@ export default function Rooms({ navigation, route }) {
     }
   }
 
+  useEffect(() => {
+    if (isFocused) {
+      BasicServices.getUserType().then(type => {
+        console.log('User Type (is_edu):', type);
+        setUserType(type);
+      });
+    }
+  }, [isFocused]);
+
   async function verifyOtp() {
     if (otp.trim().length !== 6) {
       ToastAndroid.show('Enter A Valid OTP', ToastAndroid.SHORT);
       return;
     }
     let res = await verifyOTP(email, otp, Toast, setOtpLoading);
-
     if (res.status === 1) {
       ToastAndroid.show(res.message, ToastAndroid.SHORT);
       setOtpModalVisible(false);
@@ -59,13 +77,11 @@ export default function Rooms({ navigation, route }) {
 
   async function sendOtpToMail() {
     let mailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
     if (email.trim().length === 0 || !mailRegex.test(email)) {
       ToastAndroid.show('Please Enter a valid email', ToastAndroid.SHORT);
       return;
     }
     let res = await SendOTPToMail(email, Toast, setMailLoading);
-
     if (res.status === 1) {
       setVisible(false);
       setOtpModalVisible(true);
@@ -78,241 +94,200 @@ export default function Rooms({ navigation, route }) {
     },
   };
 
-  useEffect(() => {
-    if (id && type) {
-      const screen =
-        type === 'public'
-          ? 'Explore'
-          : type === 'private'
-            ? 'Private'
-            : 'MyRooms';
-      navigation.navigate(screen, { id });
-    }
-  }, [id, type, navigation]);
-
   return (
     <>
       <View style={{ zIndex: 20 }}>
         <Toast />
       </View>
-      <View style={styles.maincontainer}>
-        <View style={styles.topbtns}>
-          <Text style={styles.roomstext}>Rooms</Text>
 
-          <View style={{ position: 'relative' }}>
-            <TouchableOpacity
-              onPress={() => setShowActions(prev => !prev)}
-              style={styles.actionToggleButton}>
-              <Text style={styles.actionToggleText}>+ Action</Text>
-            </TouchableOpacity>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (showActions) setShowActions(false);
+          Keyboard.dismiss();
+        }}>
+        <View style={styles.maincontainer}>
+          <View style={styles.topbtns}>
+            <Text style={styles.roomstext}>Rooms</Text>
 
-            {showActions && (
-              <View style={styles.actionContainer}>
-                <Button
-                  title="Create Room"
-                  onPress={() => {
-                    setShowActions(false);
-                    navigation.navigate('createroom');
-                  }}
-                  buttonStyle={styles.actionButton}
-                  titleStyle={styles.actionTitle}
-                />
-                <Button
-                  title="Apply Public"
-                  onPress={() => {
-                    setShowActions(false);
-                    handleEligibleClick(); // your public logic
-                  }}
-                  buttonStyle={styles.actionButton}
-                  titleStyle={styles.actionTitle}
-                />
-              </View>
-            )}
+            <View style={{ position: 'relative', zIndex: 10 }}>
+              <TouchableOpacity
+                onPress={() => setShowActions(prev => !prev)}
+                style={styles.actionToggleButton}>
+                <Text style={styles.actionToggleText}>+ Action</Text>
+              </TouchableOpacity>
+
+              {showActions && (
+                <TouchableWithoutFeedback onPress={() => {}}>
+                  <View style={styles.actionContainer}>
+                    <Button
+                      title="Create Room"
+                      onPress={() => {
+                        setShowActions(false);
+                        navigation.navigate('createroom');
+                      }}
+                      buttonStyle={styles.actionButton}
+                      titleStyle={styles.actionTitle}
+                    />
+                    <Button
+                      title="Apply Public"
+                      onPress={() => {
+                        setShowActions(false);
+                        handleEligibleClick();
+                      }}
+                      buttonStyle={styles.actionButton}
+                      titleStyle={styles.actionTitle}
+                    />
+                    <Button
+                      title="Add Questions"
+                      onPress={() => {
+                        setShowActions(false);
+                        navigation.navigate('Addquestion');
+                      }}
+                      buttonStyle={styles.actionButton}
+                      titleStyle={styles.actionTitle}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
+            </View>
           </View>
-        </View>
 
-        <Tab.Navigator
-          style={{ marginTop: 25,color:'#000'}}
-          tabBar={props => <MyTabBar {...props} imgNeeded={true} width={100} />}
-          initialRouteName={
-            type === 'public'
-              ? 'Explore'
-              : type === 'private'
-                ? 'Private'
-                : 'MyRooms'
-          }>
-          <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} color={'#000'} />
-          <Tab.Screen
-            name="Private"
-            component={PrivateRooms}
-            initialParams={{ id }}
-          />
-          <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }}   color={'#000'} />
-        </Tab.Navigator>
+          {userType === true ? (
+            <>
+              <View style={{ paddingHorizontal: 16 }}>
+                <Text style={[styles.roomstext, { fontSize: 16, color: 'gray' }]}>
+                  Created Rooms
+                </Text>
+              </View>
+              <MyRooms navigation={navigation} route={route} />
+            </>
+          ) : (
+            <Tab.Navigator
+              style={{ marginTop: 25 }}
+              tabBar={props => (
+                <MyTabBar {...props} imgNeeded={true} width={100} isEdu={userType} />
+              )}
+              initialRouteName="MyRooms">
+              <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }} />
+              <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} />
+              <Tab.Screen name="Private" component={PrivateRooms} initialParams={{ id }} />
+            </Tab.Navigator>
+          )}
 
-        <Modal
-          visible={visible}
-          contentContainerStyle={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              padding: 20,
-              margin: 30,
-              backgroundColor: 'white',
-              minWidth: 300,
-            }}>
-            {!errorMessage ? (
-              <>
-                <TextInput
-                  style={[styles.createRoomInput]}
-                  placeholder={'Enter Your E-mail Address'}
-                  placeholderTextColor={'gray'}
-                  inputMode="email"
-                  value={email}
-                  onChangeText={text => {
-                    setEmail(text);
-                  }}
-                />
-                <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
-                  <Button
-                    title="OK"
-                    onPress={sendOtpToMail}
-                    buttonStyle={{
-                      borderColor: ColorsConstant.Theme,
-                    }}
-                    loading={mailLoading}
-                    titleStyle={{ color: ColorsConstant.White }}
-                    containerStyle={{ flex: 1 }}
+          {/* Email Modal */}
+          <Modal visible={visible} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 20, margin: 30, backgroundColor: 'white', minWidth: 300 }}>
+              {!errorMessage ? (
+                <>
+                  <TextInput
+                    style={[styles.createRoomInput]}
+                    placeholder={'Enter Your E-mail Address'}
+                    placeholderTextColor={'gray'}
+                    inputMode="email"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
                   />
-                  <Button
-                    title="Cancel"
-                    onPress={() => {
-                      setVisible(false), setEmail(''), setOtp('');
-                    }}
-                    buttonStyle={{
-                      borderColor: 'rgba(78, 116, 289, 1)',
-                    }}
-                    type="outline"
-                    titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
-                    containerStyle={{ flex: 1 }}
-                  />
-                </View>
-              </>
-            ) : (
-              <>
-                {errorMessage && (
+                  <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
+                    <Button
+                      title="OK"
+                      onPress={sendOtpToMail}
+                      buttonStyle={{ borderColor: ColorsConstant.Theme }}
+                      loading={mailLoading}
+                      titleStyle={{ color: ColorsConstant.White }}
+                      containerStyle={{ flex: 1 }}
+                    />
+                    <Button
+                      title="Cancel"
+                      onPress={() => {
+                        setVisible(false), setEmail(''), setOtp('');
+                      }}
+                      buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
+                      type="outline"
+                      titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                      containerStyle={{ flex: 1 }}
+                    />
+                  </View>
+                </>
+              ) : (
+                <>
                   <Text
                     style={{
-                      color: ColorsConstant.Black,
+                      color: ColorsConstant.Orange,
                       textAlign: 'center',
                       fontSize: 16,
                       padding: 20,
-                      color: ColorsConstant.Orange,
                     }}
                     key={errorMessage + 'errmsg'}>
                     {errorMessage}
                   </Text>
-                )}
+                  <Button
+                    title="OK"
+                    onPress={() => {
+                      setVisible(false);
+                    }}
+                    buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
+                    type="outline"
+                    titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                    containerStyle={{
+                      width: 200,
+                      marginHorizontal: 50,
+                      marginVertical: 10,
+                    }}
+                  />
+                </>
+              )}
+            </View>
+          </Modal>
+
+          {/* OTP Modal */}
+          <Modal visible={otpModalVisible} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ padding: 20, margin: 30, backgroundColor: 'white', minWidth: 300 }}>
+              <TextInput
+                style={[styles.createRoomInput]}
+                placeholder={'Enter OTP'}
+                placeholderTextColor={'gray'}
+                value={otp}
+                inputMode="numeric"
+                onChangeText={text => setOtp(text)}
+              />
+              <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
                 <Button
                   title="OK"
+                  onPress={verifyOtp}
+                  buttonStyle={{ borderColor: ColorsConstant.Theme }}
+                  loading={otpLoading}
+                  titleStyle={{ color: ColorsConstant.White }}
+                  containerStyle={{ flex: 1 }}
+                />
+                <Button
+                  title="Cancel"
                   onPress={() => {
-                    setVisible(false);
+                    setOtpModalVisible(false), setEmail(''), setOtp('');
                   }}
-                  buttonStyle={{
-                    borderColor: 'rgba(78, 116, 289, 1)',
-                  }}
+                  buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
                   type="outline"
                   titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
-                  containerStyle={{
-                    width: 200,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                  }}
+                  containerStyle={{ flex: 1 }}
                 />
-              </>
-            )}
-          </View>
-        </Modal>
-
-        <Modal
-          visible={otpModalVisible}
-          contentContainerStyle={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              padding: 20,
-              margin: 30,
-              backgroundColor: 'white',
-              minWidth: 300,
-            }}>
-            <TextInput
-              style={[styles.createRoomInput]}
-              placeholder={'Enter OTP'}
-              placeholderTextColor={'gray'}
-              value={otp}
-              inputMode="numeric"
-              onChangeText={text => {
-                setOtp(text);
-              }}
-            />
-            <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
-              <Button
-                title="OK"
-                onPress={verifyOtp}
-                buttonStyle={{
-                  borderColor: ColorsConstant.Theme,
-                }}
-                loading={otpLoading}
-                titleStyle={{ color: ColorsConstant.White }}
-                containerStyle={{ flex: 1 }}
-              />
-              <Button
-                title="Cancel"
-                onPress={() => {
-                  setOtpModalVisible(false), setEmail(''), setOtp('');
-                }}
-                buttonStyle={{
-                  borderColor: 'rgba(78, 116, 289, 1)',
-                }}
-                type="outline"
-                titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
-                containerStyle={{ flex: 1 }}
-              />
+              </View>
             </View>
-          </View>
-        </Modal>
-      </View>
+          </Modal>
+        </View>
+      </TouchableWithoutFeedback>
     </>
   );
 }
 
-/* top tab bar to show all screen names */
-export function MyTabBar({
-  state,
-  descriptors,
-  navigation,
-  position,
-  imgNeeded,
-  width,
-}) {
+export function MyTabBar({ state, descriptors, navigation, imgNeeded, width, isEdu }) {
   return (
     <View style={[
       styles.topbar,
-      { flexDirection: 'row', backgroundColor: '#fff',padding:10 }, // add backgroundColor
+      { flexDirection: 'row', backgroundColor: '#fff', padding: 10 },
       width && { width: width + '%' },
     ]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
+        const label = options.tabBarLabel ?? options.title ?? route.name;
 
         const isFocused = state.index === index;
 
@@ -328,15 +303,6 @@ export function MyTabBar({
           }
         };
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        const inputRange = state.routes.map((_, i) => i);
-
         let src = require('../../assets/img/roomsimgs.png');
         if (index === 0) {
           src = require('../../assets/img/explore.png');
@@ -347,26 +313,25 @@ export function MyTabBar({
             key={label}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
             onPress={onPress}
-            onLongPress={onLongPress}
             style={{ flex: 1 }}>
-            <View
-              style={[
-                styles.tabBarLabelHolder,
-                isFocused && {  },
-              ]}>
+            <View style={[styles.tabBarLabelHolder]}>
               {imgNeeded && (
                 <Image
-                  style={[
-                    styles.tabBarLabelLogo,
-                    isFocused && { tintColor: ColorsConstant.Theme },
-                  ]}
+                  style={{
+                    width: isEdu ? 28 : 20,
+                    height: isEdu ? 28 : 20,
+                    tintColor: isFocused ? ColorsConstant.Theme : '#999',
+                  }}
                   source={src}
                 />
               )}
-              <Text style={[styles.tabBarLabel, isFocused && { color: ColorsConstant.Theme }]}>
+              <Text style={{
+                color: isFocused ? ColorsConstant.Theme : '#444',
+                fontSize: isEdu ? 18 : 14,
+                fontWeight: isEdu ? 'bold' : 'normal',
+                marginTop: 4,
+              }}>
                 {label}
               </Text>
             </View>

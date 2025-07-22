@@ -164,11 +164,7 @@ export default function TriviaQuestionPaper({navigation}) {
         <Toast />
       </View>
       <View style={styles.container}>
-        <StatusBar
-          barStyle={'white-content'}
-          translucent={false}
-          backgroundColor={'#2E2E2E'}
-        />
+       <StatusBar barStyle={'white-content'} translucent={false} backgroundColor={'#701DDB'} />
         <View style={styles.quitView1}>
           <View style={styles.quitView2}>
             <TouchableOpacity

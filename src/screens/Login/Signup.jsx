@@ -42,7 +42,7 @@ export default function Signup({navigation, route}) {
       const isEdu = localObj?.is_edu;
 
       console.log('====================================');
-      console.log(localObj,';;;sss');
+      console.log(localObj, ';;;sss');
       console.log('====================================');
 
       if (isEdu === true || isEdu === false) {
@@ -98,12 +98,11 @@ export default function Signup({navigation, route}) {
           ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
         }
 
-      navigation.navigate('Otp', {
-  phone: phone,
-  userType: userTypeToSend,  // <- true or false
-  referCode: referralCode,
-});
-
+        navigation.navigate('Otp', {
+          phone: phone,
+          userType: userTypeToSend, // <- true or false
+          referCode: referralCode,
+        });
       } else {
         setErrorMessage('*' + response.Backend_Error);
       }
@@ -203,7 +202,7 @@ export default function Signup({navigation, route}) {
                     }}
                     dropdownStyles={{backgroundColor: '#9856EB'}}
                     placeholder="Select user type"
-                     inputStyles={{color: '#fff'}}
+                    inputStyles={{color: '#fff'}}
                     arrowicon={
                       <Image
                         source={require('../../assets/img/down-arrow.png')}

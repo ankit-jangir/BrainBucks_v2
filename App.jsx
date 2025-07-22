@@ -159,6 +159,7 @@ import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
 import FoundersClubScreen from './src/screens/Home/FoundersClubScreen.jsx';
 import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
 import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
+import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -298,10 +299,7 @@ function MyStack() {
       />
       <Stack.Screen name="schedulquiz" component={ScheduleQuiz} />
       <Stack.Screen name="schedulquiztime" component={ScheduleQuizTime} />
-      <Stack.Screen
-        name="scheduledQuizzes"
-        component={ScheduledQuizzes}
-      />
+      <Stack.Screen name="scheduledQuizzes" component={ScheduledQuizzes} />
       <Stack.Screen
         name="scheduledsuccessfullyQuiz"
         component={ScheduledSuccessfullyQuiz}
@@ -335,7 +333,7 @@ function MyStack() {
       <Stack.Screen name="MissionScreen" component={MissionScreen} />
       <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
       <Stack.Screen name="FoundersClubScreen" component={FoundersClubScreen} />
-      {/* <Stack.Screen name="Super30Screen" component={Super30Screen} /> */}
+      <Stack.Screen name="UploadQuestionsScreen" component={UploadQuestionsScreen} />
 
       <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
     </Stack.Navigator>
@@ -486,7 +484,7 @@ function MyTabs() {
           component={ReferEarn}
           options={{
             tabBarLabel: 'Refer',
-            tabBarIcon: ({ focused }) => {
+            tabBarIcon: ({focused}) => {
               const scale = useRef(new Animated.Value(1)).current;
 
               useEffect(() => {
@@ -673,15 +671,14 @@ export default function App() {
   return (
     <KeyboardProvider>
       <NavigationContainer
-  ref={navRef}
-  linking={linking}
-  onReady={() => {
-    setNavigation(navRef.current); // existing logic
-    setCurrentRoute(navRef.current.getCurrentRoute()?.name); // route tracking
-  }}
->
+        ref={navRef}
+        linking={linking}
+        onReady={() => {
+          setNavigation(navRef.current); // existing logic
+          setCurrentRoute(navRef.current.getCurrentRoute()?.name); // route tracking
+        }}>
         <StatusBar backgroundColor={'rgba(112, 29, 219, 1)'} />
-        
+
         <AddBankReducer>
           <WithdrawReducer>
             <IdReducer>

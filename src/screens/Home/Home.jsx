@@ -15,15 +15,13 @@ import Toast from 'react-native-toast-message';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import {useIsFocused} from '@react-navigation/native';
 import basic from '../../services/BasicServices';
-import {getHomeData} from '../../controllers/HomeController';
 import {
-  getHomeBanners,
+  getBanners,
   getLiveQuizzes,
   getTriviaQuizzes,
   getExamList,
   getEnrolledQuizzes,
 } from '../../services/api/HomeApiService';
-
 import HomeBanners from '../../components/HomeBanners';
 import HomeActiveQuizzes from '../../components/HomeActiveQuizzes';
 import HomeTriviaQuizzes from '../../components/HomeTriviaQuizzes';
@@ -93,7 +91,7 @@ export default function Home({navigation}) {
     try {
       const [bannersRes, liveQuizzesRes, triviaRes, examsRes, enrolledRes] =
         await Promise.all([
-          getHomeBanners(),
+          getBanners(),
           getLiveQuizzes(),
           getTriviaQuizzes(),
           getExamList(),
@@ -125,7 +123,12 @@ export default function Home({navigation}) {
 
   return (
     <>
-      <StatusBar animated={true} backgroundColor="#61dafb" />
+      <StatusBar
+        barStyle={'white-content'}
+        translucent={false}
+        backgroundColor={'#701DDB'}
+      />
+
       {userType === true ? (
         <>
           <View style={{flex: 1}}>

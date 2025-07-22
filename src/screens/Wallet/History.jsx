@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,16 +8,21 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
-import { Text } from '../../utils/Translate';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {Text} from '../../utils/Translate';
+import {ColorsConstant} from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import WalletApiService from '../../services/api/WalletApiService';
 import MainHeader from '../../components/MainHeader';
 import Toast from 'react-native-toast-message';
-import { BottomSheetModal, BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from '@gorhom/bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const History = ({ navigation }) => {
+const History = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const wallet = new WalletApiService();
@@ -35,19 +39,19 @@ const History = ({ navigation }) => {
       id: '1',
       label: 'Accepted',
       color: '#129C73',
-      icon: require("../../assets/img/mark.png"),
+      icon: require('../../assets/img/mark.png'),
     },
     {
       id: '2',
       label: 'Pending',
       color: 'orange',
-      icon: require("../../assets/img/wall-clock.png"),
+      icon: require('../../assets/img/wall-clock.png'),
     },
     {
       id: '3',
       label: 'Rejected',
       color: ColorsConstant.RedLight,
-      icon: require("../../assets/img/multiply.png"),
+      icon: require('../../assets/img/multiply.png'),
     },
   ];
 
@@ -61,14 +65,19 @@ const History = ({ navigation }) => {
       setLoading(page === 1);
       setLoadingMore(page > 1);
 
-      const response = await wallet.withdrawTranctions(page, 15, statusFilter || '');
+      const response = await wallet.withdrawTranctions(
+        page,
+        15,
+        statusFilter || '',
+      );
       if (!response.data || !Array.isArray(response.data)) {
         throw new Error('Invalid API response: data is not an array');
       }
 
       const newData = response.data.map(item => ({
         ...item,
-        success: item.status === 'Pending' ? -1 : item.status === 'Accepted' ? 1 : 0,
+        success:
+          item.status === 'Pending' ? -1 : item.status === 'Accepted' ? 1 : 0,
         order_datetime: new Date(item.createdAt).toLocaleString(),
         type: 'debit',
         _id: String(item._id),
@@ -76,7 +85,9 @@ const History = ({ navigation }) => {
 
       setDataHistory(prevData => {
         const existingIds = new Set(prevData.map(item => item._id));
-        const filteredNewData = newData.filter(item => !existingIds.has(item._id));
+        const filteredNewData = newData.filter(
+          item => !existingIds.has(item._id),
+        );
         return page === 1 ? newData : [...prevData, ...filteredNewData];
       });
 
@@ -98,7 +109,7 @@ const History = ({ navigation }) => {
     }
   }
 
-  const handleStatusSelect = (status) => {
+  const handleStatusSelect = status => {
     setTempStatusFilter(status);
   };
 
@@ -109,35 +120,35 @@ const History = ({ navigation }) => {
   };
 
   const renderBackdrop = useCallback(
-    (props) => (
+    props => (
       <BottomSheetBackdrop
         {...props}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
       />
     ),
-    []
+    [],
   );
 
-  const getArrowImage = (type) => {
+  const getArrowImage = type => {
     return type === 'debit'
       ? require('../../assets/img/arrowdown.png')
       : require('../../assets/img/uparrowss.png');
   };
 
-  const getStatusIcon = (success) => {
+  const getStatusIcon = success => {
     if (success === 1) return require('../../assets/img/arrowright.png');
     else if (success === -1) return require('../../assets/img/pending.png');
     else return require('../../assets/img/cross.png');
   };
 
-  const getStatusText = (success) => {
+  const getStatusText = success => {
     if (success === 1) return 'Success';
     else if (success === -1) return 'Pending';
     else return 'Rejected';
   };
 
-  const getStatusColor = (success) => {
+  const getStatusColor = success => {
     if (success === 1) return '#129C73';
     else if (success === -1) return 'orange';
     else return ColorsConstant.RedLight;
@@ -145,12 +156,12 @@ const History = ({ navigation }) => {
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={{ backgroundColor: '#fff', flex: 1 }}>
-        <View style={{ zIndex: 20 }}>
+      <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
+        <View style={{zIndex: 20}}>
           <Toast />
         </View>
 
-        <View style={{ flex: 0.1 }}>
+        <View style={{flex: 0.1}}>
           <MainHeader
             name={'Transaction History'}
             rightIcon={{
@@ -160,7 +171,7 @@ const History = ({ navigation }) => {
           />
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           {loading ? (
             <ActivityIndicator size={40} color={ColorsConstant.Theme} />
           ) : datahistory.length === 0 ? (
@@ -175,13 +186,13 @@ const History = ({ navigation }) => {
               onEndReachedThreshold={0.8}
               onEndReached={() => {
                 if (currentPage < totalPages && !loadingMore) {
-                  setCurrentPage((prev) => prev + 1);
+                  setCurrentPage(prev => prev + 1);
                   getWalletHistoryData(currentPage + 1);
                 }
               }}
               data={datahistory}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => (
+              keyExtractor={item => item._id}
+              renderItem={({item}) => (
                 <View style={styles.historyContainer}>
                   <View style={styles.transactionEntry}>
                     <View
@@ -195,8 +206,7 @@ const History = ({ navigation }) => {
                                 ? '#EFFFF6'
                                 : '#FFEFEF',
                         },
-                      ]}
-                    >
+                      ]}>
                       <Image
                         source={getArrowImage(item.type)}
                         style={styles.icon}
@@ -204,19 +214,25 @@ const History = ({ navigation }) => {
                       />
                     </View>
                     <View>
-                      <Text style={styles.transactionAmount}>{item.amount}</Text>
-                      <Text style={styles.timestamp}>{item.order_datetime}</Text>
+                      <Text style={styles.transactionAmount}>
+                        {item.amount}
+                      </Text>
+                      <Text style={styles.timestamp}>
+                        {item.order_datetime}
+                      </Text>
                     </View>
                     <View style={styles.statusContainer}>
                       <View style={[styles.statusIcon]}>
-                        <Image source={getStatusIcon(item.success)} style={styles.icon} />
+                        <Image
+                          source={getStatusIcon(item.success)}
+                          style={styles.icon}
+                        />
                       </View>
                       <Text
                         style={[
                           styles.statusText,
-                          { color: getStatusColor(item.success) },
-                        ]}
-                      >
+                          {color: getStatusColor(item.success)},
+                        ]}>
                         {getStatusText(item.success)}
                       </Text>
                     </View>
@@ -232,33 +248,44 @@ const History = ({ navigation }) => {
               )}
             />
           )}
-          {loadingMore && <ActivityIndicator size={30} color={ColorsConstant.Theme} />}
+          {loadingMore && (
+            <ActivityIndicator size={30} color={ColorsConstant.Theme} />
+          )}
         </View>
 
         <BottomSheetModal
           ref={bottomSheetRef}
           snapPoints={snapPoints}
           backdropComponent={renderBackdrop}
-          onDismiss={() => setTempStatusFilter(statusFilter)}
-        >
+          onDismiss={() => setTempStatusFilter(statusFilter)}>
           <BottomSheetView style={styles.sheetContent}>
             <View style={styles.header}>
               <Text style={styles.title}>Status</Text>
-              <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
-                <Image source={require("../../assets/img/multiply.png")} style={{ height: 20, width: 20 }}  />
-
+              <TouchableOpacity
+                onPress={() => bottomSheetRef.current?.dismiss()}>
+                <Image
+                  source={require('../../assets/img/multiply.png')}
+                  style={{height: 20, width: 20}}
+                />
               </TouchableOpacity>
             </View>
 
-            {statusOptions.map((option) => (
+            {statusOptions.map(option => (
               <TouchableOpacity
                 key={option.id}
                 style={styles.optionContainer}
-                onPress={() => handleStatusSelect(option.label)}
-              >
+                onPress={() => handleStatusSelect(option.label)}>
                 <View style={styles.optionLeft}>
-                  <View style={[styles.iconContainer, { backgroundColor: option.color }]}>
-                    <Image source={option.icon} style={{ height: 20, width: 20 }} tintColor={"#fff"} />
+                  <View
+                    style={[
+                      styles.iconContainer,
+                      {backgroundColor: option.color},
+                    ]}>
+                    <Image
+                      source={option.icon}
+                      style={{height: 20, width: 20}}
+                      tintColor={'#fff'}
+                    />
                   </View>
                   <Text style={styles.optionText}>{option.label}</Text>
                 </View>
@@ -268,8 +295,7 @@ const History = ({ navigation }) => {
                     tempStatusFilter === option.label && {
                       borderColor: option.color,
                     },
-                  ]}
-                >
+                  ]}>
                   <View
                     style={[
                       styles.radioInner,
@@ -290,11 +316,12 @@ const History = ({ navigation }) => {
                   setStatusFilter(null);
                   setCurrentPage(1);
                   // bottomSheetRef.current?.dismiss();
-                }}
-              >
+                }}>
                 <Text style={styles.clearButtonText}>Clear all</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.applyButton} onPress={handleApplyFilter}>
+              <TouchableOpacity
+                style={styles.applyButton}
+                onPress={handleApplyFilter}>
                 <Text style={styles.applyButtonText}>Apply</Text>
               </TouchableOpacity>
             </View>
@@ -318,7 +345,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     backgroundColor: 'white',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     overflow: 'hidden',
