@@ -102,8 +102,16 @@ const Dashboard = () => {
             Welcome back, {userData?.name || userData?.username || 'User'}!
           </Text>
         </View>
-        <View style={styles.rightHeader} />
+        <TouchableOpacity onPress={() => navigation.navigate('wallet')} >
+          <Image
+            source={require('../../assets/img/wallet.png')}
+            style={{width:20,height:20}}
+            tintColor={"#000"}
+            resizeMode='contain'
+          />
+        </TouchableOpacity>
       </View>
+        {/* <View style={styles.rightHeader} /> */}
 
       <View style={styles.container}>
         <LinearGradient colors={['#9333EA', '#A855F7']} style={styles.card}>
