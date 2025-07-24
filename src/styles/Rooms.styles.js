@@ -99,7 +99,10 @@ actionTitle: {
   roomNameText: {
     fontSize: 20,
     color: ColorsConstant.Black,
-    paddingTop: 10,
+    // paddingTop: 10,  
+    fontWeight:'600',
+    fontFamily:'Work Sans'
+
   },
   memberHolder: {
     flexDirection: 'row',
@@ -109,6 +112,8 @@ actionTitle: {
   memberText: {
     color: ColorsConstant.GrayyColor,
     fontSize: 14,
+    fontWeight:'600',
+    fontFamily:'Work Sans'
   },
   memberText1: {
     color: ColorsConstant.Black,
@@ -198,7 +203,9 @@ createroomtext: {
     flexGrow: 1, // ScrollView ko support karega
     width: '100%',
     backgroundColor: '#701DDB',
-    paddingTop: 20,
+    paddingTop: 5,
+    flex:1
+    // borderRadius:10
   },
   backRoomEnterImg: {
     height: 14,
@@ -226,8 +233,9 @@ createroomtext: {
     backgroundColor: '#8D4AE2',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 7,
+    borderRadius: 20,
     paddingHorizontal: 20,
+    paddingVertical:6
   },
   histImg: {
     height: 15,

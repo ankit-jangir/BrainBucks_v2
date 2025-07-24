@@ -4,18 +4,18 @@ import basic from '../BasicServices'
 
 class HomeApiService {
 
-    // async getHomeData(){
-    //     let token = await basic.getBearerToken()
-    //     let url = `${QUIZMICRO}/home/page/overview`
-    //     let headers = {"content-type":"application/json", "authorization":token}
-    //     let options = {
-    //         method: "get",
-    //         headers: headers,
-    //         url
-    //     }
-    //     let response = await axios(options)
-    //     return response.data;
-    // }
+    async getHomeData(){
+        let token = await basic.getBearerToken()
+        let url = `${QUIZMICRO}/home/page/overview`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let options = {
+            method: "get",
+            headers: headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
 
     async getBanners() {
         let token = await basic.getBearerToken()

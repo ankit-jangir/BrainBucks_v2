@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -6,33 +6,61 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Image,
   ToastAndroid,
-  Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {pick, types} from '@react-native-documents/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { pick, types } from '@react-native-documents/picker';
 import MainHeader from '../../components/MainHeader';
-import {useNavigation} from '@react-navigation/native';
-import {Dropdown} from 'react-native-element-dropdown';
+import { useNavigation } from '@react-navigation/native';
+import { Dropdown } from 'react-native-element-dropdown';
 import basic from '../../services/BasicServices';
-import {QUIZMICRO} from '../../config/urls';
+import { QUIZMICRO } from '../../config/urls';
 
 const UploadQuestionsScreen = () => {
   const navigation = useNavigation();
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [search, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [subjectData, setSubjectData] = useState([]);
+  const [originalSubjectData, setOriginalSubjectData] = useState([]); // Original data cache
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [xlFile, setXlFile] = useState(null);
 
-  const reloadExams = async () => {
+  const debounceRef = useRef(null);
+  const abortControllerRef = useRef(null);
+
+  // Memoized filtered data for client-side filtering (fallback)
+  const filteredSubjectData = useMemo(() => {
+    if (!searchTerm.trim()) return originalSubjectData;
+    
+    return originalSubjectData.filter(item =>
+      item.sub_name?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [originalSubjectData, searchTerm]);
+
+  const reloadExams = async (searchTerm = '', useClientFilter = false) => {
     try {
-      setLoading(true);
+      // If using client-side filtering, don't make API call
+      if (useClientFilter && originalSubjectData.length > 0) {
+        setSubjectData(filteredSubjectData);
+        return;
+      }
+
+      // Cancel previous request if exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // Create new abort controller
+      abortControllerRef.current = new AbortController();
+
+      setSearchLoading(searchTerm.length > 0);
+      if (searchTerm.length === 0) setLoading(true);
+
       const token = await basic.getBearerToken();
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `${token}`);
@@ -41,11 +69,12 @@ const UploadQuestionsScreen = () => {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow',
+        signal: abortControllerRef.current.signal, // Add abort signal
       };
 
       const response = await fetch(
-        `${QUIZMICRO}/educator/subject?search=${search}`,
-        requestOptions,
+        `${QUIZMICRO}/educator/subject?search=${searchTerm}`,
+        requestOptions
       );
 
       if (!response.ok) {
@@ -54,7 +83,6 @@ const UploadQuestionsScreen = () => {
 
       const result = await response.json();
       if (result.status === 1) {
-        // Transform data for dropdown
         const transformedData = result.data.map(item => ({
           label: item.sub_name || item.name || 'Unknown Subject',
           value: item._id || item.id,
@@ -63,20 +91,48 @@ const UploadQuestionsScreen = () => {
         }));
 
         setSubjectData(transformedData);
+        
+        // Cache original data on first load
+        if (searchTerm === '') {
+          setOriginalSubjectData(transformedData);
+        }
       } else {
         setSubjectData([]);
         console.log('No subjects found or invalid response');
       }
     } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Request cancelled');
+        return;
+      }
+      
       console.error('Error fetching subjects:', error);
       setSubjectData([]);
       ToastAndroid.show('Failed to load subjects', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
+      setSearchLoading(false);
     }
   };
 
-  // Function to handle Excel file selection
+  // Optimized debounced search with client-side filtering for better performance
+  const debouncedSearch = useCallback((searchTerm) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    // Immediate client-side filtering for better UX
+    if (originalSubjectData.length > 0) {
+      setSubjectData(filteredSubjectData);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      // For short searches, use client-side filtering if we have cached data
+      const useClientFilter = searchTerm.length <= 2 && originalSubjectData.length > 50;
+      reloadExams(searchTerm, useClientFilter);
+    }, 300); // Reduced debounce time for better responsiveness
+  }, [originalSubjectData, filteredSubjectData]);
+
   const selectExcelFile = async () => {
     try {
       const result = await pick({
@@ -99,7 +155,6 @@ const UploadQuestionsScreen = () => {
     }
   };
 
-  // Function to upload Excel file with questions
   const uploadBulkQuestions = async () => {
     if (!selectedSubject) {
       ToastAndroid.show('Please select a subject first', ToastAndroid.SHORT);
@@ -114,7 +169,7 @@ const UploadQuestionsScreen = () => {
     try {
       setLoading(true);
       const token = await basic.getBearerToken();
-      
+
       const formData = new FormData();
       formData.append('sub_id', selectedSubject);
       formData.append('excel', {
@@ -135,16 +190,12 @@ const UploadQuestionsScreen = () => {
 
       const response = await fetch(
         `${QUIZMICRO}/educator/excel/questions`,
-        requestOptions,
+        requestOptions
       );
 
       const result = await response.json();
- console.log('====================================');
-        console.log(result,'ssssss');
+
       if (response.ok && result.status === 1) {
-        console.log('====================================');
-        console.log(result);
-        console.log('====================================');
         ToastAndroid.show('Questions uploaded successfully!', ToastAndroid.LONG);
         setXlFile(null);
         setSelectedSubject(null);
@@ -162,10 +213,26 @@ const UploadQuestionsScreen = () => {
     }
   };
 
-  // Load subjects on component mount and search change
   useEffect(() => {
-    reloadExams();
-  }, [search]);
+    reloadExams('');
+    
+    // Cleanup function
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Memoized dropdown render item for better performance
+  const renderDropdownItem = useCallback((item) => (
+    <View style={styles.dropdownItem}>
+      <Text style={styles.dropdownItemText}>{item.sub_name}</Text>
+    </View>
+  ), []);
 
   return (
     <KeyboardAvoidingView
@@ -185,46 +252,56 @@ const UploadQuestionsScreen = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
-        
+
         {/* Subject Selection Dropdown */}
         <View style={styles.subjectContainer}>
           <Text style={styles.questionLabel}>Select subject</Text>
-          <Dropdown
-            style={[styles.dropdown, isFocus && {borderColor: '#701DDB'}]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={subjectData}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={
-              selectedSubject
-                ? subjectData.find(item => item.value === selectedSubject)
-                    ?.sub_name || 'Select subject'
-                : 'Select subject'
-            }
-            searchPlaceholder="Search subjects..."
-            value={selectedSubject}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={item => {
-              setSelectedSubject(item._id);
-              setIsFocus(false);
-            }}
-            onChangeText={text => {
-              setSearchTerm(text);
-            }}
-            renderItem={item => (
-              <View style={styles.dropdownItem}>
-                <Text style={styles.dropdownItemText}>{item.sub_name}</Text>
+          <View style={styles.dropdownWrapper}>
+            <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: '#701DDB' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={subjectData}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={
+                selectedSubject
+                  ? subjectData.find(item => item.value === selectedSubject)?.sub_name || 'Select subject'
+                  : 'Select subject'
+              }
+              searchPlaceholder="Search subjects..."
+              value={selectedSubject}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedSubject(item._id);
+                setIsFocus(false);
+              }}
+              onChangeText={text => {
+                setSearchTerm(text);
+                debouncedSearch(text);
+              }}
+              renderItem={renderDropdownItem}
+              dropdownPosition="bottom"
+              containerStyle={styles.dropdownContainer}
+              // Additional performance props
+              flatListProps={{
+                keyboardShouldPersistTaps: 'handled',
+                removeClippedSubviews: true,
+                maxToRenderPerBatch: 10,
+                windowSize: 10,
+              }}
+            />
+            {searchLoading && (
+              <View style={styles.searchLoadingIndicator}>
+                <ActivityIndicator size="small" color="#701DDB" />
               </View>
             )}
-            dropdownPosition="bottom"
-            containerStyle={styles.dropdownContainer}
-          />
+          </View>
         </View>
 
         {/* Excel File Upload Section */}
@@ -241,7 +318,7 @@ const UploadQuestionsScreen = () => {
               {xlFile ? xlFile.name : 'No file selected'}
             </Text>
           </TouchableOpacity>
-          
+
           {xlFile && (
             <View style={styles.fileInfo}>
               <Text style={styles.fileInfoText}>
@@ -309,6 +386,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     zIndex: 1000,
   },
+  dropdownWrapper: {
+    position: 'relative',
+  },
   dropdown: {
     height: 50,
     borderColor: '#E5E7EB',
@@ -330,6 +410,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  searchLoadingIndicator: {
+    position: 'absolute',
+    right: 35,
+    top: 15,
+    zIndex: 1001,
   },
   placeholderStyle: {
     fontSize: 16,

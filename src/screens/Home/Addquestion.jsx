@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -28,17 +28,35 @@ const AddQuestion = () => {
   const [search, setSearchTerm] = useState('');
   const [subjectData, setSubjectData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false); // Separate loading for search
   const [xlFile, setXlFile] = useState(null);
 
   // Single question state
   const [question, setQuestion] = useState({
     question: '',
     questionImage: null,
-    optionType: 'text', // 'text' or 'image'
+    optionType: 'text',
     options: ['', '', '', ''],
-    optionImages: [null, null, null, null], // For image-based options
+    optionImages: [null, null, null, null],
     correctIndex: null,
   });
+
+  // Debounced search function
+  const debounceSearch = useCallback(
+    (() => {
+      let timeoutId;
+      return (searchTerm) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          if (searchTerm.length >= 2 || searchTerm.length === 0) {
+            // Only search if 2+ characters or empty (to show all)
+            reloadExams(searchTerm);
+          }
+        }, 800); // 800ms delay - user ko type karne ka time
+      };
+    })(),
+    []
+  );
 
   // Handle option text change
   const handleOptionChange = (text, optIndex) => {
@@ -79,13 +97,14 @@ const AddQuestion = () => {
     } else {
       updated.options = ['', '', '', ''];
     }
-    updated.correctIndex = null; // Reset correct answer
+    updated.correctIndex = null;
     setQuestion(updated);
   };
 
-  const reloadExams = async () => {
+  // Modified reloadExams function with proper loading states
+  const reloadExams = async (searchTerm = '') => {
     try {
-      setLoading(true);
+      setSearchLoading(true);
       const token = await basic.getBearerToken();
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `${token}`);
@@ -97,7 +116,7 @@ const AddQuestion = () => {
       };
 
       const response = await fetch(
-        `${QUIZMICRO}/educator/subject?search=${search}`,
+        `${QUIZMICRO}/educator/subject?search=${searchTerm}`,
         requestOptions,
       );
 
@@ -107,7 +126,6 @@ const AddQuestion = () => {
 
       const result = await response.json();
       if (result.status === 1) {
-        // Transform data for dropdown
         const transformedData = result.data.map(item => ({
           label: item.sub_name || item.name || 'Unknown Subject',
           value: item._id || item.id,
@@ -125,8 +143,14 @@ const AddQuestion = () => {
       setSubjectData([]);
       ToastAndroid.show('Failed to load subjects', ToastAndroid.SHORT);
     } finally {
-      setLoading(false);
+      setSearchLoading(false);
     }
+  };
+
+  // Handle search input change
+  const handleSearchChange = (text) => {
+    setSearchTerm(text);
+    debounceSearch(text); // Use debounced search
   };
 
   // Fixed Submit Question Function
@@ -135,7 +159,6 @@ const AddQuestion = () => {
       // Validation
       if (!selectedSubject) {
         ToastAndroid.show('Please select a subject', ToastAndroid.LONG);
-
         return;
       }
 
@@ -152,7 +175,6 @@ const AddQuestion = () => {
           'Please select the correct answer',
           ToastAndroid.LONG,
         );
-
         return;
       }
 
@@ -161,7 +183,6 @@ const AddQuestion = () => {
         const emptyOptions = question.options.filter(opt => !opt.trim());
         if (emptyOptions.length > 0) {
           ToastAndroid.show('Please fill all text options', ToastAndroid.LONG);
-
           return;
         }
       } else {
@@ -184,7 +205,7 @@ const AddQuestion = () => {
 
       const formdata = new FormData();
       formdata.append('question', question.question.trim());
-      formdata.append('ans', (question.correctIndex + 1).toString()); // 1-based index
+      formdata.append('ans', (question.correctIndex + 1).toString());
       formdata.append('sub_id', selectedSubject);
       formdata.append(
         'is_opt_img',
@@ -273,7 +294,6 @@ const AddQuestion = () => {
       }
     } catch (error) {
       console.error('Submit Question Error:', error);
-      // Fixed: Show proper error message instead of result object
       const errorMessage =
         error.message || 'Failed to upload question. Please try again.';
       ToastAndroid.show(errorMessage, ToastAndroid.LONG);
@@ -292,14 +312,13 @@ const AddQuestion = () => {
       optionImages: [null, null, null, null],
       correctIndex: null,
     });
-
     console.log('Question form reset');
   };
 
-  // Load subjects on component mount and search change
+  // Load subjects on component mount only
   useEffect(() => {
-    reloadExams();
-  }, [search]);
+    reloadExams(''); // Initial load without search
+  }, []); // Empty dependency array - only runs once
 
   return (
     <KeyboardAvoidingView
@@ -319,6 +338,7 @@ const AddQuestion = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
+        
         {/* Subject Selection Dropdown */}
         <View style={styles.subjectContainer}>
           <Text style={styles.questionLabel}>Select subject</Text>
@@ -339,7 +359,7 @@ const AddQuestion = () => {
                     ?.sub_name || 'Select subject'
                 : 'Select subject'
             }
-            searchPlaceholder="Search subjects..."
+            searchPlaceholder="search..."
             value={selectedSubject}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -347,13 +367,18 @@ const AddQuestion = () => {
               setSelectedSubject(item._id);
               setIsFocus(false);
             }}
-            onChangeText={text => {
-              setSearchTerm(text);
-            }}
+            onChangeText={handleSearchChange} // Modified handler
             renderItem={item => (
               <View style={styles.dropdownItem}>
                 <Text style={styles.dropdownItemText}>{item.sub_name}</Text>
               </View>
+            )}
+            renderRightIcon={() => (
+              searchLoading ? (
+                <ActivityIndicator size="small" color="#701DDB" />
+              ) : (
+                <Text style={styles.dropdownArrow}>▼</Text>
+              )
             )}
             dropdownPosition="bottom"
             containerStyle={styles.dropdownContainer}
@@ -550,6 +575,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  dropdownArrow: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    fontWeight: 'bold',
   },
   placeholderStyle: {
     fontSize: 16,

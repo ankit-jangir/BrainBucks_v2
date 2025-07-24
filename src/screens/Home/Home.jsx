@@ -21,6 +21,7 @@ import {
   getTriviaQuizzes,
   getExamList,
   getEnrolledQuizzes,
+  getEduGraf
 } from '../../services/api/HomeApiService';
 import HomeBanners from '../../components/HomeBanners';
 import HomeActiveQuizzes from '../../components/HomeActiveQuizzes';
@@ -43,6 +44,8 @@ export default function Home({navigation}) {
   const [triviaData, setTriviaData] = useState([]);
   const [examData, setExamData] = useState([]);
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
+  const [grafData, setGrafData] = useState([]);
+
   const [userType, setUserType] = useState(null);
   const isFocused = useIsFocused();
   const backRef = useRef();
@@ -96,6 +99,7 @@ export default function Home({navigation}) {
           getTriviaQuizzes(),
           getExamList(),
           getEnrolledQuizzes(),
+          getEduGraf()
         ]);
 
       setBannerData(bannersRes?.data || []);
@@ -132,7 +136,7 @@ export default function Home({navigation}) {
       {userType === true ? (
         <>
           <View style={{flex: 1}}>
-            <Dashboard />
+            <Dashboard  data={grafData}/>
           </View>
         </>
       ) : (

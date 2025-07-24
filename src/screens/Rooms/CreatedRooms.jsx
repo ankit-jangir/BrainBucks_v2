@@ -43,8 +43,6 @@ export default function CreatedRooms({navigation}) {
     let res = await deleteRoomInController(room_id, Toast);
     console.log(res ,'sosnususu');
     if (res) {
-      console.log('====================================');
-      console.log('====================================');
       let newArr = rooms.filter((item, index) => item._id !== room_id);
       setRooms([...newArr]);
 

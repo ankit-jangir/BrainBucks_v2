@@ -6,13 +6,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React, {useEffect, useState} from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import styles from '../../styles/Rooms.styles';
 import Explore from './Explore';
 import MyRooms from './MyRooms';
-import { Button } from '../../utils/Translate';
-import { Text, TextInput } from '../../utils/Translate';
+import {Button} from '../../utils/Translate';
+import {Text, TextInput} from '../../utils/Translate';
 import Toast from 'react-native-toast-message';
 import {
   CheckEligibilityForPublicRoom,
@@ -20,15 +20,15 @@ import {
   verifyOTP,
 } from '../../controllers/RoomsController';
 import PrivateRooms from './PrivateRooms';
-import { Modal } from 'react-native-paper';
-import { ColorsConstant } from '../../constants/Colors.constant';
-import { useIsFocused } from '@react-navigation/native';
+import {Modal} from 'react-native-paper';
+import {ColorsConstant} from '../../constants/Colors.constant';
+import {useIsFocused} from '@react-navigation/native';
 import BasicServices from '../../services/BasicServices';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function Rooms({ navigation, route }) {
-  const { id, type } = route.params || {};
+export default function Rooms({navigation, route}) {
+  const {id, type} = route.params || {};
   const [errorMessage, setErrorMessage] = useState('');
   const [visible, setVisible] = useState(false);
   const [otpModalVisible, setOtpModalVisible] = useState(false);
@@ -96,7 +96,7 @@ export default function Rooms({ navigation, route }) {
 
   return (
     <>
-      <View style={{ zIndex: 20 }}>
+      <View style={{zIndex: 20}}>
         <Toast />
       </View>
 
@@ -109,7 +109,7 @@ export default function Rooms({ navigation, route }) {
           <View style={styles.topbtns}>
             <Text style={styles.roomstext}>Rooms</Text>
 
-            <View style={{ position: 'relative', zIndex: 10 }}>
+            <View style={{position: 'relative', zIndex: 10}}>
               <TouchableOpacity
                 onPress={() => setShowActions(prev => !prev)}
                 style={styles.actionToggleButton}>
@@ -128,20 +128,22 @@ export default function Rooms({ navigation, route }) {
                       buttonStyle={styles.actionButton}
                       titleStyle={styles.actionTitle}
                     />
-                    <Button
-                      title="Apply Public"
-                      onPress={() => {
-                        setShowActions(false);
-                        handleEligibleClick();
-                      }}
-                      buttonStyle={styles.actionButton}
-                      titleStyle={styles.actionTitle}
-                    />
+                    {userType !== true && (
+                      <Button
+                        title="Apply Public"
+                        onPress={() => {
+                          setShowActions(false);
+                          handleEligibleClick();
+                        }}
+                        buttonStyle={styles.actionButton}
+                        titleStyle={styles.actionTitle}
+                      />
+                    )}
                     <Button
                       title="Add Questions"
                       onPress={() => {
                         setShowActions(false);
-                        navigation.navigate('Addquestion');
+                        navigation.navigate('Questionscreen');
                       }}
                       buttonStyle={styles.actionButton}
                       titleStyle={styles.actionTitle}
@@ -154,8 +156,8 @@ export default function Rooms({ navigation, route }) {
 
           {userType === true ? (
             <>
-              <View style={{ paddingHorizontal: 16 }}>
-                <Text style={[styles.roomstext, { fontSize: 16, color: 'gray' }]}>
+              <View style={{paddingHorizontal: 16}}>
+                <Text style={[styles.roomstext, {fontSize: 16, color: 'gray'}]}>
                   Created Rooms
                 </Text>
               </View>
@@ -163,20 +165,48 @@ export default function Rooms({ navigation, route }) {
             </>
           ) : (
             <Tab.Navigator
-              style={{ marginTop: 25 }}
+              style={{marginTop: 25}}
               tabBar={props => (
-                <MyTabBar {...props} imgNeeded={true} width={100} isEdu={userType} />
+                <MyTabBar
+                  {...props}
+                  imgNeeded={true}
+                  width={100}
+                  isEdu={userType}
+                />
               )}
               initialRouteName="MyRooms">
-              <Tab.Screen name="MyRooms" component={MyRooms} initialParams={{ id }} />
-              <Tab.Screen name="Explore" component={Explore} initialParams={{ id }} />
-              <Tab.Screen name="Private" component={PrivateRooms} initialParams={{ id }} />
+              <Tab.Screen
+                name="MyRooms"
+                component={MyRooms}
+                initialParams={{id}}
+              />
+              <Tab.Screen
+                name="Explore"
+                component={Explore}
+                initialParams={{id}}
+              />
+              <Tab.Screen
+                name="Private"
+                component={PrivateRooms}
+                initialParams={{id}}
+              />
             </Tab.Navigator>
           )}
 
           {/* Email Modal */}
-          <Modal visible={visible} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ padding: 20, margin: 30, backgroundColor: 'white', minWidth: 300 }}>
+          <Modal
+            visible={visible}
+            contentContainerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                padding: 20,
+                margin: 30,
+                backgroundColor: 'white',
+                minWidth: 300,
+              }}>
               {!errorMessage ? (
                 <>
                   <TextInput
@@ -187,24 +217,24 @@ export default function Rooms({ navigation, route }) {
                     value={email}
                     onChangeText={text => setEmail(text)}
                   />
-                  <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
+                  <View style={{flexDirection: 'row', gap: 20, marginTop: 30}}>
                     <Button
                       title="OK"
                       onPress={sendOtpToMail}
-                      buttonStyle={{ borderColor: ColorsConstant.Theme }}
+                      buttonStyle={{borderColor: ColorsConstant.Theme}}
                       loading={mailLoading}
-                      titleStyle={{ color: ColorsConstant.White }}
-                      containerStyle={{ flex: 1 }}
+                      titleStyle={{color: ColorsConstant.White}}
+                      containerStyle={{flex: 1}}
                     />
                     <Button
                       title="Cancel"
                       onPress={() => {
                         setVisible(false), setEmail(''), setOtp('');
                       }}
-                      buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
+                      buttonStyle={{borderColor: 'rgba(78, 116, 289, 1)'}}
                       type="outline"
-                      titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
-                      containerStyle={{ flex: 1 }}
+                      titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
+                      containerStyle={{flex: 1}}
                     />
                   </View>
                 </>
@@ -225,9 +255,9 @@ export default function Rooms({ navigation, route }) {
                     onPress={() => {
                       setVisible(false);
                     }}
-                    buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
+                    buttonStyle={{borderColor: 'rgba(78, 116, 289, 1)'}}
                     type="outline"
-                    titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                    titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
                     containerStyle={{
                       width: 200,
                       marginHorizontal: 50,
@@ -240,8 +270,19 @@ export default function Rooms({ navigation, route }) {
           </Modal>
 
           {/* OTP Modal */}
-          <Modal visible={otpModalVisible} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ padding: 20, margin: 30, backgroundColor: 'white', minWidth: 300 }}>
+          <Modal
+            visible={otpModalVisible}
+            contentContainerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                padding: 20,
+                margin: 30,
+                backgroundColor: 'white',
+                minWidth: 300,
+              }}>
               <TextInput
                 style={[styles.createRoomInput]}
                 placeholder={'Enter OTP'}
@@ -250,24 +291,24 @@ export default function Rooms({ navigation, route }) {
                 inputMode="numeric"
                 onChangeText={text => setOtp(text)}
               />
-              <View style={{ flexDirection: 'row', gap: 20, marginTop: 30 }}>
+              <View style={{flexDirection: 'row', gap: 20, marginTop: 30}}>
                 <Button
                   title="OK"
                   onPress={verifyOtp}
-                  buttonStyle={{ borderColor: ColorsConstant.Theme }}
+                  buttonStyle={{borderColor: ColorsConstant.Theme}}
                   loading={otpLoading}
-                  titleStyle={{ color: ColorsConstant.White }}
-                  containerStyle={{ flex: 1 }}
+                  titleStyle={{color: ColorsConstant.White}}
+                  containerStyle={{flex: 1}}
                 />
                 <Button
                   title="Cancel"
                   onPress={() => {
                     setOtpModalVisible(false), setEmail(''), setOtp('');
                   }}
-                  buttonStyle={{ borderColor: 'rgba(78, 116, 289, 1)' }}
+                  buttonStyle={{borderColor: 'rgba(78, 116, 289, 1)'}}
                   type="outline"
-                  titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
-                  containerStyle={{ flex: 1 }}
+                  titleStyle={{color: 'rgba(78, 116, 289, 1)'}}
+                  containerStyle={{flex: 1}}
                 />
               </View>
             </View>
@@ -278,15 +319,23 @@ export default function Rooms({ navigation, route }) {
   );
 }
 
-export function MyTabBar({ state, descriptors, navigation, imgNeeded, width, isEdu }) {
+export function MyTabBar({
+  state,
+  descriptors,
+  navigation,
+  imgNeeded,
+  width,
+  isEdu,
+}) {
   return (
-    <View style={[
-      styles.topbar,
-      { flexDirection: 'row', backgroundColor: '#fff', padding: 10 },
-      width && { width: width + '%' },
-    ]}>
+    <View
+      style={[
+        styles.topbar,
+        {flexDirection: 'row', backgroundColor: '#fff', padding: 10},
+        width && {width: width + '%'},
+      ]}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label = options.tabBarLabel ?? options.title ?? route.name;
 
         const isFocused = state.index === index;
@@ -312,9 +361,9 @@ export function MyTabBar({ state, descriptors, navigation, imgNeeded, width, isE
           <TouchableOpacity
             key={label}
             accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityState={isFocused ? {selected: true} : {}}
             onPress={onPress}
-            style={{ flex: 1 }}>
+            style={{flex: 1}}>
             <View style={[styles.tabBarLabelHolder]}>
               {imgNeeded && (
                 <Image
@@ -326,12 +375,13 @@ export function MyTabBar({ state, descriptors, navigation, imgNeeded, width, isE
                   source={src}
                 />
               )}
-              <Text style={{
-                color: isFocused ? ColorsConstant.Theme : '#444',
-                fontSize: isEdu ? 18 : 14,
-                fontWeight: isEdu ? 'bold' : 'normal',
-                marginTop: 4,
-              }}>
+              <Text
+                style={{
+                  color: isFocused ? ColorsConstant.Theme : '#444',
+                  fontSize: isEdu ? 18 : 14,
+                  fontWeight: isEdu ? 'bold' : 'normal',
+                  marginTop: 4,
+                }}>
                 {label}
               </Text>
             </View>

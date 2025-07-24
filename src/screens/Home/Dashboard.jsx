@@ -12,18 +12,26 @@ import {
 import {LineChart} from 'react-native-chart-kit';
 import LinearGradient from 'react-native-linear-gradient';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
+import BasicServices from '../../services/BasicServices';
+import {AUTHMICRO} from '../../config/urls';
 
 const screenWidth = Dimensions.get('window').width;
 
 const Dashboard = () => {
   const navigation = useNavigation();
-    let auth = new AuthenticationApiService();
+  let auth = new AuthenticationApiService();
   const [userData, setUserData] = useState({});
+  const [Graph, setGrafData] = useState({
+    labels: [''],
+    datasets: [{data: [0]}],
+  });
   const [Imag, setImage1] = useState({});
+  const [refers, setRefers] = useState(0);
+  const [eduLevel, setEduLevel] = useState('Level');
+
   let isFocused = useIsFocused();
 
-
- useEffect(() => {
+  useEffect(() => {
     try {
       auth.getUserProfile().then(res => {
         if (res.status === 1) {
@@ -39,12 +47,52 @@ const Dashboard = () => {
       console.log('Error in Fetching User Profile', err.message);
     }
   }, [isFocused]);
+
+  const getEduGraf = async () => {
+    try {
+      const token = await BasicServices.getBearerToken();
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `${token}`);
+
+      const response = await fetch(`${AUTHMICRO}/auth/participant/income`, {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      });
+      const result = await response.json();
+
+      if (result.success && Array.isArray(result.data)) {
+        const months = result.data.map(item => item.month?.slice(0, 5) || '');
+        const amounts = result.data.map(item => item.totalIncome || 0);
+
+        setGrafData({
+          labels: months,
+          datasets: [{data: amounts}],
+        });
+        setRefers(result.refers);
+        setEduLevel(result.eduLevel);
+        console.log('📊 Graph Data:', {
+          labels: months,
+          datasets: [{data: amounts}],
+        });
+      } else {
+        console.error('API failed:', result.message);
+      }
+    } catch (error) {
+      console.error('Error fetching graph data:', error);
+    }
+  };
+
+  useEffect(() => {
+    getEduGraf();
+  }, []);
+
   return (
     <>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.openDrawer?.()}>
           <Image
-            source={require('../../assets/img/burgerbar.png')} // Hamburger menu icon
+            source={require('../../assets/img/burgerbar.png')}
             style={styles.menuIcon}
           />
         </TouchableOpacity>
@@ -52,39 +100,32 @@ const Dashboard = () => {
           <Text style={styles.greeting}>Good morning</Text>
           <Text style={styles.welcome}>
             Welcome back, {userData?.name || userData?.username || 'User'}!
-          </Text> 
+          </Text>
         </View>
-
-        <View style={styles.rightHeader}>
-          {/* <Image
-            source={require('../../assets/img/bell.png')}
-            style={styles.icon}
-          /> */}
-          {/* <Image
-            source={{uri: 'https://i.pravatar.cc/150?img=3'}}
-            style={styles.avatar}
-          /> */}
-        </View>
+        <View style={styles.rightHeader} />
       </View>
 
       <View style={styles.container}>
-        {/* Header */}
-
-        {/* Earnings Card */}
         <LinearGradient colors={['#9333EA', '#A855F7']} style={styles.card}>
           <View style={styles.earningsHeader}>
             <Text style={styles.earningsLabel}>Total Earnings</Text>
             <Text style={styles.earningsChange}>+12.5%</Text>
           </View>
-          <Text style={styles.earnings}>$1,247.50</Text>
+          <Text style={styles.earnings}>
+            ₹ {Graph?.datasets?.[0]?.data?.reduce((a, b) => a + b, 0)}
+          </Text>
 
           <LineChart
-            data={{
-              labels: ['Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-              datasets: [{data: [300, 280, 500, 450, 470, 520]}],
-            }}
+            data={
+              Graph?.labels?.length
+                ? Graph
+                : {
+                    labels: [''],
+                    datasets: [{data: [0]}],
+                  }
+            }
             width={screenWidth - 40}
-            height={90} // 👈 reduced height here
+            height={90}
             withDots={false}
             withInnerLines={false}
             withOuterLines={false}
@@ -114,7 +155,6 @@ const Dashboard = () => {
           />
         </LinearGradient>
 
-        {/* Stats Boxes */}
         <View style={styles.statsContainer}>
           <View style={styles.statBox}>
             <Image
@@ -124,7 +164,7 @@ const Dashboard = () => {
             />
             <View style={styles.statContent}>
               <Text style={styles.statTitle}>Referrals</Text>
-              <Text style={styles.statValue}>42</Text>
+              <Text style={styles.statValue}>{refers}</Text>
             </View>
           </View>
 
@@ -136,12 +176,11 @@ const Dashboard = () => {
             />
             <View style={styles.statContent}>
               <Text style={styles.statTitle}>Level</Text>
-              <Text style={styles.statValue}>5</Text>
+              <Text style={styles.statValue}>{eduLevel}</Text>
             </View>
           </View>
         </View>
 
-        {/* Monthly Goals */}
         <Text style={styles.sectionTitle}>Monthly Goals</Text>
         <View style={styles.progressBarBackground}>
           <View style={styles.progressBarFill} />
@@ -150,7 +189,6 @@ const Dashboard = () => {
           30 more referrals to reach next level
         </Text>
 
-        {/* Action Buttons */}
         <View style={styles.buttonRow}>
           <TouchableOpacity
             onPress={() => navigation.navigate('ReferStudents')}
@@ -197,6 +235,8 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// ✅ Tera same styles hi use ho raha hai – no change needed
 
 const styles = StyleSheet.create({
   container: {

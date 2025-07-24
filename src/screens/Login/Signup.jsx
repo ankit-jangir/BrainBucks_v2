@@ -182,8 +182,7 @@ export default function Signup({navigation, route}) {
                 </Text>
               )}
 
-              {/* ✅ Only show dropdown if isEduStored is null */}
-              {isEduStored == null && (
+             
                 <View style={{marginTop: 15, width: '100%'}}>
                   <Text style={styles.textEnter}> Select User Type </Text>
                   <SelectList
@@ -212,8 +211,6 @@ export default function Signup({navigation, route}) {
                     }
                   />
                 </View>
-              )}
-
               {/* Terms and Conditions */}
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
