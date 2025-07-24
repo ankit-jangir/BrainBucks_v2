@@ -15,16 +15,10 @@ import {ActivityIndicator} from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
 import {useSignal} from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
-<<<<<<< HEAD
-import {useWithdraw} from '../../context/WithdrawReducer';
-import {ColorsConstant} from '../../constants/Colors.constant';
-import BasicServices from '../../services/BasicServices';
-=======
 import { useWithdraw } from '../../context/WithdrawReducer';
 import { ColorsConstant } from '../../constants/Colors.constant';
 import basic from '../../services/BasicServices';
 
->>>>>>> cb345fa407b150a3e7b143484acd3fb89eab883a
 import MainHeader from '../../components/MainHeader';
 import BasicServices from '../../services/BasicServices';
 import { RefreshControl } from 'react-native';
