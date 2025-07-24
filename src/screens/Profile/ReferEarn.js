@@ -107,13 +107,7 @@ const ReferEarn = () => {
   }
 
   const commissionData = [
-    {
-      id: '1',
-      icon: require('../../assets/img/gift2.png'),
-      percent: '1%',
-      label: 'Commission',
-      desc: 'When students join paid quizzes',
-    },
+    
     {
       id: '2',
       icon: require('../../assets/img/win.png'),

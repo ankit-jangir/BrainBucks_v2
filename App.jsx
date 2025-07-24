@@ -159,6 +159,7 @@ import LeaderboardScreen from './src/screens/Home/LeaderboardScreen.jsx';
 import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
 import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
+import PlanPurchase from './src/screens/Home/PlanPucharse.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -332,7 +333,7 @@ function MyStack() {
       <Stack.Screen name="MissionScreen" component={MissionScreen} />
       <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
       <Stack.Screen name="UploadQuestionsScreen" component={UploadQuestionsScreen} />
-
+      <Stack.Screen name="PlanPucharse" component={PlanPurchase} />
       <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
     </Stack.Navigator>
   );
@@ -352,6 +353,7 @@ function MyTabs() {
           tabBarShowLabel: true,
           headerShown: false,
           tabBarActiveTintColor: '#701DDB',
+          tabBarPressColor: 'transparent',
         }}>
         <Tab.Screen
           name="Home"
