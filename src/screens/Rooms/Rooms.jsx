@@ -139,15 +139,26 @@ export default function Rooms({navigation, route}) {
                         titleStyle={styles.actionTitle}
                       />
                     )}
-                    <Button
-                      title="Add Questions"
-                      onPress={() => {
-                        setShowActions(false);
-                        navigation.navigate('Questionscreen');
-                      }}
-                      buttonStyle={styles.actionButton}
-                      titleStyle={styles.actionTitle}
-                    />
+                    {userType !== false && (
+                      <Button
+                        title="Add Questions"
+                        onPress={() => {
+                          setShowActions(false);
+                          navigation.navigate('Questionscreen');
+                        }}
+                        buttonStyle={styles.actionButton}
+                        titleStyle={styles.actionTitle}
+                      />
+                    )}
+                     <Button
+                        title="Add Quiz"
+                        onPress={() => {
+                          setShowActions(false)
+                          navigation.navigate('Createquiz');
+                        }}
+                        buttonStyle={styles.actionButton}
+                        titleStyle={styles.actionTitle}
+                      />
                   </View>
                 </TouchableWithoutFeedback>
               )}

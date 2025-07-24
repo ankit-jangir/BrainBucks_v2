@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { Text } from '../../utils/Translate';
+import {Text} from '../../utils/Translate';
 import WalletApiService from '../../services/api/WalletApiService';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { ActivityIndicator } from 'react-native-paper';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
+import {ActivityIndicator} from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
-import { useSignal } from '@preact/signals-react';
+import {useSignal} from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
-import { useWithdraw } from '../../context/WithdrawReducer';
-import { ColorsConstant } from '../../constants/Colors.constant';
+import {useWithdraw} from '../../context/WithdrawReducer';
+import {ColorsConstant} from '../../constants/Colors.constant';
 import BasicServices from '../../services/BasicServices';
 import MainHeader from '../../components/MainHeader';
 
-export default function Wallet({ navigation }) {
+export default function Wallet({navigation}) {
   const walletData = useSignal({
     investmoney: 0,
     wallet: 0,
@@ -33,7 +33,7 @@ export default function Wallet({ navigation }) {
   const [loading, setLoading] = useState(false);
   const wallet = new WalletApiService();
   const isFocused = useIsFocused();
-  const { withdrawState, dispatch } = useWithdraw();
+  const {withdrawState, dispatch} = useWithdraw();
 
   const getArrowImage = type => {
     return type === 'debit'
@@ -79,7 +79,7 @@ export default function Wallet({ navigation }) {
       getDataHelper(page),
       Toast,
       () => func(true),
-      () => func(false)
+      () => func(false),
     );
 
     if (res) {
@@ -101,10 +101,13 @@ export default function Wallet({ navigation }) {
       setLoading(true);
       let res = await wallet.getTransactions(1, 10);
       if (res.status === 1) {
-        walletData.value = { ...walletData.value, ...res };
-        dispatch({ type: 'details', withdrawDetails: { balance: res.wallet } });
+        walletData.value = {...walletData.value, ...res};
+        dispatch({type: 'details', withdrawDetails: {balance: res.wallet}});
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
+        console.log('====================================');
+        console.log(res.Backend_Error);
+        console.log('====================================');
       }
     } catch (err) {
       console.log('Error while getting wallet data', err.message);
@@ -113,30 +116,32 @@ export default function Wallet({ navigation }) {
     }
   }
 
-  function isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height - 50;
+  function isCloseToBottom({layoutMeasurement, contentOffset, contentSize}) {
+    return (
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 50
+    );
   }
 
   return (
     <View style={styles.container}>
-      <View style={{ zIndex: 100 }}>
+      <View style={{zIndex: 100}}>
         <Toast />
       </View>
       <View style={styles.stdView1}>
-         <MainHeader
-                  name={'My Wallet'}
-                  leftIcon={{
-                    type: 'image',
-                    source: require('../../assets/img/backq.png'), // provide the image source
-                    onPress: () => {
-                      navigation.navigate("Home");
-                    },
-                  }}
-                />
+        <MainHeader
+          name={'My Wallet'}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.navigate('Home');
+            },
+          }}
+        />
       </View>
       <View style={styles.container1}>
         <LinearGradient
-          style={{ width: '100%', borderRadius: 10 }}
+          style={{width: '100%', borderRadius: 10}}
           colors={['#E34F4F', '#D64A7B', '#C143BC']}>
           <View style={styles.containerImg1}>
             <View style={styles.headerLeft}>
@@ -150,7 +155,9 @@ export default function Wallet({ navigation }) {
           </View>
 
           <View>
-            <Text key={walletData.value.wallet + 'balance'} style={styles.balanceText}>
+            <Text
+              key={walletData.value.wallet + 'balance'}
+              style={styles.balanceText}>
               ₹ {walletData.value.wallet}
             </Text>
           </View>
@@ -263,7 +270,7 @@ export default function Wallet({ navigation }) {
       </View>
 
       <ScrollView
-        onScroll={({ nativeEvent }) => {
+        onScroll={({nativeEvent}) => {
           if (
             isCloseToBottom(nativeEvent) &&
             !loading &&
@@ -287,7 +294,7 @@ export default function Wallet({ navigation }) {
               <View key={res._id} style={styles.historyContainer}>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('transactionDetails', { res })
+                    navigation.navigate('transactionDetails', {res})
                   }>
                   <View style={styles.transactionEntry}>
                     <View
@@ -298,8 +305,8 @@ export default function Wallet({ navigation }) {
                             res.success === -1
                               ? '#fff9ef'
                               : res.success === 1
-                              ? '#EFFFF6'
-                              : '#FFEFEF',
+                                ? '#EFFFF6'
+                                : '#FFEFEF',
                         },
                       ]}>
                       <Image
@@ -309,7 +316,9 @@ export default function Wallet({ navigation }) {
                       />
                     </View>
                     <View>
-                      <Text style={styles.transactionAmount}>₹ {res.amount}</Text>
+                      <Text style={styles.transactionAmount}>
+                        ₹ {res.amount}
+                      </Text>
                       <Text style={styles.timestamp}>{res.order_datetime}</Text>
                     </View>
                     <View style={styles.statusContainer}>
@@ -320,7 +329,7 @@ export default function Wallet({ navigation }) {
                       <Text
                         style={[
                           styles.statusText,
-                          { color: getStatusColor(res.success) },
+                          {color: getStatusColor(res.success)},
                         ]}>
                         {getStatusText(res.success)}
                       </Text>
@@ -340,7 +349,7 @@ export default function Wallet({ navigation }) {
               <ActivityIndicator
                 size="small"
                 color={ColorsConstant.Theme}
-                style={{ marginVertical: 10 }}
+                style={{marginVertical: 10}}
               />
             )}
           </>
@@ -349,7 +358,6 @@ export default function Wallet({ navigation }) {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -475,7 +483,7 @@ const styles = StyleSheet.create({
   // Actions Section
   actionsContainer: {
     flexDirection: 'row',
-paddingVertical:20,
+    paddingVertical: 20,
     justifyContent: 'space-between',
     paddingHorizontal: 5,
   },

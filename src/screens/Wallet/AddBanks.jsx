@@ -68,7 +68,7 @@ const AddBanks = ({navigation}) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: '#f2f2f2'}}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       <View style={{zIndex: 100}}>
         <Toast />
       </View>

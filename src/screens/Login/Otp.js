@@ -101,9 +101,6 @@ export default function Otp({navigation, route}) {
       setErrorMessage(null);
       setLoading(true);
       let response = await auth.verifyOtpAndRegister(phone, otp, userType);
-      console.log('====================================');
-      console.log(response,"dododoodod"),
-      console.log('====================================');
       if (response.status === 1 && response.token && response.user_id) {
         await BasicServices.setJwt(response.token);
         await BasicServices.setId(response.user_id);

@@ -35,6 +35,10 @@ export default function SignUpExam({navigation, route}) {
     setSearch(val);
   }
 
+
+  console.log(route,'sosoosososoos');
+  
+
   async function finalRegister() {
     if (selectedExams.size === 0) {
       ToastAndroid.show(
@@ -51,11 +55,10 @@ export default function SignUpExam({navigation, route}) {
         route.params.gender,
         Array.from(selectedExams),
         route.params.otp,
-        route.params.referralCode,
+        route.params.referCode,
         route.params.userType,
         route.params.description,
       );
-      console.log('User id: ', res);
       if (res.status === 1) {
         console.log('JWT TOKEN: ', res.token);
         console.log('wwwww: ', res);

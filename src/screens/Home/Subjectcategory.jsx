@@ -7,7 +7,6 @@ import {
   FlatList,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ProgressBar} from 'react-native-paper';
 import MainHeader from '../../components/MainHeader';
 import {useNavigation} from '@react-navigation/native';

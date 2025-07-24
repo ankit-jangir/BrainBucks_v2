@@ -98,9 +98,10 @@ const Dashboard = () => {
         </TouchableOpacity>
         <View>
           <Text style={styles.greeting}>Good morning</Text>
-          <Text style={styles.welcome}>
-            Welcome back, {userData?.name || userData?.username || 'User'}!
-          </Text>
+         <Text style={styles.welcome}>
+  Welcome back, {userData?.name?.split(" ")[0] || userData?.username || 'User'}!
+</Text>
+
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('wallet')} >
           <Image

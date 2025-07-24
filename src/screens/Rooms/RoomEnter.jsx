@@ -194,7 +194,9 @@ export default function RoomEnter({navigation, route}) {
                   buttonStyle={{backgroundColor: '#0CBC8B'}}
                   title={' + Schedule Quiz'}
                   onPress={() => {
-                    navigation.navigate('schedulquiz');
+                    // navigation.navigate('schedulquiz');
+                    navigation.navigate('Createquiz');
+
                   }}
                 />
               </View>

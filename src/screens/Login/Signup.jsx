@@ -54,65 +54,65 @@ export default function Signup({navigation, route}) {
     fetchLocalUserType();
   }, []);
 
-  async function next() {
+async function next() {
+  setErrorMessage(null);
+
+  // Validate phone number
+  if (!phone || phone.length !== 10) {
+    setErrorMessage('*Please enter valid 10-digit mobile number');
+    setNumberDone(false);
+    return;
+  }
+
+  setNumberDone(true);
+
+  // Validate user type
+  const isUserTypeSelected = isEduStored !== null || selected !== '';
+  if (!isUserTypeSelected) {
+    setErrorMessage('*Please select user type');
+    return;
+  }
+
+  // Validate terms & conditions
+  if (!checked) {
+    setErrorMessage('*You must accept the terms and conditions');
+    return;
+  }
+
+  setLoading(true);
+  try {
     setErrorMessage(null);
 
-    // Validate phone
-    if (!phone || phone.length !== 10) {
-      setErrorMessage('*Please enter valid 10-digit mobile number');
-      setNumberDone(false);
-      return;
-    }
+    const auth = new AuthenticationApiService();
 
-    setNumberDone(true);
+    // Determine user type to send
+    const userTypeToSend =
+      isEduStored !== null ? isEduStored : selected === 'Educator';
 
-    // Validate terms
-    if (!checked) {
-      setErrorMessage('*You must accept the terms and conditions');
-      return;
-    }
+    const response = await auth.sendOtp(phone, userTypeToSend);
 
-    // Validate user type if not stored
-    if (isEduStored == null && !selected) {
-      setErrorMessage('*Please select user type');
-      return;
-    }
-
-    // Set loading
-    setLoading(true);
-    try {
-      setErrorMessage(null);
-
-      const auth = new AuthenticationApiService();
-
-      // Send stored value or dropdown-selected
-      const userTypeToSend =
-        isEduStored != null ? isEduStored : selected === 'Educator';
-
-      const response = await auth.sendOtp(phone, userTypeToSend);
-
-      console.log('Response for OTP', response);
-
-      if (response.status === 1) {
-        if (response.otp) {
-          ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
-        }
-
-        navigation.navigate('Otp', {
-          phone: phone,
-          userType: userTypeToSend, // <- true or false
-          referCode: referralCode,
-        });
-      } else {
-        setErrorMessage('*' + response.Backend_Error);
+    if (response.status === 1) {
+      if (response.otp) {
+        ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
       }
-    } catch (error) {
-      console.log('Error while Sending OTP: ', error.message);
-      setErrorMessage('*Something went wrong');
-    } finally {
-      setLoading(false);
+
+      navigation.navigate('Otp', {
+        phone: phone,
+        userType: userTypeToSend,
+        referCode: referralCode,
+      });
+    } else {
+      setErrorMessage('*' + response.Backend_Error);
     }
+  } catch (error) {
+    console.log('Error while Sending OTP: ', error.message);
+    setErrorMessage('*Something went wrong');
+  } finally {
+    setLoading(false);
   }
+}
+
+
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: ColorsConstant.White}}>
