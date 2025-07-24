@@ -7,6 +7,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -20,7 +21,6 @@ import {
   CFThemeBuilder,
 } from 'cashfree-pg-api-contract';
 import { CFPaymentGatewayService } from 'react-native-cashfree-pg-sdk';
-import Toast from 'react-native-toast-message';
 import { ColorsConstant } from '../../constants/Colors.constant';
 
 const PlanPurchase = () => {
@@ -28,9 +28,11 @@ const PlanPurchase = () => {
   const planService = new HomeApiService();
   const [refreshing, setRefreshing] = useState(false);
   const [plans, setPlans] = useState([]);
+  const [orderId, setOrderId] = useState(null);
+  console.log(plans);
   const [loading, setLoading] = useState(true);
 
-
+  const processedOrders = new Set(); // For deduplication
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -45,13 +47,14 @@ const PlanPurchase = () => {
       if (response?.status === 1 && Array.isArray(response.data)) {
         const formatted = response.data.map(plan => ({
           name: plan.plan_name,
-          price: `₹${plan.amount}`,
-          amount: plan.amount, // Store raw amount
+          price: `₹ ${plan.amount}`,
+          amount: plan.amount,
           sub: 'month',
           tag: plan.plan_name === 'Pro Affiliate' ? 'Most Popular' : null,
           features: plan.benefits,
           icon: getPlanIcon(plan.plan_name),
           item_id: plan._id,
+          loading: false, // Initialize loading state for each plan
         }));
         setPlans(formatted);
       }
@@ -98,12 +101,18 @@ const PlanPurchase = () => {
     return styles.blackText;
   };
 
-const createOrder = async (item_id) => {
+  const createOrder = async (item_id) => {
     try {
-      setLoading(true);
+      // Set loading to true for the specific plan
+      setPlans(prevPlans =>
+        prevPlans.map(plan =>
+          plan.item_id === item_id ? { ...plan, loading: true } : plan
+        )
+      );
+
       const res = await planService.PlanOrder(item_id);
       console.log('Create Order Response:', res);
-
+      setOrderId(res.order_id);
       if (res.status === 1 && res.payment_session_id && res.order_id) {
         const session = new CFSession(
           res.payment_session_id,
@@ -132,97 +141,86 @@ const createOrder = async (item_id) => {
 
         CFPaymentGatewayService.doPayment(dropPayment);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Failed to Initialize Payment',
-          text2: res.message || 'Unable to create order.',
-        });
+        ToastAndroid.show(
+          `Failed to Initialize Payment: ${res.message || 'Unable to create order.'}`,
+          ToastAndroid.LONG
+        );
       }
     } catch (err) {
       console.error('Error while creating order:', err.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: err.message || 'Something went wrong during order creation.',
-      });
+      ToastAndroid.show(
+        `Error: ${err.message || 'Something went wrong during order creation.'}`,
+        ToastAndroid.LONG
+      );
     } finally {
-      setLoading(false);
+      // Set loading to false for the specific plan
+      setPlans(prevPlans =>
+        prevPlans.map(plan =>
+          plan.item_id === item_id ? { ...plan, loading: false } : plan
+        )
+      );
     }
   };
 
-  // Payment verification function
-  const VerifiyPayment = async (order_id) => {
+  const Verify = async (orderID) => {
+    console.log(orderID, 'oooooo');
+    if (processedOrders.has(orderID)) {
+      console.log(`Order ${orderID} already processed, skipping`);
+      return;
+    }
+    processedOrders.add(orderID);
     try {
       setLoading(true);
-      const res = await planService.verifyPayment(order_id);
+      const res = await planService.verifyPayment(orderID);
       console.log('Verify Payment Response:', res);
 
-      if (res.status === 1 && res.data?.order_status === 'PAID') {
-        Toast.show({
-          type: 'success',
-          text1: 'Payment Verified Successfully',
-          text2: 'Your plan has been activated!',
-        });
-        // Navigate to a success screen or refresh user data
-        navigation.navigate('PaymentSuccess', { order_id });
-        // Optionally, refresh plans or user profile
-        await getPlans();
+      if (res.status === 1) {
+        ToastAndroid.show(
+          'Payment Verified Successfully: Your plan has been activated!',
+          ToastAndroid.LONG
+        );
+        navigation.navigate('Home', { refresh: true });
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Payment Verification Failed',
-          text2: res.message || 'Payment status is not active.',
-        });
+        ToastAndroid.show(
+          `Payment Verification Failed: ${res.message || 'Payment status is not active.'}`,
+          ToastAndroid.LONG
+        );
       }
     } catch (error) {
       console.error('Verification error:', error.message);
-      Toast.show({
-        type: 'error',
-        text1: 'Verification Failed',
-        text2: error.message || 'Unable to verify payment.',
-      });
+      ToastAndroid.show(
+        `Verification Failed: ${error.message || 'Unable to verify payment.'}`,
+        ToastAndroid.LONG
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Set up Cashfree callback for payment verification
   useEffect(() => {
-    CFPaymentGatewayService.setCallback({
-      onVerify: (data) => {
-        console.log('Cashfree onVerify:', data);
-        if (data?.order_id) {
-          VerifiyPayment(data.order_id);
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Verification Error',
-            text2: 'Invalid order ID received.',
-          });
-        }
+    const callback = {
+      onVerify(orderID) {
+        console.log('Cashfree onVerify triggered with orderID:', orderID);
+        Verify(orderID);
       },
-      onError: (error, data) => {
-        console.error('Cashfree onError:', error, data);
-        let errorMessage = 'An unexpected error occurred';
-        if (error === 'cfFailure') {
-          errorMessage = 'Payment Failed';
-        } else if (error === 'cfCancelled') {
-          errorMessage = 'Payment Cancelled by User';
-        }
-        Toast.show({
-          type: error === 'cfCancelled' ? 'info' : 'error',
-          text1: errorMessage,
-          text2: data?.error_description || 'Please try again.',
-        });
+      onError(error, orderID) {
+        console.error('Cashfree onError:', JSON.stringify(error), 'Order ID:', orderID);
+        ToastAndroid.show(
+          `Payment Failed: ${error.message || 'Payment could not be processed.'}`,
+          ToastAndroid.LONG
+        );
+        setLoading(false);
       },
-    });
+    };
 
-    // Cleanup callback on component unmount
+    console.log('Setting Cashfree callback');
+    CFPaymentGatewayService.setCallback(callback);
+
     return () => {
-      CFPaymentGatewayService.setCallback(null);
+      console.log('Removing Cashfree callback');
+      CFPaymentGatewayService.removeCallback();
     };
   }, []);
-
 
   return (
     <View style={styles.container}>
@@ -240,8 +238,8 @@ const createOrder = async (item_id) => {
       </View>
 
       {loading ? (
-        <View style={{justifyContent:"center",alignItems:"center",flex:1}}>
-        <ActivityIndicator size="large" color="#FF6B2C"  />
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <ActivityIndicator size="large" color="#FF6B2C" />
         </View>
       ) : (
         <ScrollView
@@ -294,10 +292,14 @@ const createOrder = async (item_id) => {
               <TouchableOpacity
                 onPress={() => createOrder(plan.item_id)}
                 style={getButtonStyle(plan.name)}
+                disabled={plan.loading} // Use plan-specific loading state
               >
-                <Text style={getTextStyle(plan.name)}>Select Plan</Text>
+                {plan.loading ? (
+                  <ActivityIndicator color="#FF6B2C" />
+                ) : (
+                  <Text style={getTextStyle(plan.name)}>{plan.name}</Text>
+                )}
               </TouchableOpacity>
-
             </View>
           ))}
         </ScrollView>
@@ -308,7 +310,7 @@ const createOrder = async (item_id) => {
 
 export default PlanPurchase;
 
-// Styles remain unchanged
+// Styles remain the same
 const styles = StyleSheet.create({
   container: {
     flex: 1,

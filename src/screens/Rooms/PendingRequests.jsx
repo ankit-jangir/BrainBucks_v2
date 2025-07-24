@@ -115,7 +115,7 @@ export default function PendingRequests({navigation}) {
         keyExtractor={item => item._id}
         renderItem={({item, index}) => {
           return (
-            <View style={styles.roomContainer}>
+            <View style={[styles.roomContainer,{borderWidth:0.3,borderColor:"gray",elevation:0}]}>
               <Text style={styles.roomNameText}>{item.room_name}</Text>
               <View style={styles.memberHolder}>
                 <Text style={styles.memberText}>

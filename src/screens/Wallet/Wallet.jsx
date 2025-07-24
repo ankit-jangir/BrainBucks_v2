@@ -15,10 +15,19 @@ import {ActivityIndicator} from 'react-native-paper';
 import NoDataFound from '../../components/NoDataFound';
 import {useSignal} from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
+<<<<<<< HEAD
 import {useWithdraw} from '../../context/WithdrawReducer';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import BasicServices from '../../services/BasicServices';
+=======
+import { useWithdraw } from '../../context/WithdrawReducer';
+import { ColorsConstant } from '../../constants/Colors.constant';
+import basic from '../../services/BasicServices';
+
+>>>>>>> cb345fa407b150a3e7b143484acd3fb89eab883a
 import MainHeader from '../../components/MainHeader';
+import BasicServices from '../../services/BasicServices';
+import { RefreshControl } from 'react-native';
 
 export default function Wallet({navigation}) {
   const walletData = useSignal({
@@ -30,6 +39,25 @@ export default function Wallet({navigation}) {
     totalPages: 1,
   });
 
+  const [userType, setUserType] = useState(null);
+  console.log(userType)
+  useEffect(() => {
+    if (isFocused) {
+      basic.getBearerToken().catch(err => {
+        console.log('Error fetching JWT token:', err);
+      });
+
+      basic
+        .getUserType()
+        .then(type => {
+          console.log('User Type (is_edu):', type);
+          setUserType(type);
+        })
+        .catch(err => {
+          console.log('Error fetching user type:', err);
+        });
+    }
+  }, [isFocused]);
   const [loading, setLoading] = useState(false);
   const wallet = new WalletApiService();
   const isFocused = useIsFocused();
@@ -122,6 +150,8 @@ export default function Wallet({navigation}) {
     );
   }
 
+
+
   return (
     <View style={styles.container}>
       <View style={{zIndex: 100}}>
@@ -134,7 +164,7 @@ export default function Wallet({navigation}) {
             type: 'image',
             source: require('../../assets/img/backq.png'), // provide the image source
             onPress: () => {
-              navigation.navigate('Home');
+              navigation.navigate("Home");
             },
           }}
         />
@@ -186,17 +216,20 @@ export default function Wallet({navigation}) {
               </Text>
             </View>
 
-            <TouchableOpacity
-              style={styles.detailsContainer}
-              onPress={() => navigation.navigate('myEarning')}>
-              <Text style={styles.detailsText}>Details</Text>
-              <Image
-                tintColor="white"
-                source={require('../../assets/img/rightarrow1.png')}
-                style={styles.detailsIcon}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
+            {userType === false ? (
+              <TouchableOpacity
+                style={styles.detailsContainer}
+                onPress={() => navigation.navigate('myEarning')}>
+                <Text style={styles.detailsText}>Details</Text>
+                <Image
+                  tintColor="white"
+                  source={require('../../assets/img/rightarrow1.png')}
+                  style={styles.detailsIcon}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            ) : null}
+
           </View>
         </LinearGradient>
 
@@ -270,7 +303,8 @@ export default function Wallet({navigation}) {
       </View>
 
       <ScrollView
-        onScroll={({nativeEvent}) => {
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={getWalletData} />}
+        onScroll={({ nativeEvent }) => {
           if (
             isCloseToBottom(nativeEvent) &&
             !loading &&

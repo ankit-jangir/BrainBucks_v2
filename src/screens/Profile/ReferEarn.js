@@ -109,16 +109,23 @@ const ReferEarn = () => {
   const commissionData = [
     
     {
-      id: '2',
+      id: '1',
       icon: require('../../assets/img/win.png'),
       percent: 'Signup',
+      label: 'Commission',
+      desc: 'When your students win prizes',
+    },
+     {
+      id: '2',
+      icon: require('../../assets/img/win.png'),
+      percent: 'Refered room',
       label: 'Commission',
       desc: 'When your students win prizes',
     },
     {
       id: '3',
       icon: require('../../assets/img/win.png'),
-      percent: '10%',
+      percent: 'Room',
       label: 'Commission',
       desc: 'When your students win prizes',
     },
