@@ -188,7 +188,6 @@ class HomeApiService {
             },
             url,
         };
-
         try {
             const response = await axios(options);
             return response.data;
@@ -198,7 +197,22 @@ class HomeApiService {
         }
     }
 
+ async verifyPayment() {
+    let token = await basic.getBearerToken()
 
+    let url = `${AUTHMICRO}/sales/verifyPayment`;
+    let headers = { "content-type": "application/json", authorization: token };
+    let options = {
+      method: "post",
+      headers: headers,
+       data: {
+                order_id: order_id,
+            },
+      url,
+    };
+    const response = await axios(options);
+    return response.data
+  }
 }
 
 export default HomeApiService;

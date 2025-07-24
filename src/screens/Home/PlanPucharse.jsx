@@ -28,7 +28,6 @@ const PlanPurchase = () => {
   const planService = new HomeApiService();
   const [refreshing, setRefreshing] = useState(false);
   const [plans, setPlans] = useState([]);
-  console.log(plans)
   const [loading, setLoading] = useState(true);
 
 
@@ -99,13 +98,13 @@ const PlanPurchase = () => {
     return styles.blackText;
   };
 
-  const createOrder = async (item_id) => {
+const createOrder = async (item_id) => {
     try {
       setLoading(true);
-      let res = await planService.PlanOrder(item_id);
-      console.log(res);
+      const res = await planService.PlanOrder(item_id);
+      console.log('Create Order Response:', res);
 
-      if (res.status === 1) {
+      if (res.status === 1 && res.payment_session_id && res.order_id) {
         const session = new CFSession(
           res.payment_session_id,
           res.order_id,
@@ -135,20 +134,95 @@ const PlanPurchase = () => {
       } else {
         Toast.show({
           type: 'error',
-          text1: res.message || 'Failed to initialize payment',
+          text1: 'Failed to Initialize Payment',
+          text2: res.message || 'Unable to create order.',
         });
       }
     } catch (err) {
-      console.log('Error while creating order', err.message);
+      console.error('Error while creating order:', err.message);
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: err.message || 'Something went wrong',
+        text2: err.message || 'Something went wrong during order creation.',
       });
     } finally {
       setLoading(false);
     }
   };
+
+  // Payment verification function
+  const VerifiyPayment = async (order_id) => {
+    try {
+      setLoading(true);
+      const res = await planService.verifyPayment(order_id);
+      console.log('Verify Payment Response:', res);
+
+      if (res.status === 1 && res.data?.order_status === 'PAID') {
+        Toast.show({
+          type: 'success',
+          text1: 'Payment Verified Successfully',
+          text2: 'Your plan has been activated!',
+        });
+        // Navigate to a success screen or refresh user data
+        navigation.navigate('PaymentSuccess', { order_id });
+        // Optionally, refresh plans or user profile
+        await getPlans();
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Payment Verification Failed',
+          text2: res.message || 'Payment status is not active.',
+        });
+      }
+    } catch (error) {
+      console.error('Verification error:', error.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Verification Failed',
+        text2: error.message || 'Unable to verify payment.',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Set up Cashfree callback for payment verification
+  useEffect(() => {
+    CFPaymentGatewayService.setCallback({
+      onVerify: (data) => {
+        console.log('Cashfree onVerify:', data);
+        if (data?.order_id) {
+          VerifiyPayment(data.order_id);
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Verification Error',
+            text2: 'Invalid order ID received.',
+          });
+        }
+      },
+      onError: (error, data) => {
+        console.error('Cashfree onError:', error, data);
+        let errorMessage = 'An unexpected error occurred';
+        if (error === 'cfFailure') {
+          errorMessage = 'Payment Failed';
+        } else if (error === 'cfCancelled') {
+          errorMessage = 'Payment Cancelled by User';
+        }
+        Toast.show({
+          type: error === 'cfCancelled' ? 'info' : 'error',
+          text1: errorMessage,
+          text2: data?.error_description || 'Please try again.',
+        });
+      },
+    });
+
+    // Cleanup callback on component unmount
+    return () => {
+      CFPaymentGatewayService.setCallback(null);
+    };
+  }, []);
+
 
   return (
     <View style={styles.container}>
