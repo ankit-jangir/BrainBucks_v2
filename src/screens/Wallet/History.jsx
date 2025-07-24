@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,9 +7,10 @@ import {
   FlatList,
   ActivityIndicator,
   SafeAreaView,
+  ToastAndroid,
 } from 'react-native';
-import {Text} from '../../utils/Translate';
-import {ColorsConstant} from '../../constants/Colors.constant';
+import { Text } from '../../utils/Translate';
+import { ColorsConstant } from '../../constants/Colors.constant';
 import NoDataFound from '../../components/NoDataFound';
 import WalletApiService from '../../services/api/WalletApiService';
 import MainHeader from '../../components/MainHeader';
@@ -22,7 +23,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const History = ({navigation}) => {
+const History = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const wallet = new WalletApiService();
@@ -70,11 +71,11 @@ const History = ({navigation}) => {
         15,
         statusFilter || '',
       );
-      if (!response.data || !Array.isArray(response.data)) {
+      if (!response.result || !Array.isArray(response.result)) {
         throw new Error('Invalid API response: data is not an array');
       }
 
-      const newData = response.data.map(item => ({
+      const newData = response.result.map(item => ({
         ...item,
         success:
           item.status === 'Pending' ? -1 : item.status === 'Accepted' ? 1 : 0,
@@ -97,11 +98,7 @@ const History = ({navigation}) => {
         setTotalPages(page);
       }
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to fetch transaction history',
-      });
+      ToastAndroid.show('Failed to fetch transaction history', ToastAndroid.SHORT)
       console.error(error);
     } finally {
       setLoading(false);
@@ -156,22 +153,29 @@ const History = ({navigation}) => {
 
   return (
     <BottomSheetModalProvider>
-      <SafeAreaView style={{backgroundColor: '#fff', flex: 1}}>
-        <View style={{zIndex: 20}}>
+      <SafeAreaView style={{ backgroundColor: '#fff', flex: 1 }}>
+        <View style={{ zIndex: 20 }}>
           <Toast />
         </View>
 
-        <View style={{flex: 0.1}}>
+        <View style={{ flex: 0.1 }}>
           <MainHeader
             name={'Transaction History'}
             rightIcon={{
               source: require('../../assets/img/filter.png'),
               onPress: () => bottomSheetRef.current?.present(),
             }}
+            leftIcon={{
+              type: 'image',
+              source: require('../../assets/img/backq.png'), 
+              onPress: () => {
+                navigation.navigate("wallet");
+              },
+            }}
           />
         </View>
 
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           {loading ? (
             <ActivityIndicator size={40} color={ColorsConstant.Theme} />
           ) : datahistory.length === 0 ? (
@@ -190,9 +194,11 @@ const History = ({navigation}) => {
                   getWalletHistoryData(currentPage + 1);
                 }
               }}
+              refreshing={loading}
+              onRefresh={getWalletHistoryData}
               data={datahistory}
               keyExtractor={item => item._id}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <View style={styles.historyContainer}>
                   <View style={styles.transactionEntry}>
                     <View
@@ -231,7 +237,7 @@ const History = ({navigation}) => {
                       <Text
                         style={[
                           styles.statusText,
-                          {color: getStatusColor(item.success)},
+                          { color: getStatusColor(item.success) },
                         ]}>
                         {getStatusText(item.success)}
                       </Text>
@@ -265,7 +271,7 @@ const History = ({navigation}) => {
                 onPress={() => bottomSheetRef.current?.dismiss()}>
                 <Image
                   source={require('../../assets/img/multiply.png')}
-                  style={{height: 20, width: 20}}
+                  style={{ height: 20, width: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -279,11 +285,11 @@ const History = ({navigation}) => {
                   <View
                     style={[
                       styles.iconContainer,
-                      {backgroundColor: option.color},
+                      { backgroundColor: option.color },
                     ]}>
                     <Image
                       source={option.icon}
-                      style={{height: 20, width: 20}}
+                      style={{ height: 20, width: 20 }}
                       tintColor={'#fff'}
                     />
                   </View>
@@ -345,7 +351,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     backgroundColor: 'white',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     overflow: 'hidden',

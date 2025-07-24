@@ -17,8 +17,11 @@ import { useSignal } from '@preact/signals-react';
 import Toast from 'react-native-toast-message';
 import { useWithdraw } from '../../context/WithdrawReducer';
 import { ColorsConstant } from '../../constants/Colors.constant';
-import BasicServices from '../../services/BasicServices';
+import basic from '../../services/BasicServices';
+
 import MainHeader from '../../components/MainHeader';
+import BasicServices from '../../services/BasicServices';
+import { RefreshControl } from 'react-native';
 
 export default function Wallet({ navigation }) {
   const walletData = useSignal({
@@ -30,6 +33,25 @@ export default function Wallet({ navigation }) {
     totalPages: 1,
   });
 
+  const [userType, setUserType] = useState(null);
+  console.log(userType)
+  useEffect(() => {
+    if (isFocused) {
+      basic.getBearerToken().catch(err => {
+        console.log('Error fetching JWT token:', err);
+      });
+
+      basic
+        .getUserType()
+        .then(type => {
+          console.log('User Type (is_edu):', type);
+          setUserType(type);
+        })
+        .catch(err => {
+          console.log('Error fetching user type:', err);
+        });
+    }
+  }, [isFocused]);
   const [loading, setLoading] = useState(false);
   const wallet = new WalletApiService();
   const isFocused = useIsFocused();
@@ -117,22 +139,24 @@ export default function Wallet({ navigation }) {
     return layoutMeasurement.height + contentOffset.y >= contentSize.height - 50;
   }
 
+
+
   return (
     <View style={styles.container}>
       <View style={{ zIndex: 100 }}>
         <Toast />
       </View>
       <View style={styles.stdView1}>
-         <MainHeader
-                  name={'My Wallet'}
-                  leftIcon={{
-                    type: 'image',
-                    source: require('../../assets/img/backq.png'), // provide the image source
-                    onPress: () => {
-                      navigation.navigate("Home");
-                    },
-                  }}
-                />
+        <MainHeader
+          name={'My Wallet'}
+          leftIcon={{
+            type: 'image',
+            source: require('../../assets/img/backq.png'), // provide the image source
+            onPress: () => {
+              navigation.navigate("Home");
+            },
+          }}
+        />
       </View>
       <View style={styles.container1}>
         <LinearGradient
@@ -179,17 +203,20 @@ export default function Wallet({ navigation }) {
               </Text>
             </View>
 
-            <TouchableOpacity
-              style={styles.detailsContainer}
-              onPress={() => navigation.navigate('myEarning')}>
-              <Text style={styles.detailsText}>Details</Text>
-              <Image
-                tintColor="white"
-                source={require('../../assets/img/rightarrow1.png')}
-                style={styles.detailsIcon}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
+            {userType === false ? (
+              <TouchableOpacity
+                style={styles.detailsContainer}
+                onPress={() => navigation.navigate('myEarning')}>
+                <Text style={styles.detailsText}>Details</Text>
+                <Image
+                  tintColor="white"
+                  source={require('../../assets/img/rightarrow1.png')}
+                  style={styles.detailsIcon}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            ) : null}
+
           </View>
         </LinearGradient>
 
@@ -263,6 +290,7 @@ export default function Wallet({ navigation }) {
       </View>
 
       <ScrollView
+      refreshControl={<RefreshControl refreshing={loading} onRefresh={getWalletData} />}
         onScroll={({ nativeEvent }) => {
           if (
             isCloseToBottom(nativeEvent) &&
@@ -298,8 +326,8 @@ export default function Wallet({ navigation }) {
                             res.success === -1
                               ? '#fff9ef'
                               : res.success === 1
-                              ? '#EFFFF6'
-                              : '#FFEFEF',
+                                ? '#EFFFF6'
+                                : '#FFEFEF',
                         },
                       ]}>
                       <Image
@@ -475,7 +503,7 @@ const styles = StyleSheet.create({
   // Actions Section
   actionsContainer: {
     flexDirection: 'row',
-paddingVertical:20,
+    paddingVertical: 20,
     justifyContent: 'space-between',
     paddingHorizontal: 5,
   },

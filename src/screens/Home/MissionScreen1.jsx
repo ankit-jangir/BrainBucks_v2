@@ -14,70 +14,75 @@ import { ProgressBar } from 'react-native-paper';
 import BasicServices from '../../services/BasicServices';
 import { AUTHMICRO } from '../../config/urls';
 import NoDataFound from '../../components/NoDataFound';
+import { ToastAndroid } from 'react-native';
 
 const MissionScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [levels, setLevels] = useState([]);
-
+  const [DashboardData, setDashboardData] = useState({});
+  // Define earnings array with dynamic amounts from DashboardData
   const earnings = [
     {
       title: 'Student Referrals',
-      amount: '750.00',
-      change: '↑ 15%',
-      changeColor: 'green',
+      amount: DashboardData?.incomeByType?.['participant-referrer']?.toFixed(2) || '0.00',
+      changeColor: 'gray',
+      icon: require('../../assets/img/studentcap.png'),
+    },
+    {
+      title: 'Educator Referrals',
+      amount: DashboardData?.incomeByType?.['educator-referrer']?.toFixed(2) || '0.00',
+      changeColor: 'gray',
       icon: require('../../assets/img/studentcap.png'),
     },
     {
       title: 'Quizzes Created',
-      amount: '245.50',
-      change: '↑ 8%',
-      changeColor: 'green',
+      amount: DashboardData?.incomeByType?.quiz?.toFixed(2) || '0.00',
+      changeColor: 'gray',
       icon: require('../../assets/img/document.png'),
     },
     {
       title: 'Room Owner Referrals',
-      amount: '150.00',
-      change: '0%',
+      amount: DashboardData?.incomeByType?.['room-owner']?.toFixed(2) || '0.00',
       changeColor: 'gray',
       icon: require('../../assets/img/key.png'),
     },
     {
-      title: 'Tier Bonuses',
-      amount: '75.00',
-      change: '↑ 5%',
-      changeColor: 'green',
+      title: 'Bonuses',
+      amount: DashboardData?.incomeByType?.bonus?.toFixed(2) || '0.00',
+      changeColor: 'gray',
       icon: require('../../assets/img/bonus.png'),
     },
     {
       title: 'Level-Up Rewards',
-      amount: '27.00',
-      change: '↓ 2%',
-      changeColor: 'red',
+      amount: DashboardData?.incomeByType?.level?.toFixed(2) || '0.00',
+      change: '0%',
+      changeColor: 'gray',
       icon: require('../../assets/img/reward.png'),
     },
   ];
 
   useEffect(() => {
     LevelApiUser();
+    EarningDashboard();
   }, []);
 
   async function LevelApiUser() {
     setLoading(true);
-    const token = await BasicServices.getBearerToken();
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `${token}`);
-    const requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
     try {
+      const token = await BasicServices.getBearerToken();
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `${token}`);
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
       const response = await fetch(`${AUTHMICRO}/levelBenefits/user`, requestOptions);
       const result = await response.json();
 
-      if (result.success == true) {
+      if (result.success === true) {
         const combinedLevels = [
           ...result.achieved_levels.map(item => ({
             ...item,
@@ -97,18 +102,46 @@ const MissionScreen = () => {
         ];
         setLevels(combinedLevels);
       } else {
-        console.error('API failed:', result.message);
+        console.error('Level API failed:', result.message);
+        ToastAndroid.show(result.message, ToastAndroid.LONG);
       }
     } catch (error) {
-      console.error('API Error:', error);
+      console.error('Level API Error:', error);
+      ToastAndroid.show('Failed to fetch levels', ToastAndroid.LONG);
     } finally {
       setLoading(false);
-
     }
   }
 
+  async function EarningDashboard() {
+    try {
+      setLoading(true);
+      const token = await BasicServices.getBearerToken();
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `${token}`);
 
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
 
+      const response = await fetch(`${AUTHMICRO}/auth/participant/income/total`, requestOptions);
+      const result = await response.json();
+
+      if (result.success === true) {
+        setDashboardData(result.data);
+      } else {
+        console.log(result.Backend_Error);
+        ToastAndroid.show(result.Backend_Error, ToastAndroid.LONG);
+      }
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.show('Failed to fetch earnings', ToastAndroid.LONG);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const renderLevelItem = ({ item, index }) => {
     let color = '#9CA3AF'; // default gray
@@ -121,7 +154,7 @@ const MissionScreen = () => {
           <View style={styles.iconColumn}>
             <View style={[styles.iconWrapper, { borderColor: color }]}>
               <Image
-                source={item.icon || defaultIcon}
+                source={item.icon || require('../../assets/img/cupwin.png')}
                 style={styles.levelIcon}
                 resizeMode="contain"
               />
@@ -132,10 +165,14 @@ const MissionScreen = () => {
           </View>
 
           <View style={{ flex: 1, paddingRight: 10, position: 'relative' }}>
+            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
             <Text style={[styles.levelTitle, { color }]}>
               {item.level_name || item.title}
             </Text>
-
+            <Text style={[styles.levelTitle, { color }]}>
+              {item.tag}
+            </Text>
+            </View>
             <Text style={styles.levelEarnings}>
               Income: {item.income_slab} | Followers: {item.follower_slab}
             </Text>
@@ -150,7 +187,7 @@ const MissionScreen = () => {
                 </Text>
               ))}
 
-           {/*} {item.type === 'current' && (
+            {/* {item.type === 'current' && (
               <ProgressBar
                 progress={0.75} // Replace with dynamic value if available
                 color="#8453E2"
@@ -159,7 +196,7 @@ const MissionScreen = () => {
                 height={6}
                 style={{ marginTop: 6, width: '90%' }}
               />
-            )}*/}
+            )} */}
           </View>
         </View>
       </View>
@@ -172,21 +209,19 @@ const MissionScreen = () => {
         <Image source={item.icon} style={styles.cardIcon} />
         <View>
           <Text style={styles.earningTitle}>{item.title}</Text>
-          <Text style={styles.earningValue}>${item.amount}</Text>
+          <Text style={styles.earningValue}>₹ {item.amount}</Text>
         </View>
       </View>
-      <Text style={{ color: item.changeColor }}>{item.change}</Text>
     </View>
   );
-
- 
 
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.backButton}>
+          style={styles.backButton}
+        >
           <Image
             source={require('../../assets/img/backq.png')}
             style={styles.backIcon}
@@ -201,47 +236,33 @@ const MissionScreen = () => {
       </View>
 
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        {
-          loading ? <ActivityIndicator  size={24} /> :
-            <FlatList
-              data={levels}
-              refreshing={loading}
-              onRefresh={LevelApiUser}
-              renderItem={renderLevelItem}
-              keyExtractor={(item, index) => index.toString()}
-              scrollEnabled={false}
-              ListHeaderComponent={() => {
-              <NoDataFound message={"NO Level cross"} />
-              }}
-            />
-      }
-
-
-       {/* <TouchableOpacity style={styles.viewBtn}>
-          <Text style={styles.viewBtnText}>View Your Level Details</Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size={24} />
+        ) : (
+          <FlatList
+            data={levels}
+            refreshing={loading}
+            onRefresh={LevelApiUser}
+            renderItem={renderLevelItem}
+            keyExtractor={(item, index) => index.toString()}
+            scrollEnabled={false}
+            ListEmptyComponent={() => <NoDataFound message={'No Level crossed'} />}
+          />
+        )}
 
         <Text style={[styles.title, { marginTop: 30 }]}>Earnings Dashboard</Text>
         <Text style={styles.earningAmount}>
-          $1,247.50 <Text style={styles.monthText}>This Month</Text>
+          ₹ {DashboardData?.totalAmount?.toFixed(2) || '0.00'}{' '}
         </Text>
 
         <FlatList
           data={earnings}
+          refreshing={loading}
+          onRefresh={EarningDashboard}
           renderItem={renderEarningItem}
           keyExtractor={(item, index) => index.toString()}
           scrollEnabled={false}
         />
-
-        <TouchableOpacity style={styles.exportBtn}>
-          <View style={styles.exportContent}>
-            <Image
-              source={require('../../assets/img/down.png')}
-              style={styles.exportIcon}
-            />
-            <Text style={styles.exportText}>Export Earnings Report</Text>
-          </View>
-        </TouchableOpacity>*/}
       </ScrollView>
     </View>
   );

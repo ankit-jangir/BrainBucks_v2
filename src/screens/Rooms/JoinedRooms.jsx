@@ -77,7 +77,7 @@ export default function JoinedRooms({ navigation }) {
                     keyExtractor={(item) => item._id}
                     renderItem={({ item, index }) => {
                         return (
-                            <View style={styles.roomContainer}>
+                            <View style={[styles.roomContainer,{borderWidth:0.3,borderColor:"gray",elevation:0}]}>
                                 <Text style={styles.roomNameText}>{item.room_name}</Text>
                                 <View style={styles.memberHolder}>
                                     <Text style={styles.memberText}>Members: <Text key={item.enrolled_participants_count} style={{ color: ColorsConstant.GreenColor }}>{item.enrolled_participants_count}</Text></Text>

@@ -89,12 +89,11 @@ actionTitle: {
     flex: 1,
     borderRadius: 10,
     padding: 15,
-    margin: 14,
     backgroundColor: 'white',
     elevation: 2,
-    gap: 10,
     paddingBottom: 24,
     marginVertical: 7,
+    paddingHorizontal:10
   },
   roomNameText: {
     fontSize: 20,

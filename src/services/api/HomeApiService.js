@@ -197,7 +197,7 @@ class HomeApiService {
         }
     }
 
- async verifyPayment() {
+ async verifyPayment(order_id) {
     let token = await basic.getBearerToken()
 
     let url = `${AUTHMICRO}/sales/verifyPayment`;

@@ -27,7 +27,7 @@ class WalletApiService {
       console.error('Withdrawal Check Error:', error?.response?.data || error.message);
       return {
         status: 0,
-        Backend_Error: error?.response?.data?.Backend_Error || 'Network or Server Error',
+        Backend_Error: error?.response?.data?.message || 'Network or Server Error',
       };
     }
   }
