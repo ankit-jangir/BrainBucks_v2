@@ -160,6 +160,7 @@ import QuzescreenR from './src/screens/Home/QuzescreenR.jsx';
 import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
 import PlanPurchase from './src/screens/Home/PlanPucharse.jsx';
+import PlanPurachgeDetilas from './src/screens/Home/PlanPurachgeDetilas.js';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -228,6 +229,7 @@ function MyStack() {
       <Stack.Screen name="VirtualRooms" component={VirtualRooms} />
       <Stack.Screen name="HomeReelsPlayer" component={HomeReelsPlayer} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="PlanPurachgeDetilas" component={PlanPurachgeDetilas} />
 
       <Stack.Screen
         name="ActiveQuizzJoinAnimation"

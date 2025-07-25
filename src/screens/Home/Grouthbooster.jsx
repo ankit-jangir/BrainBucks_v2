@@ -31,13 +31,13 @@ const boosters = [
     buttonText: 'Join Club',
     screen: 'PlanPucharse',
   },
-  // {
-  //   title: 'Super 30 Rooms',
-  //   desc: 'Exclusive mastermind groups for top performers',
-  //   icon: require('../../assets/img/wins.png'),
-  //   buttonText: 'Learn More',
-  //   screen: 'Super30Screen',
-  // },
+  {
+    title: 'Super 30 Rooms',
+    desc: 'Exclusive mastermind groups for top performers',
+    icon: require('../../assets/img/wins.png'),
+    buttonText: 'Learn More',
+    screen: 'PlanPurachgeDetilas',
+  },
 ];
 
 const screenWidth = Dimensions.get('window').width;
