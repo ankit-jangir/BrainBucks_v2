@@ -191,13 +191,13 @@ const Sidebar = ({ navigation }) => {
           text="Help & Support"
         />
 
-        {/* <MenuItem
+        <MenuItem
           action={() => {
-            navigation.navigate('Dashboard'), navigation.closeDrawer();
+            navigation.navigate('content_page'), navigation.closeDrawer();
           }}
           image={require('../../assets/img/heart.png')}
           text="Dashboard"
-        /> */}
+        />
         <MenuItem
           action={toggleOverlay}
           beingPerformmed={loggingOut}

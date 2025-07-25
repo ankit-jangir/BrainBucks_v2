@@ -161,6 +161,7 @@ import ScheduledQuizzes from './src/screens/Rooms/ScheduledQuizzes.jsx';
 import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
 import PlanPurchase from './src/screens/Home/PlanPucharse.jsx';
 import PlanPurachgeDetilas from './src/screens/Home/PlanPurachgeDetilas.js';
+import Content_page from './src/screens/Reels/Content_page.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -337,6 +338,7 @@ function MyStack() {
       <Stack.Screen name="UploadQuestionsScreen" component={UploadQuestionsScreen} />
       <Stack.Screen name="PlanPucharse" component={PlanPurchase} />
       <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
+      <Stack.Screen name="content_page" component={Content_page} />
     </Stack.Navigator>
   );
 }
