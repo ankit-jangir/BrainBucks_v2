@@ -16,7 +16,6 @@ const screenWidth = Dimensions.get('window').width;
 
 export default function SignupGender({navigation, route}) {
   const [gender, setGender] = useState(null);
-
   useEffect(() => {
     console.log('SignupGender route.params:', route.params);
   }, []);

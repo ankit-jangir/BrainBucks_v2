@@ -65,6 +65,7 @@ export default function ScheduleQuiz({navigation, route}) {
       return {...item, image: {uri: BLOBURL + item.image}};
     });
     setCategories(newCategoryArr);
+    
 
     if (subCategoryData.response) {
       setSelectedSubCat('');

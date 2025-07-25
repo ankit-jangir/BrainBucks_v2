@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import React from 'react';
 import MainHeader from '../../components/MainHeader';
+import { useNavigation } from '@react-navigation/native';
 
-const Questionscreen = ({navigation}) => {
+const Questionscreen = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <MainHeader
@@ -30,7 +32,8 @@ const Questionscreen = ({navigation}) => {
           />
           <Text style={styles.cardTitle}>Add Individual Questions</Text>
           <Text style={styles.cardSubtitle}>Create questions one by one</Text>
-          <TouchableOpacity style={styles.orangeBtn}>
+
+          <TouchableOpacity style={styles.orangeBtn}  onPress={() => navigation.navigate('Addquestion')}>
             <Text style={styles.orangeBtnText}>+Add Questions</Text>
           </TouchableOpacity>
         </View>
@@ -47,7 +50,7 @@ const Questionscreen = ({navigation}) => {
             Upload multiple questions at once
           </Text>
 
-          <TouchableOpacity style={styles.purpleBtn}>
+          {/* <TouchableOpacity style={styles.purpleBtn}>
             <View style={styles.btnContent}>
               <Image
                 source={require('../../assets/img/downloads.png')}
@@ -55,23 +58,14 @@ const Questionscreen = ({navigation}) => {
               />
               <Text style={styles.purpleBtnText}>Download Sample .xlsx</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <TouchableOpacity style={styles.grayBtn}>
+          <TouchableOpacity style={styles.grayBtn} onPress={() => navigation.navigate('UploadQuestionsScreen')}>
             <View style={styles.btnContent}>
-              <Text style={styles.grayBtnText}>+Add Questions</Text>
+              <Text style={styles.grayBtnText}>+Add Bulk Questions</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.uploadBtn}>
-            <View style={styles.btnContent}>
-              <Image
-                source={require('../../assets/img/cloud.png')}
-                style={styles.btnIcon}
-              />
-              <Text style={styles.uploadBtnText}>Upload</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

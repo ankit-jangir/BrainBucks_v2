@@ -19,7 +19,7 @@ export default function SignupName({navigation, route}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
-  const referralCode = route.params?.referCode;
+  const {phone, otp, userType, referralCode} = route.params;
 
   useEffect(() => {
     console.log('SignupName params:', route.params);
@@ -41,7 +41,6 @@ export default function SignupName({navigation, route}) {
       ...route.params,
       name,
       description,
-      referCode: referralCode,
     });
   };
 

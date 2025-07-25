@@ -21,17 +21,17 @@ const QuizCard = ({
   roomname,
   declareTime,
   onShare,
+  usertype
 }) => {
   return (
     <View style={styles.cardContainer}>
       {/* Title Row */}
       <View style={styles.titleRow}>
-  <Image source={image} style={styles.image40} />
-  <View style={{ flex: 1 }}>
-    <Text style={styles.titleText}>{title}</Text>
-  </View>
-</View>
-
+        <Image source={image} style={styles.image40} />
+        <View style={{flex: 1}}>
+          <Text style={styles.titleText}>{title}</Text>
+        </View>
+      </View>
 
       {/* Fees & Date */}
       <View style={styles.infoRow}>
@@ -161,19 +161,20 @@ const QuizCard = ({
 
       {/* Action Buttons */}
       <View style={styles.actionRow}>
-        {(type === 'active' || type == 1) && (
-          <TouchableOpacity style={{flex: 1}} onPress={onPress}>
-            <LinearGradient
-              start={{x: 0.0, y: 0.25}}
-              end={{x: 0.6, y: 2.0}}
-              colors={['#54ACFD', '#2289E7']}
-              style={styles.gradientBtn}>
-              <Text style={[styles.gradientBtnText, {padding: 10}]}>
-                {btntxt ? btntxt : 'Register Now'}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        )}
+      {(type === 'active' || type == 1) && usertype !== true && (
+  <TouchableOpacity style={{flex: 1}} onPress={onPress}>
+    <LinearGradient
+      start={{x: 0.0, y: 0.25}}
+      end={{x: 0.6, y: 2.0}}
+      colors={['#54ACFD', '#2289E7']}
+      style={styles.gradientBtn}>
+      <Text style={[styles.gradientBtnText, {padding: 10}]}>
+        {btntxt ? btntxt : 'Register Now'}
+      </Text>
+    </LinearGradient>
+  </TouchableOpacity>
+)}
+
         {(type === 'trivia' || type == 0) && (
           <TouchableOpacity onPress={onPress} style={styles.outlineBtn}>
             <Text style={[styles.outlineBtnText]}>
@@ -263,8 +264,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     paddingLeft: 12,
     marginBottom: 4,
-      flexWrap: 'wrap',
-  flexShrink: 1,
+    flexWrap: 'wrap',
+    flexShrink: 1,
   },
 
   infoRow: {

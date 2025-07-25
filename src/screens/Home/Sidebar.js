@@ -1,4 +1,4 @@
-import React, {act, useEffect, useState} from 'react';
+import React, { act, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,18 +14,40 @@ import BasicServices from '../../services/BasicServices';
 import Toast from 'react-native-toast-message';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Overlay} from '@rneui/themed';
-import {Button} from '../../utils/Translate';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {useDrawerStatus} from '@react-navigation/drawer';
-import {BLOBURL} from '../../config/urls';
+import { Overlay } from '@rneui/themed';
+import { Button } from '../../utils/Translate';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useDrawerStatus } from '@react-navigation/drawer';
+import { BLOBURL } from '../../config/urls';
 import ChatSockService from '../../services/api/ChatSockService';
+import basic from '../../services/BasicServices';
 
-const Sidebar = ({navigation}) => {
+const Sidebar = ({ navigation }) => {
+  const isFocused = useIsFocused();
+
   const auth = new AuthenticationApiService();
   const [userData, setUserData] = useState({
     name: 'User Name',
   });
+  const [userType, setUserType] = useState(null);
+  console.log(userType)
+  useEffect(() => {
+    if (isFocused) {
+      basic.getBearerToken().catch(err => {
+        console.log('Error fetching JWT token:', err);
+      });
+
+      basic
+        .getUserType()
+        .then(type => {
+          console.log('User Type (is_edu):', type);
+          setUserType(type);
+        })
+        .catch(err => {
+          console.log('Error fetching user type:', err);
+        });
+    }
+  }, [isFocused]);
   const [loggingOut, setLoggingOut] = useState(false);
   const [totalPlayed, setTotalPlayed] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -56,7 +78,7 @@ const Sidebar = ({navigation}) => {
     } catch (err) {
       console.log('Error in Logging out', err.message);
     } finally {
-      navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+      navigation.reset({ index: 0, routes: [{ name: 'Splash' }] });
       setLoggingOut(false);
     }
   }
@@ -72,7 +94,7 @@ const Sidebar = ({navigation}) => {
             style={styles.closeButton}>
             <Image
               source={require('../../assets/img/wrong.png')}
-              style={{width: 35, height: 35}}
+              style={{ width: 35, height: 35 }}
             />
           </TouchableOpacity>
         </View>
@@ -93,14 +115,24 @@ const Sidebar = ({navigation}) => {
           image={require('../../assets/img/resume.png')}
           text="Brain Boosters"
         />
+        {userType === false ? (
+          <MenuItem
+            action={() => {
+              navigation.navigate('myhistory');
+              navigation.closeDrawer();
+            }}
+            image={require('../../assets/img/historyimg.png')}
+            text="History"
+          />
+        ) : null}
 
         <MenuItem
           action={() => {
-            navigation.navigate('myhistory');
+            navigation.navigate('Grouthbooster');
             navigation.closeDrawer();
           }}
-          image={require('../../assets/img/historyimg.png')}
-          text="History"
+          image={require('../../assets/img/dailyupdate.png')}
+          text="Grouth Booster"
         />
         <MenuItem
           action={() => {
@@ -183,7 +215,7 @@ const Sidebar = ({navigation}) => {
           backgroundColor: '#fff',
           elevation: 10,
         }}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Text
             style={{
               fontSize: 18,
@@ -211,7 +243,7 @@ const Sidebar = ({navigation}) => {
                 paddingVertical: 12,
                 borderRadius: 10,
               }}
-              titleStyle={{fontSize: 15, color: '#fff', fontWeight: 'bold'}}
+              titleStyle={{ fontSize: 15, color: '#fff', fontWeight: 'bold' }}
             />
             <Button
               title="Cancel"
@@ -222,7 +254,7 @@ const Sidebar = ({navigation}) => {
                 paddingVertical: 12,
                 borderRadius: 10,
               }}
-              titleStyle={{fontSize: 15, color: '#000'}}
+              titleStyle={{ fontSize: 15, color: '#000' }}
             />
           </View>
         </View>
@@ -240,7 +272,7 @@ const MenuItem = ({
   beingPerformmed,
 }) => {
   if (!action) {
-    action = () => {};
+    action = () => { };
   }
   return (
     <TouchableOpacity

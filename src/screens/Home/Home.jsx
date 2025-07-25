@@ -15,15 +15,14 @@ import Toast from 'react-native-toast-message';
 import {ColorsConstant} from '../../constants/Colors.constant';
 import {useIsFocused} from '@react-navigation/native';
 import basic from '../../services/BasicServices';
-import {getHomeData} from '../../controllers/HomeController';
 import {
-  getHomeBanners,
+  getBanners,
   getLiveQuizzes,
   getTriviaQuizzes,
   getExamList,
   getEnrolledQuizzes,
+  getEduGraf
 } from '../../services/api/HomeApiService';
-
 import HomeBanners from '../../components/HomeBanners';
 import HomeActiveQuizzes from '../../components/HomeActiveQuizzes';
 import HomeTriviaQuizzes from '../../components/HomeTriviaQuizzes';
@@ -45,6 +44,8 @@ export default function Home({navigation}) {
   const [triviaData, setTriviaData] = useState([]);
   const [examData, setExamData] = useState([]);
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
+  const [grafData, setGrafData] = useState([]);
+
   const [userType, setUserType] = useState(null);
   const isFocused = useIsFocused();
   const backRef = useRef();
@@ -93,11 +94,12 @@ export default function Home({navigation}) {
     try {
       const [bannersRes, liveQuizzesRes, triviaRes, examsRes, enrolledRes] =
         await Promise.all([
-          getHomeBanners(),
+          getBanners(),
           getLiveQuizzes(),
           getTriviaQuizzes(),
           getExamList(),
           getEnrolledQuizzes(),
+          getEduGraf()
         ]);
 
       setBannerData(bannersRes?.data || []);
@@ -125,11 +127,16 @@ export default function Home({navigation}) {
 
   return (
     <>
-      <StatusBar animated={true} backgroundColor="#61dafb" />
+      <StatusBar
+        barStyle={'white-content'}
+        translucent={false}
+        backgroundColor={'#701DDB'}
+      />
+
       {userType === true ? (
         <>
           <View style={{flex: 1}}>
-            <Dashboard />
+            <Dashboard  data={grafData}/>
           </View>
         </>
       ) : (

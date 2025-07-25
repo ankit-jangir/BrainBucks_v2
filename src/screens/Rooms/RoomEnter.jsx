@@ -1,10 +1,8 @@
-import {View, TouchableOpacity, Image, Share, Alert} from 'react-native';
+import {View, TouchableOpacity, Image, Share, Alert, Text} from 'react-native';
 import React, {useState} from 'react';
-import styles from '../../styles/Rooms.styles';
-import {Button, Text} from '../../utils/Translate';
+import styles from '../../styles/RoomEnter.styles';
+import {Button} from '../../utils/Translate';
 import {ColorsConstant} from '../../constants/Colors.constant';
-import styles2 from '../../styles/Studymaterials.styles';
-import {MyTabBar} from './Rooms';
 import LiveQuizzes from './LiveQuizzes';
 import ScheduledQuizzes from './ScheduledQuizzes';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -12,6 +10,52 @@ import {useRoom} from '../../utils/store';
 import {APPURL} from '../../config/urls';
 
 const Tab = createMaterialTopTabNavigator();
+
+// Custom TabBar component embedded
+const MyTabBar = ({ state, descriptors, navigation }) => {
+  return (
+    <View style={styles.tabContainer}>
+      <View style={styles.tabBar}>
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
+
+          const isFocused = state.index === index;
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          return (
+            <TouchableOpacity
+              key={route.key}
+              onPress={onPress}
+              style={[styles.tabItem, { flex: 1 }]}>
+              <Text
+                style={[styles.tabLabel, isFocused && styles.tabLabelActive]}>
+                {label}
+              </Text>
+              {isFocused && <View style={styles.tabIndicator} />}
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
+  );
+};
 
 export default function RoomEnter({navigation, route}) {
   const room_data = useRoom(state => state.currentRoom);
@@ -52,31 +96,30 @@ export default function RoomEnter({navigation, route}) {
             />
           </TouchableOpacity>
 
-          <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            {/* 
-    {type === 'created' && (
-      <Button
-        icon={
-          <Image
-            style={styles.histImg}
-            source={require('../../assets/img/mail.png')}
-          />
-        }
-        onPress={() => {
-          navigation.navigate('RoomNotification');
-        }}
-        buttonStyle={{
-          backgroundColor: '#8D4AE2',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 15,
-          paddingHorizontal: 20,
-        }}
-        title={'9+'}
-        titleStyle={{ fontSize: 14 }}
-      />
-    )} 
-    */}
+          <View style={{flexDirection: 'row', gap: 6, alignItems: 'center'}}>
+            {type === 'created' && (
+              <Button
+                icon={
+                  <Image
+                    style={styles.histImg}
+                    source={require('../../assets/img/mail.png')}
+                  />
+                }
+                onPress={() => {
+                  navigation.navigate('RoomNotification');
+                }}
+                buttonStyle={{
+                  backgroundColor: '#8D4AE2',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 15,
+                  paddingHorizontal: 10,
+                  gap:5
+                }}
+                title={'9+'}
+                titleStyle={{fontSize: 14}}
+              />
+            )}
 
             <Button
               icon={
@@ -99,13 +142,16 @@ export default function RoomEnter({navigation, route}) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 15,
-                paddingHorizontal: 20,
+                paddingHorizontal: 15,
+                gap:5
               }}
               title={type === 'created' ? 'Settings' : 'History'}
               titleStyle={{fontSize: 14}}
             />
           </View>
         </View>
+
+
 
         <View style={styles.detailsContainer}>
           <Text style={[styles.roomNameText, {color: ColorsConstant.White}]}>
@@ -139,55 +185,30 @@ export default function RoomEnter({navigation, route}) {
             </Text>
           </View>
 
-          <View style={[styles2.container, {marginHorizontal: 0}]}>
+          <View style={[styles.container, {marginHorizontal: 0}]}>
             {type === 'created' ? (
               <View style={styles.roomContainerBtns}>
-                {/* <Button
-                                        onPress={()=>{navigation.navigate('roomhistory', {room_data: room_data})}}
-                                        titleStyle={[styles.enterbtn, {color:ColorsConstant.Theme}]}
-                                        containerStyle={styles.enterbtncontainer}
-                                        buttonStyle={{backgroundColor:'#fff'}}
-                                        title={" + Live Quiz"}
-                                    /> */}
                 <Button
                   titleStyle={[styles.enterbtn]}
                   containerStyle={styles.enterbtncontainer}
                   buttonStyle={{backgroundColor: '#0CBC8B'}}
                   title={' + Schedule Quiz'}
                   onPress={() => {
-                    navigation.navigate('schedulquiz');
+                    // navigation.navigate('schedulquiz');
+                    navigation.navigate('Createquiz');
+
                   }}
                 />
               </View>
             ) : (
-              <>
-                {/*                                     
-                                    <TouchableOpacity
-                                        style={[
-                                            styles2.button,
-                                            selected === 'Participants' ? { backgroundColor: '#FFF' } : { backgroundColor: '#8D4AE2' },
-                                            styles.typebtn
-                                        ]}
-                                        onPress={() => setSelected('Participants')}
-                                    >
-                                        <Text style={[
-                                            styles2.text,
-                                            selected === 'Participants' ? { color: "#701DDB" } : { color: "#FFF" }
-                                        ]}>
-                                            Participants
-                                        </Text>
-                                    </TouchableOpacity> */}
-              </>
+              <></>
             )}
           </View>
         </View>
       </View>
 
       <View style={styles.secondEnter}>
-        <Tab.Navigator
-          tabBar={props => (
-            <MyTabBar {...props} imgNeeded={false} width={100} />
-          )}>
+        <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
           <Tab.Screen name="Live Quizzes" component={LiveQuizzes} />
           <Tab.Screen name="Scheduled Quizzes" component={ScheduledQuizzes} />
         </Tab.Navigator>

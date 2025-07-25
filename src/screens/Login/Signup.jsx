@@ -17,7 +17,6 @@ import styles from '../../styles/SingUp.styles';
 import {Text, TextInput, Button} from '../../utils/Translate';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import {SelectList} from 'react-native-dropdown-select-list';
-import BasicServices from '../../services/BasicServices';
 
 export default function Signup({navigation, route}) {
   const [phone, setPhone] = useState('');
@@ -26,38 +25,18 @@ export default function Signup({navigation, route}) {
   const [loading, setLoading] = useState(false);
   const [numberDone, setNumberDone] = useState(false);
   const [selected, setSelected] = useState('');
-  const [isEduStored, setIsEduStored] = useState(null); // null = not set
+  const [isEduStored, setIsEduStored] = useState(null);
 
   const referralCode = route.params?.referCode;
 
   const data = [
-    {key: '1', value: 'Student'},
-    {key: '2', value: 'Educator'},
+    {key: '1', value: 'Educator'},
+    {key: '0', value: 'Student'},
   ];
-
-  // Load from AsyncStorage on mount
-  useEffect(() => {
-    const fetchLocalUserType = async () => {
-      const localObj = await BasicServices.getLocalObject();
-      const isEdu = localObj?.is_edu;
-
-      console.log('====================================');
-      console.log(localObj,';;;sss');
-      console.log('====================================');
-
-      if (isEdu === true || isEdu === false) {
-        setIsEduStored(isEdu); // true or false
-      } else {
-        setIsEduStored(null); // not set
-      }
-    };
-    fetchLocalUserType();
-  }, []);
 
   async function next() {
     setErrorMessage(null);
 
-    // Validate phone
     if (!phone || phone.length !== 10) {
       setErrorMessage('*Please enter valid 10-digit mobile number');
       setNumberDone(false);
@@ -66,44 +45,37 @@ export default function Signup({navigation, route}) {
 
     setNumberDone(true);
 
-    // Validate terms
+    if (isEduStored === null) {
+      setErrorMessage('*Please select user type');
+      return;
+    }
+
     if (!checked) {
       setErrorMessage('*You must accept the terms and conditions');
       return;
     }
 
-    // Validate user type if not stored
-    if (isEduStored == null && !selected) {
-      setErrorMessage('*Please select user type');
-      return;
-    }
-
-    // Set loading
     setLoading(true);
     try {
       setErrorMessage(null);
 
+      const userTypeToSend = isEduStored;
+
+      console.log('Sending OTP to', phone, '| userType:', userTypeToSend);
+
       const auth = new AuthenticationApiService();
-
-      // Send stored value or dropdown-selected
-      const userTypeToSend =
-        isEduStored != null ? isEduStored : selected === 'Educator';
-
       const response = await auth.sendOtp(phone, userTypeToSend);
-
-      console.log('Response for OTP', response);
 
       if (response.status === 1) {
         if (response.otp) {
           ToastAndroid.show(response.otp + '', ToastAndroid.LONG);
         }
 
-      navigation.navigate('Otp', {
-  phone: phone,
-  userType: userTypeToSend,  // <- true or false
-  referCode: referralCode,
-});
-
+        navigation.navigate('Otp', {
+          phone: phone,
+          userType: userTypeToSend,
+          referCode: referralCode,
+        });
       } else {
         setErrorMessage('*' + response.Backend_Error);
       }
@@ -131,7 +103,6 @@ export default function Signup({navigation, route}) {
             </View>
 
             <View style={styles.container}>
-              {/* Header */}
               <View style={[styles.LetsView, {marginTop: 20}]}>
                 <View style={styles.LetsView2}>
                   <View>
@@ -148,9 +119,8 @@ export default function Signup({navigation, route}) {
                 </View>
               </View>
 
-              {/* Phone Number */}
-              <View
-                style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
+              {/* Phone Input */}
+              <View style={{width: '100%', paddingHorizontal: 1, marginTop: 15}}>
                 <Text style={styles.textEnter}> Enter Your Mobile Number </Text>
                 <View
                   style={[
@@ -183,47 +153,47 @@ export default function Signup({navigation, route}) {
                 </Text>
               )}
 
-              {/* ✅ Only show dropdown if isEduStored is null */}
-              {isEduStored == null && (
-                <View style={{marginTop: 15, width: '100%'}}>
-                  <Text style={styles.textEnter}> Select User Type </Text>
-                  <SelectList
-                    setSelected={val => {
-                      setErrorMessage(null);
-                      setSelected(val);
-                    }}
-                    data={data}
-                    search={false}
-                    save="value"
-                    boxStyles={{
-                      backgroundColor: '#9856EB',
-                      borderColor: '#ffffff80',
-                      paddingVertical: 15,
-                      marginTop: 6,
-                    }}
-                    dropdownStyles={{backgroundColor: '#9856EB'}}
-                    placeholder="Select user type"
-                     inputStyles={{color: '#fff'}}
-                    arrowicon={
-                      <Image
-                        source={require('../../assets/img/down-arrow.png')}
-                        style={{width: 20, height: 20}}
-                        tintColor={'#fff'}
-                      />
+              {/* User Type Selection */}
+              <View style={{marginTop: 15, width: '100%'}}>
+                <Text style={styles.textEnter}> Select User Type </Text>
+                <SelectList
+                  setSelected={val => {
+                    setErrorMessage(null);
+                    setSelected(val);
+
+                    // Set userType value based on selected key
+                    if (val === '1') {
+                      setIsEduStored(true);
+                    } else if (val === '0') {
+                      setIsEduStored(false);
                     }
-                  />
-                </View>
-              )}
+                  }}
+                  data={data}
+                  search={false}
+                  save="key"
+                  boxStyles={{
+                    backgroundColor: '#9856EB',
+                    borderColor: '#ffffff80',
+                    paddingVertical: 15,
+                    marginTop: 6,
+                  }}
+                  dropdownStyles={{backgroundColor: '#9856EB'}}
+                  placeholder="Select user type"
+                  inputStyles={{color: '#fff'}}
+                  arrowicon={
+                    <Image
+                      source={require('../../assets/img/down-arrow.png')}
+                      style={{width: 20, height: 20}}
+                      tintColor={'#fff'}
+                    />
+                  }
+                />
+              </View>
 
               {/* Terms and Conditions */}
               <View style={styles.checboxview}>
                 <View style={styles.checboxview2}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
+                  <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
                     <TouchableOpacity
                       onPress={() => {
                         setErrorMessage(null);
@@ -236,9 +206,7 @@ export default function Signup({navigation, route}) {
                               ? require('../../assets/img/square.png')
                               : require('../../assets/img/check-box-with-check-sign.png')
                           }
-                          tintColor={
-                            errorMessage && numberDone ? 'red' : '#fff'
-                          }
+                          tintColor={errorMessage && numberDone ? 'red' : '#fff'}
                           style={styles.checkboxImage}
                         />
                       </View>
@@ -249,26 +217,18 @@ export default function Signup({navigation, route}) {
                       I hereby confirm my age is 18 Years or above & agree to
                       <TouchableOpacity
                         onPress={() =>
-                          Linking.openURL(
-                            'https://brainbucks.in/terms/condition',
-                          )
+                          Linking.openURL('https://brainbucks.in/terms/condition')
                         }>
-                        <Text style={styles.textTerm}>
-                          {' '}
-                          terms & conditions{' '}
-                        </Text>
+                        <Text style={styles.textTerm}> terms & conditions </Text>
                       </TouchableOpacity>
                       <View style={{marginTop: -6}}>
-                        <Text
-                          style={{color: ColorsConstant.White, fontSize: 10}}>
+                        <Text style={{color: ColorsConstant.White, fontSize: 10}}>
                           and
                         </Text>
                       </View>
                       <TouchableOpacity
                         onPress={() =>
-                          Linking.openURL(
-                            'https://brainbucks.in/privacy/policy',
-                          )
+                          Linking.openURL('https://brainbucks.in/privacy/policy')
                         }>
                         <Text style={styles.textTerm}>Privacy policy</Text>
                       </TouchableOpacity>
@@ -285,7 +245,7 @@ export default function Signup({navigation, route}) {
                 )}
               </View>
 
-              {/* Button */}
+              {/* Submit Button */}
               <Button
                 onPress={next}
                 title="Get OTP"

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, BackHandler, ToastAndroid } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, BackHandler, ToastAndroid, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { ColorsConstant } from '../../constants/Colors.constant'
 import { TextInput } from '../../utils/Translate'
@@ -80,6 +80,11 @@ export default function Chat({ navigation, route }) {
     }
 
     return (
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+                 keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30}
+                style={{ flex: 1 ,backgroundColor:"white"}}
+        >
         <View style={styles.chatview}>
             <View style={{ zIndex: 200 }}><Toast /></View>
             <View style={styles.stdView1}>
@@ -94,10 +99,6 @@ export default function Chat({ navigation, route }) {
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginHorizontal: 4,
-                            borderWidth: 1,
-                            borderRadius: 100,
-                            width: 50,
-                            height: 50,
                             borderColor: '#F5F5F5',
                         }}>
                         <Image
@@ -142,6 +143,7 @@ export default function Chat({ navigation, route }) {
             }
 
         </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -159,6 +161,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        gap:10
     },
     examView: {
         flexDirection: 'row',
@@ -192,7 +195,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 10,
-        elevation: 3,
         padding: 10
     },
     messageinput: {

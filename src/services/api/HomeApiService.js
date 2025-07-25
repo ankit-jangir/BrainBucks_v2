@@ -2,25 +2,25 @@ import axios from 'axios';
 import { AUTHMICRO, QUIZMICRO, TICKETURL } from '../../config/urls';
 import basic from '../BasicServices'
 
-class HomeApiService{
+class HomeApiService {
 
-    // async getHomeData(){
-    //     let token = await basic.getBearerToken()
-    //     let url = `${QUIZMICRO}/home/page/overview`
-    //     let headers = {"content-type":"application/json", "authorization":token}
-    //     let options = {
-    //         method: "get",
-    //         headers: headers,
-    //         url
-    //     }
-    //     let response = await axios(options)
-    //     return response.data;
-    // }
+    async getHomeData(){
+        let token = await basic.getBearerToken()
+        let url = `${QUIZMICRO}/home/page/overview`
+        let headers = {"content-type":"application/json", "authorization":token}
+        let options = {
+            method: "get",
+            headers: headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
 
-    async getBanners(){
+    async getBanners() {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/banners`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -30,10 +30,10 @@ class HomeApiService{
         return response.data;
     }
 
-    async ReferEarnData(){
+    async ReferEarnData() {
         let token = await basic.getBearerToken()
         let url = `${AUTHMICRO}/auth/participant/referer`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -43,10 +43,10 @@ class HomeApiService{
         return response.data;
     }
 
-    async getActiveQuizes(page=1, limit=25){
+    async getActiveQuizes(page = 1, limit = 25) {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/live/quizes?page=${page}&limit=${limit}`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -56,10 +56,10 @@ class HomeApiService{
         return response.data;
     }
 
-    async getTriviaQuizes(page=1, limit=25){
+    async getTriviaQuizes(page = 1, limit = 25) {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/trivia/quizes?page=${page}&limit=${limit}`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -68,11 +68,11 @@ class HomeApiService{
         let response = await axios(options)
         return response.data;
     }
-    
-    async getExams(){
+
+    async getExams() {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/exams`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -82,10 +82,10 @@ class HomeApiService{
         return response.data;
     }
 
-    async getEnrolledQuizes(page=1, limit=25){
+    async getEnrolledQuizes(page = 1, limit = 25) {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/home/get/enrolled/quizes?page=${page}&limit=${limit}`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -95,10 +95,10 @@ class HomeApiService{
         return response.data;
     }
 
-    async getReels(){
+    async getReels() {
         let token = await basic.getBearerToken()
         let url = `${TICKETURL}/participants/reels/get/popular/reels/for/homepage`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -145,10 +145,10 @@ class HomeApiService{
     //     return response.data;
     // }
 
-    async getDailyUpdates(page){
+    async getDailyUpdates(page) {
         let token = await basic.getBearerToken()
         let url = `${QUIZMICRO}/participants/get/daily/updates?page=${page}`
-        let headers = {"content-type":"application/json", "authorization":token}
+        let headers = { "content-type": "application/json", "authorization": token }
         let options = {
             method: "get",
             headers: headers,
@@ -158,6 +158,61 @@ class HomeApiService{
         return response.data;
     }
 
+    async getPlanDeatils(page) {
+        let token = await basic.getBearerToken()
+        let url = `${AUTHMICRO}/api/membership/plan`
+        let headers = { "content-type": "application/json", "authorization": token }
+        let options = {
+            method: "get",
+            headers: headers,
+            url
+        }
+        let response = await axios(options)
+        return response.data;
+    }
+
+    async PlanOrder(item_id) {
+        let token = await basic.getBearerToken();
+
+        let url = `${AUTHMICRO}/sales/purchase/payment`;
+        let headers = {
+            "Content-Type": "application/json",
+            Authorization: `${token}`, // ✅ MUST include "Bearer "
+        };
+
+        let options = {
+            method: "post",
+            headers,
+            data: {
+                item_id: item_id,
+            },
+            url,
+        };
+        try {
+            const response = await axios(options);
+            return response.data;
+        } catch (err) {
+            console.error('PlanOrder error:', err.response?.data || err.message);
+            throw err;
+        }
+    }
+
+ async verifyPayment(order_id) {
+    let token = await basic.getBearerToken()
+
+    let url = `${AUTHMICRO}/sales/verifyPayment`;
+    let headers = { "content-type": "application/json", authorization: token };
+    let options = {
+      method: "post",
+      headers: headers,
+       data: {
+                order_id: order_id,
+            },
+      url,
+    };
+    const response = await axios(options);
+    return response.data
+  }
 }
 
 export default HomeApiService;

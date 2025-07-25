@@ -3260,6 +3260,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-documents/picker@npm:^10.1.5":
+  version: 10.1.5
+  resolution: "@react-native-documents/picker@npm:10.1.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: d92f97bcfb67328d1b73668e5f1aff8cf572d4b4c3b590258a365131344427d424baceea7549482bc9fb8cadf019386929fca1386f3b515f3af35d5af6e00497
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/app@npm:20.5.0":
   version: 20.5.0
   resolution: "@react-native-firebase/app@npm:20.5.0"
@@ -3300,6 +3310,16 @@ __metadata:
     expo:
       optional: true
   checksum: 67235c7c5aaaac4986687760003829d74a88001fb9f1ff35f15e31b3933c8a1f6bc442e388a7f4f95ee5a8855cb1f1fc08946b3983eab77a04b7678f360f853e
+  languageName: node
+  linkType: hard
+
+"@react-native-picker/picker@npm:^2.11.1":
+  version: 2.11.1
+  resolution: "@react-native-picker/picker@npm:2.11.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: b662be771b89ed34704a5753f54fc11a2e65e11de14624756898c344291ecc43d1b1a2dae05190ad997eb461bb66a55e71239dc60608c5f88a246804536778b9
   languageName: node
   linkType: hard
 
@@ -4434,9 +4454,11 @@ __metadata:
     "@react-native-community/datetimepicker": ^8.2.0
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-community/netinfo": ^11.3.2
+    "@react-native-documents/picker": ^10.1.5
     "@react-native-firebase/app": 20.5.0
     "@react-native-firebase/dynamic-links": 20.5.0
     "@react-native-firebase/messaging": 20.5.0
+    "@react-native-picker/picker": ^2.11.1
     "@react-native/babel-preset": 0.74.85
     "@react-native/eslint-config": 0.74.85
     "@react-native/metro-config": 0.74.85
@@ -4464,11 +4486,12 @@ __metadata:
     react-native: 0.74.3
     react-native-background-timer: ^2.4.1
     react-native-blob-util: ^0.22.2
-    react-native-cashfree-pg-sdk: ^2.1.12
+    react-native-cashfree-pg-sdk: latest
     react-native-chart-kit: ^6.12.0
     react-native-dropdown-select-list: ^2.0.5
     react-native-element-dropdown: ^2.12.4
     react-native-elements: ^3.4.3
+    react-native-file-picker: ^0.0.21
     react-native-gesture-handler: 2.15.0
     react-native-image-picker: ^7.1.2
     react-native-keyboard-controller: ^1.17.5
@@ -10412,7 +10435,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-cashfree-pg-sdk@npm:^2.1.12":
+"react-native-cashfree-pg-sdk@npm:latest":
   version: 2.2.4
   resolution: "react-native-cashfree-pg-sdk@npm:2.2.4"
   dependencies:
@@ -10474,6 +10497,13 @@ __metadata:
     react-native-safe-area-context: ">= 3.0.0"
     react-native-vector-icons: ">7.0.0"
   checksum: e055c18b85527366d7b9e76139828fe3d006a7a8c11f81b165e43b4175c0d4b15eef6308679dd596d33f0813a512c27cb993d6ca49e00c56fcb15a0918d96c6c
+  languageName: node
+  linkType: hard
+
+"react-native-file-picker@npm:^0.0.21":
+  version: 0.0.21
+  resolution: "react-native-file-picker@npm:0.0.21"
+  checksum: e2ce8649778caa4c578cade0ef3fbea3f4cc78c69cff4614d69b74fb21239a46dfe77d88fa6b5264e080ecc5c2ae4d24babb8fe3b61e1eec1789e6e42c7f7e44
   languageName: node
   linkType: hard
 

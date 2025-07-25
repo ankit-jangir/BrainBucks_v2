@@ -8,7 +8,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {ProgressBar} from 'react-native-paper';
 import MainHeader from '../../components/MainHeader';
 import {useNavigation} from '@react-navigation/native';

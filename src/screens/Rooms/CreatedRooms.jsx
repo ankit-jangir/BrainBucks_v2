@@ -43,8 +43,6 @@ export default function CreatedRooms({navigation}) {
     let res = await deleteRoomInController(room_id, Toast);
     console.log(res ,'sosnususu');
     if (res) {
-      console.log('====================================');
-      console.log('====================================');
       let newArr = rooms.filter((item, index) => item._id !== room_id);
       setRooms([...newArr]);
 
@@ -94,7 +92,7 @@ export default function CreatedRooms({navigation}) {
           keyExtractor={item => item._id}
           renderItem={({item, index}) => {
             return (
-              <View style={styles.roomContainer}>
+              <View style={[styles.roomContainer,{borderWidth:0.3,borderColor:"gray",elevation:0}]}>
                 <Text style={styles.roomNameText}>{item.room_name}</Text>
                 <View style={styles.memberHolder}>
                   <Text style={styles.memberText}>
@@ -109,7 +107,7 @@ export default function CreatedRooms({navigation}) {
                     </Text>
                   </Text>
                   <Text style={{color: '#000', marginRight: 20}}>
-                    {item.type}
+                    {item.type} 
                   </Text>
                 </View>
                 <View>

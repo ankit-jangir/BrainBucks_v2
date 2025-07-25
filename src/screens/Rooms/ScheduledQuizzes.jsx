@@ -7,20 +7,19 @@ import { ColorsConstant } from '../../constants/Colors.constant'
 import QuizCard from '../../components/QuizCard'
 import RoomsApiService from '../../services/api/RoomsApiService'
 import { useQuery } from '@apollo/client'
-import Toast from 'react-native-toast-message'
 import { useIsFocused } from '@react-navigation/native'
 import { APPURL, BLOBURL } from '../../config/urls'
 import { useRoom } from '../../utils/store'
 import { Alert } from 'react-native'
+import BasicServices from '../../services/BasicServices'
 
 export default function ScheduledQuizzes({ navigation, route }) {
 
     const [scheduledQuizzes, setScheduledQuizzes] = useState([])
-    console.log(scheduledQuizzes)
-
     const [totalPages, setTotalPages] = useState(2)
     const [currentPage, setCurrentPage] = useState(1)
     const isFocused = useIsFocused()
+    const [userType, setUserType] = useState(null);
 
     const room_data = useRoom(state=>state.currentRoom)
     const roomServ = new RoomsApiService()
@@ -30,6 +29,14 @@ export default function ScheduledQuizzes({ navigation, route }) {
             room_id: room_data._id, page: currentPage
         }
     });
+      useEffect(() => {
+    if (isFocused) {
+      BasicServices.getUserType().then(type => {
+        console.log('User Type (is_edu):', type);
+        setUserType(type);
+      });
+    }
+  }, [isFocused]);
 
 
     useEffect(() => {
@@ -115,7 +122,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                                 return (
                                     <QuizCard
                                         onPress={() => {navigation.navigate('Roomdetails', {quiz_obj: item})}}
-                                        image={{uri: BLOBURL+ item.category_image}}
+                                        image={{uri:item.category_image}}
                                         title={item.category_name}
                                         fees={item.entryFees}
                                         prize={item.prize}
@@ -126,6 +133,7 @@ export default function ScheduledQuizzes({ navigation, route }) {
                                         btntxt={"Register"}
                                         invitebtn={true}
                                         onShare={()=>{onShare(item._id)}}
+                                        usertype={userType}
                                     />
                                 )
 

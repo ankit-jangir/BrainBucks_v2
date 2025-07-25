@@ -1,3 +1,4 @@
+// ✅ ExamCategory.js
 import {
   StyleSheet,
   Text,
@@ -7,79 +8,101 @@ import {
   TextInput,
   Image,
   ToastAndroid,
-  Dimensions,
-  Platform,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/MainHeader';
 import {useNavigation} from '@react-navigation/native';
 import {ProgressBar} from 'react-native-paper';
+import RoomsApiService from '../../services/api/RoomsApiService';
+import {useQuery} from '@apollo/client';
+import { useRoom } from '../../utils/store';
 
-const {width, height} = Dimensions.get('window');
-
-const categories = [
-  {
-    id: '1',
-    name: 'Civil Services',
-    icon: require('../../assets/img/person.png'),
-    bgColor: '#F9FAFB',
-  },
-  {
-    id: '2',
-    name: 'Engineering Services',
-    icon: require('../../assets/img/person.png'),
-    bgColor: '#F9FAFB',
-  },
-  {
-    id: '3',
-    name: 'Combined Medical Services',
-    icon: require('../../assets/img/person.png'),
-    bgColor: '#F9FAFB',
-  },
-  {
-    id: '4',
-    name: 'Indian Forest Service',
-    icon: require('../../assets/img/person.png'),
-    bgColor: '#F9FAFB',
-  },
-  
-];
-
-const ExamCategory = () => {
+const ExamCategory = ({route}) => {
   const navigation = useNavigation();
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState('');
+  const [searchSubCat, setSearchSubCat] = useState('');
+  const room_data = useRoom(state => state.currentRoom);
 
-  const renderItem = ({item}) => {
-    const isSelected = selectedCategory === item.id;
+  const selectedCategoryId = route?.params?.categoryId || '';
+  const categoryName = route?.params?.categoryName || 'Category';
+  const imageUri = route?.params?.imageUri || '';
+
+  const roomServ = new RoomsApiService();
+
+  const {loading, error, data, refetch} = useQuery(roomServ.GETEXAMCATEGORIES, {
+    variables: {
+      search_cat: '',
+      search_sub_cat: searchSubCat,
+      cat_id: selectedCategoryId,
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !selectedCategoryId,
+  });
+
+  useEffect(() => {
+    if (data?.get_sub_category_fromfill?.response) {
+      setSubCategories(data.get_sub_category_fromfill.response);
+    } else if (data?.get_sub_category_fromfill?.error) {
+      ToastAndroid.show(
+        data.get_sub_category_fromfill.error,
+        ToastAndroid.SHORT,
+      );
+    }
+  }, [data]);
+
+  const handleSubCategorySelect = subCategoryId => {
+    setSelectedSubCat(subCategoryId); // Single selection - removed toggle logic
+  };
+
+  const handleSearch = text => {
+    setSearchSubCat(text);
+    const timeoutId = setTimeout(() => {
+      if (selectedCategoryId) {
+        refetch({
+          search_cat: '',
+          search_sub_cat: text,
+          cat_id: selectedCategoryId,
+        });
+      }
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  };
+
+  const filteredSubCategories = subCategories.filter(item =>
+    item.sub_category_name.toLowerCase().includes(searchSubCat.toLowerCase()),
+  );
+
+  const renderSubCategoryItem = ({item}) => {
+    const isSelected = selectedSubCat === item._id;
 
     return (
       <TouchableOpacity
-        style={[
-          styles.categoryItem,
-          {
-            backgroundColor: item.bgColor,
-          },
-        ]}
-        onPress={() => setSelectedCategory(item.id)}>
+        style={styles.categoryItem}
+        onPress={() => handleSubCategorySelect(item._id)}
+        activeOpacity={0.7}>
         <View style={styles.categoryLeft}>
-          <Image source={item.icon} style={styles.categoryIcon} />
-          <Text style={styles.categoryText}>{item.name}</Text>
+          <Text
+            style={styles.categoryText}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {item.sub_category_name}
+          </Text>
         </View>
-        <View style={[styles.radio, isSelected && styles.radioSelected]} />
+        <View style={[styles.radio, isSelected && styles.radioSelected]}>
+          {isSelected && <View style={styles.radioInner} />}
+        </View>
       </TouchableOpacity>
     );
   };
 
-  const handleProceed = () => {
-    if (!selectedCategory) {
-      ToastAndroid.show('Please select a category', ToastAndroid.SHORT);
-      return;
-    }
-    navigation.navigate('SubjectCategory');
-  };
+  const canProceed = !!selectedSubCat;
+  const selectedSubCategoryData = filteredSubCategories.find(
+    item => item._id === selectedSubCat, // Fixed: using _id for comparison
+  );
 
   return (
-    <View style={styles.container}>
+    <>
       <MainHeader
         name="Add New Quiz"
         leftIcon={{
@@ -87,17 +110,22 @@ const ExamCategory = () => {
           onPress: () => navigation.goBack(),
         }}
       />
+      <View style={styles.container}>
+        <View style={styles.progressContainer}>
+          <Text style={styles.stepText}>2/8 Steps Completed</Text>
+          <ProgressBar
+            styleAttr="Horizontal"
+            indeterminate={false}
+            progress={0.25}
+            color="#9333EA"
+          />
+        </View>
 
-      <View style={styles.fixedContent}>
-        <Text style={styles.stepText}>2/8 Steps Completed</Text>
-        <ProgressBar
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={0.2}
-          color="#9333EA"
-        />
-        <Text style={styles.examCategoryText}>Exam Category : UPSC</Text>
+        <Text style={styles.examCategoryText}>
+          Exam Category : {categoryName}
+        </Text>
         <Text style={styles.selectCategory}>Select Sub Category</Text>
+
         <View style={styles.searchBox}>
           <Image
             source={require('../../assets/img/searchicon.png')}
@@ -107,25 +135,75 @@ const ExamCategory = () => {
             placeholder="Search for Sub Category"
             placeholderTextColor="#9CA3AF"
             style={styles.searchInput}
+            value={searchSubCat}
+            onChangeText={handleSearch}
           />
         </View>
-      </View>
 
-      <FlatList
-        data={categories}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-      />
+        {/* Removed loading and error states as requested */}
 
-      {/* White background container for button */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
-          <Text style={styles.proceedText}>Proceed</Text>
+        {!loading && filteredSubCategories.length === 0 && (
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataText}>
+              {searchSubCat
+                ? 'No subcategories found for your search'
+                : 'No subcategories available'}
+            </Text>
+            {searchSubCat && (
+              <TouchableOpacity
+                style={styles.clearSearchButton}
+                onPress={() => {
+                  setSearchSubCat('');
+                  refetch({
+                    search_cat: '',
+                    search_sub_cat: '',
+                    cat_id: selectedCategoryId,
+                  });
+                }}>
+                <Text style={styles.clearSearchText}>Clear Search</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+
+        <FlatList
+          data={filteredSubCategories}
+          renderItem={renderSubCategoryItem}
+          keyExtractor={item => item._id.toString()}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          extraData={selectedSubCat}
+        />
+
+        <TouchableOpacity
+          style={[
+            styles.proceedButton,
+            !canProceed && styles.proceedButtonDisabled,
+          ]}
+          disabled={!canProceed}
+          onPress={() => {
+            if (selectedSubCategoryData) {
+              navigation.navigate('Schedulequiz', {
+                room_id: room_data._id,
+                room_name: room_data.room_name,
+                category_id: selectedCategoryId,
+                category_name: categoryName,
+                sub_cat_id: selectedSubCat,
+                subCategoryName: selectedSubCategoryData.sub_category_name,
+                category_image: imageUri,
+              });
+            }
+          }}>
+          <Text
+            style={[
+              styles.proceedText,
+              !canProceed && styles.proceedTextDisabled,
+            ]}>
+            Proceed
+          </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -137,28 +215,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: width * 0.04,
   },
-  fixedContent: {
-    paddingTop: height * 0.015,
-    paddingBottom: height * 0.02,
-    backgroundColor: '#fff',
+  progressContainer: {
+    // marginTop: 10,
   },
   stepText: {
     fontSize: 12,
-    fontFamily: 'Inter',
     color: '#6B7280',
     marginBottom: 6,
     textAlign: 'right',
   },
   examCategoryText: {
     fontSize: 22,
-    fontFamily: 'Inter',
     fontWeight: '600',
     color: '#1A1A1A',
     marginTop: 12,
   },
   selectCategory: {
     fontSize: 16,
-    fontFamily: 'Inter',
     fontWeight: '500',
     color: '#4B5563',
     marginTop: 4,
@@ -170,8 +243,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     borderRadius: 10,
     paddingHorizontal: 12,
-    paddingVertical: 5,
-    marginBottom: 10,
+    paddingVertical: 3,
+    marginBottom: 16,
   },
   searchIcon: {
     width: 20,
@@ -185,6 +258,27 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: '#000',
   },
+  noDataContainer: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  noDataText: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  clearSearchButton: {
+    backgroundColor: '#9333EA',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  clearSearchText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   list: {
     paddingBottom: height * 0.15,
   },
@@ -192,17 +286,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 74,
+    height: 70,
     padding: 20,
     borderRadius: 16,
     marginBottom: 15,
+    backgroundColor: '#F9FAFB',
     borderWidth: 1,
-    borderColor: '#e9e9ea',
-    backgroundColor: '#fff',
+    borderColor: '#e9e9eaff',
   },
   categoryLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   categoryIcon: {
     width: 28,
@@ -214,6 +309,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     fontWeight: '600',
     color: '#111827',
+    flex: 1,
   },
   radio: {
     width: 20,
@@ -221,31 +317,49 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: '#D1D5DB',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   radioSelected: {
     backgroundColor: '#9333EA',
     borderColor: '#9333EA',
   },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: width * 0.04,
+  radioInner: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     backgroundColor: '#fff',
-    paddingBottom: 55,
-    paddingTop: 10,
+  },
+  selectedInfo: {
+    backgroundColor: '#F3E8FF',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  selectedText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#7C3AED',
   },
   proceedButton: {
     backgroundColor: '#701DDB',
-    paddingVertical: 19,
-    borderRadius: 12,
+    marginBottom: 30,
+    paddingVertical: 16,
+    height: 56,
+    borderRadius: 16,
     alignItems: 'center',
+    // marginTop:10
+  },
+  proceedButtonDisabled: {
+    backgroundColor: '#D1D5DB',
   },
   proceedText: {
     color: '#fff',
     fontSize: 13,
     fontFamily: 'Inter',
     fontWeight: '700',
+  },
+  proceedTextDisabled: {
+    color: '#9CA3AF',
   },
 });

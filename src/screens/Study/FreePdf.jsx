@@ -59,9 +59,9 @@ const FreePdf = () => {
         </View>
       ) :
       
-    freePdf.map((res)=>{
+    freePdf.map((res,index)=>{
     return(
-      <TouchableOpacity key={res.cat_id}
+      <TouchableOpacity key={`${res.cat_id}_${index}`}
       onPress={() => navigation.navigate("QuestionPapers", {pdf_id : res.pdf_type} )}
       style={styles.touchableOpacity}>
       <View style={styles.innerContainer}>

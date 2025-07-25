@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -23,8 +23,8 @@ import {setLoggedIn} from '../../..';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUpExam({navigation, route}) {
-
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false); // pull-to-refresh
+  const [isLoadingExams, setIsLoadingExams] = useState(false); // loader for exam fetching
   const [exams, setExams] = useState([]);
   const [selectedExams, setSelectedExams] = useState(new Set([]));
   const [search, setSearch] = useState('');
@@ -51,30 +51,21 @@ export default function SignUpExam({navigation, route}) {
         route.params.gender,
         Array.from(selectedExams),
         route.params.otp,
-        route.params.referralCode,
+        route.params.referCode,
         route.params.userType,
         route.params.description,
       );
-      console.log('User id: ', res);
       if (res.status === 1) {
-        console.log('JWT TOKEN: ', res.token);
-        console.log('wwwww: ', res);
-
-        try {
-          await BasicServices.setJwt(res.token);
-          await BasicServices.setId(res.user_id);
-          await BasicServices.setUserType(res.is_edu);
-
-          ChatSockService.connect();
-          setLoggedIn(true);
-          await AsyncStorage.removeItem('referral_code');
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Home'}],
-          });
-        } catch (error) {
-          console.error('Signup flow error:', error);
-        }
+        await BasicServices.setJwt(res.token);
+        await BasicServices.setId(res.user_id);
+        await BasicServices.setUserType(res.is_edu);
+        ChatSockService.connect();
+        setLoggedIn(true);
+        await AsyncStorage.removeItem('referral_code');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        });
       } else {
         ToastAndroid.show(res.Backend_Error, ToastAndroid.SHORT);
       }
@@ -98,8 +89,7 @@ export default function SignUpExam({navigation, route}) {
   }
 
   async function reloadExams() {
-    setRefresh(true);
-    setDisabled(true);
+    setIsLoadingExams(true);
     try {
       let res = await auth.getExams(search);
       if (res.status === 1) {
@@ -110,7 +100,7 @@ export default function SignUpExam({navigation, route}) {
     } catch (err) {
       console.log('Error in getting categories in signup: ', err.message);
     } finally {
-      setRefresh(false), setDisabled(false);
+      setIsLoadingExams(false);
     }
   }
 
@@ -118,12 +108,12 @@ export default function SignUpExam({navigation, route}) {
     reloadExams();
   }, [search]);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefresh(true);
-    setTimeout(() => {
-      setRefresh(false);
-    }, 3000);
+    await reloadExams();
+    setRefresh(false);
   };
+
   return (
     <>
       <View style={styles.containerView}>
@@ -178,8 +168,8 @@ export default function SignUpExam({navigation, route}) {
               <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
             }
             style={{flex: 1, paddingHorizontal: 20}}>
-            {refresh ? (
-              <ActivityIndicator size={30} />
+            {isLoadingExams ? (
+              <ActivityIndicator size={30} style={{marginTop: 20}} />
             ) : exams.length === 0 ? (
               <NoDataFound
                 message={'Data Not Found'}
@@ -187,52 +177,48 @@ export default function SignUpExam({navigation, route}) {
                 actionText={'Load Again'}
               />
             ) : (
-              exams.map(item => {
-                return (
-                  <View key={item._id} style={styles.ExamView}>
-                    <View style={styles.ExamView2}>
-                      <View style={styles.CateView}>
-                        <Image
-                          source={{uri: BLOBURL + item.image}}
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 25,
-                          }}></Image>
-                      </View>
-                      <View style={styles.CateViewName}>
-                        <Text style={styles.CateName}>
-                          {item.category_name}
-                        </Text>
-                      </View>
-                      <View style={styles.TouchhView}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            selectExam(item._id);
-                          }}
-                          style={[
-                            styles.plus,
-                            selectedExams.has(item._id) && {
-                              backgroundColor: ColorsConstant.Checkedcolor,
-                            },
-                          ]}>
-                          {selectedExams.has(item._id) ? (
-                            <Text key="selected" style={{color: '#fff'}}>
-                              ✓
-                            </Text>
-                          ) : (
-                            <Text key="nonselected" style={{color: '#000'}}>
-                              +
-                            </Text>
-                          )}
-                        </TouchableOpacity>
-                      </View>
+              exams.map(item => (
+                <View key={item._id} style={styles.ExamView}>
+                  <View style={styles.ExamView2}>
+                    <View style={styles.CateView}>
+                      <Image
+                        source={{uri: BLOBURL + item.image}}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.CateViewName}>
+                      <Text style={styles.CateName}>
+                        {item.category_name}
+                      </Text>
+                    </View>
+                    <View style={styles.TouchhView}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          selectExam(item._id);
+                        }}
+                        style={[
+                          styles.plus,
+                          selectedExams.has(item._id) && {
+                            backgroundColor: ColorsConstant.Checkedcolor,
+                          },
+                        ]}>
+                        {selectedExams.has(item._id) ? (
+                          <Text style={{color: '#fff'}}>✓</Text>
+                        ) : (
+                          <Text style={{color: '#000'}}>+</Text>
+                        )}
+                      </TouchableOpacity>
                     </View>
                   </View>
-                );
-              })
+                </View>
+              ))
             )}
           </ScrollView>
+
           <View style={styles.btnView}>
             <Button
               onPress={finalRegister}

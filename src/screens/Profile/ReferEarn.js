@@ -16,13 +16,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import MainHeader from '../../components/MainHeader';
 import AuthenticationApiService from '../../services/api/AuthenticationApiService';
 import { Share } from 'react-native';
-import { APPURL } from '../../config/urls';
+import { APPURL, AUTHMICRO } from '../../config/urls';
 import { Clipboard } from 'react-native';
+import basic from '../../services/BasicServices';
+
 
 const ReferEarn = () => {
   const navigation = useNavigation();
   let auth = new AuthenticationApiService();
   const [referCode, setReferCode] = useState('');
+  const [loading, setLoading] = useState('');
+  const [totalRefers, settotalRefers] = useState('');
+  const [referIncome, setreferIncome] = useState('');
+  const [totalIncome, settotalIncome] = useState('');
+
 
   const copyToClipboard = () => {
     Clipboard.setString(referCode);
@@ -31,7 +38,7 @@ const ReferEarn = () => {
 
   const CopYLink = () => {
     Clipboard.setString(`${APPURL}/Splash?referralCode=${referCode}`);
-    ToastAndroid.show('Copey Link', ToastAndroid.LONG);
+    ToastAndroid.show('Copy Link', ToastAndroid.LONG);
   };
 
   useEffect(() => {
@@ -45,7 +52,7 @@ const ReferEarn = () => {
     fetchReferCode();
   }, []);
 
-  
+
 
   const onShare = async reel_id => {
     try {
@@ -66,25 +73,59 @@ const ReferEarn = () => {
     }
   };
 
+  useEffect(() => {
+    TotalIncomeData()
+  }, [])
+  const TotalIncomeData = async () => {
+    try {
+      setLoading(true)
+      const token = await basic.getBearerToken();
+
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `${token}`);
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
+
+      fetch(`${AUTHMICRO}/auth/participant/income`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.status === "001") {
+            settotalRefers(result.totalRefers);
+            setreferIncome(result.referIncome?.[0]?.totalAmount || 0);
+            settotalIncome(result.totalIncome?.[0]?.totalAmount || 0);
+          }
+        }).finally(() => {
+          setLoading(false)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const commissionData = [
+    
     {
       id: '1',
-      icon: require('../../assets/img/gift2.png'),
-      percent: '1%',
-      label: 'Commission',
-      desc: 'When students join paid quizzes',
-    },
-    {
-      id: '2',
       icon: require('../../assets/img/win.png'),
       percent: 'Signup',
+      label: 'Commission',
+      desc: 'When your students win prizes',
+    },
+     {
+      id: '2',
+      icon: require('../../assets/img/win.png'),
+      percent: 'Refered room',
       label: 'Commission',
       desc: 'When your students win prizes',
     },
     {
       id: '3',
       icon: require('../../assets/img/win.png'),
-      percent: '10%',
+      percent: 'Room',
       label: 'Commission',
       desc: 'When your students win prizes',
     },
@@ -113,7 +154,7 @@ const ReferEarn = () => {
             end={{ x: 1, y: 0 }}
             style={styles.earningsCard}>
             <Text style={styles.earningsTitle}>Lifetime Earnings</Text>
-            <Text style={styles.earningsAmount}>$2,458.50</Text>
+            <Text style={styles.earningsAmount}>₹ {referIncome}</Text>
             <Image
               source={require('../../assets/img/chart.png')}
               style={styles.earningsIcon}
@@ -130,7 +171,7 @@ const ReferEarn = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ gap: 10 }}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={()=>navigation.navigate("ReferStudents")} style={styles.commissionCard}>
+            <TouchableOpacity onPress={() => navigation.navigate("ReferStudents")} style={styles.commissionCard}>
               <View style={styles.iconWrapper}>
                 <Image source={item.icon} style={styles.icon} />
               </View>
@@ -183,13 +224,13 @@ const ReferEarn = () => {
 
         {/* Stats */}
         <View style={styles.statsRow}>
-          <TouchableOpacity onPress={()=>{navigation.navigate("ReferStudents")}} style={styles.statCard}>
+          <TouchableOpacity onPress={() => { navigation.navigate("ReferStudents") }} style={styles.statCard}>
             <Text style={styles.statLabel}>Active Referrals</Text>
-            <Text style={styles.statValue}>24</Text>
+            <Text style={styles.statValue}>{totalRefers}</Text>
           </TouchableOpacity>
           <View style={styles.statCard}>
             <Text style={styles.statLabel}>Total Earned</Text>
-            <Text style={styles.statValue}>$2,458.50</Text>
+            <Text style={styles.statValue}>₹ {totalIncome}</Text>
           </View>
         </View>
       </ScrollView>

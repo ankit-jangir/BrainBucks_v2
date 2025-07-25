@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  StyleSheet,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import RoomsApiService from '../../services/api/RoomsApiService';
@@ -22,11 +23,11 @@ import {Button} from '../../utils/Translate';
 import {Modal} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import NoDataFound from '../../components/NoDataFound';
-import {StyleSheet} from 'react-native';
 import {useRoom} from '../../utils/store';
+import MainHeader from '../../components/MainHeader';
 
-export default function RoomNotifications({navigation, route}) {
-  let room_data = useRoom(state => state.currentRoom);
+export default function RoomNotifications({navigation}) {
+  const room_data = useRoom(state => state.currentRoom);
   const [requests, setRequests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(2);
@@ -35,17 +36,16 @@ export default function RoomNotifications({navigation, route}) {
   const timeoutRef = useRef();
 
   async function action(user_id, type) {
-    let res =
+    const res =
       type === 'reject'
         ? await rejectJoinRequestInController(room_data._id, user_id, Toast)
         : await acceptJoinRequestInController(room_data._id, user_id, Toast);
+
     if (res) {
-      let newArr = requests.filter((item, index) => item._id !== user_id);
+      const newArr = requests.filter(item => item._id !== user_id);
       setRequests([...newArr]);
       setModalVisible(true);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
       timeoutRef.current = setTimeout(() => {
         setModalVisible(false);
@@ -53,9 +53,9 @@ export default function RoomNotifications({navigation, route}) {
     }
   }
 
-  let ras = new RoomsApiService();
+  const ras = new RoomsApiService();
 
-  let {loading, error, data, refetch} = useQuery(ras.GETROOMJOINREQUESTS, {
+  const {loading, error, data, refetch} = useQuery(ras.GETROOMJOINREQUESTS, {
     variables: {
       room_id: room_data._id,
       page: currentPage,
@@ -64,8 +64,10 @@ export default function RoomNotifications({navigation, route}) {
 
   useEffect(() => {
     if (data?.get_req_participants_of_quiz.error || error) {
-                   ToastAndroid.show( error ? error : data?.get_req_participants_of_quiz.error, ToastAndroid.SHORT);
-
+      ToastAndroid.show(
+        error ? error.message : data?.get_req_participants_of_quiz.error,
+        ToastAndroid.SHORT,
+      );
       return;
     }
 
@@ -75,16 +77,12 @@ export default function RoomNotifications({navigation, route}) {
       }
 
       if (currentPage === 1) {
-        if (data.get_req_participants_of_quiz.response) {
-          setRequests(data.get_req_participants_of_quiz.response);
-        }
+        setRequests(data.get_req_participants_of_quiz.response || []);
       } else {
-        if (data.get_req_participants_of_quiz.response) {
-          setRequests([
-            ...requests,
-            ...data.get_req_participants_of_quiz.response,
-          ]);
-        }
+        setRequests(prev => [
+          ...prev,
+          ...(data.get_req_participants_of_quiz.response || []),
+        ]);
       }
     }
   }, [data]);
@@ -104,18 +102,16 @@ export default function RoomNotifications({navigation, route}) {
       <View style={{zIndex: 20}}>
         <Toast />
       </View>
-      <View style={styles.notifiView}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backBtn}>
-          <Image
-            style={{width: 20, height: 20}}
-            resizeMethod="contain"
-            source={require('../../assets/img/backq.png')}
-          />
-        </TouchableOpacity>
-        <Text style={styles.notifiText}>Notifications</Text>
-      </View>
+
+      <MainHeader
+        name={'Inbox'}
+        leftIcon={{
+          type: 'image',
+          source: require('../../assets/img/backq.png'),
+          onPress: () => navigation.goBack(),
+        }}
+      />
+
       {loading ? (
         <ActivityIndicator color={ColorsConstant.Theme} size={30} />
       ) : requests.length === 0 ? (
@@ -135,54 +131,46 @@ export default function RoomNotifications({navigation, route}) {
           onEndReachedThreshold={0.6}
           data={requests}
           keyExtractor={item => item._id}
-          contentContainerStyle={{gap: 20, padding: 10}}
-          renderItem={({item, index}) => {
-            return (
-              <View style={styles.requestView}>
-                <View style={{width: '20%'}}>
-                  <Image
-                    source={{uri: BLOBURL + item.image}}
-                    style={styles.requestImage}
-                  />
-                </View>
-                <View style={{width: '80%', gap: 20}}>
-                  <Text style={styles.requesetName}>
-                    {item.name} Requested to join your room
-                  </Text>
-                  <View style={styles.requestBtnView}>
-                    <Button
-                      color={'success'}
-                      title={'Accept'}
-                      buttonStyle={{borderRadius: 5}}
-                      onPress={() => {
-                        action(item._id, 'accept');
-                      }}
-                    />
-                    <Button
-                      color={'error'}
-                      title={'Decline'}
-                      buttonStyle={{borderRadius: 5}}
-                      onPress={() => {
-                        action(item._id, 'reject');
-                      }}
-                    />
-                  </View>
+          contentContainerStyle={{gap: 16, padding: 10}}
+          renderItem={({item}) => (
+            <View style={styles.card}>
+              <Image
+                source={
+                  item.image
+                    ? {uri: BLOBURL + item.image}
+                    : require('../../assets/img/gengirl.png')
+                }
+                style={styles.avatar}
+              />
+              <View style={styles.cardContent}>
+                <Text style={styles.notificationText}>
+                  <Text style={{fontWeight: 'bold'}}>{item.name}</Text> has requested to join your room
+                </Text>
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    onPress={() => action(item._id, 'accept')}
+                    style={[styles.button, styles.acceptButton]}>
+                    <Text style={styles.acceptText}>Accept</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => action(item._id, 'reject')}
+                    style={[styles.button, styles.rejectButton]}>
+                    <Text style={styles.rejectText}>Reject</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            );
-          }}
+            </View>
+          )}
         />
       )}
 
       <Modal
         visible={modalVisible}
-        onDismiss={() => {
-          setModalVisible(false);
-        }}
+        onDismiss={() => setModalVisible(false)}
         contentContainerStyle={styles.modalContainer}>
         <LottieView
           source={require('../../assets/img/check.json')}
-          autoPlay={true}
+          autoPlay
           style={styles.modalLottie}
         />
       </Modal>
@@ -191,6 +179,54 @@ export default function RoomNotifications({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    elevation: 0.6,
+    alignItems: 'center',
+    gap: 16,
+  },
+  avatar: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+    backgroundColor: '#e0e0e0',
+  },
+  cardContent: {
+    flex: 1,
+    gap: 10,
+  },
+  notificationText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  acceptButton: {
+    backgroundColor: '#D1FADF',
+  },
+  rejectButton: {
+    backgroundColor: '#FEE4E2',
+  },
+  acceptText: {
+    color: '#027A48',
+    fontWeight: 'bold',
+  },
+  rejectText: {
+    color: '#B42318',
+    fontWeight: 'bold',
+  },
   modalContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -198,50 +234,5 @@ const styles = StyleSheet.create({
   modalLottie: {
     width: 200,
     height: 200,
-  },
-  requestView: {
-    padding: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    elevation: 2,
-  },
-  requestImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
-  requestBtnView: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  requesetName: {
-    color: '#000',
-    fontWeight: '700',
-    fontSize: 17,
-  },
-  notifiText: {
-    color: '#000',
-    fontSize: 20,
-    alignSelf: 'center',
-    textAlign: 'center',
-    flexGrow: 1,
-  },
-  notifiView: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomColor: '#000',
-    borderBottomWidth: 0.2,
-  },
-  backBtn: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    height: 20,
-    width: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 0.2,
   },
 });

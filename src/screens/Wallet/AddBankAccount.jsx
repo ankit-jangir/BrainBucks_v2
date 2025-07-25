@@ -49,6 +49,9 @@ const AddBankAccount = ({ navigation }) => {
     try {
       setLoading(true);
       let ifscres = await wallServ.checkIfsc(addBankState);
+      console.log('====================================');
+      console.log(ifscres,'jdjdjjdjdjdjd');
+      console.log('====================================');
       if (ifscres.status===1) {
         navigation.navigate('addbankDetails');
       } else {

@@ -4,6 +4,8 @@ import MainHeader from "../../components/MainHeader";
 import { useNavigation } from "@react-navigation/native";
 import HomeApiService from "../../services/api/HomeApiService";
 import { useQuery } from "@tanstack/react-query";
+import NoDataFound from "../../components/NoDataFound";
+import { ColorsConstant } from "../../constants/Colors.constant";
 
 const ReferStudents = () => {
   const navigation = useNavigation();
@@ -78,7 +80,11 @@ const ReferStudents = () => {
             onPress: () => navigation.goBack(),
           }}
         />
-        <Text>No referral data available.</Text>
+        <NoDataFound
+          scale={0.9}
+
+          message={"No referral data available."}
+        />
       </View>
     );
   }
@@ -103,10 +109,10 @@ const ReferStudents = () => {
           <View style={styles.card}>
             <View style={styles.profileRow}>
               <View style={styles.profileImageWrapper}>
-                <Image
-                  source={require("../../assets/img/FRAME.png")}
-                  style={styles.earningsIcon}
-                />
+  <Text style={[styles.nameText, { color: ColorsConstant.Theme,fontWeight:"700",fontSize:17 }]}>
+  {item.name ? item.name.charAt(0).toUpperCase() : ''}
+</Text>
+
               </View>
               <View>
                 <View style={styles.nameRow}>
@@ -164,7 +170,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 100,
-    overflow: "hidden",
+    alignItems:"center",
+    justifyContent:"center",
+    backgroundColor:ColorsConstant.Theme2nd
   },
   earningsIcon: {
     height: "100%",

@@ -29,25 +29,24 @@ const boosters = [
     desc: 'Elite membership with premium benefits',
     icon: require('../../assets/img/orangebox.png'),
     buttonText: 'Join Club',
-    screen: 'FoundersClubScreen',
+    screen: 'PlanPucharse',
   },
   {
     title: 'Super 30 Rooms',
     desc: 'Exclusive mastermind groups for top performers',
     icon: require('../../assets/img/wins.png'),
     buttonText: 'Learn More',
-    screen: 'SuperScreen',
+    screen: 'PlanPurachgeDetilas',
   },
 ];
 
 const screenWidth = Dimensions.get('window').width;
 const cardMargin = 6;
 const horizontalPadding = 20;
-const cardWidth = (screenWidth - horizontalPadding * 2 - cardMargin * 2) / 2;
+const cardWidth = (screenWidth - horizontalPadding * 1 - cardMargin * 1) / 2;
 
 const Grouthbooster = ({navigation}) => {
   const renderItem = ({item}) => (
-    <View style={{width: cardWidth, margin: cardMargin}}>
       <View style={styles.card}>
         <View style={styles.iconWrapper}>
           <Image source={item.icon} style={styles.icon} />
@@ -59,7 +58,6 @@ const Grouthbooster = ({navigation}) => {
           onPress={() => navigation.navigate(item.screen)}>
           <Text style={styles.buttonText}>{item.buttonText}</Text>
         </TouchableOpacity>
-      </View>
     </View>
   );
 
@@ -78,17 +76,15 @@ const Grouthbooster = ({navigation}) => {
         </Text>
       </View>
 
-      <View style={styles.scrollBackground}>
+    
         <FlatList
           data={boosters}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
           numColumns={2}
-          contentContainerStyle={styles.flatListContent}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={<View style={{height: 40}} />}
         />
-      </View>
     </View>
   );
 };
@@ -98,11 +94,11 @@ export default Grouthbooster;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f6f6ff',
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 40,
     paddingBottom: 10,
     backgroundColor: '#FFFFFF',
     zIndex: 10,
@@ -131,23 +127,19 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   scrollBackground: {
-    flex: 1,
-    backgroundColor: '#f8f6f6ff',
   },
   flatListContent: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingTop: 10,
-    paddingBottom: 20,
-    flexGrow: 1,
+    gap:10,
   },
   card: {
-    flexGrow: 1,
-    flexBasis: '48%',
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,
     justifyContent: 'space-between',
-    
+    margin:10,
+    width:"45%"
   },
   iconWrapper: {
     width: 47,
@@ -160,17 +152,18 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   cardTitle: {
-    fontSize: 17,
-    fontWeight: '700',
-    lineHeight: 24,
+    fontSize: 16,
+    fontWeight: '500',
     color: '#000',
-    fontFamily:"Inter"
+    fontFamily:"Poppins"
   },
   cardDesc: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#666',
     marginBottom: 12,
-    lineHeight: 16,
+    lineHeight:16,
+    fontFamily:"Poppins",
+    fontWeight:"400"
   },
   button: {
     backgroundColor: '#701DDB',
@@ -182,5 +175,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '600',
+    fontFamily:"Poppins"
   },
 });

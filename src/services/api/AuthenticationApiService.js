@@ -3,7 +3,7 @@ import { AUTHMICRO, QUIZMICRO } from "../../config/urls";
 import basic from '../BasicServices'
 
 class AuthenticationApiService {
-  async sendOtp(number) {
+  async sendOtp(number,userTypeToSend) {
       number = "+91" + number;
       console.log("sending otp to " + number);
       const response = await axios({
@@ -11,6 +11,7 @@ class AuthenticationApiService {
         url: `${AUTHMICRO}/auth/participant/send/otp`,
         data: {
           phone: number,
+          is_edu:userTypeToSend
         },
       });
       return response.data;
@@ -45,68 +46,72 @@ class AuthenticationApiService {
   }
 
        
-  // async registerUser(phone, name, gender, category, otp,referralCode,userType,description) {
-  //   phone = "+91" + phone;
-  //   let local = await basic.getLocalObject();
-  //   let fcm = local.fcm
-  //   const response = await axios({
-  //     method: "post",
-  //     url: `${AUTHMICRO}/auth/participant/registor`,
-  //     data: {
-  //       phone: phone,
-  //       name: name,
-  //       gender: gender,
-  //       category: category,
-  //       fcm_key: fcm,
-  //       otp:otp,
-  //       refer_id:referralCode,
-  //       is_edu:userType,
-  //       description:description
-  //     },
+  async registerUser(phone, name, gender, category, otp,referralCode,userType,description) {
+    phone = "+91" + phone;
+    let local = await basic.getLocalObject();
+    let fcm = local.fcm
+    const response = await axios({
+      method: "post",
+      url: `${AUTHMICRO}/auth/participant/registor`,
+      data: {
+        phone: phone,
+        name: name,
+        gender: gender,
+        category: category,
+        fcm_key: fcm,
+        otp:otp,
+        refer_id:referralCode,
+        is_edu:userType,
+        description:description
+      },
       
-  //   });
-  //   if (response.data.status === 1) {
-  //     await basic.setGender(gender);
-  //     await basic.setJwt(response.data.token);
-  //     await basic.setName(name);
-  //     await basic.setNumber(phone);
-  //   }
-  //   return response.data;
-  // }
-
-
-  async registerUser(phone, name, gender, category, otp, referralCode, userType, description) {
-  phone = "+91" + phone;
-  let local = await basic.getLocalObject();
-  let fcm = local.fcm;
-
-  // ✅ Log the data to be sent
-  const payload = {
-    phone: phone,
-    name: name,
-    gender: gender,
-    category: category,
-    fcm_key: fcm,
-    otp: otp,
-    refer_id: referralCode,
-    is_edu: userType,
-    description: description,
-  };
-  const response = await axios({
-    method: "post",
-    url: `${AUTHMICRO}/auth/participant/registor`,
-    data: payload,
-  });
-
-  if (response.data.status === 1) {
-    await basic.setGender(gender);
-    await basic.setJwt(response.data.token);
-    await basic.setName(name);
-    await basic.setNumber(phone);
+    });
+    if (response.data.status === 1) {
+      await basic.setGender(gender);
+      await basic.setJwt(response.data.token);
+      await basic.setName(name);
+      await basic.setNumber(phone);
+    }
+    return response.data;
   }
 
-  return response.data;
-}
+
+//   async registerUser(phone, name, gender, category, otp, referralCode, userType, description) {
+//   phone = "+91" + phone;
+//   let local = await basic.getLocalObject();
+//   let fcm = local.fcm;
+
+  
+//   // ✅ Log the data to be sent
+//   const payload = {
+//     phone: phone,
+//     name: name,
+//     gender: gender,
+//     category: category,
+//     fcm_key: fcm,
+//     otp: otp,
+//     refer_id: referralCode,
+//     is_edu: userType,
+//     description: description,
+//   };
+//   console.log('====================================');
+//   console.log(payload,'sssss');
+//   console.log('====================================');
+//   const response = await axios({
+//     method: "post",
+//     url: `${AUTHMICRO}/auth/participant/registor`,
+//     data: payload,
+//   });
+
+//   if (response.data.status === 1) {
+//     await basic.setGender(gender);
+//     await basic.setJwt(response.data.token);
+//     await basic.setName(name);
+//     await basic.setNumber(phone);
+//   }
+
+//   return response.data;
+// }
 
 
   async getUserProfile() {
