@@ -110,20 +110,20 @@ const AddBanks = ({navigation}) => {
                       </View>
                       <View style={[styles.data, {
                             backgroundColor:
-                              res.status === 'pending'
+                              res.status === 'Pending'
                                 ? '#FFEDD5'
-                                : res.status === 'accepted'
-                                  ? '#DCFCE7'
-                                  : '#dcfce7',
+                                : res.status === 'Accepted'
+                                  ? '#ebf8e7ff'
+                                  : '#fcebdcff',
                           }]}>
                       <Text
                         style={[
                           styles.verified,
                           {
                             color:
-                              res.status === 'pending'
+                              res.status === 'Pending'
                                 ? 'orange'
-                                : res.status === 'accepted'
+                                : res.status === 'Accepted'
                                   ? 'green'
                                   : 'red',
                           },
@@ -271,7 +271,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     backgroundColor:'#fff',
-    borderRadius: 10,
+    borderRadius:5,
+    borderWidth:0.1
   },
   bankDetailsHeader: {
     flexDirection: 'row',

@@ -31,7 +31,6 @@ const PlanPurchase = () => {
   const [orderId, setOrderId] = useState(null);
   console.log(plans);
   const [loading, setLoading] = useState(true);
-
   const processedOrders = new Set(); // For deduplication
 
   const onRefresh = async () => {
