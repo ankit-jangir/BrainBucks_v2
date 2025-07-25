@@ -3,7 +3,7 @@ import { AUTHMICRO, QUIZMICRO } from "../../config/urls";
 import basic from '../BasicServices'
 
 class AuthenticationApiService {
-  async sendOtp(number) {
+  async sendOtp(number,userTypeToSend) {
       number = "+91" + number;
       console.log("sending otp to " + number);
       const response = await axios({
@@ -11,6 +11,7 @@ class AuthenticationApiService {
         url: `${AUTHMICRO}/auth/participant/send/otp`,
         data: {
           phone: number,
+          is_edu:userTypeToSend
         },
       });
       return response.data;
