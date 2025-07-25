@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ToastAndroid,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/MainHeader';
@@ -23,7 +24,7 @@ const ExamCategory = ({route}) => {
   const [selectedSubCat, setSelectedSubCat] = useState('');
   const [searchSubCat, setSearchSubCat] = useState('');
   const room_data = useRoom(state => state.currentRoom);
-
+ const width = Dimensions.get('window').width;
   const selectedCategoryId = route?.params?.categoryId || '';
   const categoryName = route?.params?.categoryName || 'Category';
   const imageUri = route?.params?.imageUri || '';
