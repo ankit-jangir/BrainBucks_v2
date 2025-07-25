@@ -151,6 +151,7 @@ export default ReferStudents;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#fff'
   },
   contentWrapper: {
     padding: 15,

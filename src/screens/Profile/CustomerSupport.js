@@ -57,7 +57,7 @@ export default function CustomerSupport({navigation}) {
           backgroundColor={'transparent'}
         />
         <MainHeader
-          name="CustomerSupport"
+          name="Customer Support"
           leftIcon={{
             source: require('../../assets/img/backq.png'),
             onPress: () => navigation.goBack(), // wrap in an arrow function

@@ -2,7 +2,6 @@ import axios from "axios";
 import basic from "../BasicServices";
 import { CHATURL, TICKETURL } from "../../config/urls";
 import {io} from "socket.io-client"
-import { onMessageReceived } from "../../config/FirebaseConfig";
 
 class ChatSockService {
 
