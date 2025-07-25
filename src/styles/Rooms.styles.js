@@ -5,6 +5,8 @@ const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: ColorsConstant.White,
+    // margin:10
+    paddingHorizontal:5,paddingVertical:10
   },
   actionToggleButton: {
   backgroundColor: '#701DDB',

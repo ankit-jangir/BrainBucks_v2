@@ -30,7 +30,7 @@ const Sidebar = ({ navigation }) => {
     name: 'User Name',
   });
   const [userType, setUserType] = useState(null);
-  console.log(userType)
+
   useEffect(() => {
     if (isFocused) {
       basic.getBearerToken().catch(err => {
@@ -40,7 +40,7 @@ const Sidebar = ({ navigation }) => {
       basic
         .getUserType()
         .then(type => {
-          console.log('User Type (is_edu):', type);
+          console.log('User Type (is_edu):sisiisis', type);
           setUserType(type);
         })
         .catch(err => {
@@ -100,13 +100,14 @@ const Sidebar = ({ navigation }) => {
         </View>
       </View>
       <ScrollView style={styles.menu}>
+       {userType === false ? (
         <MenuItem
           action={() => {
             navigation.navigate('saved'), navigation.closeDrawer();
           }}
           image={require('../../assets/img/heart.png')}
           text="My Exams"
-        />
+        />):null}
         <MenuItem
           action={() => {
             navigation.closeDrawer();
