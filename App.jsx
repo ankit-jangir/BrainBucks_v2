@@ -162,6 +162,7 @@ import UploadQuestionsScreen from './src/screens/Home/UploadQuestionsScreen.js';
 import PlanPurchase from './src/screens/Home/PlanPucharse.jsx';
 import PlanPurachgeDetilas from './src/screens/Home/PlanPurachgeDetilas.js';
 import Content_page from './src/screens/Reels/Content_page.jsx';
+import Advanced_Physics from './src/screens/Reels/Advanced_Physics.jsx';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -339,6 +340,7 @@ function MyStack() {
       <Stack.Screen name="PlanPucharse" component={PlanPurchase} />
       <Stack.Screen name="Grouthbooster" component={Grouthbooster} />
       <Stack.Screen name="content_page" component={Content_page} />
+      <Stack.Screen name="Advanced_Physics" component={Advanced_Physics} />
     </Stack.Navigator>
   );
 }

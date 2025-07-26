@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,19 @@ import {
   Image,
   StyleSheet,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import Video from 'react-native-video';
 
-const data = [
+const initialData = [
   {
     id: '1',
     date: '22 July 2025',
     type: 'video',
     title: 'Quadratic Equations',
     label: 'Upload Video',
+    uri: null,
   },
   {
     id: '2',
@@ -25,6 +28,7 @@ const data = [
     type: 'pdf',
     title: 'Algebra Formulas',
     label: 'Upload PDF',
+    uri: null,
   },
   {
     id: '3',
@@ -32,25 +36,48 @@ const data = [
     type: 'ppt',
     title: 'Geometry Basics',
     label: 'Upload PPT',
+    uri: null,
   },
 ];
 
 const Content_page = () => {
-      const navigation = useNavigation();
-  const handleUpload = type => {
-    if (type === 'video') {
-      launchImageLibrary({mediaType: 'video'}, res => {
-        if (res.assets && res.assets.length > 0) {
-          // Add your toast here later
-        }
-      });
-    } else {
-      // Add your toast here later
-    }
+  const navigation = useNavigation();
+  const [content, setContent] = useState(initialData);
+
+  const handleUpload = (item) => {
+    launchImageLibrary({mediaType: 'mixed'}, res => {
+      if (res.assets && res.assets.length > 0) {
+        const uri = res.assets[0].uri;
+        const updated = content.map(c =>
+          c.id === item.id ? {...c, uri} : c,
+        );
+        setContent(updated);
+      }
+    });
   };
 
   const handleDelete = title => {
-    // Add your toast here later
+    Alert.alert(
+      'Confirm Delete',
+      `Are you sure you want to delete "${title}"?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            const updated = content.map(c =>
+              c.title === title ? {...c, uri: null} : c,
+            );
+            setContent(updated);
+          },
+        },
+      ],
+      {cancelable: true},
+    );
   };
 
   const renderItem = ({item}) => (
@@ -62,19 +89,49 @@ const Content_page = () => {
         </View>
       </View>
       <Text style={styles.title}>{item.title}</Text>
-      <TouchableOpacity
-        style={styles.uploadBtn}
-        onPress={() => handleUpload(item.type)}>
-        <Text style={styles.uploadText}>{item.label}</Text>
-      </TouchableOpacity>
 
-      <View style={styles.actions}>
-        <TouchableOpacity onPress={() => { /* View action */ }}>
-          {/* <Image source={require('./assets/view.png')} style={styles.actionIcon} /> */}
+      {item.uri && item.type === 'video' && (
+        <View style={styles.videoContainer}>
+          <Video
+            source={{uri: item.uri}}
+            style={styles.video}
+            controls
+            resizeMode="cover"
+          />
+        </View>
+      )}
+
+      {item.uri && (item.type === 'pdf' || item.type === 'ppt') && (
+        <View style={styles.previewBox}>
+          <Text style={styles.previewText}>Uploaded File: {item.uri.split('/').pop()}</Text>
+        </View>
+      )}
+
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.uploadBtn}
+          onPress={() => handleUpload(item)}>
+          <Image
+            source={require('../../assets/img/cloud.png')}
+            style={styles.uploadIcon}
+          />
+          <Text style={styles.uploadText}>{item.label}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleDelete(item.title)}>
-          {/* <Image source={require('./assets/delete.png')} style={styles.actionIcon} /> */}
-        </TouchableOpacity>
+
+        <View style={styles.actions}>
+          <TouchableOpacity onPress={() => {}}>
+            <Image
+              source={require('../../assets/img/view.png')}
+              style={styles.actionIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleDelete(item.title)}>
+            <Image
+              source={require('../../assets/img/deletes.png')}
+              style={styles.actionIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -83,28 +140,26 @@ const Content_page = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={require('../../assets/img/backq.png')} style={styles.backIcon} />
+          <Image
+            source={require('../../assets/img/backq.png')}
+            style={styles.backIcon}
+          />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Uploaded Content</Text>
+
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerTitle}>Uploaded Content</Text>
+          <Text style={styles.subTitle}>
+            Stay updated with the latest notes, videos, and resources.
+          </Text>
+        </View>
       </View>
 
       <View style={styles.container}>
-        <Text style={styles.subTitle}>
-          Stay updated with the latest notes, videos, and resources.
-        </Text>
-
         <Text style={styles.classTitle}>Class 10 - Maths</Text>
         <Text style={styles.owner}>Room Owner: Rajat Sir</Text>
 
-        <View style={styles.banner}>
-          {/* <Image source={require('./assets/banner.png')} style={styles.bannerImg} /> */}
-          <View style={styles.playOverlay}>
-            {/* <Image source={require('./assets/play-button.png')} style={styles.playIcon} /> */}
-          </View>
-        </View>
-
         <FlatList
-          data={data}
+          data={content}
           keyExtractor={item => item.id}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
@@ -113,9 +168,11 @@ const Content_page = () => {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.downloadAllBtn}
-          onPress={() => { /* Download all */ }}>
+        <TouchableOpacity style={styles.downloadAllBtn} onPress={() => navigation.navigate("Advanced_Physics")}>
+          <Image
+            source={require('../../assets/img/down.png')}
+            style={styles.downloadAllIcon}
+          />
           <Text style={styles.downloadAllText}>Download All Content</Text>
         </TouchableOpacity>
       </View>
@@ -139,10 +196,8 @@ const getTypeColor = type => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
+  safeArea: {flex: 1, backgroundColor: '#fff'},
+  headerTextContainer: {flex: 1},
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -151,58 +206,45 @@ const styles = StyleSheet.create({
     elevation: 4,
     zIndex: 2,
   },
-  backIcon: {
-    width: 21,
-    height: 21,
-    marginRight: 12,
-  },
+  backIcon: {width: 21, height: 21, marginRight: 12},
   headerTitle: {
     fontSize: 14,
-    fontWeight: '600',
-    color:"#111827"
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
+    fontWeight: '700',
+    color: '#111827',
+    fontFamily: 'Inter',
   },
   subTitle: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
+    fontFamily: 'Inter',
   },
+  container: {flex: 1, paddingHorizontal: 16},
   classTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
+    color: '#111827',
+    marginTop: 10,
+    fontFamily: 'Inter',
   },
   owner: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: 12,
+    color: '#6B7280',
     marginBottom: 10,
+    fontFamily: 'Inter',
   },
-  banner: {
+  videoContainer: {
     width: '100%',
-    height: 180,
+    height: 200,
     borderRadius: 12,
     overflow: 'hidden',
-    marginBottom: 16,
-    position: 'relative',
+    marginTop: 8,
+    marginBottom: 12,
+    backgroundColor: '#000',
   },
-  bannerImg: {
+  video: {
     width: '100%',
     height: '100%',
-  },
-  playOverlay: {
-    position: 'absolute',
-    top: '40%',
-    left: '45%',
-    backgroundColor: '#00000080',
-    padding: 10,
-    borderRadius: 30,
-  },
-  playIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#fff',
   },
   card: {
     backgroundColor: '#f9f9f9',
@@ -217,7 +259,9 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 13,
-    color: '#555',
+    color: '#6B7280',
+    fontFamily: 'Inter',
+    fontWeight: '400',
   },
   typeBadge: {
     borderRadius: 6,
@@ -229,31 +273,44 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   title: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '700',
     marginVertical: 8,
+    color: '#000000',
+    fontFamily: 'Inter',
   },
   uploadBtn: {
-    backgroundColor: '#6A0DAD',
-    borderRadius: 8,
-    paddingVertical: 10,
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 13,
+    paddingVertical: 8,
+    backgroundColor: '#701DDB',
+    borderRadius: 8,
+  },
+  uploadIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 8,
   },
   uploadText: {
     color: '#fff',
-    fontWeight: '600',
     fontSize: 14,
+    fontWeight: '600',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 12,
   },
   actions: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     gap: 12,
-    marginTop: 10,
   },
   actionIcon: {
-    width: 20,
-    height: 20,
-    tintColor: '#444',
+    width: 22,
+    height: 22,
+    marginLeft: 12,
   },
   footer: {
     position: 'absolute',
@@ -265,14 +322,35 @@ const styles = StyleSheet.create({
     borderTopColor: '#eee',
   },
   downloadAllBtn: {
-    backgroundColor: '#6A0DAD',
-    paddingVertical: 14,
-    borderRadius: 10,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    backgroundColor: '#701DDB',
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  downloadAllIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 8,
   },
   downloadAllText: {
     color: '#fff',
+    fontSize: 14,
     fontWeight: '600',
-    fontSize: 15,
+  },
+  previewBox: {
+    backgroundColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  previewText: {
+    fontSize: 13,
+    color: '#374151',
+    fontFamily: 'Inter',
   },
 });

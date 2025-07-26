@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: width * 0.04,
+    paddingHorizontal: 8,
   },
   progressContainer: {
     // marginTop: 10,
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   list: {
-    paddingBottom: height * 0.15,
+    paddingBottom: 10,
   },
   categoryItem: {
     flexDirection: 'row',
