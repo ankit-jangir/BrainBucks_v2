@@ -22,6 +22,7 @@ export default function MyExams({navigation, route}) {
 
   return (
     <>
+    {/*  */}
       <View style={{zIndex: 20}}>
         <Toast />
       </View>
